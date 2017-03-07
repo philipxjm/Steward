@@ -1,8 +1,8 @@
 # cs0320 Term Project
 
-**Team Members:** _Fill this in!_
+**Team Members:** Kevin Jin (`kjin2`), Will Povell (`wpovell`), Matt Robins (`mrobins`), Phillip Xu (`jx24`)
 
-**Project Idea:** _Fill this in!_
+**Project Idea:** Stock portfolio manager that provides short-term predictions for stocks and sentiment analysis on relevant news.
 
 **Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
 
