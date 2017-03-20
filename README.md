@@ -4,7 +4,7 @@
 
 **Project Idea:** Stock portfolio manager that provides short-term predictions for stocks and sentiment analysis on relevant news.
 
-**Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
+**Mentor TA:** Sean Segal (`sean_segal@brown.edu`)
 
 ## Project Requirements
 
