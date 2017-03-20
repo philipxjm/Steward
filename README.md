@@ -30,10 +30,10 @@ Currently we are developing a survey we hope to send to the Brown Investment Gro
 
 ## Project Specs and Mockup
 Main page:
-![Main page](http://i.imgur.com/MIamWxk.png)
+![Main page](README_src/index_mock.png)
 
 Graph page:
-![Graph page](http://imgur.com/uiDjZJh.png)
+![Graph page](README_src/graph_mock.png)
 
 ## Project Design Presentation
 _A link to your design presentation/document will go here!_
