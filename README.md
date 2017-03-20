@@ -29,10 +29,6 @@ The main requirements for the project include:
 Currently we are developing a survey we hope to send to the Brown Investment Group, as well as others possibly interested/involved in the stock market. The current draft of the survey can be found [here](https://docs.google.com/forms/d/e/1FAIpQLSfDgahogxEjuioWqXFXex2qrgF4Y9_TL1Xn3tD_T3l5VIli4Q/viewform?usp=sf_link).
 
 ## Project Specs and Mockup
-
-
-Main page:
-
 #### Specs:
 ###### Interfaces:
 1. Graphical User Interface:
@@ -50,24 +46,20 @@ Main page:
    3. Stock Information Display:  
    
       When a user clicks on a stock, for example AAPL, the stock's candlestick chart, statistics, fundamentals, predictions, should be displayed. Users should be able to zoom in on the graph, mouse over for more daily information, and draw trendlines with percentage displays. The current traded price, volumes traded, volatility, and fundamentals of the company will be displayed below the graph, and a user can click to see more details. News articles or twitter feeds regarding the stock will be displayed on the right, along with a sentamental analysis of social media feeds.
-      
-      
-###### Safety:
-Our app will not have any financial transactions or irreversible actions. We will store the usernames and passwords for logins on the site in a database on the server. We will find an online package to use as a password hasher.
-
-###### Compatibility: 
-Our portfolio manager will be a web app that supports at least Chrome that can be accessed from personal computers. Our stretch goals include support for Firefox, Safari, IE, Edge, and smartphone browsing.
-
-We will not require any files to be provided from the client. 
-
+###### Performance:
+Minimal computations will be performed on the frontend, most of the data manipulation and preperations will be done on the backend.  
+1. User data management.  
+User data will be stored in a SQL database. Insertions upon creation, and query upon login. All performance will be limited by SQL operations, which will likely O(log(n)).
+2. Prediction.  
+The backend will performance prediction using APIs for recurrent neural networks and sentimental analysis. The performance of this will depend on the APIs used. After the initial run the results will be cached and any redundant queries will be retrieved from the cache instead to speed up querying.
+3. Stock Info Querying:  
+The backend will provide information of charts and fundamentals. This information will be queried from a SQL database and cached for future uses.
 #### Mockups:
 ###### Main page:
 ![Main page](http://i.imgur.com/MIamWxk.png)
 
 ###### Graph page:
 ![Graph page](http://imgur.com/uiDjZJh.png)
-
-
 
 ## Project Design Presentation
 _A link to your design presentation/document will go here!_
