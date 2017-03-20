@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+      <title>Stocks</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+      <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+      <link rel="stylesheet" type="text/css" href="css/graph.css">
+      <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  </head>
+  <body>
+    <!-- Nav -->
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">Stock Tracker</a>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">About <span class="sr-only">(current)</span></a>
+          </li>
+
+        </ul>
+        <button type="button" class="btn btn-secondary">Welcome John Smith</button>
+      </div>
+    </nav>
+
+    <div class="expand container-fluid">
+      <div class="expand row">
+        <!-- Sidebar -->
+        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-faded sidebar">
+          <span>
+            <h3>Stocks <button id="add">+</button></h3>
+          </span>
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#"><p>Stock A</p> <p>$4.71 (+1.45)</p></a>
+              <span class="sr-only">(current)</span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><p>Stock B</p> <p>$50.43 (-0.54)</p></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><p>Stock C</p> <p>$50.43 (+0.01)</p></a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Main -->
+
+        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+          <div class="row row-first">
+            <h2>Stock A</h2>
+          </div>
+          <div class="row row-second">
+            <p>Graph goes here</p>
+            <canvas id="graph"></canvas>
+          </div>
+          <div class="row row-third">
+            <p>Stats go here</p>
+          </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="js/graph.js"></script>
+  </body>
+</html>    
