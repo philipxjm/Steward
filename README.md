@@ -54,6 +54,15 @@ User data will be stored in a SQL database. Insertions upon creation, and query 
 The backend will performance prediction using APIs for recurrent neural networks and sentimental analysis. The performance of this will depend on the APIs used. After the initial run the results will be cached and any redundant queries will be retrieved from the cache instead to speed up querying.
 3. Stock Info Querying:  
 The backend will provide information of charts and fundamentals. This information will be queried from a SQL database and cached for future uses.
+
+###### Safety:
+Our app will not have any financial transactions or irreversible actions. We will store the usernames and passwords for logins on the site in a database on the server. We will find an online package to use as a password hasher.
+Compatibility:
+
+###### Compatibility:
+Our portfolio manager will be a web app that supports at least Chrome that can be accessed from personal computers. Our stretch goals include support for Firefox, Safari, IE, Edge, and smartphone browsing.
+
+We will not require any files to be provided from the client.
 #### Mockups:
 ###### Main page:
 ![Main page](http://i.imgur.com/MIamWxk.png)
