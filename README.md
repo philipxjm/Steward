@@ -46,6 +46,17 @@ Currently we are developing a survey we hope to send to the Brown Investment Gro
    3. Stock Information Display:  
    
       When a user clicks on a stock, for example AAPL, the stock's candlestick chart, statistics, fundamentals, predictions, should be displayed. Users should be able to zoom in on the graph, mouse over for more daily information, and draw trendlines with percentage displays. The current traded price, volumes traded, volatility, and fundamentals of the company will be displayed below the graph, and a user can click to see more details. News articles or twitter feeds regarding the stock will be displayed on the right, along with a sentamental analysis of social media feeds.
+###### Functionalities:
+1. User Login/Signup:  
+   Users should be able to sign up on our service using an username, password, and email. 
+   Users should be able to log in to the service and create/edit their portfolio. That information should be retained and everytime the user logs in they should be able to have access to the same portfolio they created.  
+   Users should also be able to log out, change their passwords, or delete their accounts.
+2. Portfolio Management:
+   Users will have access to a complete set of all stocks currently trading in the U.S.. 
+   Users should be able to edit their portfolio and have access to it when they re log in.  
+3. Stock:
+   Users should be able to have access to all relevant stock information: Current price, fundamentals, daily open, daily close, daily high, daily low, daily volume, volatility, news articles, projections, and sentimental analysis informations.  
+   Users should be able to draw trendlines, zoom onto graphs, have access to info on the graphs.
 ###### Performance:
 Minimal computations will be performed on the frontend, most of the data manipulation and preperations will be done on the backend.  
 1. User data management.  
