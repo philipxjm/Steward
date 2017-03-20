@@ -75,11 +75,10 @@ Our portfolio manager will be a web app that supports at least Chrome that can b
 
 We will not require any files to be provided from the client.
 #### Mockups:
-###### Main page:
+###### Main page
 ![Main page](README_src/index_mock.png)
 
-###### Graph page:
-Graph page:
+###### Graph page
 ![Graph page](README_src/graph_mock.png)
 
 ## Project Design Presentation
