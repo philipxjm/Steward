@@ -50,6 +50,16 @@ Main page:
    3. Stock Information Display:  
    
       When a user clicks on a stock, for example AAPL, the stock's candlestick chart, statistics, fundamentals, predictions, should be displayed. Users should be able to zoom in on the graph, mouse over for more daily information, and draw trendlines with percentage displays. The current traded price, volumes traded, volatility, and fundamentals of the company will be displayed below the graph, and a user can click to see more details. News articles or twitter feeds regarding the stock will be displayed on the right, along with a sentamental analysis of social media feeds.
+      
+      
+###### Safety:
+Our app will not have any financial transactions or irreversible actions. We will store the usernames and passwords for logins on the site in a database on the server. We will find an online package to use as a password hasher.
+
+###### Compatibility: 
+Our portfolio manager will be a web app that supports at least Chrome that can be accessed from personal computers. Our stretch goals include support for Firefox, Safari, IE, Edge, and smartphone browsing.
+
+We will not require any files to be provided from the client. 
+
 #### Mockups:
 ###### Main page:
 ![Main page](http://i.imgur.com/MIamWxk.png)
@@ -58,12 +68,6 @@ Main page:
 ![Graph page](http://imgur.com/uiDjZJh.png)
 
 
-
-Safety: Our app will not have any financial transactions or irreversible actions. We will store the usernames and passwords for logins on the site in a database on the server. We will find an online package to use as a password hasher.
-
-Our portfolio manager will be a web app that supports at least Chrome that can be accessed from personal computers. Our stretch goals include support for Firefox, Safari, IE, Edge, and smartphone browsing.
-
-We will not require any files to be provided from the client. 
 
 ## Project Design Presentation
 _A link to your design presentation/document will go here!_
