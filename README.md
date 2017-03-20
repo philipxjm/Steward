@@ -29,7 +29,11 @@ The main requirements for the project include:
 Currently we are developing a survey we hope to send to the Brown Investment Group, as well as others possibly interested/involved in the stock market. The current draft of the survey can be found [here](https://docs.google.com/forms/d/e/1FAIpQLSfDgahogxEjuioWqXFXex2qrgF4Y9_TL1Xn3tD_T3l5VIli4Q/viewform?usp=sf_link).
 
 ## Project Specs and Mockup
-_A link to your specifications document and your mockup will go here!_
+Main page:
+![Main page](http://i.imgur.com/MIamWxk.png)
+
+Graph page:
+![Graph page](http://imgur.com/uiDjZJh.png)
 
 ## Project Design Presentation
 _A link to your design presentation/document will go here!_
