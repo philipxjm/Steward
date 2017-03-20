@@ -35,13 +35,16 @@ Currently we are developing a survey we hope to send to the Brown Investment Gro
 
    The user interface of this project will be a web application. The layout is demonstrated in the mockups.  
    Features:  
-   1. Signup, Login and Data Retention:
+   1. Signup, Login and Data Retention:  
+   
       Users should be able to sign up on our service using an username, password, and email.  
       Users should be able to log in to the service and create/edit their portfolio. That information should be retained and everytime the user logs in they should be able to have access to the same portfolio they created.  
       Users should also be able to log out, change their passwords, or delete their accounts.
-   2. Portfolio Editting:
+   2. Portfolio Editting:  
+   
       Users should be able to create and edit their portfolios using a search box through symbol or stock name query. There should be an extensive stock database containing all currently traded NYSE or more stocks.
-   3. Stock Information Display:
+   3. Stock Information Display:  
+   
       When a user clicks on a stock, for example AAPL, the stock's candlestick chart, statistics, fundamentals, predictions, should be displayed. Users should be able to zoom in on the graph, mouse over for more daily information, and draw trendlines with percentage displays. The current traded price, volumes traded, volatility, and fundamentals of the company will be displayed below the graph, and a user can click to see more details. News articles or twitter feeds regarding the stock will be displayed on the right, along with a sentamental analysis of social media feeds.
 #### Mockups:
 ###### Main page:
