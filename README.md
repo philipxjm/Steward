@@ -78,6 +78,9 @@ We will not require any files to be provided from the client.
 ###### Main page
 ![Main page](README_src/index_mock.png)
 
+###### Register page
+![Register page](README_src/reg_mock.png)
+
 ###### Graph page
 ![Graph page](README_src/graph_mock.png)
 
