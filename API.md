@@ -1,10 +1,6 @@
 # API
 
-1. [getStockData](#getStockData)
-2. [getPredData](#getPredData)
-3. [getStocksForUser](#getStocksForUser)
-
-## getStockData <span id="getStockData"></span>
+## getStockData 
 
 ### Parameters
 
