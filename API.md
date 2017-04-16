@@ -1,6 +1,13 @@
 # API
 
-## getStockData 
+1. [getStockData](#getStockData)
+2. [getStockEssentials](#getStockEssentials)
+3. [getPredData](#getPredData)
+4. [getStocksForUser](#getStocksForUser)
+5. [addStockForUser](#addStockForUser)
+
+<span id="getStockData"></span>
+## getStockData
 
 ### Parameters
 
@@ -17,6 +24,7 @@
 }
 ```
 
+<span id="getStockEssentials"></span>
 ## getStockEssentials
 
 ### Parameters
@@ -44,6 +52,7 @@
 }
 ```
 
+<span id="getPredData"></span>
 ## getPredData
 
 ### Parameters
@@ -60,6 +69,7 @@
 }
 ```
 
+<span id="getStocksForUser"></span>
 ## getStocksForUser
 
 ### Parameters
@@ -74,4 +84,19 @@
   stocks : List of stock tickers in user portfolio
            [ <Stock Ticker>, ... ]
 }
+```
+
+<span id="addStockForUser"></span>
+## addStockForUser
+
+### Parameters
+
+| name   | description                    | example    |
+|--------|--------------------------------|------------|
+| user   | User to add stock to portfolio | wpovell    |
+| ticker | Ticker of stock to add         | AAPL       |
+
+### Response
+```
+{ }
 ```
