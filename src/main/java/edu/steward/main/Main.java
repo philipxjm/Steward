@@ -1,6 +1,8 @@
 package edu.steward.main;
 
+import com.google.common.collect.ImmutableList;
 import edu.steward.analytics.SentimentAnalysis;
+import edu.steward.analytics.TwitterSentiments;
 
 /**
  * Hello world!
@@ -8,8 +10,7 @@ import edu.steward.analytics.SentimentAnalysis;
 public class Main {
   public static void main(String[] args) {
 //    System.out.println(TwitterSearch.search("Trump"));
-    System.out.println(SentimentAnalysis.findSentiment("AAPL is " +
-            "exceptionally profitable" +
-            "."));
+    System.out.println(TwitterSentiments.sentiments(ImmutableList.of
+            ("Kendrick")));
   }
 }
