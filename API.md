@@ -11,10 +11,11 @@
 
 ### Parameters
 
-| name   | description                                                      | example                    |
-|--------|------------------------------------------------------------------|----------------------------|
-| ticker | Ticker of stock to get data for                                  | AAPL                       |
-| range  | Time range to get data for given as tuple of two unix timestamps | [ 1477448008, 1492371726 ] |
+| name   | description                                           | example    |
+|--------|-------------------------------------------------------|------------|
+| ticker | Ticker of stock to get data for                       | AAPL       |
+| start  | Start of time range to get data for as unix timestamp | 1477448008 |
+| end    | End of time range to get data for as unix timestamp   | 1492371726 |
 
 ### Response
 ```
