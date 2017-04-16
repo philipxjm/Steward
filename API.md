@@ -1,6 +1,10 @@
 # API
 
-## getStockData
+1. [getStockData](#getStockData)
+2. [getPredData](#getPredData)
+3. [getStocksForUser](#getStocksForUser)
+
+## getStockData <span id="getStockData"></span>
 
 ### Parameters
 
@@ -16,7 +20,8 @@
          [ (<Timestamp>, <Value>), ... ] 
 }
 ```
-## getPredData
+
+## getPredData <span id="getPredData"></span>
 
 ### Parameters
 
@@ -31,7 +36,8 @@
          [ (<Timestamp>, <Value>), ... ]
 }
 ```
-## getStocksForUser
+
+## getStocksForUser <span id="getStocksForUser"></span>
 
 ### Parameters
 
