@@ -12,11 +12,11 @@ public class StockPrediction {
   }
 
   public double getFiveDayPrediction(String ticker) {
-    return 0;
+    return 0.0;
   }
 
   public double getOneDayPrediction(String ticker) {
-
+    return 0.0;
   }
 
 }
