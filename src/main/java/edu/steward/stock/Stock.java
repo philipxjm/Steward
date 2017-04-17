@@ -19,11 +19,11 @@ public class Stock {
 
 //  TODO: Add getters for fundamentals using the StockAPI
 
-  List<Price> getStockPrices(String ticker, int startTime, int endTime) {
+  List<Price> getStockPrices(int startTime, int endTime) {
     return stockAPI.getStockPrices(ticker, startTime, endTime);
   }
 
-  List<Fundamental> getStockFundamentals(String ticker, int startTime, int endTime) {
+  List<Fundamental> getStockFundamentals(int startTime, int endTime) {
     return stockAPI.getStockFundamentals(ticker, startTime, endTime);
   }
 
