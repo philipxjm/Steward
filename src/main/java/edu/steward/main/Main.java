@@ -1,6 +1,10 @@
 package edu.steward.main;
 
 
+import com.google.common.collect.ImmutableList;
+import edu.steward.analytics.SentimentAnalysis;
+import edu.steward.analytics.TwitterSentiments;
+import edu.steward.mock.GetStockDataMock;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -20,7 +24,8 @@ public class Main {
   private static final int DEFAULT_PORT = 4567;
 
   public static void main(String[] args) {
-    System.out.println("Hello World");
+//    System.out.println(TwitterSentiments.sentiments(ImmutableList.<String>of
+//            ("Trump", "Syria")));
     new Main(args).run();
   }
 
@@ -66,6 +71,7 @@ public class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // Todo: Set up Spark handlers
+    Spark.post("/getStockData", new GetStockDataMock());
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

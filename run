@@ -31,7 +31,7 @@ CP=$(cat .mvn-classpath)
 # recommended package structure.
 
 # Find Main.java. It should be in a package below your username package.
-MAIN=$(ls src/main/java/mock/Main.java)
+MAIN=$(ls src/main/java/edu/steward/main/Main.java)
 [ -z "$MAIN" ] && echo "You need a Main.java" && exit 1
 [ ! -e "$MAIN" ] && echo "You can only have one Main.java" && exit 1
 STUDENT=$(basename $(dirname $(dirname $MAIN)))
@@ -45,4 +45,4 @@ if [ "$OSTYPE" = 'cygwin' -o "$OSTYPE" = 'msys' ]; then
 fi
 
 # The symbol "$@" passes the command-line arguments from
-java -ea -cp "$TARGET$PATHSEP$CP" mock.Main "$@"
+java -ea -cp "$TARGET$PATHSEP$CP" edu.steward.main.Main "$@"

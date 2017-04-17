@@ -1,15 +1,15 @@
 const ctx = $("#graph");
 
-var myData = [];
-let c = 0;
-const n = 100;
-let start = {x: c, y: 50};
-for (var i = 0; i < n; i++) {
-	c += 1
-	let newPoint = {x: c, y: start.y + Math.random()*10 - 5};
-	myData.push(start);
-	start = newPoint;
-}
+let params = {
+    "ticker" : 'AAPL',
+    "start" : 0,
+    "end" : 100
+};
+
+$.post('/getStockData', params, (res) => {
+    console.log("HERE");
+    console.log(JSON.parse(res));
+});
 
 var predict = [];
 start = myData[myData.length - 1];
