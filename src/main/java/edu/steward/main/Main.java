@@ -1,9 +1,7 @@
 package edu.steward.main;
 
 
-import com.google.common.collect.ImmutableList;
-import edu.steward.analytics.SentimentAnalysis;
-import edu.steward.analytics.TwitterSentiments;
+
 import edu.steward.mock.GetStockDataMock;
 import edu.steward.mock.StockMock;
 import freemarker.template.Configuration;

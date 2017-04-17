@@ -7,7 +7,6 @@ import java.util.List;
  */
 public class Stock {
 
-
   private static StockAPI stockAPI;
 
   private String ticker;
@@ -20,4 +19,37 @@ public class Stock {
 
 //  TODO: Add getters for fundamentals using the StockAPI
 
+  List<Price> getStockPrices(String ticker, int startTime, int endTime) {
+    return stockAPI.getStockPrices(ticker, startTime, endTime);
+  }
+
+  List<Fundamental> getStockFundamentals(String ticker, int startTime, int endTime) {
+    return stockAPI.getStockFundamentals(ticker, startTime, endTime);
+  }
+
+  public static void setStockAPI(StockAPI stockAPI) {
+    Stock.stockAPI = stockAPI;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+
+    if (o == this) {
+      return true;
+    }
+
+    if (!(o instanceof Stock)) {
+      return false;
+    }
+
+    Stock s = (Stock) o;
+
+    return ticker.equals(s.ticker);
+  }
+
+  @Override
+  public int hashCode() {
+    return ticker.hashCode();
+  }
 }
+

@@ -1,4 +1,4 @@
-package edu.steward.analytics;
+package edu.steward.Sentiment;
 
 import java.util.Collections;
 import java.util.List;

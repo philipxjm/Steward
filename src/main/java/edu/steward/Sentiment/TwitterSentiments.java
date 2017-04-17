@@ -1,5 +1,7 @@
-package edu.steward.analytics;
+package edu.steward.Sentiment;
 
+import edu.steward.Sentiment.SentimentAnalysis;
+import edu.steward.Sentiment.TwitterSearch;
 import twitter4j.Status;
 
 import java.util.ArrayList;
