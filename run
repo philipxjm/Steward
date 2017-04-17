@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# To run our code, we must have it in our classpath.
+# We use $(ls target/*.jar) instead of target/stars-1.0.jar so that
+# this script can be reused in other projects more easily.
+
+TARGET=$(ls target/*.jar 2>/dev/null)
+if [ -z "$TARGET" ]; then
+    echo "No jar file in target/, try 'mvn package'".
+    exit 1
+fi
+
+# In the pom.xml, we've already explained other what libraries we
+# depend on. Maven downloaded them, and put them "somewhere" (our
+# repository). Now we ask maven to build up the CLASSPATH that let us
+# run against those libraries.
+
+# First, we put the CLASSPATH in .classpath if the pom.xml is newer
+# than out existing .classpath file. (We avoid this command if
+# .classpath is fresh, since it's rather slow.)
+if [ ! .mvn-classpath -nt pom.xml ]; then
+  mvn dependency:build-classpath -Dmdep.outputFile=.mvn-classpath -q
+fi
+
+# Now, we set $CP to the contents of the .classpath file.
+CP=$(cat .mvn-classpath)
+
+# We're trying to make the script more reusable by finding the package
+# name, instead of hard coding.  But this relies on some conventions
+# in naming.  You'll have to call your class "Main" and use our
+# recommended package structure.
+
+# Find Main.java. It should be in a package below your username package.
+MAIN=$(ls src/main/java/edu/steward/main/Main.java)
+[ -z "$MAIN" ] && echo "You need a Main.java" && exit 1
+[ ! -e "$MAIN" ] && echo "You can only have one Main.java" && exit 1
+STUDENT=$(basename $(dirname $(dirname $MAIN)))
+MAINPKG=$(basename $(dirname $MAIN))
+
+# No guarantees yet, but we're trying to support Windows, which uses a
+# different Path Separator in classpaths.
+PATHSEP=":"
+if [ "$OSTYPE" = 'cygwin' -o "$OSTYPE" = 'msys' ]; then
+    PATHSEP=";"
+fi
+
+# The symbol "$@" passes the command-line arguments from
+java -ea -cp "$TARGET$PATHSEP$CP" edu.steward.main.Main "$@"
