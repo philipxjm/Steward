@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import edu.steward.analytics.SentimentAnalysis;
 import edu.steward.analytics.TwitterSentiments;
 import edu.steward.mock.GetStockDataMock;
+import edu.steward.mock.StockMock;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -72,6 +73,7 @@ public class Main {
 
     // Todo: Set up Spark handlers
     Spark.post("/getStockData", new GetStockDataMock());
+    Spark.get("/stock/:ticker", new StockMock(), freeMarker);
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {
