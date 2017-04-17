@@ -1,5 +1,6 @@
 package edu.steward.main;
 
+
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -14,9 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-/**
- * Hello world!
- */
+
 public class Main
 {
     private static final int DEFAULT_PORT = 4567;
@@ -84,5 +83,4 @@ public class Main
             res.body(stacktrace.toString());
         }
     }
-
 }
