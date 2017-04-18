@@ -1,4 +1,4 @@
-package edu.steward.stock.StockAPI;
+package edu.steward.stock.api;
 
 /**
  * Created by mrobins on 4/18/17.

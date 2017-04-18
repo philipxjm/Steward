@@ -1,8 +1,8 @@
 package edu.steward.stock;
 
-import edu.steward.stock.StockAPI.StockAPI;
-
 import java.util.List;
+
+import edu.steward.stock.api.StockAPI;
 
 /**
  * Created by Philip on 4/16/17.

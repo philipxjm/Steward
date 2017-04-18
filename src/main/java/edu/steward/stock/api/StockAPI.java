@@ -1,4 +1,4 @@
-package edu.steward.stock.StockAPI;
+package edu.steward.stock.api;
 
 import edu.steward.stock.Fundamental;
 import edu.steward.stock.Price;

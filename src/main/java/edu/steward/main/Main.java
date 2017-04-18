@@ -2,10 +2,10 @@ package edu.steward.main;
 
 
 
-import edu.steward.mock.GetStockDataMock;
+import edu.steward.mock.GetGraphDataMock;
 import edu.steward.mock.StockMock;
-import edu.steward.stock.StockAPI.AlphaVantageAPI;
-import edu.steward.stock.StockAPI.AlphaVantageConstants;
+import edu.steward.stock.api.AlphaVantageAPI;
+import edu.steward.stock.api.AlphaVantageConstants;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -82,7 +82,7 @@ public class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // Todo: Set up Spark handlers
-    Spark.post("/getStockData", new GetStockDataMock());
+    Spark.post("/getStockData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
   }
 

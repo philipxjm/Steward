@@ -1,8 +1,8 @@
-package edu.steward.stock.StockAPI;
+package edu.steward.stock.api;
 
 import edu.steward.stock.Fundamental;
 import edu.steward.stock.Price;
-import edu.steward.stock.StockAPI.StockAPI;
+import edu.steward.stock.api.StockAPI;
 
 import java.util.ArrayList;
 import java.util.List;
