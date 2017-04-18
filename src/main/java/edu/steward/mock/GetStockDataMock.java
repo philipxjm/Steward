@@ -6,9 +6,9 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 
-import edu.steward.stock.MockStockAPI;
+import edu.steward.stock.StockAPI.MockStockAPI;
 import edu.steward.stock.Price;
-import edu.steward.stock.StockAPI;
+import edu.steward.stock.StockAPI.StockAPI;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -39,7 +39,7 @@ public class GetStockDataMock implements Route {
 
       List<List<Double>> ret = new ArrayList<>();
       for (Price price : priceList) {
-        ret.add(ImmutableList.<Double>of(
+        ret.add(ImmutableList.of(
                 (double) price.getTime(),
                 price.getValue()));
       }

@@ -1,5 +1,7 @@
 package edu.steward.stock;
 
+import edu.steward.stock.StockAPI.StockAPI;
+
 import java.util.List;
 
 /**

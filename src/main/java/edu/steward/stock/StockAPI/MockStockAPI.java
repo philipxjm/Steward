@@ -1,6 +1,8 @@
-package edu.steward.stock;
+package edu.steward.stock.StockAPI;
 
-import com.google.common.collect.ImmutableList;
+import edu.steward.stock.Fundamental;
+import edu.steward.stock.Price;
+import edu.steward.stock.StockAPI.StockAPI;
 
 import java.util.ArrayList;
 import java.util.List;
