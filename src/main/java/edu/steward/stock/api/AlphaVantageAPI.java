@@ -14,6 +14,9 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Created by mrobins on 4/17/17.
@@ -52,13 +55,13 @@ public class AlphaVantageAPI implements StockAPI {
           rawData = getFromAlphaVantage(
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
                   sym,
-                  AlphaVantageConstants.INTERVAL.FIVE_MIN,
+                  AlphaVantageConstants.INTERVAL.FIFTEEN_MIN,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
                   parseAlphaVantage(
                           rawData,
-                          AlphaVantageConstants.INTERVAL.FIVE_MIN);
+                          AlphaVantageConstants.INTERVAL.FIFTEEN_MIN);
           break;
         case ONE_MONTH:
           rawData = getFromAlphaVantage(
@@ -76,6 +79,7 @@ public class AlphaVantageAPI implements StockAPI {
           rawData = getFromAlphaVantage(
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
                   sym,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
@@ -87,6 +91,7 @@ public class AlphaVantageAPI implements StockAPI {
           rawData = getFromAlphaVantage(
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
                   sym,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
@@ -98,6 +103,7 @@ public class AlphaVantageAPI implements StockAPI {
           rawData = getFromAlphaVantage(
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
                   sym,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
@@ -136,16 +142,6 @@ public class AlphaVantageAPI implements StockAPI {
     }
   }
 
-  @Override
-  public List<Fundamental> getStockFundamentals(String ticker, TIMESERIES timeseries) {
-    return null;
-  }
-
-  @Override
-  public List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries) {
-    return null;
-  }
-
   public String getFromAlphaVantage(Enum... args) {
     String url = constructURL(args);
     System.out.println("url is: " + url);
@@ -167,7 +163,7 @@ public class AlphaVantageAPI implements StockAPI {
       case "FIFTEEN_MIN":
         time = "Time Series (15min)";
         break;
-      case "THRITY_MIN":
+      case "THIRTY_MIN":
         time = "Time Series (30min)";
         break;
       case "SIXTY_MIN":
@@ -297,22 +293,25 @@ public class AlphaVantageAPI implements StockAPI {
   }
 
   private static long getTime(String timeStamp) {
-    DateFormat dateFormat1 = new SimpleDateFormat("yyyy-mm-dd");
-    DateFormat dateFormat2 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-    Date date = new Date();
+    DateTimeFormatter formatter1 =
+            DateTimeFormat.forPattern("yyyy-MM-dd");
+    DateTimeFormatter formatter2 =
+            DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    DateTime dateTime = new DateTime();
     try {
-      date = dateFormat1.parse(timeStamp);
-    } catch (ParseException e) {
-//      Ignore and try the other format
-    }
-    if (date == new Date()) {
+      dateTime = formatter1.parseDateTime(timeStamp);
+    } catch (IllegalArgumentException e1) {
+//      try other format
       try {
-        date = dateFormat2.parse(timeStamp);
-      } catch (ParseException e) {
-        System.out.println("ERROR: Time stamp not formatted properly.");
+        dateTime = formatter2.parseDateTime(timeStamp);
+      } catch (IllegalArgumentException e2) {
+        e2.printStackTrace();
       }
     }
-    long unixTime = date.getTime() / 1000;
+    if (dateTime == new DateTime()) {
+
+    }
+    long unixTime = dateTime.getMillis() / 1000;
     return unixTime;
   }
 }

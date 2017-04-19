@@ -41,11 +41,14 @@ public class Main {
     // Parse command line arguments
 
     AlphaVantageAPI api = new AlphaVantageAPI();
-    List<Price> prices = api.getStockPrices("MSFT", StockAPI.TIMESERIES.ONE_DAY);
+    List<Price> prices = api.getStockPrices("MSFT", StockAPI.TIMESERIES.ONE_YEAR);
+    int counter = 0;
     for (Price p:
          prices) {
+      counter++;
       System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
     }
+    System.out.println(counter);
 
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
