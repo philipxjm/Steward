@@ -1,21 +1,36 @@
 package edu.steward.main;
 
 
-
 import edu.steward.mock.GetGraphDataMock;
 import edu.steward.mock.StockMock;
 import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.AlphaVantageConstants;
+import com.google.common.collect.ImmutableList;
+import edu.steward.analytics.SentimentAnalysis;
+import edu.steward.analytics.TwitterSentiments;
+import edu.steward.login.LoginConfigFactory;
+import edu.steward.mock.GetStockDataMock;
+import edu.steward.user.UserSession;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import org.pac4j.core.config.Config;
+import org.pac4j.sparkjava.CallbackRoute;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-
 import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import org.pac4j.sparkjava.SecurityFilter;
+
+import static spark.Spark.before;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 
 public class Main {
@@ -78,12 +93,19 @@ public class Main {
     Spark.port(port);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
-
+    final Config config = new LoginConfigFactory().build();
     FreeMarkerEngine freeMarker = createEngine();
+    final CallbackRoute callback = new CallbackRoute(config, null, true);
 
     // Todo: Set up Spark handlers
     Spark.post("/getStockData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
+    Spark.post("/getStockData", new GetStockDataMock());
+    get("/callback", callback);
+    post("/callback", callback);
+    before("/google", new SecurityFilter(config,
+        "GoogleClient"));
+    get("/google", (req,res) -> {return UserSession.destPage(req,res);});
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {
