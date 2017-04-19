@@ -1,8 +1,7 @@
 package edu.steward.stock.api;
 
-import edu.steward.stock.Fundamental;
-import edu.steward.stock.Price;
-import edu.steward.stock.api.StockAPI;
+import edu.steward.stock.Fundamentals.Fundamental;
+import edu.steward.stock.Fundamentals.Price;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,29 +14,19 @@ public class MockStockAPI implements StockAPI {
 
   //TODO: Make a mock stock api
 
-  @Override
-  public List<Price> getStockPrices(String ticker, int startTime, int endTime) {
-    List<Price> ret = new ArrayList<>();
-    double pVal = 50;
-    double inter = (endTime - startTime) / 100.0;
-
-    for (int i = startTime; i <= endTime; i += inter) {
-      double newPVal = pVal + Math.random() * 10 - 5;
-      Price price = new Price(newPVal, i);
-      ret.add(price);
-      pVal = newPVal;
-    }
-    return ret;
-  }
 
   @Override
-  public List<Fundamental> getStockFundamentals(String ticker, int startTime, int endTime) {
+  public List<Price> getStockPrices(String ticker, TIMESERIES timeSeries) {
     return null;
   }
 
   @Override
-  public List<Fundamental> getGraphData(String ticker, int startTime, int endTime) {
+  public List<Fundamental> getStockFundamentals(String ticker, TIMESERIES timeseries) {
     return null;
   }
 
+  @Override
+  public List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries) {
+    return null;
+  }
 }

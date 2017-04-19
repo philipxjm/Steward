@@ -1,23 +1,32 @@
-package edu.steward.stock;
+package edu.steward.stock.Fundamentals;
 
 /**
  * Created by mrobins on 4/17/17.
  */
 public class Price implements Fundamental<Price> {
 
-  private Double price;
-  private int time;
+  private enum TYPE {
+    OPEN,
+    CLOSE,
+    HIGH,
+    LOW
+  }
 
-  public Price(Double price, int time) {
+  private Double price;
+  private Long time;
+
+  public Price(Double price, Long time) {
     this.price = price;
     this.time = time;
   }
 
   public Double getValue() {
-    return null;
+    return price;
   }
 
-  public int getTime() {
+  public Long getTime() {
     return time;
   }
+
+
 }

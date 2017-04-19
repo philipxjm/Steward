@@ -1,16 +1,15 @@
 package edu.steward.stock.api;
 
 import edu.steward.main.JSONRetriever;
-import edu.steward.stock.Fundamental;
-import edu.steward.stock.Price;
-import edu.steward.stock.api.StockAPI;
+import edu.steward.stock.Fundamentals.Fundamental;
+import edu.steward.stock.Fundamentals.Price;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -23,42 +22,214 @@ public class AlphaVantageAPI implements StockAPI {
 	private static final Gson GSON = new Gson();
 	
   @Override
-  public List<Price> getStockPrices(String ticker, int startTime, int endTime) {
+  public List<Price> getStockPrices(String ticker, TIMESERIES timeSeries) {
+
+    Enum sym = null;
+    for (Enum symbol : AlphaVantageConstants.SYMBOL.values()) {
+      if (ticker.equals(symbol.name())) {
+        sym = symbol;
+        break;
+      }
+    }
+
+    if (sym != null) {
+      Map<String,Map<String,Double>> timeSeriesData = new HashMap<>();
+      String rawData;
+      switch (timeSeries) {
+        case ONE_DAY:
+          rawData = getFromAlphaVantage(
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
+                  sym,
+                  AlphaVantageConstants.INTERVAL.ONE_MIN,
+                  AlphaVantageConstants.APIKEY.APIKEY
+                  );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.INTERVAL.ONE_MIN);
+          break;
+        case FIVE_DAY:
+          rawData = getFromAlphaVantage(
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
+                  sym,
+                  AlphaVantageConstants.INTERVAL.FIVE_MIN,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.INTERVAL.FIVE_MIN);
+          break;
+        case ONE_MONTH:
+          rawData = getFromAlphaVantage(
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
+                  sym,
+                  AlphaVantageConstants.OUTPUT_SIZE.COMPACT,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY);
+          break;
+        case SIX_MONTH:
+          rawData = getFromAlphaVantage(
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
+                  sym,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY);
+          break;
+        case ONE_YEAR:
+          rawData = getFromAlphaVantage(
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
+                  sym,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY);
+          break;
+        case TWO_YEAR:
+          rawData = getFromAlphaVantage(
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
+                  sym,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY);
+          break;
+        case FIVE_YEAR:
+          rawData = getFromAlphaVantage(
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+                  sym,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+          break;
+        case TEN_YEAR:
+          rawData = getFromAlphaVantage(
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_MONTHLY,
+                  sym,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_MONTHLY);
+          break;
+      }
+      List<Price> prices = parseTimeSeriesMap(timeSeriesData);
+      return prices;
+    } else {
+      System.out.println("something went wrong in get stock prices.");
+      return null;
+    }
+  }
+
+  @Override
+  public List<Fundamental> getStockFundamentals(String ticker, TIMESERIES timeseries) {
     return null;
   }
 
   @Override
-  public List<Fundamental> getStockFundamentals(String ticker, int startTime, int endTime) {
-    return null;
-  }
-
-  @Override
-  public List<Fundamental> getGraphData(String ticker, int startTime, int endTime) {
+  public List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries) {
     return null;
   }
 
   public String getFromAlphaVantage(Enum... args) {
-    for (Enum e : args) {
-    }
     String url = constructURL(args);
     System.out.println("url is: " + url);
     return JSONRetriever.getJSON(url, 5000);
   }
-  
-  public Map<String, Map<String,Double>> parseAlphaVantage(String json) {
+
+  public Map<String, Map<String,Double>> parseAlphaVantage(
+          String json,
+          Enum timeSeries
+  ) {
+    String time;
+    switch (timeSeries.name()) {
+      case "ONE_MIN":
+        time = "Time Series (1min)";
+        break;
+      case "FIVE_MIN":
+        time = "Time Series (5min)";
+        break;
+      case "FIFTEEN_MIN":
+        time = "Time Series (15min)";
+        break;
+      case "THRITY_MIN":
+        time = "Time Series (30min)";
+        break;
+      case "SIXTY_MIN":
+        time = "Time Series (60min)";
+        break;
+      case "TIME_SERIES_DAILY":
+          time = "Time Series (Daily)";
+          break;
+      case "TIME_SERIES_WEEKLY":
+          time = "Weekly Time Series";
+          break;
+      case "TIME_SERIES_MONTHLY":
+          time = "Monthly Time Series";
+          break;
+      default:
+        time = "";
+    }
+
 	  JsonObject received = GSON.fromJson(json, JsonObject.class);
 	  JsonObject meta = received.get("Meta Data").getAsJsonObject();
 	  
 	  // Meta
-	  String info = meta.get("1. Information").getAsString();
-	  String sym = meta.get("2. Symbol").getAsString();
-	  String last = meta.get("3. Last Refreshed").getAsString();
-	  String inter = meta.get("4. Interval").getAsString();
-	  String output = meta.get("5. Output Size").getAsString();
-	  String timezone = meta.get("6. Time Zone").getAsString();
-	  
+    String info;
+    String sym;
+    String last;
+    String inter;
+    String output;
+    String timezone;
+
+    try {
+      info = meta.get("1. Information").getAsString();
+    } catch (NullPointerException e) {
+//      ignore
+    }
+    try {
+      sym = meta.get("2. Symbol").getAsString();
+    } catch (NullPointerException e) {
+//      ignore
+    }
+    try {
+      last = meta.get("3. Last Refreshed").getAsString();
+    } catch (NullPointerException e) {
+//      ignore
+    }
+    try {
+      inter = meta.get("4. Interval").getAsString();
+    } catch (NullPointerException e) {
+//      ignore
+    }
+    try {
+      output = meta.get("5. Output Size").getAsString();
+    } catch (NullPointerException e) {
+//      ignore
+    }
+    try {
+      timezone = meta.get("6. Time Zone").getAsString();
+    } catch (NullPointerException e) {
+//      ignore
+    }
+
 	  // Timeseries
-	  JsonObject timeseries = received.get("Time Series (15min)").getAsJsonObject();
+	  JsonObject timeseries = received.get(time).getAsJsonObject();
 	  Map<String, Map<String,Double>> ret = new HashMap<>();
 	  for(Map.Entry<String, JsonElement> e : timeseries.entrySet()) {
 		  Map<String, Double> toAdd = new HashMap<>();
@@ -113,4 +284,35 @@ public class AlphaVantageAPI implements StockAPI {
     return type[1];
   }
 
+  private static List<Price> parseTimeSeriesMap(
+          Map<String, Map<String,Double>> timeSeriesData) {
+    List<Price> ret = new ArrayList<>();
+    for (String timeStamp : timeSeriesData.keySet()) {
+      Long time = getTime(timeStamp);
+      double priceVal = timeSeriesData.get(timeStamp).get("close");
+      Price p = new Price(priceVal, time);
+      ret.add(p);
+    }
+    return ret;
+  }
+
+  private static long getTime(String timeStamp) {
+    DateFormat dateFormat1 = new SimpleDateFormat("yyyy-mm-dd");
+    DateFormat dateFormat2 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+    Date date = new Date();
+    try {
+      date = dateFormat1.parse(timeStamp);
+    } catch (ParseException e) {
+//      Ignore and try the other format
+    }
+    if (date == new Date()) {
+      try {
+        date = dateFormat2.parse(timeStamp);
+      } catch (ParseException e) {
+        System.out.println("ERROR: Time stamp not formatted properly.");
+      }
+    }
+    long unixTime = date.getTime() / 1000;
+    return unixTime;
+  }
 }

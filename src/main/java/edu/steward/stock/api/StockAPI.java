@@ -1,7 +1,7 @@
 package edu.steward.stock.api;
 
-import edu.steward.stock.Fundamental;
-import edu.steward.stock.Price;
+import edu.steward.stock.Fundamentals.Fundamental;
+import edu.steward.stock.Fundamentals.Price;
 
 import java.util.List;
 
@@ -10,17 +10,27 @@ import java.util.List;
  */
 public interface StockAPI {
 
+  enum TIMESERIES {
+      ONE_DAY,
+      FIVE_DAY,
+      ONE_MONTH,
+      SIX_MONTH,
+      ONE_YEAR,
+      TWO_YEAR,
+      FIVE_YEAR,
+      TEN_YEAR
+  }
+
   /**
    * Returns the data for a given stock.
    * @param ticker The unique ticker symbol for a stock.
-   * @param startTime The unix start time from when to begin collecting data.
-   * @param endTime The unix end time from when to finish collecting data.
+   * @param timeSeries The time series for data collection.
    * @return A list of prices for the stock within the time frame.
    */
-  List<Price> getStockPrices(String ticker, int startTime, int endTime);
+  List<Price> getStockPrices(String ticker, TIMESERIES timeSeries);
 
-  List<Fundamental> getStockFundamentals(String ticker, int startTime, int endTime);
+  List<Fundamental> getStockFundamentals(String ticker, TIMESERIES timeseries);
 
-  List<Fundamental> getGraphData(String ticker, int startTime, int endTime);
+  List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries);
 
 }

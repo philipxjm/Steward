@@ -28,7 +28,9 @@ public final class AlphaVantageConstants {
 
 //  TODO: ADD a list of all valid stock ticker symbols
   public enum SYMBOL {
-    MSFT
+    MSFT,
+    CMG,
+    NCLH
   }
 
   public enum INTERVAL {
