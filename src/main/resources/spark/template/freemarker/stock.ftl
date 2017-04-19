@@ -5,7 +5,7 @@
       <title>Stocks</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
       <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-      <link rel="stylesheet" type="text/css" href="css/graph.css">
+      <link rel="stylesheet" type="text/css" href="/css/graph.css">
   </head>
   <body>
     <!-- Nav -->
@@ -21,38 +21,19 @@
             <a class="nav-link" href="/about.html">About <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item inactive">
-            <a class="nav-link" href="#">Demo <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="#">Stocks <span class="sr-only">(current)</span></a>
           </li>
         </ul>
-        <button class="btn btn-secondary" type="button">John Smith</button>
+        <button class="btn btn-secondary" type="button">${user}</button>
       </div>
     </nav>
 
     <div class="expand container-fluid">
       <div class="expand row">
-        <!-- Sidebar -->
-        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-faded sidebar">
-          <span>
-            <h3>Stocks <button id="add">+</button></h3>
-          </span>
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="#"><p>Stock A</p> <p>$4.71 (+1.45)</p></a>
-              <span class="sr-only">(current)</span>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><p>Stock B</p> <p>$50.43 (-0.54)</p></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><p>Stock C</p> <p>$50.43 (+0.01)</p></a>
-            </li>
-          </ul>
-        </nav>
-
         <!-- Main -->
-        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+        <main class="content col-md-8 offset-md-2">
           <div class="row row-first">
-            <h2>Stock A</h2>
+            <h2>${ticker}</h2>
           </div>
           <div class="row row-second">
             <div id="graph-wrapper">
@@ -61,40 +42,39 @@
           </div>
           <div class="row row-third justify-content-start">
             <div class="col col-sm-2">
-            <h3>$923.43</h3>
+              <h3>$923.43</h3>
             </div>
             <div class="col col-sm">
               <table>
-              <tr>
-              <td>Range</td> <td>140.23 - 141.50</td>
-              <td>52 week</td> <td>89.47 - 141.50</td>
-              </tr>
+                <tr>
+                  <td>Range</td> <td>140.23 - 141.50</td>
+                  <td>52 week</td> <td>89.47 - 141.50</td>
+                </tr>
 
-              <tr>
-              <td>Open</td> <td>140.40</td>
-              <td>Vol / Avg.</td> <td>20.71M/24.49M</td>
-              </tr>
+                <tr>
+                  <td>Open</td> <td>140.40</td>
+                  <td>Vol / Avg.</td> <td>20.71M/24.49M</td>
+                </tr>
 
-              <tr>
-              <td>Mkt cap</td> <td>738.48B</td>
-              <td>P/E</td> <td>16.94</td>
-              </tr>
+                <tr>
+                  <td>Mkt cap</td> <td>738.48B</td>
+                  <td>P/E</td> <td>16.94</td>
+                </tr>
 
-              <tr>
-              <td>Div/yield</td> <td>0.57/1.61</td>
-              <td>EPS</td> <td>8.35</td>
-              </tr>
+                <tr>
+                  <td>Div/yield</td> <td>0.57/1.61</td>
+                  <td>EPS</td> <td>8.35</td>
+                </tr>
 
-              <tr>
-              <td>Shares</td> <td>5.25B</td>
-              <td>Beta</td> <td>1.25</td>
-              </tr>
-              <tr>
-              <td>Inst. own</td> <td>61%</td>
-              </tr>
+                <tr>
+                  <td>Shares</td> <td>5.25B</td>
+                  <td>Beta</td> <td>1.25</td>
+                </tr>
+                <tr>
+                  <td>Inst. own</td> <td>61%</td>
+                </tr>
               </table>
             </div>
-          </div>
           </div>
         </main>
       </div>
@@ -103,6 +83,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
-    <script src="js/graph.js"></script>
+    <script src="/js/graph.js"></script>
   </body>
 </html>    

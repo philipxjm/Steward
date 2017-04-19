@@ -1,10 +1,11 @@
 package edu.steward.main;
 
 
-import com.google.common.collect.ImmutableList;
-import edu.steward.analytics.SentimentAnalysis;
-import edu.steward.analytics.TwitterSentiments;
-import edu.steward.mock.GetStockDataMock;
+
+import edu.steward.mock.GetGraphDataMock;
+import edu.steward.mock.StockMock;
+import edu.steward.stock.api.AlphaVantageAPI;
+import edu.steward.stock.api.AlphaVantageConstants;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -14,10 +15,7 @@ import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 
 
 public class Main {
@@ -37,6 +35,19 @@ public class Main {
 
   private void run() {
     // Parse command line arguments
+
+    AlphaVantageAPI api = new AlphaVantageAPI();
+
+    String k =
+    api.getFromAlphaVantage(
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
+            AlphaVantageConstants.SYMBOL.MSFT,
+//            AlphaVantageConstants.INTERVAL.FIFTEEN_MIN,
+            AlphaVantageConstants.OUTPUT_SIZE.COMPACT,
+            AlphaVantageConstants.APIKEY.APIKEY);
+
+    System.out.println(k);
+
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
@@ -71,7 +82,8 @@ public class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // Todo: Set up Spark handlers
-    Spark.post("/getStockData", new GetStockDataMock());
+    Spark.post("/getStockData", new GetGraphDataMock());
+    Spark.get("/stock/:ticker", new StockMock(), freeMarker);
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

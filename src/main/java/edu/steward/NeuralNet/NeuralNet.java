@@ -1,4 +1,4 @@
-package edu.steward.analytics;
+package edu.steward.NeuralNet;
 
 import edu.steward.stock.Fundamental;
 import edu.steward.stock.Stock;

@@ -11,7 +11,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class GetStockDataMock implements Route {
+public class GetGraphDataMock implements Route {
 	private static final Gson GSON = new Gson();
     @Override
     public Object handle(Request req, Response res) {
@@ -20,7 +20,7 @@ public class GetStockDataMock implements Route {
 
       int start = Integer.parseInt(qm.value("start"));
       int end = Integer.parseInt(qm.value("end"));
-
+      
       List<List<Double>> ret = new ArrayList<>();
       double p = 50;
       double inter = (end - start) / 100.0;

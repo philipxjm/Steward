@@ -1,4 +1,4 @@
-package edu.steward.analytics;
+package edu.steward.Sentiment;
 
 /**
  * Created by mrobins on 4/16/17.
