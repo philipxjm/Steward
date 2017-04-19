@@ -6,7 +6,6 @@ import edu.steward.mock.GetGraphDataMock;
 import edu.steward.mock.StockMock;
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.AlphaVantageAPI;
-import edu.steward.stock.api.AlphaVantageConstants;
 import edu.steward.stock.api.StockAPI;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -19,7 +18,6 @@ import spark.template.freemarker.FreeMarkerEngine;
 
 import java.io.*;
 import java.util.List;
-import java.util.Map;
 
 
 public class Main {
