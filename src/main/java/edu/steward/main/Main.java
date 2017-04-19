@@ -4,8 +4,10 @@ package edu.steward.main;
 
 import edu.steward.mock.GetGraphDataMock;
 import edu.steward.mock.StockMock;
+import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.AlphaVantageConstants;
+import edu.steward.stock.api.StockAPI;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -16,6 +18,8 @@ import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
 import java.io.*;
+import java.util.List;
+import java.util.Map;
 
 
 public class Main {
@@ -37,16 +41,11 @@ public class Main {
     // Parse command line arguments
 
     AlphaVantageAPI api = new AlphaVantageAPI();
-
-    String k =
-    api.getFromAlphaVantage(
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
-            AlphaVantageConstants.SYMBOL.MSFT,
-//            AlphaVantageConstants.INTERVAL.FIFTEEN_MIN,
-            AlphaVantageConstants.OUTPUT_SIZE.COMPACT,
-            AlphaVantageConstants.APIKEY.APIKEY);
-
-    System.out.println(k);
+    List<Price> prices = api.getStockPrices("MSFT", StockAPI.TIMESERIES.ONE_DAY);
+    for (Price p:
+         prices) {
+      System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
+    }
 
     OptionParser parser = new OptionParser();
     parser.accepts("gui");

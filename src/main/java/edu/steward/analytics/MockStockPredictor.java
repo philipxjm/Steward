@@ -1,6 +1,6 @@
 package edu.steward.analytics;
 
-import edu.steward.stock.Price;
+import edu.steward.stock.Fundamentals.Price;
 
 import java.util.List;
 

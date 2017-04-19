@@ -12,6 +12,7 @@ import spark.Response;
 import spark.Route;
 
 public class GetGraphDataMock implements Route {
+
 	private static final Gson GSON = new Gson();
     @Override
     public Object handle(Request req, Response res) {
