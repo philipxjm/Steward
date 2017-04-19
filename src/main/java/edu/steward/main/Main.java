@@ -6,10 +6,7 @@ import edu.steward.mock.StockMock;
 import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.AlphaVantageConstants;
 import com.google.common.collect.ImmutableList;
-import edu.steward.analytics.SentimentAnalysis;
-import edu.steward.analytics.TwitterSentiments;
 import edu.steward.login.LoginConfigFactory;
-import edu.steward.mock.GetStockDataMock;
 import edu.steward.user.UserSession;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -95,17 +92,17 @@ public class Main {
     Spark.exception(Exception.class, new ExceptionPrinter());
     final Config config = new LoginConfigFactory().build();
     FreeMarkerEngine freeMarker = createEngine();
-    final CallbackRoute callback = new CallbackRoute(config, null, true);
+    final CallbackRoute callback = new CallbackRoute(config, "/", true);
 
     // Todo: Set up Spark handlers
     Spark.post("/getStockData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
-    Spark.post("/getStockData", new GetStockDataMock());
-    get("/callback", callback);
-    post("/callback", callback);
-    before("/google", new SecurityFilter(config,
-        "GoogleClient"));
-    get("/google", (req,res) -> {return UserSession.destPage(req,res);});
+//    Spark.post("/getStockData", new GetStockDataMock());
+    Spark.get("/callback", callback);
+    Spark.post("/callback", callback);
+    Spark.before("/google", new SecurityFilter(config,
+        "Google2Client"));
+    Spark.get("/google", UserSession::destPage, freeMarker);
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

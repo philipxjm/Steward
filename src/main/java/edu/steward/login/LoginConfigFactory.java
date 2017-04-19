@@ -5,6 +5,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.config.ConfigFactory;
 import org.pac4j.oauth.client.Google2Client;
 import spark.TemplateEngine;
+import org.pac4j.sparkjava.DefaultHttpActionAdapter;
 
 /**
  * Created by kjin on 4/18/17.
@@ -19,10 +20,11 @@ public class LoginConfigFactory implements ConfigFactory {
         "993833341053-f3ks9cqj041b1uvj8an5omd7rdmu16j7.apps"
             + ".googleusercontent.com", "d6dsR9McYEZgoRjTSbjv_VTJ");
 
-    final Clients clients = new Clients("http://localhost:8080/callback",
+    final Clients clients = new Clients("http://localhost:4567/callback",
         googleClient);
 
     final Config config = new Config(clients);
+    config.setHttpActionAdapter(new DefaultHttpActionAdapter());
     return config;
   }
 }
