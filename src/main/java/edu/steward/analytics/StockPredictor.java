@@ -10,8 +10,6 @@ import java.util.List;
 public interface StockPredictor {
 
   Price getFiveDayPrediction(String ticker);
-// TODO: ONE DAY PREDICTION
-//  Price getOneDayPrediction(String ticker);
 
   List<Price> getPredictions(String ticker);
 }

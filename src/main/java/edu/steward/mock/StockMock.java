@@ -2,9 +2,7 @@ package edu.steward.mock;
 
 
 import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
