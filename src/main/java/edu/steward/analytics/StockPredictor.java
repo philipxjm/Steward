@@ -11,7 +11,5 @@ public interface StockPredictor {
 
   Price getFiveDayPrediction(String ticker);
 
-  Price getOneDayPrediction(String ticker);
-
   List<Price> getPredictions(String ticker);
 }

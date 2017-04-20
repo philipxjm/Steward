@@ -7,7 +7,7 @@ public final class Sentiment {
 
   /**
    * Private constructor for Sentiment utility class.
-   * TODO: Merge with class SentimentAnalysis
+   * TODO: Merge with class SentimentAnalyzer
    */
   private Sentiment() {
   }

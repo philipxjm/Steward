@@ -13,8 +13,12 @@ import java.util.Properties;
 /**
  * Created by Philip on 4/16/17.
  */
-public final class SentimentAnalysis {
-  public static int findSentiment(String line) {
+public class SentimentAnalyzer {
+  public SentimentAnalyzer() {
+
+  }
+
+  public int findSentiment(String line) {
 
     Properties props = new Properties();
     props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");

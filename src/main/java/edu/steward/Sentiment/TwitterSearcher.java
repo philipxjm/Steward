@@ -14,33 +14,33 @@ import twitter4j.conf.ConfigurationBuilder;
 /**
  * Created by Philip on 4/16/17.
  */
-public final class TwitterSearch {
-  private static String consumerKey = "9xI8528t1ZZZA2hXXnUHQUcuo";
-  private static String consumerSecret = "XcG9waggg0cwP0julXf6GMDoHOuH8y1lfR5Sfu4H7QBCslzdIR";
-  private static String accessToken = "2155608048-PQ6Y8lpWNFl1fee17cjP4gBjt6QiDOiqVqtyCYX";
-  private static String accessTokenSecret = "865O8TfVFOGjl7lQTMuubru690ETdwJ5y7ftE0gAkUkkI";
+public class TwitterSearcher {
+  private String consumerKey = "9xI8528t1ZZZA2hXXnUHQUcuo";
+  private String consumerSecret = "XcG9waggg0cwP0julXf6GMDoHOuH8y1lfR5Sfu4H7QBCslzdIR";
+  private String accessToken = "2155608048-PQ6Y8lpWNFl1fee17cjP4gBjt6QiDOiqVqtyCYX";
+  private String accessTokenSecret = "865O8TfVFOGjl7lQTMuubru690ETdwJ5y7ftE0gAkUkkI";
 
-  private TwitterSearch() {
+  public TwitterSearcher() {
     // not called.
   }
 
-  public static void setConsumerKey(String consumerKey) {
-    TwitterSearch.consumerKey = consumerKey;
+  public void setConsumerKey(String consumerKey) {
+    this.consumerKey = consumerKey;
   }
 
-  public static void setConsumerSecret(String consumerSecret) {
-    TwitterSearch.consumerSecret = consumerSecret;
+  public void setConsumerSecret(String consumerSecret) {
+    this.consumerSecret = consumerSecret;
   }
 
-  public static void setAccessToken(String accessToken) {
-    TwitterSearch.accessToken = accessToken;
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
   }
 
-  public static void setAccessTokenSecret(String accessTokenSecret) {
-    TwitterSearch.accessTokenSecret = accessTokenSecret;
+  public void setAccessTokenSecret(String accessTokenSecret) {
+    this.accessTokenSecret = accessTokenSecret;
   }
 
-  public static List<Status> search(String keyword) {
+  public List<Status> search(String keyword) {
     ConfigurationBuilder cb = new ConfigurationBuilder();
     cb.setDebugEnabled(true).setOAuthConsumerKey(consumerKey)
             .setOAuthConsumerSecret(consumerSecret)
