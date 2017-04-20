@@ -17,7 +17,8 @@ public final class JSONRetriever {
 
   /**
    * Gets JSON from a website.
-   * @param url The url of the website.
+   *
+   * @param url     The url of the website.
    * @param timeout A timeoutVal value for establishing the connection and
    *                retrieving the JSON.
    * @return A String value of the JSON from the website is returned.

@@ -18,20 +18,21 @@ import spark.Route;
 
 public class GetGraphDataMock implements Route {
 
-	private static final Gson GSON = new Gson();
-    @Override
-    public Object handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String ticker = qm.value("ticker");
-      TIMESERIES timeseries = TIMESERIES.valueOf(qm.value("timeseries"));
-      StockAPI api = new AlphaVantageAPI();
-      List<Price> prices = api.getStockPrices(ticker, timeseries);
-      
-      List<List<Object>> ret = new ArrayList<>();
-      for (Price p : prices) {
-    	  ret.add(ImmutableList.of((Object) p.getTime(), (Object) p.getValue()));
-      }
+  private static final Gson GSON = new Gson();
 
-      return GSON.toJson(ret);
+  @Override
+  public Object handle(Request req, Response res) {
+    QueryParamsMap qm = req.queryMap();
+    String ticker = qm.value("ticker");
+    TIMESERIES timeseries = TIMESERIES.valueOf(qm.value("timeseries"));
+    StockAPI api = new AlphaVantageAPI();
+    List<Price> prices = api.getStockPrices(ticker, timeseries);
+
+    List<List<Object>> ret = new ArrayList<>();
+    for (Price p : prices) {
+      ret.add(ImmutableList.of((Object) p.getTime(), (Object) p.getValue()));
     }
+
+    return GSON.toJson(ret);
+  }
 }

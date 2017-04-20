@@ -22,8 +22,8 @@ import org.joda.time.format.DateTimeFormatter;
  * Created by mrobins on 4/17/17.
  */
 public class AlphaVantageAPI implements StockAPI {
-	private static final Gson GSON = new Gson();
-	
+  private static final Gson GSON = new Gson();
+
   @Override
   public List<Price> getStockPrices(String ticker, TIMESERIES timeSeries) {
 
@@ -36,7 +36,7 @@ public class AlphaVantageAPI implements StockAPI {
     }
 
     if (sym != null) {
-      Map<String,Map<String,Double>> timeSeriesData = new HashMap<>();
+      Map<String, Map<String, Double>> timeSeriesData = new HashMap<>();
       String rawData;
       switch (timeSeries) {
         case ONE_DAY:
@@ -45,7 +45,7 @@ public class AlphaVantageAPI implements StockAPI {
                   sym,
                   AlphaVantageConstants.INTERVAL.ONE_MIN,
                   AlphaVantageConstants.APIKEY.APIKEY
-                  );
+          );
           timeSeriesData =
                   parseAlphaVantage(
                           rawData,
@@ -148,7 +148,7 @@ public class AlphaVantageAPI implements StockAPI {
     return JSONRetriever.getJSON(url, 5000);
   }
 
-  public Map<String, Map<String,Double>> parseAlphaVantage(
+  public Map<String, Map<String, Double>> parseAlphaVantage(
           String json,
           Enum timeSeries
   ) {
@@ -170,22 +170,22 @@ public class AlphaVantageAPI implements StockAPI {
         time = "Time Series (60min)";
         break;
       case "TIME_SERIES_DAILY":
-          time = "Time Series (Daily)";
-          break;
+        time = "Time Series (Daily)";
+        break;
       case "TIME_SERIES_WEEKLY":
-          time = "Weekly Time Series";
-          break;
+        time = "Weekly Time Series";
+        break;
       case "TIME_SERIES_MONTHLY":
-          time = "Monthly Time Series";
-          break;
+        time = "Monthly Time Series";
+        break;
       default:
         time = "";
     }
 
-	  JsonObject received = GSON.fromJson(json, JsonObject.class);
-	  JsonObject meta = received.get("Meta Data").getAsJsonObject();
-	  
-	  // Meta
+    JsonObject received = GSON.fromJson(json, JsonObject.class);
+    JsonObject meta = received.get("Meta Data").getAsJsonObject();
+
+    // Meta
     String info;
     String sym;
     String last;
@@ -224,51 +224,51 @@ public class AlphaVantageAPI implements StockAPI {
 //      ignore
     }
 
-	  // Timeseries
-	  JsonObject timeseries = received.get(time).getAsJsonObject();
-	  Map<String, Map<String,Double>> ret = new HashMap<>();
-	  for(Map.Entry<String, JsonElement> e : timeseries.entrySet()) {
-		  Map<String, Double> toAdd = new HashMap<>();
-		  JsonObject obj = (JsonObject) e.getValue();
-		  toAdd.put("open", obj.get("1. open").getAsDouble());
-		  toAdd.put("high", obj.get("2. high").getAsDouble());
-		  toAdd.put("low", obj.get("3. low").getAsDouble());
-		  toAdd.put("close", obj.get("4. close").getAsDouble());
-		  toAdd.put("volume", obj.get("5. volume").getAsDouble());
-		  ret.put(e.getKey(), toAdd);
-	  }
-	  return ret;
+    // Timeseries
+    JsonObject timeseries = received.get(time).getAsJsonObject();
+    Map<String, Map<String, Double>> ret = new HashMap<>();
+    for (Map.Entry<String, JsonElement> e : timeseries.entrySet()) {
+      Map<String, Double> toAdd = new HashMap<>();
+      JsonObject obj = (JsonObject) e.getValue();
+      toAdd.put("open", obj.get("1. open").getAsDouble());
+      toAdd.put("high", obj.get("2. high").getAsDouble());
+      toAdd.put("low", obj.get("3. low").getAsDouble());
+      toAdd.put("close", obj.get("4. close").getAsDouble());
+      toAdd.put("volume", obj.get("5. volume").getAsDouble());
+      ret.put(e.getKey(), toAdd);
+    }
+    return ret;
   }
 
   private String constructURL(Enum... args) {
     String url = "";
     try {
       url = "http://www.alphavantage.co/query?function=";
-              for (Enum e : args) {
-                switch (getType(e)) {
-                  case ("FUNCTION"):
-                    url +=
-                            URLEncoder.encode(
-                                    e.toString(),
-                                    "UTF-8");
-                    break;
-                  case ("SYMBOL"):
-                    url += "&symbol=";
-                    url += URLEncoder.encode(e.toString(),"UTF-8");
-                    break;
-                  case ("INTERVAL"):
-                    url += "&interval=";
-                    url += URLEncoder.encode(e.toString(),"UTF-8");
-                    break;
-                  case ("OUTPUT_SIZE"):
-                    url += "&outputsize=";
-                    url += URLEncoder.encode(e.toString(),"UTF-8");
-                    break;
-                  case ("APIKEY"):
-                    url += "&apikey=";
-                    url += URLEncoder.encode(e.toString(),"UTF-8");
-                }
-              }
+      for (Enum e : args) {
+        switch (getType(e)) {
+          case ("FUNCTION"):
+            url +=
+                    URLEncoder.encode(
+                            e.toString(),
+                            "UTF-8");
+            break;
+          case ("SYMBOL"):
+            url += "&symbol=";
+            url += URLEncoder.encode(e.toString(), "UTF-8");
+            break;
+          case ("INTERVAL"):
+            url += "&interval=";
+            url += URLEncoder.encode(e.toString(), "UTF-8");
+            break;
+          case ("OUTPUT_SIZE"):
+            url += "&outputsize=";
+            url += URLEncoder.encode(e.toString(), "UTF-8");
+            break;
+          case ("APIKEY"):
+            url += "&apikey=";
+            url += URLEncoder.encode(e.toString(), "UTF-8");
+        }
+      }
     } catch (UnsupportedEncodingException e) {
       System.out.println("Error with API Call URL");
     }
@@ -281,7 +281,7 @@ public class AlphaVantageAPI implements StockAPI {
   }
 
   private static List<Price> parseTimeSeriesMap(
-          Map<String, Map<String,Double>> timeSeriesData) {
+          Map<String, Map<String, Double>> timeSeriesData) {
     List<Price> ret = new ArrayList<>();
     for (String timeStamp : timeSeriesData.keySet()) {
       Long time = getTime(timeStamp);
