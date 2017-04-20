@@ -39,7 +39,7 @@ public class Main {
     // Parse command line arguments
 
     AlphaVantageAPI api = new AlphaVantageAPI();
-    List<Price> prices = api.getStockPrices("MSFT", StockAPI.TIMESERIES.ONE_YEAR);
+    List<Price> prices = api.getStockPrices("AAPL", StockAPI.TIMESERIES.ONE_YEAR);
     int counter = 0;
     for (Price p:
          prices) {

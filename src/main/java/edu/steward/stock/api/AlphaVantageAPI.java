@@ -289,6 +289,12 @@ public class AlphaVantageAPI implements StockAPI {
       Price p = new Price(priceVal, time);
       ret.add(p);
     }
+    Collections.sort(ret, new Comparator<Price>() {
+      @Override
+      public int compare(Price o1, Price o2) {
+        return o1.getTime().compareTo(o2.getTime());
+      }
+    });
     return ret;
   }
 
