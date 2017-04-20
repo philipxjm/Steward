@@ -1,11 +1,16 @@
 package edu.steward.mock;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 
+import edu.steward.stock.Fundamentals.Price;
+import edu.steward.stock.api.AlphaVantageAPI;
+import edu.steward.stock.api.StockAPI;
+import edu.steward.stock.api.StockAPI.TIMESERIES;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -18,19 +23,15 @@ public class GetGraphDataMock implements Route {
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       String ticker = qm.value("ticker");
-
-      int start = Integer.parseInt(qm.value("start"));
-      int end = Integer.parseInt(qm.value("end"));
+      TIMESERIES timeseries = TIMESERIES.valueOf(qm.value("timeseries"));
+      StockAPI api = new AlphaVantageAPI();
+      List<Price> prices = api.getStockPrices(ticker, timeseries);
       
-      List<List<Double>> ret = new ArrayList<>();
-      double p = 50;
-      double inter = (end - start) / 100.0;
-
-      for (double i = start; i <= end; i += inter) {
-        double newP = p + Math.random() * 10 - 5;
-        ret.add(ImmutableList.of(i, newP));
-        p = newP;
+      List<List<Object>> ret = new ArrayList<>();
+      for (Price p : prices) {
+    	  ret.add(ImmutableList.of((Object) p.getTime(), (Object) p.getValue()));
       }
+
       return GSON.toJson(ret);
     }
 }

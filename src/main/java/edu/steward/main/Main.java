@@ -82,7 +82,7 @@ public class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // Todo: Set up Spark handlers
-    Spark.post("/getStockData", new GetGraphDataMock());
+    Spark.post("/getGraphData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
   }
 
