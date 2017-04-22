@@ -26,7 +26,7 @@ function makeGraph() {
                         min: min,
                         max: max,
                         callback: function(value) { 
-                            return new Date(value).toDateString();
+                            return new Date(value*1000).toDateString();
                         }
                     }
                 }]
