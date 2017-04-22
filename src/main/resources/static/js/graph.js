@@ -24,7 +24,10 @@ function makeGraph() {
                     position: 'bottom',
                     ticks: {                        
                         min: min,
-                        max: max
+                        max: max,
+                        callback: function(value) { 
+                            return new Date(value).toDateString();
+                        }
                     }
                 }]
             }
