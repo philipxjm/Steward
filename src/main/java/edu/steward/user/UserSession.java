@@ -1,5 +1,6 @@
 package edu.steward.user;
 
+import com.google.common.collect.ImmutableMap;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.sparkjava.SparkWebContext;
@@ -20,9 +21,10 @@ public class UserSession {
 
   public static ModelAndView destPage(final Request request, final Response
       response) {
-    final Map map = new HashMap();
-    map.put("profiles", getProfiles(request, response));
-    return new ModelAndView(map, "index.html");
+
+    Map<String, String> variables = ImmutableMap.of("ticker", "placeholder",
+        "user", "John Smith");
+    return new ModelAndView(variables, "stock.ftl");
   }
 
   private static List<CommonProfile> getProfiles(final Request request, final Response response) {

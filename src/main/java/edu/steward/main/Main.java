@@ -67,7 +67,7 @@ public class Main {
     }
   }
 
-  private static FreeMarkerEngine createEngine() {
+  public static FreeMarkerEngine createEngine() {
     Configuration config = new Configuration();
     File templates =
             new File("src/main/resources/spark/template/freemarker");
@@ -87,7 +87,7 @@ public class Main {
     Spark.exception(Exception.class, new ExceptionPrinter());
     final Config config = new LoginConfigFactory().build();
     FreeMarkerEngine freeMarker = createEngine();
-    final CallbackRoute callback = new CallbackRoute(config, "/", true);
+    final CallbackRoute callback = new CallbackRoute(config, null, true);
 
     // Todo: Set up Spark handlers
     Spark.post("/getStockData", new GetGraphDataMock());
@@ -96,7 +96,7 @@ public class Main {
     Spark.get("/callback", callback);
     Spark.post("/callback", callback);
     Spark.before("/google", new SecurityFilter(config,
-        "Google2Client"));
+        "OidcClient"));
     Spark.get("/google", UserSession::destPage, freeMarker);
   }
 
