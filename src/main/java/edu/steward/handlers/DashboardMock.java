@@ -1,4 +1,4 @@
-package edu.steward.mock;
+package edu.steward.handlers;
 
 
 import java.util.Map;
@@ -9,12 +9,12 @@ import spark.Request;
 import spark.Response;
 import spark.TemplateViewRoute;
 
-public class StockMock implements TemplateViewRoute {
+public class DashboardMock implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {
     String ticker = req.params(":ticker");
 
     Map<String, String> variables = ImmutableMap.of("ticker", ticker, "user", "John Smith");
-    return new ModelAndView(variables, "stock.ftl");
+    return new ModelAndView(variables, "dashboard.ftl");
   }
 }

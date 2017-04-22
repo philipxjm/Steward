@@ -2,8 +2,11 @@ package edu.steward.main;
 
 
 
-import edu.steward.mock.GetGraphDataMock;
-import edu.steward.mock.StockMock;
+import edu.steward.handlers.AboutHandler;
+import edu.steward.handlers.DashboardMock;
+import edu.steward.handlers.GetGraphDataMock;
+import edu.steward.handlers.IndexHandler;
+import edu.steward.handlers.StockMock;
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.StockAPI;
@@ -81,9 +84,12 @@ public class Main {
 
     FreeMarkerEngine freeMarker = createEngine();
 
-    // Todo: Set up Spark handlers
+    // Spark routes
+    Spark.get("/", new IndexHandler(), freeMarker);
+    Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
+    Spark.post("/dashboard", new DashboardMock(), freeMarker);
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {
