@@ -1,9 +1,10 @@
 const ctx = $("#graph");
-
-function makeGraph() {
+let scatterChart;
+function makeGraph() {    
     const data = {
         type: 'line',
         data: {
+            //labels: labels,
             datasets: [{
                 label: 'Stock Prices',
                 data: pastData,
@@ -26,15 +27,16 @@ function makeGraph() {
                         min: min,
                         max: max,
                         callback: function(value) { 
-                            return new Date(value*1000).toDateString();
+                            console.log()
+                            return labels[value].toDateString();
                         }
                     }
                 }]
-            }
+            },
         }
     }
 
-    const scatterChart = new Chart(ctx, data);
+    scatterChart = new Chart(ctx, data);
 }
 
 let n = 100;
@@ -43,7 +45,7 @@ const ticker = $('h2')[0].innerText;
 
 let params = {
     "ticker" : ticker,
-    "timeseries" : "ONE_DAY"
+    "timeseries" : "FIVE_DAY"
 };
 
 let pastData = null;
@@ -51,11 +53,21 @@ let predict = null;
 let min = null;
 let max = null;
 
+let labels = [];
 $.post('/getGraphData', params, (res) => {
     let resData = JSON.parse(res);
     pastData = [];
+    let last = resData[0];
+    let c = 0;
+
     for(let p of resData) {
-        pastData.push({x: p[0], y: p[1]});
+        if(p[0] - last > 1000) {
+            pastData.push({x: NaN, y: NaN})
+        }
+        last = p[0];
+        labels.push(new Date(p[0]*1000));
+        pastData.push({x: c, y: p[1]});
+        c += 1;
     }
 
     min = pastData[0].x;
