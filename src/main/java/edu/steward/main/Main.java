@@ -1,6 +1,14 @@
 package edu.steward.main;
 
 
+import edu.steward.mock.GetGraphDataMock;
+import edu.steward.mock.StockMock;
+import edu.steward.stock.Fundamentals.Price;
+import edu.steward.stock.api.AlphaVantageAPI;
+import edu.steward.stock.api.AlphaVantageConstants;
+import com.google.common.collect.ImmutableList;
+import edu.steward.login.LoginConfigFactory;
+import edu.steward.user.UserSession;
 
 import edu.steward.handlers.AboutHandler;
 import edu.steward.handlers.DashboardMock;
@@ -13,13 +21,19 @@ import edu.steward.stock.api.StockAPI;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import org.pac4j.core.config.Config;
+import org.pac4j.sparkjava.CallbackRoute;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-
 import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import org.pac4j.sparkjava.SecurityFilter;
 import java.util.List;
 
 
@@ -63,7 +77,7 @@ public class Main {
     }
   }
 
-  private static FreeMarkerEngine createEngine() {
+  public static FreeMarkerEngine createEngine() {
     Configuration config = new Configuration();
     File templates =
             new File("src/main/resources/spark/template/freemarker");
@@ -81,14 +95,21 @@ public class Main {
     Spark.port(port);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
-
+    final Config config = new LoginConfigFactory().build();
     FreeMarkerEngine freeMarker = createEngine();
+    final CallbackRoute callback = new CallbackRoute(config, null, true);
 
     // Spark routes
     Spark.get("/", new IndexHandler(), freeMarker);
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
+//    Spark.post("/getStockData", new GetStockDataMock());
+    Spark.get("/callback", callback);
+    Spark.post("/callback", callback);
+    Spark.before("/google", new SecurityFilter(config,
+        "OidcClient"));
+    Spark.get("/google", UserSession::destPage, freeMarker);
     Spark.post("/dashboard", new DashboardMock(), freeMarker);
   }
 
