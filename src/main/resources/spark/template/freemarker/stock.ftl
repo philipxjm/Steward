@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 
 <html>
@@ -37,6 +38,11 @@
       </div>
     </nav>
 
+=======
+<#assign chart=true>
+<#assign js="/js/graph.js">
+<#assign content>
+>>>>>>> 3bceff25df27ca7fae1e3b08ba8b545ece0331fc
     <div class="expand container-fluid">
       <div class="expand row">
         <!-- Main -->
@@ -96,4 +102,6 @@
     <script src="/js/graph.js"></script>
     <script src="/js/login.js"></script>
   </body>
-</html>    
+</html>
+</#assign>
+<#include "main.ftl">

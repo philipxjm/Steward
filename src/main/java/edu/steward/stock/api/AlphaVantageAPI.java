@@ -14,13 +14,16 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Created by mrobins on 4/17/17.
  */
 public class AlphaVantageAPI implements StockAPI {
-	private static final Gson GSON = new Gson();
-	
+  private static final Gson GSON = new Gson();
+
   @Override
   public List<Price> getStockPrices(String ticker, TIMESERIES timeSeries) {
 
@@ -33,7 +36,7 @@ public class AlphaVantageAPI implements StockAPI {
     }
 
     if (sym != null) {
-      Map<String,Map<String,Double>> timeSeriesData = new HashMap<>();
+      Map<String, Map<String, Double>> timeSeriesData = new HashMap<>();
       String rawData;
       switch (timeSeries) {
         case ONE_DAY:
@@ -42,7 +45,7 @@ public class AlphaVantageAPI implements StockAPI {
                   sym,
                   AlphaVantageConstants.INTERVAL.ONE_MIN,
                   AlphaVantageConstants.APIKEY.APIKEY
-                  );
+          );
           timeSeriesData =
                   parseAlphaVantage(
                           rawData,
@@ -52,13 +55,13 @@ public class AlphaVantageAPI implements StockAPI {
           rawData = getFromAlphaVantage(
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
                   sym,
-                  AlphaVantageConstants.INTERVAL.FIVE_MIN,
+                  AlphaVantageConstants.INTERVAL.FIFTEEN_MIN,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
                   parseAlphaVantage(
                           rawData,
-                          AlphaVantageConstants.INTERVAL.FIVE_MIN);
+                          AlphaVantageConstants.INTERVAL.FIFTEEN_MIN);
           break;
         case ONE_MONTH:
           rawData = getFromAlphaVantage(
@@ -76,6 +79,7 @@ public class AlphaVantageAPI implements StockAPI {
           rawData = getFromAlphaVantage(
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
                   sym,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
@@ -87,6 +91,7 @@ public class AlphaVantageAPI implements StockAPI {
           rawData = getFromAlphaVantage(
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
                   sym,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
@@ -98,6 +103,7 @@ public class AlphaVantageAPI implements StockAPI {
           rawData = getFromAlphaVantage(
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
                   sym,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
@@ -136,23 +142,13 @@ public class AlphaVantageAPI implements StockAPI {
     }
   }
 
-  @Override
-  public List<Fundamental> getStockFundamentals(String ticker, TIMESERIES timeseries) {
-    return null;
-  }
-
-  @Override
-  public List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries) {
-    return null;
-  }
-
   public String getFromAlphaVantage(Enum... args) {
     String url = constructURL(args);
     System.out.println("url is: " + url);
     return JSONRetriever.getJSON(url, 5000);
   }
 
-  public Map<String, Map<String,Double>> parseAlphaVantage(
+  public Map<String, Map<String, Double>> parseAlphaVantage(
           String json,
           Enum timeSeries
   ) {
@@ -167,29 +163,29 @@ public class AlphaVantageAPI implements StockAPI {
       case "FIFTEEN_MIN":
         time = "Time Series (15min)";
         break;
-      case "THRITY_MIN":
+      case "THIRTY_MIN":
         time = "Time Series (30min)";
         break;
       case "SIXTY_MIN":
         time = "Time Series (60min)";
         break;
       case "TIME_SERIES_DAILY":
-          time = "Time Series (Daily)";
-          break;
+        time = "Time Series (Daily)";
+        break;
       case "TIME_SERIES_WEEKLY":
-          time = "Weekly Time Series";
-          break;
+        time = "Weekly Time Series";
+        break;
       case "TIME_SERIES_MONTHLY":
-          time = "Monthly Time Series";
-          break;
+        time = "Monthly Time Series";
+        break;
       default:
         time = "";
     }
 
-	  JsonObject received = GSON.fromJson(json, JsonObject.class);
-	  JsonObject meta = received.get("Meta Data").getAsJsonObject();
-	  
-	  // Meta
+    JsonObject received = GSON.fromJson(json, JsonObject.class);
+    JsonObject meta = received.get("Meta Data").getAsJsonObject();
+
+    // Meta
     String info;
     String sym;
     String last;
@@ -228,51 +224,51 @@ public class AlphaVantageAPI implements StockAPI {
 //      ignore
     }
 
-	  // Timeseries
-	  JsonObject timeseries = received.get(time).getAsJsonObject();
-	  Map<String, Map<String,Double>> ret = new HashMap<>();
-	  for(Map.Entry<String, JsonElement> e : timeseries.entrySet()) {
-		  Map<String, Double> toAdd = new HashMap<>();
-		  JsonObject obj = (JsonObject) e.getValue();
-		  toAdd.put("open", obj.get("1. open").getAsDouble());
-		  toAdd.put("high", obj.get("2. high").getAsDouble());
-		  toAdd.put("low", obj.get("3. low").getAsDouble());
-		  toAdd.put("close", obj.get("4. close").getAsDouble());
-		  toAdd.put("volume", obj.get("5. volume").getAsDouble());
-		  ret.put(e.getKey(), toAdd);
-	  }
-	  return ret;
+    // Timeseries
+    JsonObject timeseries = received.get(time).getAsJsonObject();
+    Map<String, Map<String, Double>> ret = new HashMap<>();
+    for (Map.Entry<String, JsonElement> e : timeseries.entrySet()) {
+      Map<String, Double> toAdd = new HashMap<>();
+      JsonObject obj = (JsonObject) e.getValue();
+      toAdd.put("open", obj.get("1. open").getAsDouble());
+      toAdd.put("high", obj.get("2. high").getAsDouble());
+      toAdd.put("low", obj.get("3. low").getAsDouble());
+      toAdd.put("close", obj.get("4. close").getAsDouble());
+      toAdd.put("volume", obj.get("5. volume").getAsDouble());
+      ret.put(e.getKey(), toAdd);
+    }
+    return ret;
   }
 
   private String constructURL(Enum... args) {
     String url = "";
     try {
       url = "http://www.alphavantage.co/query?function=";
-              for (Enum e : args) {
-                switch (getType(e)) {
-                  case ("FUNCTION"):
-                    url +=
-                            URLEncoder.encode(
-                                    e.toString(),
-                                    "UTF-8");
-                    break;
-                  case ("SYMBOL"):
-                    url += "&symbol=";
-                    url += URLEncoder.encode(e.toString(),"UTF-8");
-                    break;
-                  case ("INTERVAL"):
-                    url += "&interval=";
-                    url += URLEncoder.encode(e.toString(),"UTF-8");
-                    break;
-                  case ("OUTPUT_SIZE"):
-                    url += "&outputsize=";
-                    url += URLEncoder.encode(e.toString(),"UTF-8");
-                    break;
-                  case ("APIKEY"):
-                    url += "&apikey=";
-                    url += URLEncoder.encode(e.toString(),"UTF-8");
-                }
-              }
+      for (Enum e : args) {
+        switch (getType(e)) {
+          case ("FUNCTION"):
+            url +=
+                    URLEncoder.encode(
+                            e.toString(),
+                            "UTF-8");
+            break;
+          case ("SYMBOL"):
+            url += "&symbol=";
+            url += URLEncoder.encode(e.toString(), "UTF-8");
+            break;
+          case ("INTERVAL"):
+            url += "&interval=";
+            url += URLEncoder.encode(e.toString(), "UTF-8");
+            break;
+          case ("OUTPUT_SIZE"):
+            url += "&outputsize=";
+            url += URLEncoder.encode(e.toString(), "UTF-8");
+            break;
+          case ("APIKEY"):
+            url += "&apikey=";
+            url += URLEncoder.encode(e.toString(), "UTF-8");
+        }
+      }
     } catch (UnsupportedEncodingException e) {
       System.out.println("Error with API Call URL");
     }
@@ -285,7 +281,7 @@ public class AlphaVantageAPI implements StockAPI {
   }
 
   private static List<Price> parseTimeSeriesMap(
-          Map<String, Map<String,Double>> timeSeriesData) {
+          Map<String, Map<String, Double>> timeSeriesData) {
     List<Price> ret = new ArrayList<>();
     for (String timeStamp : timeSeriesData.keySet()) {
       Long time = getTime(timeStamp);
@@ -293,26 +289,35 @@ public class AlphaVantageAPI implements StockAPI {
       Price p = new Price(priceVal, time);
       ret.add(p);
     }
+    Collections.sort(ret, new Comparator<Price>() {
+      @Override
+      public int compare(Price o1, Price o2) {
+        return o1.getTime().compareTo(o2.getTime());
+      }
+    });
     return ret;
   }
 
   private static long getTime(String timeStamp) {
-    DateFormat dateFormat1 = new SimpleDateFormat("yyyy-mm-dd");
-    DateFormat dateFormat2 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-    Date date = new Date();
+    DateTimeFormatter formatter1 =
+            DateTimeFormat.forPattern("yyyy-MM-dd");
+    DateTimeFormatter formatter2 =
+            DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    DateTime dateTime = new DateTime();
     try {
-      date = dateFormat1.parse(timeStamp);
-    } catch (ParseException e) {
-//      Ignore and try the other format
-    }
-    if (date == new Date()) {
+      dateTime = formatter1.parseDateTime(timeStamp);
+    } catch (IllegalArgumentException e1) {
+//      try other format
       try {
-        date = dateFormat2.parse(timeStamp);
-      } catch (ParseException e) {
-        System.out.println("ERROR: Time stamp not formatted properly.");
+        dateTime = formatter2.parseDateTime(timeStamp);
+      } catch (IllegalArgumentException e2) {
+        e2.printStackTrace();
       }
     }
-    long unixTime = date.getTime() / 1000;
+    if (dateTime == new DateTime()) {
+
+    }
+    long unixTime = dateTime.getMillis() / 1000;
     return unixTime;
   }
 }

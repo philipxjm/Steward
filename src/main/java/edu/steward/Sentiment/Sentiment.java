@@ -7,13 +7,14 @@ public final class Sentiment {
 
   /**
    * Private constructor for Sentiment utility class.
-   * TODO: Merge with class SentimentAnalysis
+   * TODO: Merge with class SentimentAnalyzer
    */
   private Sentiment() {
   }
 
   /**
    * Gets the sentimental value of a word for a given time frame
+   *
    * @param data A string value which will have its sentiment value analyzed.
    * @param days The integer value specifying how many days to go back from
    *             the current date to generate sentimental analysis.

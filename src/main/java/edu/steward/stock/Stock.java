@@ -2,6 +2,7 @@ package edu.steward.stock;
 
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.StockAPI;
@@ -22,14 +23,13 @@ public class Stock {
   }
 
 //  TODO: Add getters for fundamentals using the StockAPI
-
-//  List<Price> getStockPrices(int startTime, int endTime) {
-//    return stockAPI.getStockPrices(ticker, startTime, endTime);
-//  }
-
-  List<Fundamental> getStockFundamentals(StockAPI.TIMESERIES timeseries) {
-    return stockAPI.getStockFundamentals(ticker, timeseries);
+  public List<Price> getStockPrices(StockAPI.TIMESERIES timeseries) {
+    return stockAPI.getStockPrices(ticker, timeseries);
   }
+
+//  List<Fundamental> getStockFundamentals(StockAPI.TIMESERIES timeseries) {
+//    return stockAPI.getStockFundamentals(ticker, timeseries);
+//  }
 
   public static void setStockAPI(StockAPI stockAPI) {
     Stock.stockAPI = stockAPI;

@@ -1,41 +1,18 @@
 const ctx = $("#graph");
 
-let n = 100;
-let c = 50;
-let params = {
-    "ticker" : 'AAPL',
-    "start" : 0,
-    "end" : n
-};
-
-$.post('/getStockData', params, (res) => {
-    let resData = JSON.parse(res);
-    let myData = [];
-    for(let p of resData) {
-        myData.push({x: p[0], y: p[1]});
-    }
-    
-    var predict = [];
-    start = myData[myData.length - 1];
-    for (var i = 0; i < n / 10; i++) {
-        let newPoint = {x: c, y: start.y + 1};
-        predict.push(start);
-        start = newPoint;
-        c += 1
-    }
-
+function makeGraph() {
     const data = {
         type: 'line',
         data: {
             datasets: [{
                 label: 'Stock Prices',
-                data: myData,
+                data: pastData,
                 borderColor: 'red'
-            }, {
+            }/*, {
                 label: 'Predict',
                 data: predict,
                 borderColor: 'grey'
-            }]
+            }*/]
         },
         options: {
             legend: false,
@@ -45,9 +22,12 @@ $.post('/getStockData', params, (res) => {
                 xAxes: [{
                     type: 'linear',
                     position: 'bottom',
-                    ticks: {
-                        min: 0,
-                        max: c
+                    ticks: {                        
+                        min: min,
+                        max: max,
+                        callback: function(value) { 
+                            return new Date(value*1000).toDateString();
+                        }
                     }
                 }]
             }
@@ -55,4 +35,31 @@ $.post('/getStockData', params, (res) => {
     }
 
     const scatterChart = new Chart(ctx, data);
+}
+
+let n = 100;
+let c = 50;
+const ticker = $('h2')[0].innerText;
+
+let params = {
+    "ticker" : ticker,
+    "timeseries" : "ONE_DAY"
+};
+
+let pastData = null;
+let predict = null;
+let min = null;
+let max = null;
+
+$.post('/getGraphData', params, (res) => {
+    let resData = JSON.parse(res);
+    pastData = [];
+    for(let p of resData) {
+        pastData.push({x: p[0], y: p[1]});
+    }
+
+    min = pastData[0].x;
+    max = pastData[pastData.length-1].x;
+
+    makeGraph();
 });

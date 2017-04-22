@@ -9,6 +9,14 @@ import edu.steward.stock.api.AlphaVantageConstants;
 import com.google.common.collect.ImmutableList;
 import edu.steward.login.LoginConfigFactory;
 import edu.steward.user.UserSession;
+
+import edu.steward.handlers.AboutHandler;
+import edu.steward.handlers.DashboardMock;
+import edu.steward.handlers.GetGraphDataMock;
+import edu.steward.handlers.IndexHandler;
+import edu.steward.handlers.StockMock;
+import edu.steward.stock.Fundamentals.Price;
+import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.StockAPI;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -27,7 +35,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import org.pac4j.sparkjava.SecurityFilter;
 import java.util.List;
-import java.util.Map;
 
 
 public class Main {
@@ -49,11 +56,14 @@ public class Main {
     // Parse command line arguments
 
     AlphaVantageAPI api = new AlphaVantageAPI();
-    List<Price> prices = api.getStockPrices("MSFT", StockAPI.TIMESERIES.ONE_DAY);
+    List<Price> prices = api.getStockPrices("AAPL", StockAPI.TIMESERIES.ONE_YEAR);
+    int counter = 0;
     for (Price p:
          prices) {
+      counter++;
       System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
     }
+    System.out.println(counter);
 
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
@@ -89,8 +99,10 @@ public class Main {
     FreeMarkerEngine freeMarker = createEngine();
     final CallbackRoute callback = new CallbackRoute(config, null, true);
 
-    // Todo: Set up Spark handlers
-    Spark.post("/getStockData", new GetGraphDataMock());
+    // Spark routes
+    Spark.get("/", new IndexHandler(), freeMarker);
+    Spark.get("/about", new AboutHandler(), freeMarker);
+    Spark.post("/getGraphData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
 //    Spark.post("/getStockData", new GetStockDataMock());
     Spark.get("/callback", callback);
@@ -98,6 +110,7 @@ public class Main {
     Spark.before("/google", new SecurityFilter(config,
         "OidcClient"));
     Spark.get("/google", UserSession::destPage, freeMarker);
+    Spark.post("/dashboard", new DashboardMock(), freeMarker);
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

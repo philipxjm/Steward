@@ -20,13 +20,13 @@ public class MockStockAPI implements StockAPI {
     return null;
   }
 
-  @Override
-  public List<Fundamental> getStockFundamentals(String ticker, TIMESERIES timeseries) {
-    return null;
-  }
-
-  @Override
-  public List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries) {
-    return null;
-  }
+//  @Override
+//  public List<Fundamental> getStockFundamentals(String ticker, TIMESERIES timeseries) {
+//    return null;
+//  }
+//
+//  @Override
+//  public List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries) {
+//    return null;
+//  }
 }
