@@ -1,5 +1,5 @@
 <#assign chart=true>
-<#assign js="/js/dash.js">
+<#assign js="/js/dashboard.js">
 <#assign content>
 <p>Dashboard</p>
 </#assign>

@@ -93,6 +93,7 @@ public class Main {
 
     // Spark routes
     Spark.get("/", new IndexHandler(), freeMarker);
+    Spark.post("/newPortfolio", new addPortfolioHandler());
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
