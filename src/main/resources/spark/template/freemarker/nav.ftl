@@ -1,5 +1,5 @@
 <!-- Nav -->
-<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
   <a class="navbar-brand" href="/">Steward</a>
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
@@ -21,7 +21,7 @@
             </div>
             <span id="login" style="display:none" class="nav-link g-signin2" data-onsuccess="onSignIn"></span>
             <#else>
-              <span id="login" class="nav-link g-signin2" data-onsuccess="onSignIn"></span>
+              <div id="login" style="padding:0;" class="nav-link g-signin2" data-onsuccess="onSignIn"></div>
             </#if>
         </li>
     </ul>
