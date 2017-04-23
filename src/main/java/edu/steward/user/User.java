@@ -8,14 +8,12 @@ import java.util.List;
  * Created by Philip on 4/16/17.
  */
 public class User {
-  private String username;
-  private String password;
   private List<Stock> portfolio;
   private List<Stock> watchlist;
+  private String hashedId;
 
-  public User(String username, String password) {
-    this.username = username;
-    this.password = password;
+  public User(String id) {
+    hashedId = id;
   }
 
   public void setPortfolio(List<Stock> portfolio) {
