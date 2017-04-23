@@ -1,30 +1,15 @@
 package edu.steward.main;
-import edu.steward.stock.Fundamentals.Price;
-import edu.steward.stock.api.AlphaVantageAPI;
-import edu.steward.stock.api.AlphaVantageConstants;
-import com.google.common.collect.ImmutableList;
+import edu.steward.handlers.*;
 import edu.steward.login.LoginConfigFactory;
 import edu.steward.user.UserSession;
 
-import edu.steward.handlers.AboutHandler;
-import edu.steward.handlers.DashboardMock;
-import edu.steward.handlers.GetGraphDataMock;
-import edu.steward.handlers.IndexHandler;
-import edu.steward.handlers.StockMock;
-import edu.steward.stock.Fundamentals.Price;
-import edu.steward.stock.api.AlphaVantageAPI;
-import edu.steward.stock.api.AlphaVantageConstants;
-import com.google.common.collect.ImmutableList;
-import edu.steward.login.LoginConfigFactory;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Stock;
-import edu.steward.user.UserSession;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
-import org.pac4j.sparkjava.SecurityFilter;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
@@ -111,13 +96,8 @@ public class Main {
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
-    Spark.get("/callback", callback);
-    Spark.post("/callback", callback);
-    Spark.before("/google", new SecurityFilter(config,
-        "OidcClient"));
-    Spark.get("/login", UserSession::newSession, freeMarker);
-    Spark.get("/logout", UserSession::endSession, freeMarker);
-    Spark.get("/google", UserSession::destPage, freeMarker);
+    Spark.get("/login", new LoginHandler());
+    Spark.get("/logout", new LogoutHandler());
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {
