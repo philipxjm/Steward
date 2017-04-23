@@ -20,7 +20,7 @@ public class LoginHandler implements Route {
     Gson GSON = new Gson();
 
     QueryParamsMap qm = request.queryMap();
-    request.session().attribute("user", qm.value("id"));
+    request.session().attribute("user", qm.value("name"));
 
     Map<String, String> variables = ImmutableMap.of("title", "Dashboard",
         "id", qm.value("id"));

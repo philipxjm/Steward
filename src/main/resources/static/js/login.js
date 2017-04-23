@@ -2,8 +2,6 @@ let userName;
 let userId;
 
 function onSignIn(googleUser) {
-  $('#login').hide();
-  $('#user').show();
 	let profile = googleUser.getBasicProfile();
   console.log('ID: ' + profile.getId());
   console.log('Name: ' + profile.getName());
@@ -12,8 +10,9 @@ function onSignIn(googleUser) {
   $.get("/login", {name: userName, id: userId}, responseJSON => {
   	console.log(responseJSON);
   });
-
-
+  if ($('#login')[0].style.display != "none") {
+    window.location = window.location;
+  }
 }	
 
 function onSignOut() {
@@ -21,7 +20,6 @@ function onSignOut() {
 	auth2.signOut().then(function () {
 		console.log('User signed out.');
 	});
-	$.get("/logout");
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+ $.get("/logout", {});
+  window.location = window.location;
 }
