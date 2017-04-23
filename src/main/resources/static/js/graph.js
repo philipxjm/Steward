@@ -4,7 +4,6 @@ function makeGraph() {
     const data = {
         type: 'line',
         data: {
-            //labels: labels,
             datasets: [{
                 label: 'Stock Prices',
                 data: pastData,

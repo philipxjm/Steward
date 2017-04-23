@@ -24,9 +24,13 @@ public class StockMock implements TemplateViewRoute {
     DailyChange dailyChange = stock.getDailyChange();
 
     List<Fundamental> fundamentals = stock.getStockFundamentals();
-
+    String color = "up";
+    if (dailyChange.getValue() < 0) {
+    	color = "down";
+    }
     ImmutableMap<Object, Object> variables = new ImmutableMap.Builder<>()
             .put("ticker", ticker)
+            .put("color",color)
             .put("fundamentals", fundamentals)
             .put("price", currPrice)
             .put("change", dailyChange)

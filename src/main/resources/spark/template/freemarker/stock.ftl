@@ -15,7 +15,7 @@
           </div>
           <div class="row row-third justify-content-start">
             <div class="col col-sm-2">
-              
+              <h2>$${price.value} <span class=${color}>(${change.value}%)</span> </h2>
             </div>
             <div class="col col-sm">
               <table>
