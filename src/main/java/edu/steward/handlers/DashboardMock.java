@@ -12,9 +12,8 @@ import spark.TemplateViewRoute;
 public class DashboardMock implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {
-    String ticker = req.params(":ticker");
-
-    Map<String, String> variables = ImmutableMap.of("ticker", ticker, "user", "John Smith");
+	String test = req.session().attribute("user");
+    Map<String, String> variables = ImmutableMap.of("title", "Dashboard", "user", "John Smith", "id", test);
     return new ModelAndView(variables, "dashboard.ftl");
   }
 }

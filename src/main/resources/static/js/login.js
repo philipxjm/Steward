@@ -10,6 +10,8 @@ function onSignIn(googleUser) {
   $.get("/user", {name: userName, id: userId}, responseJSON => {
   	console.log(responseJSON);
   });
+
+
 }	
 
 function onSignOut() {
