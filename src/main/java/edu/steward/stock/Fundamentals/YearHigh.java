@@ -21,7 +21,7 @@ public class YearHigh implements Fundamental<YearHigh>{
   }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "52 Week High";
   }
 }

@@ -21,7 +21,7 @@ public class YearLow implements Fundamental<YearLow>{
     }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "52 Week Low";
   }
 

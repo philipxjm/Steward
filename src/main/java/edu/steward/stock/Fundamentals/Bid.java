@@ -21,7 +21,7 @@ public class Bid implements Fundamental<Bid> {
   }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "Bid";
   }
 }

@@ -21,7 +21,7 @@ public class Volume implements Fundamental<Volume>{
   public Long getTime() {return System.currentTimeMillis() / 1000;}
 
   @Override
-  public String toString() {
+  public String getType() {
     return "Volume";
   }
 }

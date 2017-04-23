@@ -21,7 +21,7 @@ public class MarketCap implements Fundamental<MarketCap> {
     }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "Market Cap";
   }
 }

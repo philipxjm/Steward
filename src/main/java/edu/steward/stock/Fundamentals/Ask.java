@@ -21,7 +21,7 @@ public class Ask implements Fundamental<Ask> {
   }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "Ask";
   }
 }

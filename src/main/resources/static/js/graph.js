@@ -45,7 +45,7 @@ const ticker = $('h2')[0].innerText;
 
 let params = {
     "ticker" : ticker,
-    "timeseries" : "FIVE_DAY"
+    "timeseries" : "ONE_YEAR"
 };
 
 let pastData = null;

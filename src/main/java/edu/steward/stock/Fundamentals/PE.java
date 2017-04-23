@@ -21,7 +21,7 @@ public class PE implements Fundamental<PE> {
   }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "PE";
   }
 }

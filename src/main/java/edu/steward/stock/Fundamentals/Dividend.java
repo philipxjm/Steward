@@ -21,7 +21,7 @@ public class Dividend implements Fundamental<Dividend> {
   }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "Dividend";
   }
 }

@@ -21,7 +21,7 @@ public class EPS implements Fundamental<EPS> {
   }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "EPS";
   }
 }

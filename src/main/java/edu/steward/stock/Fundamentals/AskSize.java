@@ -21,7 +21,7 @@ public class AskSize implements Fundamental<AskSize> {
     }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "Ask Size";
   }
 }

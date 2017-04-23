@@ -21,7 +21,7 @@ public class Average implements Fundamental<Average> {
   }
 
   @Override
-  public String toString() {
+  public String getType() {
     return "Average Volume";
   }
 }
