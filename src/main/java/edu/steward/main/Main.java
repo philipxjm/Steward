@@ -1,5 +1,4 @@
 package edu.steward.main;
-
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.AlphaVantageConstants;
@@ -14,25 +13,29 @@ import edu.steward.handlers.IndexHandler;
 import edu.steward.handlers.StockMock;
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.AlphaVantageAPI;
-import edu.steward.stock.api.StockAPI;
+import edu.steward.stock.api.AlphaVantageConstants;
+import com.google.common.collect.ImmutableList;
+import edu.steward.login.LoginConfigFactory;
+import edu.steward.stock.Fundamentals.Fundamental;
+import edu.steward.stock.Stock;
+import edu.steward.user.UserSession;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
+import org.pac4j.sparkjava.SecurityFilter;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-import java.io.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import org.pac4j.sparkjava.SecurityFilter;
 import java.util.List;
-
 
 public class Main {
   private static final int DEFAULT_PORT = 4567;
@@ -52,15 +55,22 @@ public class Main {
   private void run() {
     // Parse command line arguments
 
-    AlphaVantageAPI api = new AlphaVantageAPI();
-    List<Price> prices = api.getStockPrices("AAPL", StockAPI.TIMESERIES.ONE_YEAR);
-    int counter = 0;
-    for (Price p:
-         prices) {
-      counter++;
-      System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
+//    AlphaVantageAPI api = new AlphaVantageAPI();
+//    List<Price> prices = api.getStockPrices("AAPL", StockAPI.TIMESERIES.ONE_YEAR);
+//    int counter = 0;
+//    for (Price p:
+//         prices) {
+//      counter++;
+//      System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
+//    }
+//    System.out.println(counter);
+
+//    new YahooFinanceAPI().func();
+
+    List<Fundamental> fundamentals = new Stock("AAPL").getStockFundamentals();
+    for (Fundamental fundamental : fundamentals) {
+      System.out.println(fundamental.toString() + ": " + fundamental.getValue());
     }
-    System.out.println(counter);
 
     OptionParser parser = new OptionParser();
     parser.accepts("gui");

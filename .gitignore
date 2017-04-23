@@ -62,7 +62,7 @@ local.properties
 .idea/workspace.xml
 .idea/tasks.xml
 
-# Sensitive or high-churn files:
+# Sensitive or low-churn files:
 .idea/dataSources/
 .idea/dataSources.ids
 .idea/dataSources.xml

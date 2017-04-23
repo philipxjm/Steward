@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html>
@@ -53,36 +54,17 @@
           </div>
           <div class="row row-third justify-content-start">
             <div class="col col-sm-2">
-              <h3>$923.43</h3>
+              <h2>$${price.value} <span class=${color}>(${change.value}%)</span> </h2>
             </div>
             <div class="col col-sm">
               <table>
-                <tr>
-                  <td>Range</td> <td>140.23 - 141.50</td>
-                  <td>52 week</td> <td>89.47 - 141.50</td>
-                </tr>
-
-                <tr>
-                  <td>Open</td> <td>140.40</td>
-                  <td>Vol / Avg.</td> <td>20.71M/24.49M</td>
-                </tr>
-
-                <tr>
-                  <td>Mkt cap</td> <td>738.48B</td>
-                  <td>P/E</td> <td>16.94</td>
-                </tr>
-
-                <tr>
-                  <td>Div/yield</td> <td>0.57/1.61</td>
-                  <td>EPS</td> <td>8.35</td>
-                </tr>
-
-                <tr>
-                  <td>Shares</td> <td>5.25B</td>
-                  <td>Beta</td> <td>1.25</td>
-                </tr>
-                <tr>
-                  <td>Inst. own</td> <td>61%</td>
+                 <tr>
+                 <#list fundamentals as fund>
+                      <#if fund_index % 2 == 0>
+                       </tr><tr>
+                      </#if>
+                      <td>${fund.type}</td> <td>${fund.value}</td>
+                 </#list>
                 </tr>
               </table>
             </div>

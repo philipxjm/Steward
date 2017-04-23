@@ -6,6 +6,14 @@ body {
   padding-top: 3.5rem;
 }
 
+.down {
+  color: red;
+}
+
+.up {
+  color: green;
+}
+
 h1 {
   text-align: left;
   margin: 1rem;

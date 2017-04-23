@@ -29,7 +29,7 @@ public class Price implements Fundamental<Price> {
   }
 
   @Override
-  public String toString() {
-    return "{price: " + this.getValue() + ", time: " + this.getTime() + "}";
+  public String getType() {
+    return "Price";
   }
 }

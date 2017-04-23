@@ -17,4 +17,6 @@ function onSignOut() {
 	auth2.signOut().then(function () {
 		console.log('User signed out.');
 	});
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 }

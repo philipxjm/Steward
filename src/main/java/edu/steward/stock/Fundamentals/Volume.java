@@ -8,11 +8,20 @@ public class Volume implements Fundamental<Volume>{
   private double volume;
   private Long time;
 
-  @Override
-  public Double getValue() {
-    return null;
+  public Volume(double volume) {
+    this.volume = volume;
   }
 
   @Override
-  public Long getTime() {return (long) 0;}
+  public Double getValue() {
+    return volume;
+  }
+
+  @Override
+  public Long getTime() {return System.currentTimeMillis() / 1000;}
+
+  @Override
+  public String getType() {
+    return "Volume";
+  }
 }
