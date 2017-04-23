@@ -19,9 +19,14 @@
             </div>
             <div class="col col-sm">
               <table>
-                  <#list fundamentals as fund>
-                    <tr><td>${fund.type}</td> <td>${fund.value}</td></tr>
-                  </#list>
+                 <tr>
+                 <#list fundamentals as fund>
+                      <#if fund_index % 2 == 0>
+                       </tr><tr>
+                      </#if>
+                      <td>${fund.type}</td> <td>${fund.value}</td>
+                 </#list>
+                </tr>
               </table>
             </div>
           </div>
