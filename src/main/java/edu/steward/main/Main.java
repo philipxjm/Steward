@@ -1,5 +1,10 @@
 package edu.steward.main;
-
+import edu.steward.stock.Fundamentals.Price;
+import edu.steward.stock.api.AlphaVantageAPI;
+import edu.steward.stock.api.AlphaVantageConstants;
+import com.google.common.collect.ImmutableList;
+import edu.steward.login.LoginConfigFactory;
+import edu.steward.user.UserSession;
 
 import edu.steward.handlers.AboutHandler;
 import edu.steward.handlers.DashboardMock;
@@ -111,6 +116,7 @@ public class Main {
     Spark.post("/callback", callback);
     Spark.before("/google", new SecurityFilter(config,
         "OidcClient"));
+    Spark.get("/user", UserSession::newSession, freeMarker);
     Spark.get("/google", UserSession::destPage, freeMarker);
     Spark.post("/dashboard", new DashboardMock(), freeMarker);
   }
