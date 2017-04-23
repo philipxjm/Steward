@@ -11,5 +11,9 @@
       </li>
     </ul>
   </div>
-  <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+  <div class="container">
+    <div id="login" class="g-signin2" data-onsuccess="onSignIn"></div>
+    <div id="logout" onclick="onSignOut();">Sign out</div>
+  </div>
 </nav>

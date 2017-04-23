@@ -54,6 +54,7 @@ public class UserSession {
 
     UserSession ns = new UserSession(qm.value("name"),
         qm.value("id"));
+    request.session().attribute("user", qm.value("id"));
 
     Map<String, String> variables = ImmutableMap.of("title", "", "ticker",
         "placeholder",

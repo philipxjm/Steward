@@ -1,6 +1,6 @@
 <#assign chart=true>
 <#assign js="/js/dash.js">
 <#assign content>
-
-</#assing>
+<p>${id}</p>
+</#assign>
 <#include "main.ftl">

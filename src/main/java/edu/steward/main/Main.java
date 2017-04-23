@@ -111,14 +111,13 @@ public class Main {
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataMock());
     Spark.get("/stock/:ticker", new StockMock(), freeMarker);
-//    Spark.post("/getStockData", new GetStockDataMock());
     Spark.get("/callback", callback);
     Spark.post("/callback", callback);
     Spark.before("/google", new SecurityFilter(config,
         "OidcClient"));
     Spark.get("/user", UserSession::newSession, freeMarker);
     Spark.get("/google", UserSession::destPage, freeMarker);
-    Spark.post("/dashboard", new DashboardMock(), freeMarker);
+    Spark.get("/dashboard", new DashboardMock(), freeMarker);
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {
