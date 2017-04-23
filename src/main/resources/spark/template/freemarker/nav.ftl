@@ -9,16 +9,20 @@
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <span id="login" class="nav-link g-signin2" data-onsuccess="onSignIn"></span>
-          <div id="user" class="dropdown" style="display:none">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Username
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Dashboard</a>
-              <a class="dropdown-item" href="/" onclick="onSignOut()" href="#">Sign Out</a>
+            <#if user??>
+            <div id="user" class="dropdown">
+              <button id="username" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ${user}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Dashboard</a>
+                <a class="dropdown-item" onclick="onSignOut()" href="#">Sign Out</a>
+              </div>
             </div>
-          </div>
+            <span id="login" style="display:none" class="nav-link g-signin2" data-onsuccess="onSignIn"></span>
+            <#else>
+              <span id="login" class="nav-link g-signin2" data-onsuccess="onSignIn"></span>
+            </#if>
         </li>
     </ul>
   </div>
