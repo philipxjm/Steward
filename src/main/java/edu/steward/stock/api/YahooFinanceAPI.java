@@ -78,6 +78,18 @@ public class YahooFinanceAPI implements StockAPI {
     System.out.println(stock.getQuote().getAskSize());
   }
 
+  public Price getCurrPrice(String ticker) {
+    Stock stock = new Stock(ticker);
+    Double priceValue = stock.getQuote().getPrice().doubleValue();
+    return new Price(priceValue, System.currentTimeMillis() / 1000);
+  }
+
+  public DailyChange getDailyChange(String ticker) {
+    Stock stock = new Stock(ticker);
+    Double dailyChange = stock.getQuote().getChangeInPercent().doubleValue();
+    return new DailyChange(dailyChange);
+  }
+
 
 
 }

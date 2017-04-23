@@ -1,5 +1,6 @@
 package edu.steward.stock.api;
 
+import edu.steward.stock.Fundamentals.DailyChange;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Fundamentals.Price;
 
@@ -24,7 +25,18 @@ public class MockStockAPI implements StockAPI {
   public List<Fundamental> getStockFundamentals(String ticker) {
     return null;
   }
-//
+
+  @Override
+  public Price getCurrPrice(String ticker) {
+    return null;
+  }
+
+  @Override
+  public DailyChange getDailyChange(String ticker) {
+    return null;
+  }
+
+  //
 //  @Override
 //  public List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries) {
 //    return null;

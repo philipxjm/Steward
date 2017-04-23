@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+import edu.steward.stock.Fundamentals.DailyChange;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.AlphaVantageAPI;
@@ -30,6 +31,16 @@ public class Stock {
 //    TODO: Abstract this later on
     setStockAPI(new AlphaVantageAPI());
     return stockAPI.getStockPrices(ticker, timeseries);
+  }
+
+  public Price getCurrPrice() {
+    setStockAPI(new YahooFinanceAPI());
+    return stockAPI.getCurrPrice(ticker);
+  }
+
+  public DailyChange getDailyChange() {
+    setStockAPI(new YahooFinanceAPI());
+    return stockAPI.getDailyChange(ticker);
   }
 
   public List<Fundamental> getStockFundamentals() {

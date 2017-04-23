@@ -1,5 +1,6 @@
 package edu.steward.stock.api;
 
+import edu.steward.stock.Fundamentals.DailyChange;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Fundamentals.Price;
 
@@ -31,6 +32,10 @@ public interface StockAPI {
   List<Price> getStockPrices(String ticker, TIMESERIES timeSeries);
 
   List<Fundamental> getStockFundamentals(String ticker);
+
+  Price getCurrPrice(String ticker);
+
+  DailyChange getDailyChange(String ticker);
 //
 //  List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries);
 

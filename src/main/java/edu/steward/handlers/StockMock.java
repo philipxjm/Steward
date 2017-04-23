@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
+import edu.steward.stock.Fundamentals.DailyChange;
 import edu.steward.stock.Fundamentals.Fundamental;
+import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.Stock;
 import spark.ModelAndView;
 import spark.Request;
@@ -18,10 +20,20 @@ public class StockMock implements TemplateViewRoute {
     String ticker = req.params(":ticker").toUpperCase();
 
     Stock stock = new Stock(ticker);
+    Price currPrice = stock.getCurrPrice();
+    DailyChange dailyChange = stock.getDailyChange();
+
     List<Fundamental> fundamentals = stock.getStockFundamentals();
 
-    Map<String, Object> variables = ImmutableMap.of("ticker", ticker, "fundamentals", fundamentals,
-    		"title", "Stock: " + ticker, "css", "/css/graph.css", "user", "John Smith");
+    ImmutableMap<Object, Object> variables = new ImmutableMap.Builder<>()
+            .put("ticker", ticker)
+            .put("fundamentals", fundamentals)
+            .put("price", currPrice)
+            .put("change", dailyChange)
+            .put("title", "Stock: " + ticker)
+            .put("css", "/css/graph.css")
+            .put("user", "John Smith")
+            .build();
     return new ModelAndView(variables, "stock.ftl");
   }
 }

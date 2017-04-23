@@ -1,6 +1,7 @@
 package edu.steward.stock.api;
 
 import edu.steward.main.JSONRetriever;
+import edu.steward.stock.Fundamentals.DailyChange;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Fundamentals.Price;
 
@@ -323,6 +324,16 @@ public class AlphaVantageAPI implements StockAPI {
 
   @Override
   public List<Fundamental> getStockFundamentals(String ticker) {
+    return null;
+  }
+
+  @Override
+  public Price getCurrPrice(String ticker) {
+    return null;
+  }
+
+  @Override
+  public DailyChange getDailyChange(String ticker) {
     return null;
   }
 }
