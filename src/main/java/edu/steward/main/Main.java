@@ -1,5 +1,8 @@
 package edu.steward.main;
 import edu.steward.handlers.*;
+import edu.steward.stock.Fundamentals.Price;
+import edu.steward.stock.api.*;
+import com.google.common.collect.ImmutableList;
 import edu.steward.login.LoginConfigFactory;
 import edu.steward.user.UserSession;
 
@@ -40,22 +43,22 @@ public class Main {
   private void run() {
     // Parse command line arguments
 
-//    AlphaVantageAPI api = new AlphaVantageAPI();
-//    List<Price> prices = api.getStockPrices("AAPL", StockAPI.TIMESERIES.ONE_YEAR);
-//    int counter = 0;
-//    for (Price p:
-//         prices) {
-//      counter++;
-//      System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
-//    }
-//    System.out.println(counter);
-
-//    new YahooFinanceAPI().func();
-
-    List<Fundamental> fundamentals = new Stock("AAPL").getStockFundamentals();
-    for (Fundamental fundamental : fundamentals) {
-      System.out.println(fundamental.toString() + ": " + fundamental.getValue());
+    AlphaVantageAPI api = new AlphaVantageAPI();
+    List<Price> prices = api.getStockPrices("AAPL", StockAPI.TIMESERIES.ONE_YEAR);
+    int counter = 0;
+    for (Price p:
+         prices) {
+      counter++;
+      System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
     }
+    System.out.println(counter);
+
+    new YahooFinanceAPI().func();
+//
+//    List<Fundamental> fundamentals = new Stock("AAPL").getStockFundamentals();
+//    for (Fundamental fundamental : fundamentals) {
+//      System.out.println(fundamental.toString() + ": " + fundamental.getValue());
+//    }
 
     OptionParser parser = new OptionParser();
     parser.accepts("gui");

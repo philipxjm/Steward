@@ -68,14 +68,14 @@ public class YahooFinanceAPI implements StockAPI {
   }
 
   public void func() {
-    Stock stock = YahooFinance.get("AAPL");
+    Stock stock = YahooFinance.get("AAPL", true);
 
-    BigDecimal price = stock.getQuote().getPrice();
-    BigDecimal change = stock.getQuote().getChangeInPercent();
-    BigDecimal peg = stock.getStats().getPeg();
-    BigDecimal dividend = stock.getDividend().getAnnualYieldPercent();
+//    BigDecimal price = stock.getQuote().getPrice();
+//    BigDecimal change = stock.getQuote().getChangeInPercent();
+//    BigDecimal peg = stock.getStats().getPeg();
+//    BigDecimal dividend = stock.getDividend().getAnnualYieldPercent();
 
-    System.out.println(stock.getQuote().getAskSize());
+    System.out.println(stock.getHistory());
   }
 
   public Price getCurrPrice(String ticker) {
@@ -89,7 +89,5 @@ public class YahooFinanceAPI implements StockAPI {
     Double dailyChange = stock.getQuote().getChangeInPercent().doubleValue();
     return new DailyChange(dailyChange);
   }
-
-
 
 }
