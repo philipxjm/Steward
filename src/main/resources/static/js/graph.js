@@ -137,6 +137,7 @@ const ticker = $('h2')[0].innerText;
 const ctx = $("#graph");
 let stockGraph = new StockGraph(ctx, ticker, "ONE_DAY");
 
+// Change timeseries
 $('.time').click((e) => {
     const timeseries = e.currentTarget.children[0].id;
     stockGraph.changeTimeseries(timeseries);
