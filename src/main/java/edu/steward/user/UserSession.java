@@ -46,8 +46,8 @@ public class UserSession {
     return manager.getAll(true);
   }
 
-  public static ModelAndView newSession(final Request
-                                            request, final Response
+  public static ModelAndView newSession(Request
+                                            request, Response
                                             response) {
 
     QueryParamsMap qm = request.queryMap();
@@ -60,5 +60,10 @@ public class UserSession {
         "placeholder",
         "user", "John Smith");
     return new ModelAndView(variables, "stock.ftl");
+  }
+
+  public static ModelAndView endSession(Request req, Response res) {
+    req.session().removeAttribute("user");
+    return new ModelAndView(new HashMap<String, String>(), "index.ftl");
   }
 }

@@ -115,9 +115,9 @@ public class Main {
     Spark.post("/callback", callback);
     Spark.before("/google", new SecurityFilter(config,
         "OidcClient"));
-    Spark.get("/user", UserSession::newSession, freeMarker);
+    Spark.get("/login", UserSession::newSession, freeMarker);
+    Spark.get("/logout", UserSession::endSession, freeMarker);
     Spark.get("/google", UserSession::destPage, freeMarker);
-    Spark.get("/dashboard", new DashboardMock(), freeMarker);
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {
