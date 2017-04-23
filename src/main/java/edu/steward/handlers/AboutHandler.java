@@ -12,7 +12,14 @@ import spark.TemplateViewRoute;
 public class AboutHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {
-    Map<String, String> variables = ImmutableMap.of("title", "About");
+
+	String user = req.session().attribute("user");
+	Map<String, String> variables;
+	if (user != null) {
+		variables = ImmutableMap.of("title", "About", "user", user);
+	} else {
+		variables = ImmutableMap.of("title", "About");
+	}
     return new ModelAndView(variables, "about.ftl");
   }
 }

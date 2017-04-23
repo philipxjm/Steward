@@ -28,16 +28,18 @@ public class StockMock implements TemplateViewRoute {
     if (dailyChange.getValue() < 0) {
     	color = "down";
     }
-    ImmutableMap<Object, Object> variables = new ImmutableMap.Builder<>()
+    ImmutableMap.Builder<Object, Object> variables = new ImmutableMap.Builder<>()
             .put("ticker", ticker)
             .put("color",color)
             .put("fundamentals", fundamentals)
             .put("price", currPrice)
             .put("change", dailyChange)
             .put("title", "Stock: " + ticker)
-            .put("css", "/css/graph.css")
-            .put("user", "John Smith")
-            .build();
-    return new ModelAndView(variables, "stock.ftl");
+            .put("css", "/css/graph.css");
+   String user = req.session().attribute("user");
+    if (user != null) {
+    	variables.put("user", user);
+    }
+    return new ModelAndView(variables.build(), "stock.ftl");
   }
 }

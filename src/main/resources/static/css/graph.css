@@ -6,10 +6,6 @@ html, body, main {
   font-size: 10px;
 }
 
-body {
-  padding-top: 3.5rem;
-}
-
 .down {
   color: red;
 }
@@ -29,6 +25,7 @@ h1 {
 }
 
 .row-first {
+    padding-top: 10px;
     height: 10%;
 }
 
@@ -64,6 +61,10 @@ table {
     margin: 10px;
 }
 
+#footer {
+  margin-top: 30px;
+}
+
 td:first-child {
     padding-right: 5px;
     font-weight: bold;
@@ -76,15 +77,6 @@ td:first-child + td {
 td:first-child + td + td {
     padding-right: 5px;
     font-weight: bold;
-}
-
-/*
- * Base structure
- */
-
-/* Move down content because we have a fixed navbar that is 3.5rem tall */
-body {
-  padding-top: 3.5rem;
 }
 
 /*
