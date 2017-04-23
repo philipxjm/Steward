@@ -5,7 +5,7 @@ function onSignIn(googleUser) {
   $('#login').hide();
   $('#user').show();
 	let profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('ID: ' + profile.getId());
   console.log('Name: ' + profile.getName());
   userName = profile.getName();
   userId = profile.getId();
