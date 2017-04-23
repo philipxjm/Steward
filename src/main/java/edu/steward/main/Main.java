@@ -1,8 +1,5 @@
 package edu.steward.main;
 
-
-import edu.steward.mock.GetGraphDataMock;
-import edu.steward.mock.StockMock;
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.AlphaVantageConstants;
@@ -109,6 +106,7 @@ public class Main {
     Spark.post("/callback", callback);
     Spark.before("/google", new SecurityFilter(config,
         "OidcClient"));
+    Spark.get("/user", UserSession::newSession, freeMarker);
     Spark.get("/google", UserSession::destPage, freeMarker);
     Spark.post("/dashboard", new DashboardMock(), freeMarker);
   }

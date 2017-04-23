@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 
 <html>
@@ -37,12 +36,9 @@
 </script>
       </div>
     </nav>
-
-=======
 <#assign chart=true>
 <#assign js="/js/graph.js">
 <#assign content>
->>>>>>> 3bceff25df27ca7fae1e3b08ba8b545ece0331fc
     <div class="expand container-fluid">
       <div class="expand row">
         <!-- Main -->
