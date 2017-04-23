@@ -56,10 +56,9 @@ public class UserSession {
         qm.value("id"));
     request.session().attribute("user", qm.value("id"));
 
-    Map<String, String> variables = ImmutableMap.of("title", "", "ticker",
-        "placeholder",
-        "user", "John Smith");
-    return new ModelAndView(variables, "stock.ftl");
+    Map<String, String> variables = ImmutableMap.of("title", "Dashboard",
+        "user", "John Smith", "id", qm.value("id"));
+    return new ModelAndView(variables, "dashboard.ftl");
   }
 
   public static ModelAndView endSession(Request req, Response res) {

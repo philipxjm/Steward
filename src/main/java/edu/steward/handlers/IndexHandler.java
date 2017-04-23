@@ -18,9 +18,7 @@ public class IndexHandler implements TemplateViewRoute {
       Map<String, String> variables = ImmutableMap.of("title", "Dashboard", "user", "John Smith", "id", test);
       return new ModelAndView(variables, "dashboard.ftl");
     } else {
-      Map<String, String> variables = ImmutableMap.of("title", "Steward",
-          "user",
-          "John Smith");
+      Map<String, String> variables = ImmutableMap.of("title", "Steward");
       return new ModelAndView(variables, "index.ftl");
     }
   }
