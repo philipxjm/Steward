@@ -8,6 +8,32 @@
           <div class="row row-first">
             <h2>${ticker}</h2>
           </div>
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary active time">
+              <input type="radio" name="timespan" id="ONE_DAY" autocomplete="off" checked>One Day
+            </label>
+            <label class="btn btn-primary time">
+              <input type="radio" name="timespan" id="FIVE_DAY" autocomplete="off">Five Day
+            </label>
+            <label class="btn btn-primary time">
+              <input type="radio" name="timespan" id="ONE_MONTH" autocomplete="off">One Month
+            </label>
+            <label class="btn btn-primary time">
+              <input type="radio" name="timespan" id="SIX_MONTH" autocomplete="off">Six Month
+            </label>
+            <label class="btn btn-primary time">
+              <input type="radio" name="timespan" id="ONE_YEAR" autocomplete="off">One Year
+            </label>   
+            <label class="btn btn-primary time">
+              <input type="radio" name="timespan" id="TWO_YEAR" autocomplete="off">Two Year
+            </label>                   
+            <label class="btn btn-primary time">
+              <input type="radio" name="timespan" id="FIVE_YEAR" autocomplete="off">Five Year
+            </label>
+            <label class="btn btn-primary time">
+              <input type="radio" name="timespan" id="TEN_YEAR" autocomplete="off">Ten Year
+            </label>            
+          </div>
           <div class="row row-second">
             <div id="graph-wrapper">
               <canvas id="graph"></canvas>
@@ -33,14 +59,6 @@
         </main>
       </div>
     </div>
-        <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
-    <script src="/js/graph.js"></script>
-    <script src="/js/login.js"></script>
-  </body>
 </html>
 </#assign>
 <#include "main.ftl">

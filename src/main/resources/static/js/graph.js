@@ -1,76 +1,143 @@
-const ctx = $("#graph");
-let scatterChart;
-function makeGraph() {    
-    const data = {
-        type: 'line',
-        data: {
-            datasets: [{
+class StockGraph {
+    constructor(ctx, ticker, timeseries) {
+        this.timeseries = timeseries;
+        this.ticker = ticker;
+        const params = {
+            "ticker" : this.ticker,
+            "timeseries" : this.timeseries
+        }
+        $.post('/getGraphData', params, (res) => {
+            const resData = JSON.parse(res);
+            let pastData = [];
+            let labels = [];
+            let last = resData[0];
+            let c = 0;
+
+            for(let p of resData) {
+                if(p[0] - last > 1000) {
+                    pastData.push({x: NaN, y: NaN})
+                }
+                last = p[0];
+                labels.push(new Date(p[0]*1000));
+                pastData.push({x: c, y: p[1]});
+                c += 1;
+            }
+
+            const min = pastData[0].x;
+            const max = pastData[pastData.length-1].x;
+
+            const data = {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Stock Prices',
+                        data: pastData,
+                        borderColor: 'red'
+                    }]
+                },
+                options: {
+                    legend: false,
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        xAxes: [{
+                            type: 'linear',
+                            position: 'bottom',
+                            ticks: {
+                                callback: (value) => { 
+                                    if (labels[value]) {
+                                        return labels[value].toDateString();
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                            }
+                        }]
+                    },
+                }
+            }
+            this.graph = new Chart(ctx, data);
+        });
+    }
+
+    changeTimeseries(timeseries) {
+        this.timeseries = timeseries;
+        const params = {
+            "ticker" : this.ticker,
+            "timeseries" : this.timeseries
+        }
+        $.post('/getGraphData', params, (res) => {
+            const resData = JSON.parse(res);
+            let pastData = [];
+            let labels = [];
+            let last = resData[0];
+            let c = 0;
+
+            for(let p of resData) {
+                if((this.timeseries == "ONE_DAY" || this.timeseries == "FIVE_DAY")
+                    && p[0] - last > 1000) {
+                    pastData.push({x: NaN, y: NaN});
+                }
+                last = p[0];
+                labels.push(new Date(p[0]*1000));
+                pastData.push({x: c, y: p[1]});
+                c += 1;
+            }
+
+            const min = pastData[0].x;
+            const max = pastData[pastData.length-1].x;
+
+            this.graph.data.datasets.pop();
+            this.graph.data.datasets.push({
                 label: 'Stock Prices',
                 data: pastData,
                 borderColor: 'red'
-            }/*, {
-                label: 'Predict',
-                data: predict,
-                borderColor: 'grey'
-            }*/]
-        },
-        options: {
-            legend: false,
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                xAxes: [{
-                    type: 'linear',
-                    position: 'bottom',
-                    ticks: {                        
-                        min: min,
-                        max: max,
-                        callback: function(value) { 
-                            console.log()
-                            return labels[value].toDateString();
-                        }
-                    }
-                }]
-            },
-        }
+            });
+            this.graph.options.scales.xAxes[0].ticks.callback = (value) => {
+                if (labels[value]) {
+                    return labels[value].toDateString();
+                } else {
+                    return "";
+                }                
+            }
+            this.graph.update();
+        });
     }
-
-    scatterChart = new Chart(ctx, data);
 }
 
-let n = 100;
-let c = 50;
-const ticker = $('h2')[0].innerText;
+function setGraph(graph, ticker, timeseries) {
+    let pastData = null;
+    let min = null;
+    let max = null;
 
-let params = {
-    "ticker" : ticker,
-    "timeseries" : "ONE_DAY"
-};
+    let labels = [];
+    $.post('/getGraphData', params, (res) => {
+        let resData = JSON.parse(res);
+        pastData = [];
+        let last = resData[0];
+        let c = 0;
 
-let pastData = null;
-let predict = null;
-let min = null;
-let max = null;
-
-let labels = [];
-$.post('/getGraphData', params, (res) => {
-    let resData = JSON.parse(res);
-    pastData = [];
-    let last = resData[0];
-    let c = 0;
-
-    for(let p of resData) {
-        if(p[0] - last > 1000) {
-            pastData.push({x: NaN, y: NaN})
+        for(let p of resData) {
+            if(p[0] - last > 1000) {
+                pastData.push({x: NaN, y: NaN})
+            }
+            last = p[0];
+            labels.push(new Date(p[0]*1000));
+            pastData.push({x: c, y: p[1]});
+            c += 1;
         }
-        last = p[0];
-        labels.push(new Date(p[0]*1000));
-        pastData.push({x: c, y: p[1]});
-        c += 1;
-    }
 
-    min = pastData[0].x;
-    max = pastData[pastData.length-1].x;
+        setDataset(scatterChart, labels, pastData);
+    });
+}
 
-    makeGraph();
+// Ticker to graph
+const ticker = $('h2')[0].innerText;
+// Make chart
+const ctx = $("#graph");
+let stockGraph = new StockGraph(ctx, ticker, "ONE_DAY");
+
+$('.time').click((e) => {
+    const timeseries = e.currentTarget.children[0].id;
+    stockGraph.changeTimeseries(timeseries);
 });
