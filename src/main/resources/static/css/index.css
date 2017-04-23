@@ -1,11 +1,6 @@
-body {
-  padding-top: 3.5rem;
-}
-
 h1 {
 	text-align: left;
 	margin: 1rem;
-}
 }
 
 .nav-item {
@@ -15,4 +10,8 @@ h1 {
 #login {
 	margin: 0;
 	padding: 0;
+}
+
+#footer {
+	margin-top: 10px;
 }

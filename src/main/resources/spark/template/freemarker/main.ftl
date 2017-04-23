@@ -15,7 +15,7 @@
   <body>
   	<#include "nav.ftl">
     ${content}
-	<div class="container">
+	<div id="footer" class="container">
 		<hr>
 		<footer>
 		  <p>&copy; 2017</p>

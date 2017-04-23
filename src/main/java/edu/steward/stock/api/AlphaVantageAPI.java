@@ -28,22 +28,14 @@ public class AlphaVantageAPI implements StockAPI {
   @Override
   public List<Price> getStockPrices(String ticker, TIMESERIES timeSeries) {
 
-    Enum sym = null;
-    for (Enum symbol : AlphaVantageConstants.SYMBOL.values()) {
-      if (ticker.equals(symbol.name())) {
-        sym = symbol;
-        break;
-      }
-    }
-
-    if (sym != null) {
+    if (ticker != null) {
       Map<String, Map<String, Double>> timeSeriesData = new HashMap<>();
       String rawData;
       switch (timeSeries) {
         case ONE_DAY:
           rawData = getFromAlphaVantage(
+                  ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
-                  sym,
                   AlphaVantageConstants.INTERVAL.ONE_MIN,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
@@ -54,8 +46,8 @@ public class AlphaVantageAPI implements StockAPI {
           break;
         case FIVE_DAY:
           rawData = getFromAlphaVantage(
+                  ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
-                  sym,
                   AlphaVantageConstants.INTERVAL.FIFTEEN_MIN,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
@@ -66,8 +58,8 @@ public class AlphaVantageAPI implements StockAPI {
           break;
         case ONE_MONTH:
           rawData = getFromAlphaVantage(
+                  ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
-                  sym,
                   AlphaVantageConstants.OUTPUT_SIZE.COMPACT,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
@@ -78,8 +70,8 @@ public class AlphaVantageAPI implements StockAPI {
           break;
         case SIX_MONTH:
           rawData = getFromAlphaVantage(
+                  ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
-                  sym,
                   AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
@@ -90,8 +82,8 @@ public class AlphaVantageAPI implements StockAPI {
           break;
         case ONE_YEAR:
           rawData = getFromAlphaVantage(
+                  ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
-                  sym,
                   AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
@@ -102,8 +94,8 @@ public class AlphaVantageAPI implements StockAPI {
           break;
         case TWO_YEAR:
           rawData = getFromAlphaVantage(
+                  ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
-                  sym,
                   AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
@@ -114,8 +106,8 @@ public class AlphaVantageAPI implements StockAPI {
           break;
         case FIVE_YEAR:
           rawData = getFromAlphaVantage(
+                  ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-                  sym,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
@@ -125,8 +117,8 @@ public class AlphaVantageAPI implements StockAPI {
           break;
         case TEN_YEAR:
           rawData = getFromAlphaVantage(
+                  ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_MONTHLY,
-                  sym,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
@@ -143,8 +135,8 @@ public class AlphaVantageAPI implements StockAPI {
     }
   }
 
-  public String getFromAlphaVantage(Enum... args) {
-    String url = constructURL(args);
+  public String getFromAlphaVantage(String ticker, Enum... args) {
+    String url = constructURL(ticker, args);
     System.out.println("url is: " + url);
     return JSONRetriever.getJSON(url, 5000);
   }
@@ -241,7 +233,7 @@ public class AlphaVantageAPI implements StockAPI {
     return ret;
   }
 
-  private String constructURL(Enum... args) {
+  private String constructURL(String ticker, Enum... args) {
     String url = "";
     try {
       url = "http://www.alphavantage.co/query?function=";
@@ -252,10 +244,7 @@ public class AlphaVantageAPI implements StockAPI {
                     URLEncoder.encode(
                             e.toString(),
                             "UTF-8");
-            break;
-          case ("SYMBOL"):
-            url += "&symbol=";
-            url += URLEncoder.encode(e.toString(), "UTF-8");
+            url += "&symbol=" + ticker;
             break;
           case ("INTERVAL"):
             url += "&interval=";
