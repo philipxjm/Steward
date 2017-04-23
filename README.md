@@ -77,7 +77,7 @@ Currently we are developing a survey we hope to send to the Brown Investment Gro
    Users will have access to a complete set of all stocks currently trading in the U.S.. 
    Users should be able to edit their portfolio and have access to it when they re log in.  
 3. Stock:
-   Users should be able to have access to all relevant stock information: Current price, fundamentals, daily open, daily close, daily high, daily low, daily volume, volatility, news articles, projections, and sentimental analysis informations.  
+   Users should be able to have access to all relevant stock information: Current price, fundamentals, daily open, daily close, daily low, daily low, daily volume, volatility, news articles, projections, and sentimental analysis informations.  
    Users should be able to draw trendlines, zoom onto graphs, have access to info on the graphs.
 
 ###### Performance:

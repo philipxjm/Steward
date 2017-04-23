@@ -320,4 +320,9 @@ public class AlphaVantageAPI implements StockAPI {
     long unixTime = dateTime.getMillis() / 1000;
     return unixTime;
   }
+
+  @Override
+  public List<Fundamental> getStockFundamentals(String ticker) {
+    return null;
+  }
 }

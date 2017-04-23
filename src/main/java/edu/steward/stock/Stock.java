@@ -1,11 +1,14 @@
 package edu.steward.stock;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Fundamentals.Price;
+import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.StockAPI;
+import edu.steward.stock.api.YahooFinanceAPI;
 
 /**
  * Created by Philip on 4/16/17.
@@ -24,12 +27,16 @@ public class Stock {
 
 //  TODO: Add getters for fundamentals using the StockAPI
   public List<Price> getStockPrices(StockAPI.TIMESERIES timeseries) {
+//    TODO: Abstract this later on
+    setStockAPI(new AlphaVantageAPI());
     return stockAPI.getStockPrices(ticker, timeseries);
   }
 
-//  List<Fundamental> getStockFundamentals(StockAPI.TIMESERIES timeseries) {
-//    return stockAPI.getStockFundamentals(ticker, timeseries);
-//  }
+  public List<Fundamental> getStockFundamentals() {
+    setStockAPI(new YahooFinanceAPI());
+    List<Fundamental> ret = new ArrayList<>();
+    return stockAPI.getStockFundamentals(ticker);
+  }
 
   public static void setStockAPI(StockAPI stockAPI) {
     Stock.stockAPI = stockAPI;

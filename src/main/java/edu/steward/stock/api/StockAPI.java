@@ -30,7 +30,7 @@ public interface StockAPI {
    */
   List<Price> getStockPrices(String ticker, TIMESERIES timeSeries);
 
-//  List<Fundamental> getStockFundamentals(String ticker, TIMESERIES timeseries);
+  List<Fundamental> getStockFundamentals(String ticker);
 //
 //  List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries);
 
