@@ -7,6 +7,11 @@ h1 {
 	margin: 1rem;
 }
 
-#logout {
-	color: white;
+.nav-item {
+	margin: 10px;
+}
+
+#login {
+	margin: 0;
+	padding: 0;
 }
