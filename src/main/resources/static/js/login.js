@@ -2,6 +2,8 @@ let userName;
 let userId;
 
 function onSignIn(googleUser) {
+  $('#login').hide();
+  $('#user').show();
 	let profile = googleUser.getBasicProfile();
   console.log('ID: ' + profile.getId());
   console.log('Name: ' + profile.getName());
