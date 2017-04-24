@@ -19,7 +19,7 @@
 	<div id="footer" class="container">
 		<hr>
 		<footer>
-		  <p>&copy; 2017</p>
+		  <p>&copy; Steward 2017</p>
 		</footer>
 	</div>
     <script src="https://apis.google.com/js/platform.js" async defer></script>  

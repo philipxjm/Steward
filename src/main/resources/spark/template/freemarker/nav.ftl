@@ -15,7 +15,6 @@
                 ${user}
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Dashboard</a>
                 <a class="dropdown-item" onclick="onSignOut()" href="#">Sign Out</a>
               </div>
             </div>

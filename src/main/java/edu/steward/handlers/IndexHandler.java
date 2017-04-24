@@ -1,9 +1,9 @@
 package edu.steward.handlers;
 
-
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -15,7 +15,8 @@ public class IndexHandler implements TemplateViewRoute {
     String user = req.session().attribute("user");
     boolean loggedIn = user != null;
     if (loggedIn) {
-      Map<String, String> variables = ImmutableMap.of("title", "Dashboard", "user", user);
+      Map<String, String> variables = ImmutableMap.of("title", "Dashboard",
+          "user", user);
       return new ModelAndView(variables, "dashboard.ftl");
     } else {
       Map<String, String> variables = ImmutableMap.of("title", "Steward");

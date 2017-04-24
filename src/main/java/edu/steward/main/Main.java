@@ -1,23 +1,4 @@
 package edu.steward.main;
-import edu.steward.handlers.*;
-import edu.steward.stock.Fundamentals.Price;
-import edu.steward.stock.api.*;
-import com.google.common.collect.ImmutableList;
-import edu.steward.login.LoginConfigFactory;
-import edu.steward.user.UserSession;
-
-import edu.steward.stock.Fundamentals.Fundamental;
-import edu.steward.stock.Stock;
-import freemarker.template.Configuration;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import org.pac4j.core.config.Config;
-import org.pac4j.sparkjava.CallbackRoute;
-import spark.ExceptionHandler;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
-import spark.template.freemarker.FreeMarkerEngine;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,12 +6,36 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
+import org.pac4j.core.config.Config;
+import org.pac4j.sparkjava.CallbackRoute;
+
+import edu.steward.handlers.AboutHandler;
+import edu.steward.handlers.AddPortfolioHandler;
+import edu.steward.handlers.GetGraphDataHandler;
+import edu.steward.handlers.IndexHandler;
+import edu.steward.handlers.LoginHandler;
+import edu.steward.handlers.LogoutHandler;
+import edu.steward.handlers.StockHandler;
+import edu.steward.login.LoginConfigFactory;
+import edu.steward.stock.Fundamentals.Price;
+import edu.steward.stock.api.AlphaVantageAPI;
+import edu.steward.stock.api.StockAPI;
+import edu.steward.stock.api.YahooFinanceAPI;
+import freemarker.template.Configuration;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import spark.ExceptionHandler;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
+import spark.template.freemarker.FreeMarkerEngine;
+
 public class Main {
   private static final int DEFAULT_PORT = 4567;
 
   public static void main(String[] args) {
-//    System.out.println(TwitterSentiments.sentiments(ImmutableList.<String>of
-//            ("Trump", "Syria")));
+    // System.out.println(TwitterSentiments.sentiments(ImmutableList.<String>of
+    // ("Trump", "Syria")));
     new Main(args).run();
   }
 
@@ -44,28 +49,29 @@ public class Main {
     // Parse command line arguments
 
     AlphaVantageAPI api = new AlphaVantageAPI();
-    List<Price> prices = api.getStockPrices("AAPL", StockAPI.TIMESERIES.ONE_YEAR);
+    List<Price> prices = api.getStockPrices("AAPL",
+        StockAPI.TIMESERIES.ONE_YEAR);
     int counter = 0;
-    for (Price p:
-         prices) {
+    for (Price p : prices) {
       counter++;
       System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
     }
     System.out.println(counter);
 
     new YahooFinanceAPI().func();
-//
-//    List<Fundamental> fundamentals = new Stock("AAPL").getStockFundamentals();
-//    for (Fundamental fundamental : fundamentals) {
-//      System.out.println(fundamental.toString() + ": " + fundamental.getValue());
-//    }
+    //
+    // List<Fundamental> fundamentals = new
+    // Stock("AAPL").getStockFundamentals();
+    // for (Fundamental fundamental : fundamentals) {
+    // System.out.println(fundamental.toString() + ": " +
+    // fundamental.getValue());
+    // }
 
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
-            .defaultsTo(DEFAULT_PORT);
+        .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
-
 
     if (options.has("gui")) {
       runSparkServer((Integer) options.valueOf("port"));
@@ -74,13 +80,12 @@ public class Main {
 
   public static FreeMarkerEngine createEngine() {
     Configuration config = new Configuration();
-    File templates =
-            new File("src/main/resources/spark/template/freemarker");
+    File templates = new File("src/main/resources/spark/template/freemarker");
     try {
       config.setDirectoryForTemplateLoading(templates);
     } catch (IOException ioe) {
       System.out.printf("ERROR: Unable use %s for template loading.%n",
-              templates);
+          templates);
       System.exit(1);
     }
     return new FreeMarkerEngine(config);
