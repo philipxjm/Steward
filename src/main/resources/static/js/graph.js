@@ -1,10 +1,3 @@
-function dateToString(D) {
-    return D.getMonth() + "/"
-    + D.getDate() + "/" 
-    + (D.getFullYear()+"").substring(2,4) + " " 
-    + D.getHours() + ":" + D.getMinutes();
-}
-
 class StockGraph {
     constructor(ctx, ticker, timeseries) {
         this.timeseries = timeseries;
@@ -34,7 +27,7 @@ class StockGraph {
                             ticks: {
                                 callback: (value) => { 
                                     if (this.labels[value]) {
-                                        return dateToString(this.labels[value]);
+                                        return this.dateToString(this.labels[value], false);
                                     } else {
                                         return "";
                                     }
@@ -47,7 +40,7 @@ class StockGraph {
                         mode: 'single',
                         callbacks: {
                             title: (info) => { 
-                                return dateToString(this.labels[info[0].index]);
+                                return this.dateToString(this.labels[info[0].index], true);
                             }
                         }
                     }                    
@@ -55,6 +48,19 @@ class StockGraph {
             }
             this.graph = new Chart(ctx, graphData);
         });
+    }
+
+    dateToString(D, full) {
+        const month = D.getMonth() + 1;
+        const day = (D.getDate()+"").padStart(2,"0");
+        const year = D.getFullYear() % 1000;
+        const hour = D.getHours();
+        const min = (D.getMinutes()+"").padStart(2,"0");
+        if (full || this.timeseries == "ONE_DAY" || this.timeseries == "FIVE_DAY") {
+            return `${month}/${day}/${year} ${hour}:${min}`;
+        } else {
+           return `${month}/${day}/${year}`;
+        }
     }
 
     getData(params, callback) {
@@ -66,7 +72,7 @@ class StockGraph {
             let c = 0;
 
             for(let p of resData) {
-                if(p[0] - last > 1000 && (this.timeseries == "ONE_DAY" || this.timeseries == "FIVE_DAY")) {
+                if(p[0] - last > 3000 && (this.timeseries == "ONE_DAY" || this.timeseries == "FIVE_DAY")) {
                     pastData.push({x: NaN, y: NaN})
                 }
                 last = p[0];

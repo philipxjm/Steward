@@ -2,6 +2,10 @@
 <#assign js="/js/dashboard.js">
 <#assign css="/css/index.css">
 <#assign content>
-<p>Dashboard</p>
+<div class="container">
+<div class="row">
+<div class="background-color:blue"></div>
+</div>
+</div>
 </#assign>
 <#include "main.ftl">

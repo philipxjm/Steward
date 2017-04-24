@@ -2,7 +2,7 @@
 <#assign content>
 <div class="container">
   <div class="row">
-    <h1>About StockTracker</h1>
+    <h1>About Steward</h1>
   </div>
   <!-- Example row of columns -->
   <div id="portfolio" class="row">
