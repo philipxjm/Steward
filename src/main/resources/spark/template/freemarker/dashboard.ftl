@@ -4,7 +4,6 @@
 <#assign content>
 <div class="container">
 <div class="row">
-<div class="background-color:blue"></div>
 </div>
 </div>
 </#assign>

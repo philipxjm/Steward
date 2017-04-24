@@ -10,11 +10,7 @@ class StockGraph {
             const graphData = {
                 type: 'line',
                 data: {
-                    datasets: [{
-                        label: 'Stock Prices',
-                        data: this.data,
-                        borderColor: 'red'
-                    }]
+                    datasets: [this.makeDataSet()]
                 },
                 options: {
                     legend: false,
@@ -89,19 +85,26 @@ class StockGraph {
         });
     }
 
+    makeDataSet() {
+        return {
+                label: 'Stock Prices',
+                data: this.data,
+                pointBorderColor: "black",
+                pointBackgroundColor: "rgba(0,0,0,0)",
+                pointRadius: 2,
+                cubicInterpolationMode: "monotone"
+        };
+    }
+
     changeTimeseries(timeseries) {
         this.timeseries = timeseries;
         const params = {
             "ticker" : this.ticker,
             "timeseries" : this.timeseries
         }
-        this.getData(params, data => {
-            this.graph.data.datasets.pop();
-            this.graph.data.datasets.push({
-                label: 'Stock Prices',
-                data: this.data,
-                borderColor: 'red'
-            });
+        this.getData(params, () => {
+            let dataset = this.graph.data.datasets.pop();
+            this.graph.data.datasets.push(this.makeDataSet());
             this.graph.update();            
         });
     }
