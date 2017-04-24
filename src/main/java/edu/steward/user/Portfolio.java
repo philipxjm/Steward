@@ -13,7 +13,6 @@ public class Portfolio {
     this.portfolioId = portfolioId;
     holdings = new ArrayList<>();
     // TODO: Load in holdings from db
-
   }
 
   public List<Holding> getHoldings() {

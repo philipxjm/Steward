@@ -25,6 +25,8 @@ public class User {
     port.addHolding(new Holding("TSLA", 23));
     portfolios.put("test", port);
     // TODO: Load in portfolios from db
+
+
   }
 
   public String getId() {
