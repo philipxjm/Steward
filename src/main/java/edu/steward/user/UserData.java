@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by kjin on 4/24/17.
  */
-public class userData {
+public class UserData {
 
   private static String dbloc = "";
   private static String url = "jdbc:sqlite:" + dbloc;
