@@ -13,3 +13,8 @@
 .header {
 	margin-bottom: 10px;
 }
+
+#portErr {
+	margin-bottom: 0;
+	margin-top: 5px;
+}
