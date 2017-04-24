@@ -10,33 +10,33 @@
           </div>
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary active time">
-              <input type="radio" name="timespan" id="ONE_DAY" autocomplete="off" checked>One Day
+              <input type="radio" name="timespan" portfolioId="ONE_DAY" autocomplete="off" checked>One Day
             </label>
             <label class="btn btn-primary time">
-              <input type="radio" name="timespan" id="FIVE_DAY" autocomplete="off">Five Day
+              <input type="radio" name="timespan" portfolioId="FIVE_DAY" autocomplete="off">Five Day
             </label>
             <label class="btn btn-primary time">
-              <input type="radio" name="timespan" id="ONE_MONTH" autocomplete="off">One Month
+              <input type="radio" name="timespan" portfolioId="ONE_MONTH" autocomplete="off">One Month
             </label>
             <label class="btn btn-primary time">
-              <input type="radio" name="timespan" id="SIX_MONTH" autocomplete="off">Six Month
+              <input type="radio" name="timespan" portfolioId="SIX_MONTH" autocomplete="off">Six Month
             </label>
             <label class="btn btn-primary time">
-              <input type="radio" name="timespan" id="ONE_YEAR" autocomplete="off">One Year
+              <input type="radio" name="timespan" portfolioId="ONE_YEAR" autocomplete="off">One Year
             </label>   
             <label class="btn btn-primary time">
-              <input type="radio" name="timespan" id="TWO_YEAR" autocomplete="off">Two Year
+              <input type="radio" name="timespan" portfolioId="TWO_YEAR" autocomplete="off">Two Year
             </label>                   
             <label class="btn btn-primary time">
-              <input type="radio" name="timespan" id="FIVE_YEAR" autocomplete="off">Five Year
+              <input type="radio" name="timespan" portfolioId="FIVE_YEAR" autocomplete="off">Five Year
             </label>
             <label class="btn btn-primary time">
-              <input type="radio" name="timespan" id="TEN_YEAR" autocomplete="off">Ten Year
+              <input type="radio" name="timespan" portfolioId="TEN_YEAR" autocomplete="off">Ten Year
             </label>            
           </div>
           <div class="row row-second">
-            <div id="graph-wrapper">
-              <canvas id="graph"></canvas>
+            <div portfolioId="graph-wrapper">
+              <canvas portfolioId="graph"></canvas>
             </div>
           </div>
           <div class="row row-third justify-content-start">

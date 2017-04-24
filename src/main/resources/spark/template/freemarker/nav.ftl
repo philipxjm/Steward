@@ -10,17 +10,17 @@
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
             <#if user??>
-            <div id="user" class="dropdown">
-              <button id="username" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div portfolioId="user" class="dropdown">
+              <button portfolioId="username" class="btn btn-secondary dropdown-toggle" type="button" portfolioId="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 ${user}
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" onclick="onSignOut()" href="#">Sign Out</a>
               </div>
             </div>
-            <span id="login" style="display:none" class="nav-link g-signin2" data-onsuccess="onSignIn"></span>
+            <span portfolioId="login" style="display:none" class="nav-link g-signin2" data-onsuccess="onSignIn"></span>
             <#else>
-              <div id="login" style="padding:0;" class="nav-link g-signin2" data-onsuccess="onSignIn"></div>
+              <div portfolioId="login" style="padding:0;" class="nav-link g-signin2" data-onsuccess="onSignIn"></div>
             </#if>
         </li>
     </ul>

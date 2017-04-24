@@ -6,7 +6,7 @@
 4. [getStocksForUser](#getStocksForUser)
 5. [addStockForUser](#addStockForUser)
 
-<span id="getStockData"></span>
+<span portfolioId="getStockData"></span>
 ## getStockData
 
 ### Parameters
@@ -25,7 +25,7 @@
 }
 ```
 
-<span id="getStockEssentials"></span>
+<span portfolioId="getStockEssentials"></span>
 ## getStockEssentials
 
 ### Parameters
@@ -53,7 +53,7 @@
 }
 ```
 
-<span id="getPredData"></span>
+<span portfolioId="getPredData"></span>
 ## getPredData
 
 ### Parameters
@@ -70,7 +70,7 @@
 }
 ```
 
-<span id="getStocksForUser"></span>
+<span portfolioId="getStocksForUser"></span>
 ## getStocksForUser
 
 ### Parameters
@@ -87,7 +87,7 @@
 }
 ```
 
-<span id="addStockForUser"></span>
+<span portfolioId="addStockForUser"></span>
 ## addStockForUser
 
 ### Parameters

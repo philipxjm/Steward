@@ -329,7 +329,7 @@ public class AlphaVantageAPI implements StockAPI {
     Long cutoffTime;
     switch (t) {
       case ONE_DAY:
-        cutoffTime = (prices.get(0).getTime() % 34200);
+        cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 34200);
         for (Price p : prices) {
           if (p.getTime() >= cutoffTime) {
             ret.add(p);
@@ -354,7 +354,7 @@ public class AlphaVantageAPI implements StockAPI {
         }
         break;
       case ONE_MONTH:
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 24; i++) {
           System.out.println("yeee:" + i);
           ret.add(prices.get(i));
         }

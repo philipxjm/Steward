@@ -16,7 +16,7 @@
   <body>
   	<#include "nav.ftl">
     ${content}
-	<div id="footer" class="container">
+	<div portfolioId="footer" class="container">
 		<hr>
 		<footer>
 		  <p>&copy; Steward 2017</p>
