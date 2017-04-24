@@ -23,7 +23,7 @@ public class AddPortfolioHandler implements Route {
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String portfolioName = qm.value("name");
-    Portfolio newPortfolio = new Portfolio(portfolioName);
+    Portfolio newPortfolio = new Portfolio(portfolioName, user + "/" + portfolioName);
     return GSON.toJson(user.addPortfolio(newPortfolio));
   }
 }

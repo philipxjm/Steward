@@ -1,24 +1,21 @@
 package edu.steward.user;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Portfolio {
   private String name;
+  private String id;
   private List<Holding> holdings;
-  private Connection conn;
-  private String uniqueId;
 
-  public Portfolio(String name) {
+  public Portfolio(String name, String id) {
     this.name = name;
+    this.id = id;
     holdings = new ArrayList<>();
     // TODO: Load in holdings from db
   }
 
   public List<Holding> getHoldings() {
-    if (holdings.isEmpty()) {
-    }
     return holdings;
   }
 
