@@ -22,6 +22,7 @@ public class StockHandler implements TemplateViewRoute {
 
     ImmutableMap.Builder<Object, Object> variables = new ImmutableMap.Builder<>();
     List<Fundamental> fundamentals = stock.getStockFundamentals();
+
     variables.put("ticker", ticker);
     String user = req.session().attribute("user");
     if (user != null) {
