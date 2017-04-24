@@ -15,18 +15,7 @@ public class User {
   public User(String id) {
     hashedId = id;
     portfolios = new HashMap<>();
-    // This is mock
-    Portfolio port = new Portfolio("default", "");
-    port.addHolding(new Holding("FB", 12));
-    port.addHolding(new Holding("SNAP", 43));
-    portfolios.put("default", port);
-    port = new Portfolio("test", "");
-    port.addHolding(new Holding("AAPL", 10));
-    port.addHolding(new Holding("TSLA", 23));
-    portfolios.put("test", port);
     // TODO: Load in portfolios from db
-
-
   }
 
   public String getId() {
@@ -40,6 +29,7 @@ public class User {
       for (Portfolio port : ret) {
         portfolios.put(port.getName(), port);
       }
+      System.out.println(ret);
       return ret;
     }
     for (Portfolio port : portfolios.values()) {

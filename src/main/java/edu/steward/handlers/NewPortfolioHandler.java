@@ -19,7 +19,8 @@ public class NewPortfolioHandler implements Route {
 
   @Override
   public Object handle(Request req, Response res) {
-    String userId = req.session().attribute("user");
+    String userId = req.session().attribute("id");
+    System.out.println(userId);
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String portfolioName = qm.value("name");

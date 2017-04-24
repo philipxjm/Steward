@@ -1,5 +1,6 @@
 package edu.steward.handlers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,10 @@ public class IndexHandler implements TemplateViewRoute {
       String id = req.session().attribute("id");
       User user = new User(id);
       List<Portfolio> portNames = user.getPortfolios();
-      List<Holding> stocks = portNames.get(0).getHoldings();
+      List<Holding> stocks = new ArrayList<>();
+      if (!portNames.isEmpty()) {
+        stocks = portNames.get(0).getHoldings();
+      }
 
       Map<String, Object> variables = ImmutableMap.of("title", "Dashboard",
           "user", name, "portfolios", portNames, "stocks", stocks);

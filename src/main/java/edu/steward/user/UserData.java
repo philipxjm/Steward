@@ -9,13 +9,14 @@ import java.util.List;
  */
 public class UserData {
 
-  private static String dbloc = "";
+  private static String dbloc = "data/users.sqlite3";
   private static String url = "jdbc:sqlite:" + dbloc;
 
   public static List<Portfolio> getPortfoliosFromUser(String userId) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
         + "WHERE UserId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
+    System.out.println("id: " + userId);
     try (Connection c = DriverManager.getConnection(url)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -27,6 +28,7 @@ public class UserData {
             String id = rs.getString(2);
             Portfolio port = new Portfolio(name, id);
             portfolios.add(port);
+            System.out.println(id);
           }
         } catch (SQLException e) {
           e.printStackTrace();
