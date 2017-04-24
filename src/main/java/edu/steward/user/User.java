@@ -43,7 +43,11 @@ public class User {
     return portfolios.get(name);
   }
 
-  public void addPorfolio(Portfolio port) {
-    portfolios.put(port.getName(), port);
+  public boolean addPortfolio(Portfolio port) {
+    if (portfolios.get(port.getName()) == null) {
+      portfolios.put(port.getName(), port);
+      return true;
+    }
+    return false;
   }
 }

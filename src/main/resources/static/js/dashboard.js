@@ -1,13 +1,3 @@
-function newPortfolio (int, str) {
-	$.post("/addPortfolio", {index : int, name : str});
-}
-
-function getPortfolios () {
-	$.post("/portfolios", {}, responseJSON => {
-		console.log(responseJSON);
-	});
-}
-
 // Click handler for potfolio
 $('.port').click((e) => {
     $('.port').removeClass("active");

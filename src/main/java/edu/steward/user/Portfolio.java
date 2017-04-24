@@ -1,11 +1,14 @@
 package edu.steward.user;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Portfolio {
   private String name;
   private List<Holding> holdings;
+  private Connection conn;
+  private String uniqueId;
 
   public Portfolio(String name) {
     this.name = name;
@@ -14,6 +17,8 @@ public class Portfolio {
   }
 
   public List<Holding> getHoldings() {
+    if (holdings.isEmpty()) {
+    }
     return holdings;
   }
 
