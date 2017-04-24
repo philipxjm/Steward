@@ -1,4 +1,3 @@
-
 function newPortfolio (int, str) {
 	$.post("/addPortfolio", {index : int, name : str});
 }
@@ -8,6 +7,14 @@ function getPortfolios () {
 		console.log(responseJSON);
 	});
 }
+
+$('.port').click((e) => {
+    $('.port').removeClass("active");
+    $(e.target).addClass("active");
+    // TODO: Get stocks & update graph
+});
+
+// TODO initialize graph
 
 let ctx = $('#gains');
 
