@@ -1,36 +1,52 @@
-// Click handler for potfolio
-$('.port').click((e) => {
+const portfolioClickHandler = (e) => {
     $('.port').removeClass("active");
     $(e.target).addClass("active");
     $.post('/getPortfolio', {name: e.target.innerText}, (resJson) => {
+        console.log("HERE");
         let data = JSON.parse(resJson);
         $('#stocks').empty();
         // Add stocks
         for (let i = 0; i < data.length; i++) {
             let ticker = data[i]["ticker"];
             let shares = data[i]["shares"];
-            $('#stocks').append(`<div class="list-group-item list-group-item-action stock">${ticker} ${shares}</div>`)
+            $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`)
         }
     });
-    // TODO: Get stocks & update graph
-});
+    // TODO: Update graph
+}
+
+// Click handler for potfolio
+$('.port').click(portfolioClickHandler);
 
 // TODO: initialize graph
 
 // Add portfolio button
 $('#addPort').click((e) => {
     if($('#newPort').length == 0) {
-        $('#ports').append('<div class="list-group-item list-group-item-action port"><input id="newPort" type="text"></div>');
+        $('#ports').append('<div class="list-group-item list-group-item-action port newPort"><input id="newPort" type="text"><p id="portErr" class="text-danger"></p></div>');
         let inputDiv = $('#newPort').parent();
         $('#newPort').keydown((e) => {
             if (e.keyCode == 13) { // Enter
                 e.preventDefault();
                 let name = $(e.target).val();
                 if (name) {
-                    // if name in list => error
-                    // else create
-                    // TODO: Add new port w name
+                    $.post('/newPortfolio', {name: name}, (res) => {
+                        let resData = JSON.parse(res);
+                        if (!resData) {
+                            console.log($('#portErr').val());
+                            $('#portErr')[0].innerText = "That portfolio already exists";
+                        } else {
+                            $('.port').removeClass("active");
+                            let newPort = $('.newPort')
+                            newPort.click(portfolioClickHandler);
+                            newPort.removeClass('newPort');
+                            newPort.addClass('active');
+                            newPort.empty();
+                            newPort.append(name);
 
+                            $('#stocks').empty();
+                        }
+                    });
                 } else {
                     // Remove
                    inputDiv.remove();

@@ -29,4 +29,5 @@ public class Price extends Fundamental {
   public String getType() {
     return "Price";
   }
+
 }

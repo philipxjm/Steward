@@ -13,7 +13,7 @@ import spark.Route;
  * 
  * Created by kjin on 4/23/17.
  */
-public class AddPortfolioHandler implements Route {
+public class NewPortfolioHandler implements Route {
 
   Gson GSON = new Gson();
 

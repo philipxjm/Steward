@@ -9,12 +9,12 @@ import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 
 import edu.steward.handlers.AboutHandler;
-import edu.steward.handlers.AddPortfolioHandler;
 import edu.steward.handlers.GetGraphDataHandler;
 import edu.steward.handlers.GetPortfolioHandler;
 import edu.steward.handlers.IndexHandler;
 import edu.steward.handlers.LoginHandler;
 import edu.steward.handlers.LogoutHandler;
+import edu.steward.handlers.NewPortfolioHandler;
 import edu.steward.handlers.StockHandler;
 import edu.steward.login.LoginConfigFactory;
 import freemarker.template.Configuration;
@@ -78,7 +78,7 @@ public class Main {
 
     // Spark routes
     Spark.get("/", new IndexHandler(), freeMarker);
-    Spark.post("/newPortfolio", new AddPortfolioHandler());
+    Spark.post("/newPortfolio", new NewPortfolioHandler());
     Spark.post("/getPortfolio", new GetPortfolioHandler());
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataHandler());
