@@ -9,7 +9,7 @@ $('.port').click((e) => {
         for (let i = 0; i < data.length; i++) {
             let ticker = data[i]["ticker"];
             let shares = data[i]["shares"];
-            $('#stocks').append(`<div class="list-group-item list-group-item-action stock">${ticker} ${shares}</div>`)
+            $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`)
         }
     });
     // TODO: Get stocks & update graph
@@ -20,17 +20,26 @@ $('.port').click((e) => {
 // Add portfolio button
 $('#addPort').click((e) => {
     if($('#newPort').length == 0) {
-        $('#ports').append('<div class="list-group-item list-group-item-action port"><input id="newPort" type="text"></div>');
+        $('#ports').append('<div class="list-group-item list-group-item-action port newPort"><input id="newPort" type="text"><p id="portErr" class="text-danger"></p></div>');
         let inputDiv = $('#newPort').parent();
         $('#newPort').keydown((e) => {
             if (e.keyCode == 13) { // Enter
                 e.preventDefault();
                 let name = $(e.target).val();
                 if (name) {
-                    // if name in list => error
-                    // else create
-                    // TODO: Add new port w name
-
+                    $.post('/newPortfolio', {name: name}, (res) => {
+                        let resData = JSON.parse(res);
+                        if (!resData) {
+                            console.log($('#portErr').val());
+                            $('#portErr')[0].innerText = "That portfolio already exists";
+                        } else {
+                            let newPort = $('.newPort')
+                            newPort.removeClass('newPort');
+                            newPort.empty();
+                            newPort.append(name);
+                            $('#stocks').empty();
+                        }
+                    });
                 } else {
                     // Remove
                    inputDiv.remove();
