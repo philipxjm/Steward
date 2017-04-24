@@ -48,7 +48,7 @@ public class AlphaVantageAPI implements StockAPI {
           rawData = getFromAlphaVantage(
                   ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
-                  AlphaVantageConstants.INTERVAL.FIFTEEN_MIN,
+                  AlphaVantageConstants.INTERVAL.THIRTY_MIN,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
