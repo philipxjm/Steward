@@ -50,7 +50,7 @@
                       <#if fund_index % 2 == 0>
                        </tr><tr>
                       </#if>
-                      <td>${fund.type}</td> <td>${fund.value}</td>
+                      <td>${fund.type}</td> <td>${fund.niceValue}</td>
                  </#list>
                 </tr>
               </table>

@@ -3,7 +3,7 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/22/17.
  */
-public class Dividend implements Fundamental<Dividend> {
+public class Dividend extends Fundamental {
   private double dividend;
 
   public Dividend(double dividend) {
