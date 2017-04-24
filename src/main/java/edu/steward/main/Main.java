@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
 
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
@@ -17,10 +16,6 @@ import edu.steward.handlers.LoginHandler;
 import edu.steward.handlers.LogoutHandler;
 import edu.steward.handlers.StockHandler;
 import edu.steward.login.LoginConfigFactory;
-import edu.steward.stock.Fundamentals.Price;
-import edu.steward.stock.api.AlphaVantageAPI;
-import edu.steward.stock.api.StockAPI;
-import edu.steward.stock.api.YahooFinanceAPI;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -47,25 +42,6 @@ public class Main {
 
   private void run() {
     // Parse command line arguments
-
-    AlphaVantageAPI api = new AlphaVantageAPI();
-    List<Price> prices = api.getStockPrices("AAPL",
-        StockAPI.TIMESERIES.ONE_YEAR);
-    int counter = 0;
-    for (Price p : prices) {
-      counter++;
-      System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
-    }
-    System.out.println(counter);
-
-    new YahooFinanceAPI().func();
-    //
-    // List<Fundamental> fundamentals = new
-    // Stock("AAPL").getStockFundamentals();
-    // for (Fundamental fundamental : fundamentals) {
-    // System.out.println(fundamental.toString() + ": " +
-    // fundamental.getValue());
-    // }
 
     OptionParser parser = new OptionParser();
     parser.accepts("gui");

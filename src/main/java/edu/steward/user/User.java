@@ -1,81 +1,49 @@
 package edu.steward.user;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import edu.steward.stock.Stock;
+import java.util.Map;
 
 /**
  * Created by Philip on 4/16/17.
  */
 public class User {
-  private List<Stock> portfolio;
-  private List<Stock> watchlist;
+  private Map<String, Portfolio> portfolios;
   private String hashedId;
-
-  public static User getUserForId(String id) {
-    User ret = new User(id);
-    // TODO: Add some mock stuff here
-    return ret;
-  }
 
   public User(String id) {
     hashedId = id;
+    portfolios = new HashMap<>();
+    // This is mock
+    Portfolio port = new Portfolio("default");
+    port.addHolding(new Holding("FB", 12));
+    port.addHolding(new Holding("SNAP", 43));
+    portfolios.put("default", port);
+    port = new Portfolio("test");
+    port.addHolding(new Holding("AAPL", 10));
+    port.addHolding(new Holding("TSLA", 23));
+    portfolios.put("test", port);
+    // TODO: Load in portfolios from db
   }
 
-  public void setPortfolio(List<Stock> portfolio) {
-    this.portfolio = portfolio;
+  public String getId() {
+    return hashedId;
   }
 
-  public void setWatchlist(List<Stock> watchlist) {
-    this.watchlist = watchlist;
-  }
-
-  public List<Stock> getPortfolio() {
-    return portfolio;
-  }
-
-  public List<Stock> getWatchlist() {
-    return watchlist;
-  }
-
-  public boolean addStockToPortfolio(String ticker) {
-    Stock toBeAdded = new Stock(ticker);
-    if (!portfolio.contains(ticker)) {
-      portfolio.add(toBeAdded);
-      return true;
-    } else {
-      return false;
+  public List<Portfolio> getPortfolios() {
+    List<Portfolio> ret = new ArrayList<>();
+    for (Portfolio port : portfolios.values()) {
+      ret.add(port);
     }
+    return ret;
   }
 
-  public boolean removeStockFromPortfolio(String ticker) {
-    Stock toBeRemoved = new Stock(ticker);
-    if (portfolio.contains(toBeRemoved)) {
-      portfolio.remove(toBeRemoved);
-      return true;
-    } else {
-      return false;
-    }
+  public Portfolio getPortfolio(String name) {
+    return portfolios.get(name);
   }
 
-  public boolean addStockToWatchlist(String ticker) {
-    Stock toBeAdded = new Stock(ticker);
-    if (!watchlist.contains(ticker)) {
-      watchlist.add(toBeAdded);
-      return true;
-    } else {
-      return false;
-    }
+  public void addPorfolio(Portfolio port) {
+    portfolios.put(port.getName(), port);
   }
-
-  public boolean removeStockFromWatchlist(String ticker) {
-    Stock toBeRemoved = new Stock(ticker);
-    if (watchlist.contains(toBeRemoved)) {
-      watchlist.remove(toBeRemoved);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
 }

@@ -1,9 +1,13 @@
 package edu.steward.handlers;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import edu.steward.user.Holding;
+import edu.steward.user.Portfolio;
+import edu.steward.user.User;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -18,11 +22,17 @@ import spark.TemplateViewRoute;
 public class IndexHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {
-    String user = req.session().attribute("user");
-    boolean loggedIn = user != null;
+    String name = req.session().attribute("user");
+
+    boolean loggedIn = name != null;
     if (loggedIn) {
-      Map<String, String> variables = ImmutableMap.of("title", "Dashboard",
-          "user", user);
+      String id = req.session().attribute("id");
+      User user = new User(id);
+      List<Portfolio> portNames = user.getPortfolios();
+      List<Holding> stocks = portNames.get(0).getHoldings();
+
+      Map<String, Object> variables = ImmutableMap.of("title", "Dashboard",
+          "user", name, "portfolios", portNames, "stocks", stocks);
       return new ModelAndView(variables, "dashboard.ftl");
     } else {
       Map<String, String> variables = ImmutableMap.of("title", "Steward");

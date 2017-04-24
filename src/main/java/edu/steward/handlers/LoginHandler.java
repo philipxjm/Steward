@@ -16,7 +16,7 @@ public class LoginHandler implements Route {
   public Object handle(Request request, Response response) {
     QueryParamsMap qm = request.queryMap();
     request.session().attribute("user", qm.value("name"));
-    request.session().attribute("user", qm.value("id"));
+    request.session().attribute("id", qm.value("id"));
 
     return "";
   }

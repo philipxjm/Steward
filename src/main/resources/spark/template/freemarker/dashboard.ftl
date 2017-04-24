@@ -9,9 +9,9 @@
             Portfolios <button type="button" class="btn float-right btn-secondary btn-sm">+</button>
           </div>
         	<div class="list-group expand">
-	  		   	<div class="list-group-item list-group-item-action active">Portfolio 1</div>
-	  		   	<div class="list-group-item list-group-item-action">Portfolio 2</div>
-	  		   	<div class="list-group-item list-group-item-action">Portfolio 3</div>
+            <#list portfolios as port>
+	  		   	 <div class="list-group-item list-group-item-action <#if port_index == 0>active</#if>">${port.name}</div>
+            </#list>
   			  </div>
         </div>
         <div class="col-6">
@@ -22,9 +22,9 @@
             Stocks <button type="button" class="btn float-right btn-secondary btn-sm">+</button>
           </div>
         	<div class="list-group expand">
-	  			  <div class="list-group-item list-group-item-action">Stocks 1</div>
-	  			  <div class="list-group-item list-group-item-action">Stocks 2</div>
-	  			  <div class="list-group-item list-group-item-action">Stocks 3</div>
+            <#list stocks as stock>
+	  			    <a href="/stock/${stock.ticker}" class="list-group-item list-group-item-action">${stock.ticker} ${stock.shares}</a>
+            </#list>
   			  </div>
         </div>
 </div>

@@ -40,7 +40,7 @@ public class YahooFinanceAPI implements StockAPI {
     Stock stock = YahooFinance.get(ticker);
 
     // If not on NMS stock exchange, presume it's a bad ticker and return null
-    if (!stock.getStockExchange().equals("NMS")) {
+    if (stock.getStockExchange().equals("N/A")) {
       return null;
     }
 
