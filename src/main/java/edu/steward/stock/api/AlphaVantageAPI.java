@@ -54,7 +54,7 @@ public class AlphaVantageAPI implements StockAPI {
           timeSeriesData =
                   parseAlphaVantage(
                           rawData,
-                          AlphaVantageConstants.INTERVAL.FIFTEEN_MIN);
+                          AlphaVantageConstants.INTERVAL.THIRTY_MIN);
           break;
         case ONE_MONTH:
           rawData = getFromAlphaVantage(
