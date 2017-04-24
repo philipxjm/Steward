@@ -1,4 +1,4 @@
-<#assign css="/css/index.css">
+<#assign css="/css/about.css">
 <#assign content>
 <div class="container">
   <div class="row">
