@@ -1,8 +1,8 @@
-// Click handler for potfolio
-$('.port').click((e) => {
+const portfolioClickHandler = (e) => {
     $('.port').removeClass("active");
     $(e.target).addClass("active");
     $.post('/getPortfolio', {name: e.target.innerText}, (resJson) => {
+        console.log("HERE");
         let data = JSON.parse(resJson);
         $('#stocks').empty();
         // Add stocks
@@ -12,8 +12,11 @@ $('.port').click((e) => {
             $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`)
         }
     });
-    // TODO: Get stocks & update graph
-});
+    // TODO: Update graph
+}
+
+// Click handler for potfolio
+$('.port').click(portfolioClickHandler);
 
 // TODO: initialize graph
 
@@ -33,10 +36,14 @@ $('#addPort').click((e) => {
                             console.log($('#portErr').val());
                             $('#portErr')[0].innerText = "That portfolio already exists";
                         } else {
+                            $('.port').removeClass("active");
                             let newPort = $('.newPort')
+                            newPort.click(portfolioClickHandler);
                             newPort.removeClass('newPort');
+                            newPort.addClass('active');
                             newPort.empty();
                             newPort.append(name);
+
                             $('#stocks').empty();
                         }
                     });

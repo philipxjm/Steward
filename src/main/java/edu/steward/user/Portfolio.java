@@ -17,8 +17,6 @@ public class Portfolio {
   }
 
   public List<Holding> getHoldings() {
-    if (holdings.isEmpty()) {
-    }
     return holdings;
   }
 

@@ -8,10 +8,8 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 
-import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.Stock;
-import edu.steward.stock.api.AlphaVantageAPI;
-import edu.steward.stock.api.StockAPI;
+import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.StockAPI.TIMESERIES;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -47,7 +45,7 @@ public class GetGraphDataHandler implements Route {
 
     List<List<Object>> ret = new ArrayList<>();
     for (Price p : prices) {
-      System.out.println(p.getTime() +", " + p.getValue());
+      System.out.println(p.getTime() + ", " + p.getValue());
       ret.add(ImmutableList.of((Object) p.getTime(), (Object) p.getValue()));
     }
 
