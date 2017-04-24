@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Portfolio {
   private String name;
-  private String id;
+  private String portfolioId;
   private List<Holding> holdings;
 
-  public Portfolio(String name, String id) {
+  public Portfolio(String name, String portfolioId) {
     this.name = name;
-    this.id = id;
+    this.portfolioId = portfolioId;
     holdings = new ArrayList<>();
     // TODO: Load in holdings from db
   }

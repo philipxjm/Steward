@@ -325,11 +325,12 @@ public class AlphaVantageAPI implements StockAPI {
   }
 
   private List<Price> priceIntervalClean(List<Price> prices, TIMESERIES t) {
+    int size = prices.size();
     List<Price> ret = new ArrayList<>();
     Long cutoffTime;
     switch (t) {
       case ONE_DAY:
-        cutoffTime = (prices.get(0).getTime() % 34200);
+        cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 34200);
         for (Price p : prices) {
           if (p.getTime() >= cutoffTime) {
             ret.add(p);
@@ -354,23 +355,23 @@ public class AlphaVantageAPI implements StockAPI {
         }
         break;
       case ONE_MONTH:
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < Math.min(24, size); i++) {
           System.out.println("yeee:" + i);
           ret.add(prices.get(i));
         }
         break;
       case SIX_MONTH:
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < Math.min(26, size); i++) {
           ret.add(prices.get(i));
         }
         break;
       case ONE_YEAR:
-        for (int i = 0; i < 52; i++) {
+        for (int i = 0; i < Math.min(52, size); i++) {
           ret.add(prices.get(i));
         }
         break;
       case TWO_YEAR:
-        for (int i = 0; i < 104; i++) {
+        for (int i = 0; i < Math.min(104, size); i++) {
           System.out.println(i + ": " + prices.get(i).getTime());
           System.out.println(i + ": " + prices.get(i).getValue());
 
@@ -378,12 +379,12 @@ public class AlphaVantageAPI implements StockAPI {
         }
         break;
       case FIVE_YEAR:
-        for (int i = 0; i < 260; i++) {
+        for (int i = 0; i < Math.min(260, size); i++) {
           ret.add(prices.get(i));
         }
         break;
       case TEN_YEAR:
-        for (int i = 0; i < 120; i++) {
+        for (int i = 0; i < Math.min(120, size); i++) {
           ret.add(prices.get(i));
         }
         break;
