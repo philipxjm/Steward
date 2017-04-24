@@ -8,7 +8,7 @@ import spark.Route;
 /**
  * Created by kjin on 4/23/17.
  */
-public class addPortfolioHandler implements Route {
+public class AddPortfolioHandler implements Route {
 
   @Override
   public Object handle(Request req, Response res) {

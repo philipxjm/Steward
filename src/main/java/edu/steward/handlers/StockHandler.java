@@ -13,7 +13,7 @@ import spark.Request;
 import spark.Response;
 import spark.TemplateViewRoute;
 
-public class StockMock implements TemplateViewRoute {
+public class StockHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {
     String ticker = req.params(":ticker").toUpperCase();

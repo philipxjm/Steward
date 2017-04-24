@@ -9,7 +9,7 @@ import spark.Request;
 import spark.Response;
 import spark.TemplateViewRoute;
 
-public class DashboardMock implements TemplateViewRoute {
+public class DashboardHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {
     String user = req.session().attribute("user");

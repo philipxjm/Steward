@@ -96,10 +96,10 @@ public class Main {
 
     // Spark routes
     Spark.get("/", new IndexHandler(), freeMarker);
-    Spark.post("/newPortfolio", new addPortfolioHandler());
+    Spark.post("/newPortfolio", new AddPortfolioHandler());
     Spark.get("/about", new AboutHandler(), freeMarker);
-    Spark.post("/getGraphData", new GetGraphDataMock());
-    Spark.get("/stock/:ticker", new StockMock(), freeMarker);
+    Spark.post("/getGraphData", new GetGraphDataHandler());
+    Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
     Spark.get("/login", new LoginHandler());
     Spark.get("/logout", new LogoutHandler());
   }
