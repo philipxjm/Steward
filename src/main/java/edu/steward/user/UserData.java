@@ -58,4 +58,21 @@ public class UserData {
       e.printStackTrace();
     }
   }
+
+  public static void removePortfolio(String userId, String portName) {
+    String stat = "DELETE FROM UserPortfolios WHERE PortfolioId = ?;";
+    try (Connection c = DriverManager.getConnection(url)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(stat)) {
+        String portId = userId + "/" + portName;
+        prep.setString(1, portId);
+        prep.executeUpdate();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 }

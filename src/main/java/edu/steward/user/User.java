@@ -52,11 +52,23 @@ public class User {
     return portfolios.get(name);
   }
 
-  public boolean addPortfolio(Portfolio port) {
-    if (portfolios.get(port.getName()) == null) {
-      portfolios.put(port.getName(), port);
+  public boolean addPortfolio(String portName) {
+    if (portfolios.get(portName) == null) {
+      portfolios.put(portName, new Portfolio(portName, this.getId() + "/" +
+          portName));
+      UserData.createPortfolio(this.getId(), portName);
       return true;
     }
     return false;
+  }
+
+  public boolean removePortfolio(String portName) {
+    Portfolio port = portfolios.get(portName);
+    if (port == null) {
+      return false;
+    }
+    portfolios.remove(portName);
+    UserData.removePortfolio(this.getId(), portName);
+    return true;
   }
 }
