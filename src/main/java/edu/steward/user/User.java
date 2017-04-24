@@ -1,8 +1,8 @@
 package edu.steward.user;
 
-import edu.steward.stock.Stock;
-
 import java.util.List;
+
+import edu.steward.stock.Stock;
 
 /**
  * Created by Philip on 4/16/17.
@@ -11,6 +11,12 @@ public class User {
   private List<Stock> portfolio;
   private List<Stock> watchlist;
   private String hashedId;
+
+  public static User getUserForId(String id) {
+    User ret = new User(id);
+    // TODO: Add some mock stuff here
+    return ret;
+  }
 
   public User(String id) {
     hashedId = id;

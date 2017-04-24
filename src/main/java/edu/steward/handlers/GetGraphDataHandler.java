@@ -1,6 +1,5 @@
 package edu.steward.handlers;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,12 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * API end point for getting stock price data to graph for the given timeseries.
+ * 
+ * @author wpovell
+ *
+ */
 public class GetGraphDataHandler implements Route {
 
   private static final Gson GSON = new Gson();

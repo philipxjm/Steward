@@ -9,6 +9,12 @@ import spark.Request;
 import spark.Response;
 import spark.TemplateViewRoute;
 
+/**
+ * Serves up landing page if logged in, dashboard otherwise.
+ * 
+ * @author wpovell
+ *
+ */
 public class IndexHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {

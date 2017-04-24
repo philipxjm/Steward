@@ -8,6 +8,6 @@ public interface Fundamental<T extends Fundamental> {
   public Double getValue();
 
   public Long getTime();
-  
+
   public String getType();
 }

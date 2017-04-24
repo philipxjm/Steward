@@ -6,6 +6,8 @@ import spark.Response;
 import spark.Route;
 
 /**
+ * API end point for adding a portfolio for a given user.
+ * 
  * Created by kjin on 4/23/17.
  */
 public class AddPortfolioHandler implements Route {

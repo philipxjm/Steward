@@ -13,6 +13,11 @@ import spark.Request;
 import spark.Response;
 import spark.TemplateViewRoute;
 
+/**
+ * Serves up stock page for given ticker, with related stock essentials.
+ * 
+ * @author wpovell
+ */
 public class StockHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {

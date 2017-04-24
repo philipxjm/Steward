@@ -1,13 +1,12 @@
 package edu.steward.handlers;
 
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.HashMap;
-
 /**
+ * Logs out user, removing data from session.
+ * 
  * Created by kjin on 4/23/17.
  */
 public class LogoutHandler implements Route {
@@ -15,6 +14,7 @@ public class LogoutHandler implements Route {
   @Override
   public Object handle(Request req, Response res) {
     req.session().removeAttribute("user");
+    req.session().removeAttribute("id");
     return "";
   }
 }

@@ -3,7 +3,6 @@ package edu.steward.stock;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import edu.steward.stock.Fundamentals.DailyChange;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Fundamentals.Price;
@@ -26,9 +25,9 @@ public class Stock {
     this.ticker = ticker;
   }
 
-//  TODO: Add getters for fundamentals using the StockAPI
+  // TODO: Add getters for fundamentals using the StockAPI
   public List<Price> getStockPrices(StockAPI.TIMESERIES timeseries) {
-//    TODO: Abstract this later on
+    // TODO: Abstract this later on
     setStockAPI(new AlphaVantageAPI());
     return stockAPI.getStockPrices(ticker, timeseries);
   }
@@ -74,4 +73,3 @@ public class Stock {
     return ticker.hashCode();
   }
 }
-
