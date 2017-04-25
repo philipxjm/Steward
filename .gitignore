@@ -1,6 +1,4 @@
 *.sqlite3
-data/*.csv
-data/technology/*
 
 ########
 # Java #
