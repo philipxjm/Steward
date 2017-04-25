@@ -13,6 +13,7 @@ import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.StockHandler;
 import edu.steward.handlers.json.GetGraphDataHandler;
 import edu.steward.handlers.json.GetPortfolioHandler;
+import edu.steward.handlers.json.GetUnrealizedDataHandler;
 import edu.steward.handlers.json.LoginHandler;
 import edu.steward.handlers.json.LogoutHandler;
 import edu.steward.handlers.json.NewPortfolioHandler;
@@ -84,6 +85,7 @@ public class Main {
     Spark.post("/stockAction", new StockActionHandler());
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataHandler());
+    Spark.post("/getUnrealizedData", new GetUnrealizedDataHandler());
     Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
     Spark.get("/login", new LoginHandler());
     Spark.get("/logout", new LogoutHandler());
