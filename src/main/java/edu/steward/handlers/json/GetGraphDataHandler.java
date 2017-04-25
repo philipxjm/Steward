@@ -41,14 +41,11 @@ public class GetGraphDataHandler implements Route {
       }
     });
 
-    System.out.println("timeseries: " + timeseries);
-
     List<List<Object>> ret = new ArrayList<>();
     for (Price p : prices) {
       System.out.println(p.getTime() + ", " + p.getValue());
       ret.add(ImmutableList.of((Object) p.getTime(), (Object) p.getValue()));
     }
-
     return GSON.toJson(ret);
   }
 }

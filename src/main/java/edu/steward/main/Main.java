@@ -16,6 +16,7 @@ import edu.steward.handlers.json.GetPortfolioHandler;
 import edu.steward.handlers.json.LoginHandler;
 import edu.steward.handlers.json.LogoutHandler;
 import edu.steward.handlers.json.NewPortfolioHandler;
+import edu.steward.handlers.json.StockActionHandler;
 import edu.steward.login.LoginConfigFactory;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -80,6 +81,7 @@ public class Main {
     Spark.get("/", new IndexHandler(), freeMarker);
     Spark.post("/newPortfolio", new NewPortfolioHandler());
     Spark.post("/getPortfolio", new GetPortfolioHandler());
+    Spark.post("/stockAction", new StockActionHandler());
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataHandler());
     Spark.get("/stock/:ticker", new StockHandler(), freeMarker);

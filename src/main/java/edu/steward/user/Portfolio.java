@@ -19,8 +19,14 @@ public class Portfolio {
     return holdings;
   }
 
-  public void addHolding(Holding hold) {
-    holdings.add(hold);
+  public boolean buyStock(String ticker, int shares) {
+    // TODO
+    return true;
+  }
+
+  public boolean sellStock(String ticker, int shares) {
+    // TODO
+    return true;
   }
 
   public String getName() {

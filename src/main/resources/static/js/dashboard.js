@@ -75,8 +75,20 @@ $('#addStock').click((e) => {
         ticker: ticker,
         shares: shares
     }
-    console.log(data);
-    $.post()
+    let valid = true; // TODO actually validate
+    if (valid) {
+        $.post('/stockAction', data, (res) => {
+            let success = JSON.parse(res);
+            if (success) {
+                $('#addStockModal').modal('hide');
+                // TODO update stocks
+            } else {
+                // TODO: Show error
+            }
+        });
+    } else {
+
+    }
     return false;
 });
 

@@ -8,27 +8,28 @@
         </button>
       </div>
       <div class="modal-body">
-          <!-- Buy/Sell Toggle -->
-          <div class="btn-group" data-toggle="buttons">
-            <label id="buy" class="btn btn-primary active">
-              <input type="radio" name="action" autocomplete="off" checked>Buy
-            </label>
-            <label id="sell" class="btn btn-primary">
-              <input type="radio" name="action" autocomplete="off">Sell
-            </label>
-          </div>
+          <form>
+            <!-- Buy/Sell Toggle -->
+            <div class="btn-group" data-toggle="buttons">
+              <label id="buy" class="btn btn-primary active">
+                <input type="radio" name="action" autocomplete="off" checked>Buy
+              </label>
+              <label id="sell" class="btn btn-primary">
+                <input type="radio" name="action" autocomplete="off">Sell
+              </label>
+            </div>
 
-          <!-- Ticker -->
-          <div class="row">
-            <label for="ticker">Ticker</label>
-            <input class="form-control" type="text" id="ticker">
-          </div>
+            <!-- Ticker -->
+            <div class="row">
+              <label for="ticker">Ticker <input class="form-control" type="text" id="ticker"></label>
+            </div>
 
-          <!-- Shares -->
-          <div class="row">
-            <label for="shares">Shares</label>
-            <input type="number" id="shares">
-          </div>
+            <!-- Shares -->
+            <div class="row">
+              <!-- TODO move validation into JS? -->
+              <label for="shares">Shares <input class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="shares"></label>
+            </div>
+          </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

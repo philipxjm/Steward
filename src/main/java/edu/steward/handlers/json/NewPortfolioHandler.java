@@ -1,7 +1,7 @@
 package edu.steward.handlers.json;
 
 import com.google.gson.Gson;
-import edu.steward.user.Portfolio;
+
 import edu.steward.user.User;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -20,7 +20,6 @@ public class NewPortfolioHandler implements Route {
   @Override
   public Object handle(Request req, Response res) {
     String userId = req.session().attribute("id");
-    System.out.println(userId);
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String portfolioName = qm.value("name");
