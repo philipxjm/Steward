@@ -1,3 +1,4 @@
+// Click handler for potfolio
 const portfolioClickHandler = (e) => {
     $('.port').removeClass("active");
     $(e.target).addClass("active");
@@ -14,11 +15,7 @@ const portfolioClickHandler = (e) => {
     });
     // TODO: Update graph
 }
-
-// Click handler for potfolio
 $('.port').click(portfolioClickHandler);
-
-// TODO: initialize graph
 
 // Add portfolio button
 $('#addPort').click((e) => {
@@ -61,8 +58,30 @@ $('#addPort').click((e) => {
     }
 });
 
-let ctx = $('#gains');
+// Stock add
+$('#addStock').click((e) => {
+    let action;
+    if($('#buy').hasClass("active")) {
+        action = "buy";
+    } else {
+        action = "sell";
+    }
+    let ticker = $('#ticker').val();
+    let shares = $('#shares').val();
+    let port = $('.port.active')[0].innerText;
+    let data = {
+        port: port,
+        action: action,
+        ticker: ticker,
+        shares: shares
+    }
+    console.log(data);
+    $.post()
+    return false;
+});
 
+// TODO: initialize graph with selcted portfolio
+let ctx = $('#gains');
 const graphData = {
     type: 'line',
     data: {

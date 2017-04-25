@@ -10,11 +10,11 @@
       <div class="modal-body">
           <!-- Buy/Sell Toggle -->
           <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-primary active">
-              <input type="radio" name="options" id="option1" autocomplete="off" checked>Buy
+            <label id="buy" class="btn btn-primary active">
+              <input type="radio" name="action" autocomplete="off" checked>Buy
             </label>
-            <label class="btn btn-primary">
-              <input type="radio" name="options" id="option2" autocomplete="off">Sell
+            <label id="sell" class="btn btn-primary">
+              <input type="radio" name="action" autocomplete="off">Sell
             </label>
           </div>
 
@@ -32,7 +32,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add</button>
+        <button id="addStock" type="button" class="btn btn-primary">Add</button>
       </div>
     </div>
   </div>
