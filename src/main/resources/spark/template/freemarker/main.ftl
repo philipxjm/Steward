@@ -29,9 +29,8 @@
     <script src="/js/login.js"></script>
     <#if chart??>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+        <script src="/js/StewardGraph.js"></script>
     </#if>
-    <#if js??>
-	    <script src=${js}></script>
-	</#if>
+    <#if js??>${js}</#if>
   </body>
 </html>

@@ -1,5 +1,8 @@
 <#assign chart=true>
-<#assign js="/js/graph.js">
+<#assign js>
+  <script src="/js/StockGraph.js"></script>
+  <script src="/js/stock.js"></script>
+</#assign>
 <#assign content>
     <div class="expand container-fluid">
       <div class="expand row">
