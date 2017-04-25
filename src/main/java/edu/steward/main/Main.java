@@ -1,48 +1,37 @@
 package edu.steward.main;
-import edu.steward.stock.Fundamentals.Price;
-import edu.steward.stock.api.AlphaVantageAPI;
-import edu.steward.stock.api.AlphaVantageConstants;
-import com.google.common.collect.ImmutableList;
-import edu.steward.login.LoginConfigFactory;
-import edu.steward.user.UserSession;
 
-import edu.steward.handlers.AboutHandler;
-import edu.steward.handlers.DashboardMock;
-import edu.steward.handlers.GetGraphDataMock;
-import edu.steward.handlers.IndexHandler;
-import edu.steward.handlers.StockMock;
-import edu.steward.stock.Fundamentals.Price;
-import edu.steward.stock.api.AlphaVantageAPI;
-import edu.steward.stock.api.AlphaVantageConstants;
-import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import org.pac4j.core.config.Config;
+import org.pac4j.sparkjava.CallbackRoute;
+
+import edu.steward.handlers.html.AboutHandler;
+import edu.steward.handlers.html.IndexHandler;
+import edu.steward.handlers.html.StockHandler;
+import edu.steward.handlers.json.GetGraphDataHandler;
+import edu.steward.handlers.json.GetPortfolioHandler;
+import edu.steward.handlers.json.LoginHandler;
+import edu.steward.handlers.json.LogoutHandler;
+import edu.steward.handlers.json.NewPortfolioHandler;
 import edu.steward.login.LoginConfigFactory;
-import edu.steward.stock.Fundamentals.Fundamental;
-import edu.steward.stock.Stock;
-import edu.steward.user.UserSession;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import org.pac4j.core.config.Config;
-import org.pac4j.sparkjava.CallbackRoute;
-import org.pac4j.sparkjava.SecurityFilter;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
-
 public class Main {
   private static final int DEFAULT_PORT = 4567;
 
   public static void main(String[] args) {
-//    System.out.println(TwitterSentiments.sentiments(ImmutableList.<String>of
-//            ("Trump", "Syria")));
+    // System.out.println(TwitterSentiments.sentiments(ImmutableList.<String>of
+    // ("Trump", "Syria")));
     new Main(args).run();
   }
 
@@ -55,29 +44,11 @@ public class Main {
   private void run() {
     // Parse command line arguments
 
-//    AlphaVantageAPI api = new AlphaVantageAPI();
-//    List<Price> prices = api.getStockPrices("AAPL", StockAPI.TIMESERIES.ONE_YEAR);
-//    int counter = 0;
-//    for (Price p:
-//         prices) {
-//      counter++;
-//      System.out.println("time: " + p.getTime() + ", price: " + p.getValue());
-//    }
-//    System.out.println(counter);
-
-//    new YahooFinanceAPI().func();
-
-    List<Fundamental> fundamentals = new Stock("AAPL").getStockFundamentals();
-    for (Fundamental fundamental : fundamentals) {
-      System.out.println(fundamental.toString() + ": " + fundamental.getValue());
-    }
-
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
-            .defaultsTo(DEFAULT_PORT);
+        .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
-
 
     if (options.has("gui")) {
       runSparkServer((Integer) options.valueOf("port"));
@@ -86,13 +57,12 @@ public class Main {
 
   public static FreeMarkerEngine createEngine() {
     Configuration config = new Configuration();
-    File templates =
-            new File("src/main/resources/spark/template/freemarker");
+    File templates = new File("src/main/resources/spark/template/freemarker");
     try {
       config.setDirectoryForTemplateLoading(templates);
     } catch (IOException ioe) {
       System.out.printf("ERROR: Unable use %s for template loading.%n",
-              templates);
+          templates);
       System.exit(1);
     }
     return new FreeMarkerEngine(config);
@@ -108,17 +78,13 @@ public class Main {
 
     // Spark routes
     Spark.get("/", new IndexHandler(), freeMarker);
+    Spark.post("/newPortfolio", new NewPortfolioHandler());
+    Spark.post("/getPortfolio", new GetPortfolioHandler());
     Spark.get("/about", new AboutHandler(), freeMarker);
-    Spark.post("/getGraphData", new GetGraphDataMock());
-    Spark.get("/stock/:ticker", new StockMock(), freeMarker);
-//    Spark.post("/getStockData", new GetStockDataMock());
-    Spark.get("/callback", callback);
-    Spark.post("/callback", callback);
-    Spark.before("/google", new SecurityFilter(config,
-        "OidcClient"));
-    Spark.get("/user", UserSession::newSession, freeMarker);
-    Spark.get("/google", UserSession::destPage, freeMarker);
-    Spark.post("/dashboard", new DashboardMock(), freeMarker);
+    Spark.post("/getGraphData", new GetGraphDataHandler());
+    Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
+    Spark.get("/login", new LoginHandler());
+    Spark.get("/logout", new LogoutHandler());
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

@@ -1,17 +1,12 @@
 package edu.steward.login;
 
+import static spark.Spark.halt;
+
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.sparkjava.DefaultHttpActionAdapter;
 import org.pac4j.sparkjava.SparkWebContext;
-import spark.ModelAndView;
-import spark.TemplateEngine;
-
-import java.util.HashMap;
-
-import static spark.Spark.halt;
 
 public class HttpActionAdapter extends DefaultHttpActionAdapter {
-
   @Override
   public Object adapt(int code, SparkWebContext context) {
     if (code == HttpConstants.UNAUTHORIZED) {

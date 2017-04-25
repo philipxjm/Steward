@@ -3,7 +3,7 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/22/17.
  */
-public class YearHigh implements Fundamental<YearHigh>{
+public class YearHigh extends Fundamental {
   private double high;
 
   public YearHigh(double high) {

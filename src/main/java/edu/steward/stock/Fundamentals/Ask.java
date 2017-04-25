@@ -3,7 +3,7 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/22/17.
  */
-public class Ask implements Fundamental<Ask> {
+public class Ask extends Fundamental {
   private double ask;
 
   public Ask(double ask) {

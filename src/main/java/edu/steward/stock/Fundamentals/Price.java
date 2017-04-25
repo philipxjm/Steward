@@ -3,13 +3,10 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/17/17.
  */
-public class Price implements Fundamental<Price> {
+public class Price extends Fundamental {
 
   private enum TYPE {
-    OPEN,
-    CLOSE,
-    HIGH,
-    LOW
+    OPEN, CLOSE, HIGH, LOW
   }
 
   private Double price;

@@ -1,77 +1,64 @@
 package edu.steward.user;
 
-import edu.steward.stock.Stock;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Philip on 4/16/17.
  */
 public class User {
-  private String username;
-  private String password;
-  private List<Stock> portfolio;
-  private List<Stock> watchlist;
+  private Map<String, Portfolio> portfolios;
+  private String hashedId;
 
-  public User(String username, String password) {
-    this.username = username;
-    this.password = password;
+  public User(String id) {
+    hashedId = id;
+    portfolios = new HashMap<>();
+    // TODO: Load in portfolios from db
   }
 
-  public void setPortfolio(List<Stock> portfolio) {
-    this.portfolio = portfolio;
+  public String getId() {
+    return hashedId;
   }
 
-  public void setWatchlist(List<Stock> watchlist) {
-    this.watchlist = watchlist;
+  public List<Portfolio> getPortfolios() {
+    List<Portfolio> ret = new ArrayList<>();
+    if (portfolios.isEmpty()) {
+      ret = UserData.getPortfoliosFromUser(this.getId());
+      for (Portfolio port : ret) {
+        portfolios.put(port.getName(), port);
+      }
+      System.out.println(ret);
+      return ret;
+    }
+    for (Portfolio port : portfolios.values()) {
+      ret.add(port);
+    }
+    return ret;
   }
 
-  public List<Stock> getPortfolio() {
-    return portfolio;
+  public Portfolio getPortfolio(String name) {
+    return portfolios.get(name);
   }
 
-  public List<Stock> getWatchlist() {
-    return watchlist;
-  }
-
-  public boolean addStockToPortfolio(String ticker) {
-    Stock toBeAdded = new Stock(ticker);
-    if (!portfolio.contains(ticker)) {
-      portfolio.add(toBeAdded);
+  public boolean addPortfolio(String portName) {
+    if (portfolios.get(portName) == null) {
+      portfolios.put(portName, new Portfolio(portName, this.getId() + "/" +
+          portName));
+      UserData.createPortfolio(this.getId(), portName);
       return true;
-    } else {
+    }
+    return false;
+  }
+
+  public boolean removePortfolio(String portName) {
+    Portfolio port = portfolios.get(portName);
+    if (port == null) {
       return false;
     }
+    portfolios.remove(portName);
+    UserData.removePortfolio(this.getId(), portName);
+    return true;
   }
-
-  public boolean removeStockFromPortfolio(String ticker) {
-    Stock toBeRemoved = new Stock(ticker);
-    if (portfolio.contains(toBeRemoved)) {
-      portfolio.remove(toBeRemoved);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public boolean addStockToWatchlist(String ticker) {
-    Stock toBeAdded = new Stock(ticker);
-    if (!watchlist.contains(ticker)) {
-      watchlist.add(toBeAdded);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public boolean removeStockFromWatchlist(String ticker) {
-    Stock toBeRemoved = new Stock(ticker);
-    if (watchlist.contains(toBeRemoved)) {
-      watchlist.remove(toBeRemoved);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
 }

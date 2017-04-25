@@ -1,22 +1,28 @@
 let userName;
 let userId;
 
+// Called when google auth successfully finishes
 function onSignIn(googleUser) {
-	let profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  userName = profile.getName();
-  userId = profile.getId();
-  $.get("/user", {name: userName, id: userId}, responseJSON => {
-  	console.log(responseJSON);
-  });
+  // Only redirect & login if this if the first time
+  if ($('#login')[0].style.display != "none") {
+    const profile = googleUser.getBasicProfile();
+
+    // Send username and userId to backend
+    userName = profile.getName();
+    userId = profile.getId();
+    $.get("/login", {name: userName, id: userId});
+
+    // Refresh page
+    window.location = window.location;
+  }
 }	
 
+// Called when user clicks Sign Out
 function onSignOut() {
-	var auth2 = gapi.auth2.getAuthInstance();
-	auth2.signOut().then(function () {
-		console.log('User signed out.');
-	});
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+	let auth2 = gapi.auth2.getAuthInstance();
+	auth2.signOut();
+  $.get("/logout");
+
+  // Refresh page
+  window.location = window.location;
 }

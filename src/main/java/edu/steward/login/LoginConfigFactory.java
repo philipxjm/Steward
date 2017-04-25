@@ -1,14 +1,11 @@
 package edu.steward.login;
 
-import org.ietf.jgss.Oid;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.config.ConfigFactory;
 import org.pac4j.oauth.client.Google2Client;
 import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.oidc.config.OidcConfiguration;
-import spark.TemplateEngine;
-import org.pac4j.sparkjava.DefaultHttpActionAdapter;
 
 /**
  * Created by kjin on 4/18/17.

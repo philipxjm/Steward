@@ -3,7 +3,7 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/22/17.
  */
-public class PE implements Fundamental<PE> {
+public class PE extends Fundamental {
   private double pe;
 
   public PE(double pe) {

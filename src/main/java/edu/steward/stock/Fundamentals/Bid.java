@@ -3,7 +3,7 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/22/17.
  */
-public class Bid implements Fundamental<Bid> {
+public class Bid extends Fundamental {
   private double bid;
 
   public Bid(double bid) {

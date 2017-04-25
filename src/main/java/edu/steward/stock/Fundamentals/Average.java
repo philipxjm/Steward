@@ -3,7 +3,7 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/22/17.
  */
-public class Average implements Fundamental<Average> {
+public class Average extends Fundamental {
   private double average;
 
   public Average(double average) {

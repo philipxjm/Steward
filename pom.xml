@@ -33,6 +33,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
+      <version>3.16.1</version>
+    </dependency>
+
+    <dependency>
       <groupId>net.sf.jopt-simple</groupId>
       <artifactId>jopt-simple</artifactId>
       <version>4.8</version>

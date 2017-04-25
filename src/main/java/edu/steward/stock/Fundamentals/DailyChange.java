@@ -3,7 +3,7 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/22/17.
  */
-public class DailyChange implements Fundamental<DailyChange>{
+public class DailyChange extends Fundamental {
   private double dailyChange;
 
   public DailyChange(double dailyChange) {
@@ -27,8 +27,6 @@ public class DailyChange implements Fundamental<DailyChange>{
 
   @Override
   public String toString() {
-    return "DailyChange{" +
-            "dailyChange=" + dailyChange +
-            '}';
+    return "DailyChange{" + "dailyChange=" + dailyChange + '}';
   }
 }

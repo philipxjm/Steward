@@ -3,7 +3,7 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/18/17.
  */
-public class Volume implements Fundamental<Volume>{
+public class Volume extends Fundamental {
 
   private double volume;
   private Long time;
@@ -18,7 +18,9 @@ public class Volume implements Fundamental<Volume>{
   }
 
   @Override
-  public Long getTime() {return System.currentTimeMillis() / 1000;}
+  public Long getTime() {
+    return System.currentTimeMillis() / 1000;
+  }
 
   @Override
   public String getType() {
