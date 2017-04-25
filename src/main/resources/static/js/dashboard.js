@@ -37,7 +37,7 @@ $('#addPort').click((e) => {
                             $('#portErr')[0].innerText = "That portfolio already exists";
                         } else {
                             $('.port').removeClass("active");
-                            let newPort = $('.newPort')
+                            let newPort = $('.newPort');
                             newPort.click(portfolioClickHandler);
                             newPort.removeClass('newPort');
                             newPort.addClass('active');
