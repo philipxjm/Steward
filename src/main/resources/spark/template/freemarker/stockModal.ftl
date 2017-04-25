@@ -9,7 +9,7 @@
       </div>
       <div class="modal-body">
           <!-- Buy/Sell Toggle -->
-          <div class="row">
+          <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary active">
               <input type="radio" name="options" id="option1" autocomplete="off" checked>Buy
             </label>

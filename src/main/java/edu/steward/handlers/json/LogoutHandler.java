@@ -1,4 +1,4 @@
-package edu.steward.handlers;
+package edu.steward.handlers.json;
 
 import spark.Request;
 import spark.Response;

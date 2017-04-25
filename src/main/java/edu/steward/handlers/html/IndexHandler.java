@@ -1,4 +1,4 @@
-package edu.steward.handlers;
+package edu.steward.handlers.html;
 
 import java.util.ArrayList;
 import java.util.List;

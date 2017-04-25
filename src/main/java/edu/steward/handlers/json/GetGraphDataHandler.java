@@ -1,4 +1,4 @@
-package edu.steward.handlers;
+package edu.steward.handlers.json;
 
 import java.util.ArrayList;
 import java.util.Collections;

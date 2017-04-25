@@ -1,4 +1,4 @@
-package edu.steward.handlers;
+package edu.steward.handlers.json;
 
 import spark.QueryParamsMap;
 import spark.Request;

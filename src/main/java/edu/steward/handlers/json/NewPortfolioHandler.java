@@ -1,4 +1,4 @@
-package edu.steward.handlers;
+package edu.steward.handlers.json;
 
 import com.google.gson.Gson;
 import edu.steward.user.Portfolio;
