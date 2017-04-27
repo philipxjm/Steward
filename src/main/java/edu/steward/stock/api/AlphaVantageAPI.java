@@ -116,13 +116,13 @@ public class AlphaVantageAPI implements StockAPI {
         case TEN_YEAR:
           rawData = getFromAlphaVantage(
                   ticker,
-                  AlphaVantageConstants.FUNCTION.TIME_SERIES_MONTHLY,
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
                   parseAlphaVantage(
                           rawData,
-                          AlphaVantageConstants.FUNCTION.TIME_SERIES_MONTHLY);
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
           break;
       }
       List<Price> prices = parseTimeSeriesMap(timeSeriesData);
@@ -356,7 +356,6 @@ public class AlphaVantageAPI implements StockAPI {
         break;
       case ONE_MONTH:
         for (int i = 0; i < Math.min(24, size); i++) {
-          System.out.println("yeee:" + i);
           ret.add(prices.get(i));
         }
         break;
@@ -372,9 +371,6 @@ public class AlphaVantageAPI implements StockAPI {
         break;
       case TWO_YEAR:
         for (int i = 0; i < Math.min(104, size); i++) {
-          System.out.println(i + ": " + prices.get(i).getTime());
-          System.out.println(i + ": " + prices.get(i).getValue());
-
           ret.add(prices.get(i));
         }
         break;
@@ -384,7 +380,7 @@ public class AlphaVantageAPI implements StockAPI {
         }
         break;
       case TEN_YEAR:
-        for (int i = 0; i < Math.min(120, size); i++) {
+        for (int i = 0; i < Math.min(520, size); i++) {
           ret.add(prices.get(i));
         }
         break;

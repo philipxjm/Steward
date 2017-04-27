@@ -1,5 +1,6 @@
 package edu.steward.handlers.json;
 
+import edu.steward.user.User;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;

@@ -33,7 +33,6 @@ public class GetGraphDataHandler implements Route {
     TIMESERIES timeseries = TIMESERIES.valueOf(qm.value("timeseries"));
     Stock stock = new Stock(ticker);
     List<Price> prices = stock.getStockPrices(timeseries);
-    System.out.println("size iz: " + prices.size());
     Collections.sort(prices, new Comparator<Price>() {
       @Override
       public int compare(Price o1, Price o2) {
@@ -43,7 +42,6 @@ public class GetGraphDataHandler implements Route {
 
     List<List<Object>> ret = new ArrayList<>();
     for (Price p : prices) {
-      System.out.println(p.getTime() + ", " + p.getValue());
       ret.add(ImmutableList.of((Object) p.getTime(), (Object) p.getValue()));
     }
     return GSON.toJson(ret);

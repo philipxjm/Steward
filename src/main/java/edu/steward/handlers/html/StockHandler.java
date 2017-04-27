@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableMap;
 
-import edu.steward.stock.Stock;
 import edu.steward.stock.Fundamentals.DailyChange;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Fundamentals.Price;
+import edu.steward.stock.Stock;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

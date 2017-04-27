@@ -3,6 +3,7 @@ package edu.steward.handlers.json;
 import com.google.gson.Gson;
 
 import edu.steward.user.User;
+import edu.steward.user.UserData;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
