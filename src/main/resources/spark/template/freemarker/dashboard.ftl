@@ -1,5 +1,8 @@
 <#assign chart=true>
-<#assign js="/js/dashboard.js">
+<#assign js>
+  <script src="/js/UnrealizedGraph.js"></script>
+  <script src="/js/dashboard.js"></script>
+</#assign>
 <#assign css="/css/dashboard.css">
 <#assign content>
 <div class="container">

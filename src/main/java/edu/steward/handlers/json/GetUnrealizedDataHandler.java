@@ -3,27 +3,22 @@ package edu.steward.handlers.json;
 import com.google.gson.Gson;
 
 import edu.steward.user.User;
-import edu.steward.user.UserData;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-/**
- * API end point for adding a portfolio for a given user.
- * 
- * Created by kjin on 4/23/17.
- */
-public class NewPortfolioHandler implements Route {
-
-  Gson GSON = new Gson();
+public class GetUnrealizedDataHandler implements Route {
+  private final Gson gson = new Gson();
 
   @Override
-  public Object handle(Request req, Response res) {
+  public String handle(Request req, Response res) {
     String userId = req.session().attribute("id");
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String portfolioName = qm.value("name");
-    return GSON.toJson(user.addPortfolio(portfolioName));
+    System.out
+        .println(gson.toJson(user.getPortfolio(portfolioName).getUnrealized()));
+    return gson.toJson(user.getPortfolio(portfolioName).getUnrealized());
   }
 }

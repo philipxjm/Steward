@@ -29,7 +29,6 @@ public class GetPortfolioHandler implements Route {
       ret.add(ImmutableMap.of("ticker", stock.getTicker(), "shares",
           stock.getShares()));
     }
-
     return GSON.toJson(ret);
   }
 }

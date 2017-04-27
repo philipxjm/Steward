@@ -27,9 +27,9 @@ public class MLPNetwork implements NeuralNet {
 
   private double min, max;
   private int movingWindow;
-  private int iterations = 1000;
+  private int iterations = 10000;
   private double learningConstant = 0.5;
-  private double maxError = 0.0000001;
+  private double maxError = 0.00000001;
   private NeuralNetwork nn;
 
   public MLPNetwork(int movingWindow) {
@@ -137,7 +137,7 @@ public class MLPNetwork implements NeuralNet {
     List<List<Price>> priceSeries = new ArrayList<>();
 
     BufferedReader reader = new BufferedReader(new FileReader(
-            "C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\technology.csv"));
+            "C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\aapl-1.csv"));
 
     String line = reader.readLine();
     String[] companies = line.split(",");
@@ -157,20 +157,32 @@ public class MLPNetwork implements NeuralNet {
     }
 
     for (int i = 1; i < companies.length; i++) {
-      MLPNetwork mlp = new MLPNetwork(5);
+      MLPNetwork mlp = new MLPNetwork(15);
       mlp.train(priceSeries.get(i - 1));
       mlp.saveModel("C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\technology\\" + companies[i]);
     }
 
-    MLPNetwork mlp = new MLPNetwork(5);
+    MLPNetwork mlp = new MLPNetwork(15);
     mlp.readModel("C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\technology\\AAPL");
 
     List<Price> testSeries =
-            ImmutableList.of(new Price(151.830002, formatter1.parseDateTime("2017-04-17").getMillis() / 1000),
-                    new Price(151.199997, formatter1.parseDateTime("2017-04-18").getMillis() / 1000),
-                    new Price(150.679993, formatter1.parseDateTime("2017-04-19").getMillis() / 1000),
-                    new Price(152.440002, formatter1.parseDateTime("2017-04-20").getMillis() / 1000),
-                    new Price(152.270004, formatter1.parseDateTime("2017-04-11").getMillis() / 1000));
+            ImmutableList.of(new Price(143.699997, formatter1.parseDateTime("2017-04-03").getMillis() / 1000),
+                    new Price(144.770004, formatter1.parseDateTime("2017-04-04").getMillis() / 1000),
+                    new Price(144.020004, formatter1.parseDateTime("2017-04-05").getMillis() / 1000),
+                    new Price(143.660004, formatter1.parseDateTime("2017-04-06").getMillis() / 1000),
+                    new Price(143.339996, formatter1.parseDateTime("2017-04-07").getMillis() / 1000),
+                    new Price(143.169998, formatter1.parseDateTime("2017-04-10").getMillis() / 1000),
+                    new Price(141.630005, formatter1.parseDateTime("2017-04-11").getMillis() / 1000),
+                    new Price(141.800003, formatter1.parseDateTime("2017-04-12").getMillis() / 1000),
+                    new Price(141.050003, formatter1.parseDateTime("2017-04-13").getMillis() / 1000),
+                    new Price(141.830002, formatter1.parseDateTime("2017-04-17").getMillis() / 1000),
+                    new Price(141.199997, formatter1.parseDateTime("2017-04-18").getMillis() / 1000),
+                    new Price(140.679993, formatter1.parseDateTime("2017-04-19").getMillis() / 1000),
+                    new Price(142.440002, formatter1.parseDateTime("2017-04-20").getMillis() / 1000),
+                    new Price(142.270004, formatter1.parseDateTime("2017-04-21").getMillis() / 1000),
+                    new Price(143.639999, formatter1.parseDateTime("2017-04-24").getMillis() / 1000));
+
+
     System.out.println(mlp.run(testSeries, null));
   }
 }

@@ -15,22 +15,24 @@ public class User {
   public User(String id) {
     hashedId = id;
     portfolios = new HashMap<>();
-    // TODO: Load in portfolios from db
   }
 
   public String getId() {
     return hashedId;
   }
 
+  public void loadPortfolios() {
+    List<Portfolio> ret = UserData.getPortfoliosFromUser(this.getId());
+    for (Portfolio port : ret) {
+      portfolios.put(port.getName(), port);
+    }
+    System.out.println(ret);
+  }
+
   public List<Portfolio> getPortfolios() {
     List<Portfolio> ret = new ArrayList<>();
     if (portfolios.isEmpty()) {
-      ret = UserData.getPortfoliosFromUser(this.getId());
-      for (Portfolio port : ret) {
-        portfolios.put(port.getName(), port);
-      }
-      System.out.println(ret);
-      return ret;
+      loadPortfolios();
     }
     for (Portfolio port : portfolios.values()) {
       ret.add(port);
@@ -39,13 +41,16 @@ public class User {
   }
 
   public Portfolio getPortfolio(String name) {
+    if (portfolios.isEmpty()) {
+      loadPortfolios();
+    }
     return portfolios.get(name);
   }
 
   public boolean addPortfolio(String portName) {
     if (portfolios.get(portName) == null) {
-      portfolios.put(portName, new Portfolio(portName, this.getId() + "/" +
-          portName));
+      portfolios.put(portName,
+          new Portfolio(portName, this.getId() + "/" + portName));
       UserData.createPortfolio(this.getId(), portName);
       return true;
     }

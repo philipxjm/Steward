@@ -1,8 +1,8 @@
+// Click handler for potfolio
 const portfolioClickHandler = (e) => {
     $('.port').removeClass("active");
     $(e.target).addClass("active");
     $.post('/getPortfolio', {name: e.target.innerText}, (resJson) => {
-        console.log("HERE");
         let data = JSON.parse(resJson);
         $('#stocks').empty();
         // Add stocks
@@ -12,13 +12,9 @@ const portfolioClickHandler = (e) => {
             $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`)
         }
     });
-    // TODO: Update graph
+    graph.update(e.target.innerText);
 }
-
-// Click handler for potfolio
 $('.port').click(portfolioClickHandler);
-
-// TODO: initialize graph
 
 // Add portfolio button
 $('#addPort').click((e) => {
@@ -33,7 +29,6 @@ $('#addPort').click((e) => {
                     $.post('/newPortfolio', {name: name}, (res) => {
                         let resData = JSON.parse(res);
                         if (!resData) {
-                            console.log($('#portErr').val());
                             $('#portErr')[0].innerText = "That portfolio already exists";
                         } else {
                             $('.port').removeClass("active");
@@ -61,42 +56,41 @@ $('#addPort').click((e) => {
     }
 });
 
-let ctx = $('#gains');
-
-const graphData = {
-    type: 'line',
-    data: {
-        datasets: []
-    },
-    options: {
-        legend: false,
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            xAxes: [{
-                type: 'linear',
-                position: 'bottom',
-                ticks: {
-                    /*callback: (value) => { 
-                        if (this.labels[value]) {
-                            return this.dateToString(this.labels[value], false);
-                        } else {
-                            return "";
-                        }
-                    }*/
-                }
-            }]
-        },
-        tooltips: {
-            enabled: true,
-            mode: 'single',
-            callbacks: {
-                title: (info) => { 
-                    return this.dateToString(this.labels[info[0].index], true);
-                }
-            }
-        }                    
+// Stock add
+$('#addStock').click((e) => {
+    let action;
+    if($('#buy').hasClass("active")) {
+        action = "buy";
+    } else {
+        action = "sell";
     }
-}
+    let ticker = $('#ticker').val();
+    let shares = $('#shares').val();
+    let port = $('.port.active')[0].innerText;
+    let data = {
+        port: port,
+        action: action,
+        ticker: ticker,
+        shares: shares
+    }
+    let valid = true; // TODO actually validate
+    if (valid) {
+        $.post('/stockAction', data, (res) => {
+            let success = JSON.parse(res);
+            if (success) {
+                $('#addStockModal').modal('hide');
+                // TODO update stocks
+            } else {
+                // TODO: Show error
+            }
+        });
+    } else {
 
-let graph = new Chart(ctx, graphData);
+    }
+    return false;
+});
+
+let ctx = $('#gains');
+let currPort = $('.port.active')[0].innerText;
+// Initialize graph with default portfolio
+let graph = new UnrealizedGraph(ctx, currPort)
