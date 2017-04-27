@@ -3,7 +3,7 @@ package edu.steward.stock.Fundamentals;
 /**
  * Created by mrobins on 4/17/17.
  */
-public class Price extends Fundamental {
+public class Price extends Fundamental implements Comparable<Price> {
 
   private enum TYPE {
     OPEN, CLOSE, HIGH, LOW
@@ -33,5 +33,10 @@ public class Price extends Fundamental {
   @Override
   public String toString() {
     return "{Price: " + this.price + ", Time:" + this.getTime() + "}";
+  }
+
+  @Override
+  public int compareTo(Price o) {
+    return o.getTime().compareTo(time);
   }
 }

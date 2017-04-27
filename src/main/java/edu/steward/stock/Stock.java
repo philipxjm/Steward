@@ -9,6 +9,9 @@ import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.StockAPI;
 import edu.steward.stock.api.YahooFinanceAPI;
+import edu.steward.user.UserData;
+
+import static edu.steward.stock.StockData.getPrices;
 
 /**
  * Created by Philip on 4/16/17.
@@ -28,8 +31,23 @@ public class Stock {
   // TODO: Add getters for fundamentals using the StockAPI
   public List<Price> getStockPrices(StockAPI.TIMESERIES timeseries) {
     // TODO: Abstract this later on
-    setStockAPI(new AlphaVantageAPI());
-    return stockAPI.getStockPrices(ticker, timeseries);
+    if (timeseries == StockAPI.TIMESERIES.ONE_DAY
+      || timeseries == StockAPI.TIMESERIES.FIVE_DAY
+      || timeseries == StockAPI.TIMESERIES.ONE_MONTH) {
+      System.out.println("asdf");
+      setStockAPI(new AlphaVantageAPI());
+      return stockAPI.getStockPrices(ticker, timeseries);
+    } else {
+      try {
+        setStockAPI(new YahooFinanceAPI());
+        List<Price> prices = stockAPI.getStockPrices(ticker, timeseries);
+        return prices;
+      } catch (NullPointerException e) {
+        setStockAPI(new AlphaVantageAPI());
+        return stockAPI.getStockPrices(ticker, timeseries);
+      }
+
+    }
   }
 
   public Price getCurrPrice() {

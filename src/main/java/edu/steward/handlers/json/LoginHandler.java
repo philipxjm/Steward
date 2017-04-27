@@ -1,5 +1,6 @@
 package edu.steward.handlers.json;
 
+import edu.steward.user.User;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -17,7 +18,6 @@ public class LoginHandler implements Route {
     QueryParamsMap qm = request.queryMap();
     request.session().attribute("user", qm.value("name"));
     request.session().attribute("id", qm.value("id"));
-
     return "";
   }
 }
