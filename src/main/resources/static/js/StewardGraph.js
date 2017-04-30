@@ -37,8 +37,8 @@ class StewardGraph {
                                     } else {
                                         return "";
                                     }
-                                }
-                            }
+                                },
+                            },
                         }]
                     },
                     tooltips: {

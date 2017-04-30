@@ -1,3 +1,15 @@
 #footer {
   margin-top: 50px;
 }
+
+#searchIcon {
+	width: 15px;
+}
+
+#searchBox {
+	width: 300px;
+}
+
+#user {
+	margin-left: 10px;
+}
