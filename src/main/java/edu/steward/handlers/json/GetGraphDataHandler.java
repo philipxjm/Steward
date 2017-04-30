@@ -44,6 +44,7 @@ public class GetGraphDataHandler implements Route {
     for (Price p : prices) {
       ret.add(ImmutableList.of((Object) p.getTime(), (Object) p.getValue()));
     }
+
     return GSON.toJson(ret);
   }
 }

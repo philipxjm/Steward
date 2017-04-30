@@ -4,12 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
-import edu.steward.stock.Stock;
-import edu.steward.stock.api.YahooFinanceAPI;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 
@@ -18,6 +13,7 @@ import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.StockHandler;
 import edu.steward.handlers.json.GetGraphDataHandler;
 import edu.steward.handlers.json.GetPortfolioHandler;
+import edu.steward.handlers.json.GetStockPredictionHandler;
 import edu.steward.handlers.json.GetUnrealizedDataHandler;
 import edu.steward.handlers.json.LoginHandler;
 import edu.steward.handlers.json.LogoutHandler;
@@ -32,9 +28,6 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes.Interval;
 
 public class Main {
   private static final int DEFAULT_PORT = 4567;
@@ -52,23 +45,24 @@ public class Main {
   private void run() {
     // Parse command line arguments
     // Workaround for redirect issue (#69) in yahoo finance library
-//     System.setProperty("yahoofinance.baseurl.histquotes", "https://ichart.yahoo.com/table.csv");
-//     System.setProperty("yahoofinance.baseurl.quotes", "http://download.finance.yahoo.com/d/quotes.csv");
-//    Calendar from = Calendar.getInstance();
-//    from.add(Calendar.YEAR, -10);
-//    try {
-//      yahoofinance.Stock fb = YahooFinance.get("FB");
-//      fb.getQuote();
-//      yahoofinance.Stock apple = YahooFinance.get("FB", true);
-//      List<HistoricalQuote> quotes = apple.getHistory(from, Interval.WEEKLY);
-//      for (HistoricalQuote quote : quotes) {
-////        System.out.println(quote.getDate().getTimeInMillis() + ": " + quote.getAdjClose());
-//      }
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-
-
+    // System.setProperty("yahoofinance.baseurl.histquotes",
+    // "https://ichart.yahoo.com/table.csv");
+    // System.setProperty("yahoofinance.baseurl.quotes",
+    // "http://download.finance.yahoo.com/d/quotes.csv");
+    // Calendar from = Calendar.getInstance();
+    // from.add(Calendar.YEAR, -10);
+    // try {
+    // yahoofinance.Stock fb = YahooFinance.get("FB");
+    // fb.getQuote();
+    // yahoofinance.Stock apple = YahooFinance.get("FB", true);
+    // List<HistoricalQuote> quotes = apple.getHistory(from, Interval.WEEKLY);
+    // for (HistoricalQuote quote : quotes) {
+    //// System.out.println(quote.getDate().getTimeInMillis() + ": " +
+    // quote.getAdjClose());
+    // }
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
 
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
@@ -109,6 +103,7 @@ public class Main {
     Spark.post("/stockAction", new StockActionHandler());
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataHandler());
+    Spark.post("/getStockPrediction", new GetStockPredictionHandler());
     Spark.post("/getUnrealizedData", new GetUnrealizedDataHandler());
     Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
     Spark.get("/login", new LoginHandler());
