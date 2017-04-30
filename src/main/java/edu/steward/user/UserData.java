@@ -77,4 +77,77 @@ public class UserData {
       e.printStackTrace();
     }
   }
+
+  public static boolean stockTransaction(
+          String portId,
+          String ticker,
+          int amount,
+          int time,
+          double price) {
+    String query = "SELECT time, quantity FROM History "
+            + "WHERE portfolio = ? "
+            + "AND stock = ?;";
+    Integer lastQuantity = 0;
+    try (Connection c = DriverManager.getConnection(url)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, portId);
+        prep.setString(2, ticker);
+        try (ResultSet rs = prep.executeQuery()) {
+          int recentTime = 0;
+          while (rs.next()) {
+            String timeString = rs.getString(1);
+            Integer timeStamp = Integer.parseInt(timeString);
+
+            String quantityString = rs.getString(2);
+            Integer quantity = Integer.parseInt(quantityString);
+
+            if (timeStamp > recentTime) {
+              recentTime = timeStamp;
+              lastQuantity = quantity;
+            }
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    if (lastQuantity + amount < 0) {
+      return false;
+    } else {
+      String stat = "INSERT INTO History VALUES (?, ?, ?, ?, ?, ?);";
+      try (Connection c = DriverManager.getConnection(url)) {
+        Statement s = c.createStatement();
+        s.executeUpdate("PRAGMA foreign_keys = ON;");
+        try (PreparedStatement prep = c.prepareStatement(stat)) {
+
+          prep.setString(1, portId);
+
+          prep.setString(2, ticker);
+
+          prep.setInt(3, time);
+
+          prep.setInt(4, amount);
+
+          prep.setInt(5, lastQuantity + amount);
+
+          prep.setDouble(6, price);
+
+          prep.executeUpdate();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      return true;
+    }
+  }
+
+
 }

@@ -1,34 +1,64 @@
 package edu.steward.user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
+import org.eclipse.jetty.util.HostMap;
 
 public class Portfolio {
   private String name;
   private String portfolioId;
-  private List<Holding> holdings;
+  private Map<String, Holding> holdings;
+  private Double balance;
+//  TODO: Add in balance to the below methods
 
   public Portfolio(String name, String portfolioId) {
     this.name = name;
     this.portfolioId = portfolioId;
-    holdings = new ArrayList<>();
+    holdings = new HashMap<>();
     // TODO: Load in holdings from db
   }
 
   public List<Holding> getHoldings() {
-    return holdings;
+    List<Holding> ret = new ArrayList<>();
+    for (
+            String ticker : holdings.keySet()
+            ) {
+      ret.add(holdings.get(ticker));
+    }
+    return ret;
   }
 
-  public boolean buyStock(String ticker, int shares) {
+  public boolean buyStock(String ticker, int shares, int time, double price) {
     // TODO
-    return true;
+//    Holding h = holdings.get(ticker);
+//    if (h != null) {
+//      boolean b1 = (shares + h.getShares() > 0);
+//      boolean b2 = ( )
+//    }
+
+    return UserData.stockTransaction(
+            portfolioId,
+            ticker,
+            shares,
+            time,
+            price
+    );
   }
 
-  public boolean sellStock(String ticker, int shares) {
+  public boolean sellStock(String ticker, int shares, int time, double price) {
     // TODO
-    return true;
+    return UserData.stockTransaction(
+            portfolioId,
+            ticker,
+//            there is a negative sign here because it is SELL
+            -shares,
+            time,
+            price
+    );
   }
 
   public String getName() {

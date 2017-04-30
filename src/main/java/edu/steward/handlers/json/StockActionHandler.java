@@ -20,6 +20,7 @@ public class StockActionHandler implements Route {
     String portfolioName = qm.value("port");
     String ticker = qm.value("ticker");
     String action = qm.value("action");
+    int time = Integer.parseInt(qm.value("time"));
     int shares = Integer.parseInt(qm.value("shares"));
     Portfolio port = user.getPortfolio(portfolioName);
     System.out.println(portfolioName);
@@ -27,9 +28,9 @@ public class StockActionHandler implements Route {
     if (port == null) {
       success = false;
     } else if (action.equals("buy")) {
-      success = port.buyStock(ticker, shares);
+      success = port.buyStock(ticker, shares, time, 0);
     } else {
-      success = port.sellStock(ticker, shares);
+      success = port.sellStock(ticker, shares, time, 0);
     }
     return gson.toJson(success);
   }
