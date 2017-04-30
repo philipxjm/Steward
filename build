@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ ! -f data/users.sqlite3 ]; then
+    cat schema/users.sql | sqlite3 data/users.sqlite3 
+fi
+
+if [ ! -f data/quotes.sqlite3 ]; then
+    cat schema/quotes.sql | sqlite3 data/quotes.sqlite3 
+fi
+
+mvn clean;
+mvn package;

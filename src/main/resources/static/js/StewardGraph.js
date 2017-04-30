@@ -80,7 +80,7 @@ class StewardGraph {
     makeDataSet() {
         let ret = [];
         ret.push(Object.assign({data: this.data}, this.defaultLineStyle));
-        if (this.predict) {
+        if (this.predict && (this.timeseries == "ONE_DAY" || this.timeseries == "FIVE_DAY")) {
             let last = this.data[this.data.length - 1];
             ret.push(Object.assign({data: [last, {x: last.x + 1, y: this.predict[1]}]}, this.predictStyle));
             this.labels.push(new Date(this.predict[0]*1000));
