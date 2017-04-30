@@ -64,11 +64,14 @@ $('#addStock').click((e) => {
     } else {
         action = "sell";
     }
+    // Get timestamp
+    let time = + new Date();
     let ticker = $('#ticker').val();
     let shares = $('#shares').val();
     let port = $('.port.active')[0].innerText;
     let data = {
         port: port,
+        time: time,
         action: action,
         ticker: ticker,
         shares: shares

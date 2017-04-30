@@ -14,6 +14,7 @@ class StockGraph extends StewardGraph {
 
         $.post('/getGraphData', params, (res) => {
             const resData = JSON.parse(res);
+
             let pastData = [];
             let labels = [];
             let last = resData[0];
@@ -34,6 +35,19 @@ class StockGraph extends StewardGraph {
             this.min = pastData[0].x;
             this.max = pastData[pastData.length-1].x;
             callback();       
+        });
+    }
+
+    getPredict(callback) {
+        let params = {
+            "ticker": this.ticker
+        }
+        $.post('/getStockPrediction', params, (res) => {
+            let data = JSON.parse(res);
+            if (data) {
+                this.predict = data;
+                callback();
+            }
         });
     }
 

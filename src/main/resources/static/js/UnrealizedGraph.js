@@ -29,4 +29,6 @@ class UnrealizedGraph extends StewardGraph {
             callback();
         });
     }
+
+    getPredict(){}
 }
