@@ -57,8 +57,13 @@ public class StockHandler implements TemplateViewRoute {
     // Combine div and yield
     String d = funds.remove("Dividend");
     String y = funds.remove("Yield (%)");
-    ret.add(
-        ImmutableList.of("Dividend & Yield", String.format("%s (%s%%)", d, y)));
+    if (d == null || y == null) {
+      ret.add(ImmutableList.of("Dividend & Yield", "N/A"));
+    } else {
+      ret.add(ImmutableList.of("Dividend & Yield",
+          String.format("%s (%s%%)", d, y)));
+    }
+
     for (String key : funds.keySet()) {
       ret.add(ImmutableList.of(key, funds.get(key)));
     }
