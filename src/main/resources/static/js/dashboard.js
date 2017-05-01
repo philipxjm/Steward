@@ -6,7 +6,9 @@ function getStocks(ticker) {
         for (let i = 0; i < data.length; i++) {
             let ticker = data[i]["ticker"];
             let shares = data[i]["shares"];
-            $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`)
+            if (shares > 0) {
+                $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`);
+            }
         }
     });
 }
