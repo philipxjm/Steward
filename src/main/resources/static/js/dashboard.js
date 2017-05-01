@@ -43,6 +43,12 @@ $('#addPort').click((e) => {
                             $('#portErr')[0].innerText = "That portfolio already exists";
                         } else {
                             $('.port').removeClass("active");
+                            if( $('#addButton').prop('disabled')) {
+                                $('#addButton').prop('disabled', false);
+                                $('#noPort').hide();                                
+                                // Initialize graph with new portfolio
+                                graph = new UnrealizedGraph(ctx, name);
+                            }
                             let newPort = $('.newPort');
                             newPort.click(portfolioClickHandler);
                             newPort.removeClass('newPort');
@@ -67,7 +73,16 @@ $('#addPort').click((e) => {
     }
 });
 
-let ctx = $('#gains');
-let currPort = $('.port.active')[0].innerText;
-// Initialize graph with default portfolio
-let graph = new UnrealizedGraph(ctx, currPort)
+let ctx, graph;
+$(()=> {
+    ctx = $('#gains');
+    if ($('.port').length == 0) {
+        $('#addButton').prop('disabled', true);
+        $('#noPort').show();
+    } else {
+        $('#noPort').hide();
+      let name = $('.port.active')[0].innerText;
+      graph = new UnrealizedGraph(ctx, name);
+    }
+});
+

@@ -31,7 +31,6 @@
 
             <div id="time" class="form-control row">
               <input id="actionDate" class="form-control" type="date">
-              <input id="actionTime" class="form-control" type="time">
             </div>
 
             <!-- Ticker -->

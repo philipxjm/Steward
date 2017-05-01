@@ -9,7 +9,7 @@ $('#addStock').click((e) => {
     // Get timestamp
     let time;
     if ($('#pastAction').prop("checked")) {
-        time = + new Date($('#actionDate').val() + "T" + $('#actionTime').val());
+        time = + new Date($('#actionDate').val());
     } else {   
         time = + new Date();
      }
