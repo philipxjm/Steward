@@ -7,10 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import edu.steward.stock.Fundamentals.Price;
 import yahoofinance.YahooFinance;
@@ -48,6 +45,12 @@ public final class StockData {
             System.out.println(price.getValue());
             prices.add(price);
           }
+          Collections.sort(prices, new Comparator<Price>() {
+            @Override
+            public int compare(Price o1, Price o2) {
+              return o1.getTime().compareTo(o2.getTime());
+            }
+          });
         }
       } catch (SQLException e) {
         System.out.println("flag 1");
@@ -63,11 +66,14 @@ public final class StockData {
     } else {
       Collections.sort(prices);
       if ((System.currentTimeMillis() / 1000)
-          - prices.get(0).getTime() < 604800) {
+          - prices.get(0).getTime() < 777600) {
         System.out.println("twas returned");
         return prices;
       } else {
-        System.out.println("hasnt been updated in a week so it is updating");
+        System.out.println("hasnt been updated in nine days so it is updating");
+        System.out.println("priceztyme: " + prices.get(0).getTime());
+        System.out.println("lastpriceztyme: " + prices.get(prices.size() - 1).getTime());
+        System.out.println("currtyme: " + (System.currentTimeMillis() / 1000));
         updatePrices(ticker);
         return getPrices(ticker);
       }
