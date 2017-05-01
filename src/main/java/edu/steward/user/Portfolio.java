@@ -11,54 +11,81 @@ import org.eclipse.jetty.util.HostMap;
 public class Portfolio {
   private String name;
   private String portfolioId;
-  private Map<String, Holding> holdings;
-  private Double balance;
+  private Map<String, Integer> holdings;
+  private Double balance = 1000.0;
 //  TODO: Add in balance to the below methods
 
   public Portfolio(String name, String portfolioId) {
     this.name = name;
     this.portfolioId = portfolioId;
-    holdings = new HashMap<>();
     // TODO: Load in holdings from db
+    loadInfo();
   }
 
-  public List<Holding> getHoldings() {
-    List<Holding> ret = new ArrayList<>();
-    for (
-            String ticker : holdings.keySet()
-            ) {
-      ret.add(holdings.get(ticker));
+  public void loadInfo() {
+    holdings = UserData.getStocksFromPortfolio(portfolioId);
+    balance = UserData.getBalanceFromPortfolio(portfolioId);
+  }
+
+
+  public Map<String, Integer> getHoldings() {
+    if (holdings == null) {
+      loadInfo();
     }
-    return ret;
+    return holdings;
   }
 
   public boolean buyStock(String ticker, int shares, int time, double price) {
     // TODO
-//    Holding h = holdings.get(ticker);
-//    if (h != null) {
-//      boolean b1 = (shares + h.getShares() > 0);
-//      boolean b2 = ( )
-//    }
-
-    return UserData.stockTransaction(
-            portfolioId,
-            ticker,
-            shares,
-            time,
-            price
-    );
+    double cost = price * shares;
+    if (cost > balance) {
+      return false;
+    } else {
+      Integer currShares = holdings.get(ticker);
+      Integer newShares;
+      if (currShares == null) {
+        newShares = shares;
+      } else {
+        newShares = shares + currShares;
+      }
+      System.out.println("current shares: " + currShares);
+      System.out.println("new Shares: " + newShares);
+      holdings.replace(ticker, newShares);
+      balance -= cost;
+//      TODO: this should add the transaction to history and change the balance
+      return UserData.stockTransaction(
+              portfolioId,
+              ticker,
+              shares,
+              time,
+              price
+      );
+    }
   }
 
   public boolean sellStock(String ticker, int shares, int time, double price) {
+    System.out.println("Portfolio.sellStock called");
     // TODO
-    return UserData.stockTransaction(
-            portfolioId,
-            ticker,
+    double cost = price * shares;
+    Integer currShares = holdings.get(ticker);
+    if (currShares == null) {
+      return false;
+    } else if (currShares < shares) {
+      System.out.println("curr Shares: " + currShares);
+      System.out.println("You dont have enough shares to sell.");
+      return false;
+    } else {
+      holdings.replace(ticker, currShares - shares);
+      balance += cost;
+      return UserData.stockTransaction(
+              portfolioId,
+              ticker,
 //            there is a negative sign here because it is SELL
-            -shares,
-            time,
-            price
-    );
+              -shares,
+              time,
+              price
+      );
+    }
   }
 
   public String getName() {

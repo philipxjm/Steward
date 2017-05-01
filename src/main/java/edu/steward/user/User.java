@@ -22,6 +22,7 @@ public class User {
   }
 
   public void loadPortfolios() {
+    System.out.println("load portfolios called");
     List<Portfolio> ret = UserData.getPortfoliosFromUser(this.getId());
     for (Portfolio port : ret) {
       portfolios.put(port.getName(), port);
@@ -35,6 +36,7 @@ public class User {
       loadPortfolios();
     }
     for (Portfolio port : portfolios.values()) {
+      port.loadInfo();
       ret.add(port);
     }
     return ret;
@@ -44,6 +46,7 @@ public class User {
     if (portfolios.isEmpty()) {
       loadPortfolios();
     }
+    portfolios.get(name).loadInfo();
     return portfolios.get(name);
   }
 

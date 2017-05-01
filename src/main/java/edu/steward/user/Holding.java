@@ -1,8 +1,15 @@
 package edu.steward.user;
 
-public class Holding {
+public class Holding implements Comparable<Holding>{
   private String ticker;
   private int shares;
+  private int time;
+
+  public Holding(String ticker, int shares, int time) {
+    this.ticker = ticker;
+    this.shares = shares;
+    this.time = time;
+  }
 
   public Holding(String ticker, int shares) {
     this.ticker = ticker;
@@ -15,5 +22,10 @@ public class Holding {
 
   public int getShares() {
     return shares;
+  }
+
+  @Override
+  public int compareTo(Holding o) {
+    return time - o.time;
   }
 }

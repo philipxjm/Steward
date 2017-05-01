@@ -23,11 +23,11 @@ public class GetPortfolioHandler implements Route {
     QueryParamsMap qm = req.queryMap();
     String name = qm.value("name");
     User user = new User(req.session().attribute("id"));
-    List<Holding> stocks = user.getPortfolio(name).getHoldings();
+    Map<String, Integer> stocks = user.getPortfolio(name).getHoldings();
     List<Map<String, Object>> ret = new ArrayList<>();
-    for (Holding stock : stocks) {
-      ret.add(ImmutableMap.of("ticker", stock.getTicker(), "shares",
-          stock.getShares()));
+    for (String ticker : stocks.keySet()) {
+      ret.add(ImmutableMap.of("ticker", ticker, "shares",
+          stocks.get(ticker)));
     }
     return GSON.toJson(ret);
   }

@@ -34,7 +34,6 @@ public class Stock {
     if (timeseries == StockAPI.TIMESERIES.ONE_DAY
       || timeseries == StockAPI.TIMESERIES.FIVE_DAY
       || timeseries == StockAPI.TIMESERIES.ONE_MONTH) {
-      System.out.println("asdf");
       setStockAPI(new AlphaVantageAPI());
       return stockAPI.getStockPrices(ticker, timeseries);
     } else {
