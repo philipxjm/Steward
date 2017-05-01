@@ -47,12 +47,12 @@ class StockGraph extends StewardGraph {
             let data = JSON.parse(res);
             if (data) {
                 this.predict = data;
-                $('#predicted')[0].innerText = "Predicted: " + data[1];
+                $('#predicted').append("Predicted: <span id='predictedPrice'>$" + data[1] + '</span>');
                 let curPrice = Number.parseFloat($('#price')[0].innerText.substr(1));
                 if (curPrice > data[1]) {
-                   $('#predicted').addClass("down");
+                   $('#predictedPrice').addClass("down");
                 } else {
-                    $('#predicted').addClass("up");
+                    $('#predictedPrice').addClass("up");
                 }
                 callback();
             }
