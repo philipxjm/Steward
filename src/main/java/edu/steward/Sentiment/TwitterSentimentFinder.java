@@ -15,11 +15,13 @@ import java.util.Set;
  */
 public class TwitterSentimentFinder {
   private SentimentAnalyzer sa;
-  private TwitterSearcher ts;
+//  private TwitterSearcher ts;
+  private StockTwitSearcher ts;
 
   public TwitterSentimentFinder() {
     this.sa = new SentimentAnalyzer();
-    this.ts = new TwitterSearcher();
+//    this.ts = new TwitterSearcher();
+    this.ts = new StockTwitSearcher();
   }
 
   public Map<String, List<Integer>> sentiments(List<String> keywords) {
@@ -29,11 +31,12 @@ public class TwitterSentimentFinder {
       return results;
     }
     for (String keyword : keywordSet) {
-      List<Status> statuses = ts.search(keyword);
+//      List<Status> statuses = ts.search(keyword);
+      List<String> statuses = ts.search(keyword);
       System.out.println("Found statuses ... " + statuses.size());
       List<Integer> sentiments = new ArrayList<Integer>();
-      for (Status status : statuses) {
-        Integer sen = sa.findSentiment(status.getText());
+      for (String status : statuses) {
+        Integer sen = sa.findSentiment(status);
         if (sen != -1) {
           sentiments.add(sen);
         }
