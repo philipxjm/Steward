@@ -2,6 +2,7 @@
 <#assign js>
   <script src="/js/UnrealizedGraph.js"></script>
   <script src="/js/dashboard.js"></script>
+  <script src="/js/stockModal.js"></script>
 </#assign>
 <#assign css="/css/dashboard.css">
 <#assign content>

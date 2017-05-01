@@ -10,6 +10,7 @@ import org.pac4j.sparkjava.CallbackRoute;
 
 import edu.steward.handlers.html.AboutHandler;
 import edu.steward.handlers.html.IndexHandler;
+import edu.steward.handlers.html.PoolsHandler;
 import edu.steward.handlers.html.StockHandler;
 import edu.steward.handlers.json.GetGraphDataHandler;
 import edu.steward.handlers.json.GetPortfolioHandler;
@@ -102,6 +103,7 @@ public class Main {
     Spark.post("/getPortfolio", new GetPortfolioHandler());
     Spark.post("/stockAction", new StockActionHandler());
     Spark.get("/about", new AboutHandler(), freeMarker);
+    Spark.get("/pools", new PoolsHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataHandler());
     Spark.post("/getStockPrediction", new GetStockPredictionHandler());
     Spark.post("/getUnrealizedData", new GetUnrealizedDataHandler());

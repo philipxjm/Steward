@@ -1,6 +1,7 @@
 package edu.steward.stock.api;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,7 +166,11 @@ public class YahooFinanceAPI implements StockAPI {
   public Price getCurrPrice(String ticker) {
     try {
       Stock stock = YahooFinance.get(ticker);
-      Double priceValue = stock.getQuote().getPrice().doubleValue();
+      BigDecimal quote = stock.getQuote().getPrice();
+      if (quote == null) {
+        return null;
+      }
+      Double priceValue = quote.doubleValue();
       return new Price(priceValue, System.currentTimeMillis() / 1000);
     } catch (IOException e) {
       e.printStackTrace();

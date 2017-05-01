@@ -2,14 +2,10 @@
   margin-top: 50px;
 }
 
-#searchIcon {
-	width: 15px;
-}
-
 #searchBox {
 	width: 300px;
 }
 
-#user {
+#user, #login {
 	margin-left: 10px;
 }

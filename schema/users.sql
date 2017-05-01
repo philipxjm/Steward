@@ -9,7 +9,7 @@ CREATE TABLE "History" (
 	`portfolio`	TEXT NOT NULL,
 	`stock`	TEXT NOT NULL,
 	`time`	INTEGER NOT NULL,
-	`transaction`	INTEGER NOT NULL,
+	`trans`	INTEGER NOT NULL,
 	`quantity`	INTEGER NOT NULL CHECK(Quantity >= 0),
 	`price`	REAL NOT NULL,
 	FOREIGN KEY(`portfolio`) REFERENCES `UserPortfolios`(`PortfolioId`) ON DELETE CASCADE ON UPDATE CASCADE

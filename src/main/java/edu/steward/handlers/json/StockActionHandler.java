@@ -1,9 +1,10 @@
 package edu.steward.handlers.json;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.steward.stock.Stock;
-import edu.steward.stock.api.YahooFinanceAPI;
+import edu.steward.stock.Fundamentals.Price;
 import edu.steward.user.Portfolio;
 import edu.steward.user.User;
 import spark.QueryParamsMap;
@@ -28,12 +29,21 @@ public class StockActionHandler implements Route {
     System.out.println("time: " + time);
     System.out.println("shares: " + shares);
     Stock stock = new Stock(ticker);
-    Double price = stock.getCurrPrice().getValue();
+    Price priceObj = stock.getCurrPrice();
+    // No such ticker
+    if (priceObj == null) {
+      return gson
+          .toJson(ImmutableMap.of("success", false, "error", "No such ticker"));
+    }
+    double price = priceObj.getValue();
+
     Portfolio port = user.getPortfolio(portfolioName);
     System.out.println("pfName: " + port);
     boolean success;
+    // No such portfolio
     if (port == null) {
-      success = false;
+      return gson.toJson(
+          ImmutableMap.of("success", false, "error", "No such portfolio"));
     } else if (action.equals("buy")) {
       System.out.println("buy called");
       success = port.buyStock(ticker, shares, time, price);
@@ -41,8 +51,12 @@ public class StockActionHandler implements Route {
       System.out.println("Sell called");
       success = port.sellStock(ticker, shares, time, price);
     }
-    System.out.println("made it here which is nice");
-    return gson.toJson(success);
+    if (success) {
+      return gson.toJson(ImmutableMap.of("success", success));
+    } else {
+      return gson.toJson(ImmutableMap.of("success", success, "error",
+          "Not enough stocks to sell"));
+    }
   }
 
 }

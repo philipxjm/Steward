@@ -6,13 +6,16 @@
       <li class="nav-item active">
         <a class="nav-link" href="/about">About</a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/pools">Pools</a>
+      </li>      
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <div id="searchBox" class="input-group">
             <input id="searchText" type="text" class="form-control" placeholder="Search for...">
               <span class="input-group-btn">
-              <button id="searchButton" class="btn btn-secondary" type="button"><img id="searchIcon" src="/img/search.png"></button>
+              <button id="searchButton" class="btn btn-secondary" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
             </span>
           </div>    
         </li>

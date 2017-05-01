@@ -1,19 +1,17 @@
 package edu.steward.user;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
-import org.eclipse.jetty.util.HostMap;
 
 public class Portfolio {
   private String name;
   private String portfolioId;
   private Map<String, Integer> holdings;
   private Double balance = 1000.0;
-//  TODO: Add in balance to the below methods
+  // TODO: Add in balance to the below methods
 
   public Portfolio(String name, String portfolioId) {
     this.name = name;
@@ -27,12 +25,15 @@ public class Portfolio {
     balance = UserData.getBalanceFromPortfolio(portfolioId);
   }
 
-
   public Map<String, Integer> getHoldings() {
     if (holdings == null) {
       loadInfo();
     }
     return holdings;
+  }
+
+  private enum ActionResult {
+    SUCCESS, INSUFICIENT, NO;
   }
 
   public boolean buyStock(String ticker, int shares, int time, double price) {
@@ -52,14 +53,9 @@ public class Portfolio {
       System.out.println("new Shares: " + newShares);
       holdings.replace(ticker, newShares);
       balance -= cost;
-//      TODO: this should add the transaction to history and change the balance
-      return UserData.stockTransaction(
-              portfolioId,
-              ticker,
-              shares,
-              time,
-              price
-      );
+      // TODO: this should add the transaction to history and change the balance
+      return UserData.stockTransaction(portfolioId, ticker, shares, time,
+          price);
     }
   }
 
@@ -77,14 +73,9 @@ public class Portfolio {
     } else {
       holdings.replace(ticker, currShares - shares);
       balance += cost;
-      return UserData.stockTransaction(
-              portfolioId,
-              ticker,
-//            there is a negative sign here because it is SELL
-              -shares,
-              time,
-              price
-      );
+      return UserData.stockTransaction(portfolioId, ticker,
+          // there is a negative sign here because it is SELL
+          -shares, time, price);
     }
   }
 

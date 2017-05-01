@@ -1,8 +1,5 @@
-// Click handler for potfolio
-const portfolioClickHandler = (e) => {
-    $('.port').removeClass("active");
-    $(e.target).addClass("active");
-    $.post('/getPortfolio', {name: e.target.innerText}, (resJson) => {
+function getStocks(ticker) {
+    $.post('/getPortfolio', {name: ticker}, (resJson) => {
         let data = JSON.parse(resJson);
         $('#stocks').empty();
         // Add stocks
@@ -12,7 +9,19 @@ const portfolioClickHandler = (e) => {
             $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`)
         }
     });
-    graph.update(e.target.innerText);
+}
+
+// Click handler for potfolio
+const portfolioClickHandler = (e) => {
+    if ($(e.target).hasClass("active")) {
+        return;
+    }
+
+    $('.port').removeClass("active");
+    $(e.target).addClass("active");
+    const portName = e.target.innerText;
+    getStocks(portName);
+    graph.update(portName);
 }
 $('.port').click(portfolioClickHandler);
 
@@ -54,43 +63,6 @@ $('#addPort').click((e) => {
         });
         $('#newPort').focus();
     }
-});
-
-// Stock add
-$('#addStock').click((e) => {
-    let action;
-    if($('#buy').hasClass("active")) {
-        action = "buy";
-    } else {
-        action = "sell";
-    }
-    // Get timestamp
-    let time = + new Date();
-    let ticker = $('#ticker').val();
-    let shares = $('#shares').val();
-    let port = $('.port.active')[0].innerText;
-    let data = {
-        port: port,
-        time: time,
-        action: action,
-        ticker: ticker,
-        shares: shares
-    }
-    let valid = true; // TODO actually validate
-    if (valid) {
-        $.post('/stockAction', data, (res) => {
-            let success = JSON.parse(res);
-            if (success) {
-                $('#addStockModal').modal('hide');
-                // TODO update stocks
-            } else {
-                // TODO: Show error
-            }
-        });
-    } else {
-
-    }
-    return false;
 });
 
 let ctx = $('#gains');

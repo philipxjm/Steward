@@ -19,17 +19,35 @@
               </label>
             </div>
 
+            <br/>
+
+
+            <!-- TODO Add time input? -->
+            <label class="custom-control custom-checkbox">
+              <input id="pastAction" type="checkbox" class="custom-control-input">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Past action</span>
+            </label>            
+
+            <div id="time" class="form-control row">
+              <input class="form-control" type="date">
+              <input class="form-control" type="time">
+            </div>
+
             <!-- Ticker -->
             <div class="row">
-              <label for="ticker">Ticker <input class="form-control" type="text" id="ticker"></label>
+              <label for="ticker">Ticker <input class="form-control" type="text" id="ticker"  autocomplete="off"></label>
             </div>
 
             <!-- Shares -->
             <div class="row">
               <!-- TODO move validation into JS? -->
-              <label for="shares">Shares <input class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="shares"></label>
+              <label for="shares">Shares <input class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="shares"  autocomplete="off"></label>
             </div>
+
+            <!-- TODO: Add date -->
           </form>
+          <p id="stockError" class="text-danger"></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
