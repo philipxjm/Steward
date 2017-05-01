@@ -13,10 +13,11 @@ $('#addStock').click((e) => {
     } else {   
         time = + new Date();
      }
-    let ticker = $('#ticker').val();
+    let ticker = $('#ticker').val().toUpperCase();
     let shares = $('#shares').val();
     let port = $('.port.active')[0].innerText;
     let data = {
+        current: !$('#pastAction').prop("checked"),
         port: port,
         time: time,
         action: action,

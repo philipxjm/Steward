@@ -23,6 +23,7 @@ class StockGraph extends StewardGraph {
             for(let p of resData) {
                 if(p[0] - last > 3000 && (this.timeseries == "ONE_DAY" || this.timeseries == "FIVE_DAY")) {
                     pastData.push({x: NaN, y: NaN})
+                    labels.push(new Date(p[0]*1000));
                 }
                 last = p[0];
                 labels.push(new Date(p[0]*1000));
@@ -46,6 +47,13 @@ class StockGraph extends StewardGraph {
             let data = JSON.parse(res);
             if (data) {
                 this.predict = data;
+                $('#predicted')[0].innerText = "Predicted: " + data[1];
+                let curPrice = Number.parseFloat($('#price')[0].innerText.substr(1));
+                if (curPrice > data[1]) {
+                   $('#predicted').addClass("down");
+                } else {
+                    $('#predicted').addClass("up");
+                }
                 callback();
             }
         });

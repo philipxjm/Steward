@@ -12,11 +12,11 @@
             <h2>${ticker}</h2>
           </div>
           <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-primary active time">
-              <input type="radio" name="timespan" id="ONE_DAY" autocomplete="off" checked>One Day
-            </label>
             <label class="btn btn-primary time">
-              <input type="radio" name="timespan" id="FIVE_DAY" autocomplete="off">Five Day
+              <input type="radio" name="timespan" id="ONE_DAY" autocomplete="off">One Day
+            </label>
+            <label class="btn btn-primary active time">
+              <input type="radio" name="timespan" id="FIVE_DAY" autocomplete="off" checked>Five Day
             </label>
             <label class="btn btn-primary time">
               <input type="radio" name="timespan" id="ONE_MONTH" autocomplete="off">One Month
@@ -43,8 +43,9 @@
             </div>
           </div>
           <div class="row row-third justify-content-start">
-            <div class="col col-sm-2">
-              <h2>$${price.value} <span class=${color}>(${change.value}%)</span> </h2>
+            <div class="col col-sm-4">
+              <h2><span id="price">$${price.value}</span> <span class=${color}>(${change.value}%)</span> </h2>
+              <h3 id="predicted"></h3>
             </div>
             <div class="col col-sm">
               <table>
