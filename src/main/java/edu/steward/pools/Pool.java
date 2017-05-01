@@ -1,5 +1,6 @@
 package edu.steward.pools;
 
+import edu.steward.sql.DatabaseApi;
 import edu.steward.user.Portfolio;
 
 import java.sql.*;
@@ -22,6 +23,11 @@ public class Pool {
     bal = balance;
     start = startTime;
     portfolios = Arrays.asList(ports);
+    DatabaseApi.initializePool(this);
+  }
+
+  public void addPortfolio(Portfolio port) {
+    portfolios.add(port);
   }
 
   public List<Portfolio> getPortfolios() {

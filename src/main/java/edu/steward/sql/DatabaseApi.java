@@ -374,7 +374,7 @@ public class DatabaseApi {
     }
   }
 
-  static boolean initializePool (Pool p) {
+  public static boolean initializePool (Pool p) {
     String stat = "INSERT INTO Pools VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(url)) {
       Statement s = c.createStatement();
@@ -394,5 +394,36 @@ public class DatabaseApi {
       return false;
     }
     return true;
+  }
+
+  public static List<Portfolio> getPortsFromPool (String pool) {
+    System.out.println("get ports from pool called");
+    String query = "SELECT Name, PortfolioId FROM UserPortfolios "
+        + "WHERE PoolId = ?;";
+    List<Portfolio> portfolios = new ArrayList<>();
+    System.out.println("id: " + pool);
+    try (Connection c = DriverManager.getConnection(url)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, pool);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            String name = rs.getString(1);
+            String id = rs.getString(2);
+            Portfolio port = new Portfolio(name, id);
+            portfolios.add(port);
+            System.out.println(id);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return portfolios;
   }
 }
