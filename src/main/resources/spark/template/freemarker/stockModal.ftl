@@ -30,8 +30,8 @@
             </label>            
 
             <div id="time" class="form-control row">
-              <input class="form-control" type="date">
-              <input class="form-control" type="time">
+              <input id="actionDate" class="form-control" type="date">
+              <input id="actionTime" class="form-control" type="time">
             </div>
 
             <!-- Ticker -->

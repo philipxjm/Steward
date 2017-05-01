@@ -7,7 +7,12 @@ $('#addStock').click((e) => {
         action = "sell";
     }
     // Get timestamp
-    let time = + new Date();
+    let time;
+    if ($('#pastAction').prop("checked")) {
+        time = + new Date($('#actionDate').val() + "T" + $('#actionTime').val());
+    } else {   
+        time = + new Date();
+     }
     let ticker = $('#ticker').val();
     let shares = $('#shares').val();
     let port = $('.port.active')[0].innerText;
