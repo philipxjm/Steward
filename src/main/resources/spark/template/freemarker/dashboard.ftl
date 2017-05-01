@@ -21,11 +21,12 @@
 		  </div>
     </div>
     <div class="col-6">
+      <h2 id="noPort" class="text-muted">Make a new portfolio!</h2>
 	   <canvas id="gains"></canvas>
     </div>
     <div class="col-3">
       <div class="header">
-        Stocks <button type="button" data-toggle="modal" data-target="#addStockModal" class="btn float-right btn-secondary btn-sm">+</button>
+        Stocks <button id="addButton" type="button" data-toggle="modal" data-target="#addStockModal" class="btn float-right btn-secondary btn-sm">+</button>
       </div>
     	<div id="stocks" class="list-group expand">
         <#list stocks as stock>

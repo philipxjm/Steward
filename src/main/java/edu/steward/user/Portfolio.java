@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
+import edu.steward.sql.DatabaseApi;
 
 public class Portfolio {
   private String name;
@@ -21,8 +22,8 @@ public class Portfolio {
   }
 
   public void loadInfo() {
-    holdings = UserData.getStocksFromPortfolio(portfolioId);
-    balance = UserData.getBalanceFromPortfolio(portfolioId);
+    holdings = DatabaseApi.getStocksFromPortfolio(portfolioId);
+    balance = DatabaseApi.getBalanceFromPortfolio(portfolioId);
   }
 
   public Map<String, Integer> getHoldings() {
@@ -54,7 +55,7 @@ public class Portfolio {
       holdings.replace(ticker, newShares);
       balance -= cost;
       // TODO: this should add the transaction to history and change the balance
-      return UserData.stockTransaction(portfolioId, ticker, shares, time,
+      return DatabaseApi.stockTransaction(portfolioId, ticker, shares, time,
           price);
     }
   }
@@ -73,7 +74,7 @@ public class Portfolio {
     } else {
       holdings.replace(ticker, currShares - shares);
       balance += cost;
-      return UserData.stockTransaction(portfolioId, ticker,
+      return DatabaseApi.stockTransaction(portfolioId, ticker,
           // there is a negative sign here because it is SELL
           -shares, time, price);
     }

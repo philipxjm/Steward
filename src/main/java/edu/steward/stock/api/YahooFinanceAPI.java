@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.steward.stock.StockData;
+import edu.steward.sql.DatabaseApi;
 import edu.steward.stock.Fundamentals.Ask;
 import edu.steward.stock.Fundamentals.AskSize;
 import edu.steward.stock.Fundamentals.Average;
@@ -35,7 +35,7 @@ public class YahooFinanceAPI implements StockAPI {
   @Override
   public List<Price> getStockPrices(String ticker, TIMESERIES timeSeries) {
     System.out.println("lkmlkm");
-    return priceIntervalClean(StockData.getPrices(ticker), timeSeries);
+    return priceIntervalClean(DatabaseApi.getPrices(ticker), timeSeries);
   }
 
   @Override

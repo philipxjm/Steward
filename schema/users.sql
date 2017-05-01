@@ -3,7 +3,15 @@ CREATE TABLE "UserPortfolios" (
 	`PortfolioId`	TEXT NOT NULL UNIQUE,
 	`Name`	TEXT,
 	`UserId`	TEXT NOT NULL,
+	`PoolId`	TEXT,
 	PRIMARY KEY(`PortfolioId`)
+);
+CREATE TABLE "Pools" (
+	`PoolId` TEXT NOT NULL UNIQUE,
+	`Balance` INTEGER NOT NULL,
+	`StartTime` TEXT NOT NULL,
+	`EndTime` TEXT,
+	PRIMARY KEY('PoolId')
 );
 CREATE TABLE "History" (
 	`portfolio`	TEXT NOT NULL,

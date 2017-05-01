@@ -9,9 +9,6 @@ import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.api.AlphaVantageAPI;
 import edu.steward.stock.api.StockAPI;
 import edu.steward.stock.api.YahooFinanceAPI;
-import edu.steward.user.UserData;
-
-import static edu.steward.stock.StockData.getPrices;
 
 /**
  * Created by Philip on 4/16/17.

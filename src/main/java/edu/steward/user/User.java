@@ -1,5 +1,7 @@
 package edu.steward.user;
 
+import edu.steward.sql.DatabaseApi;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +25,7 @@ public class User {
 
   public void loadPortfolios() {
     System.out.println("load portfolios called");
-    List<Portfolio> ret = UserData.getPortfoliosFromUser(this.getId());
+    List<Portfolio> ret = DatabaseApi.getPortfoliosFromUser(this.getId());
     for (Portfolio port : ret) {
       portfolios.put(port.getName(), port);
     }
@@ -54,7 +56,7 @@ public class User {
     if (portfolios.get(portName) == null) {
       portfolios.put(portName,
           new Portfolio(portName, this.getId() + "/" + portName));
-      UserData.createPortfolio(this.getId(), portName);
+      DatabaseApi.createPortfolio(this.getId(), portName);
       return true;
     }
     return false;
@@ -66,7 +68,7 @@ public class User {
       return false;
     }
     portfolios.remove(portName);
-    UserData.removePortfolio(this.getId(), portName);
+    DatabaseApi.removePortfolio(this.getId(), portName);
     return true;
   }
 }
