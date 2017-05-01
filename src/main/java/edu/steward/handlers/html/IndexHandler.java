@@ -35,7 +35,9 @@ public class IndexHandler implements TemplateViewRoute {
         Map<String, Integer> m = portNames.get(0).getHoldings();
         for (String ticker : m.keySet()) {
           Holding h = new Holding(ticker, m.get(ticker));
-          stocks.add(h);
+          if (h.getShares() > 0) {
+            stocks.add(h);
+          }
         }
       }
 
