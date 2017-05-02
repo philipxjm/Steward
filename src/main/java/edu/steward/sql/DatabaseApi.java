@@ -67,8 +67,9 @@ public class DatabaseApi {
     return portfolios;
   }
 
-  public static void createPortfolio(String userId, String portName,
+  public static boolean createPortfolio(String userId, String portName,
       Integer initialBalance) {
+
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -81,7 +82,8 @@ public class DatabaseApi {
         prep.setString(1, portId);
         prep.executeUpdate();
       } catch (SQLException e) {
-        e.printStackTrace();
+        // Portfolio already exists
+        return false;
       }
       stat = "INSERT INTO Balances VALUES (?, ?)";
       try (PreparedStatement prep = c.prepareStatement(stat)) {
@@ -94,37 +96,38 @@ public class DatabaseApi {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    return true;
   }
 
-  public static void createPortfolio(String userId, String portName) {
-    String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
+  public static boolean createPortfolio(String userId, String portName) {
+    return createPortfolio(userId, portName, 1000000);
+  }
+
+  public static boolean renamePortfolio(String userId, String oldName,
+      String newName) {
+    String stat = "UPDATE UserPortfolios SET Name=?,PortfolioId=? WHERE PortfolioId=?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(4, "NULL");
-        prep.setString(3, userId);
-        prep.setString(2, portName);
-        String portId = userId + "/" + portName;
-        prep.setString(1, portId);
+        String oldPortId = userId + "/" + oldName;
+        String newPortId = userId + "/" + newName;
+        prep.setString(1, newName);
+        prep.setString(2, newPortId);
+        prep.setString(3, oldPortId);
         prep.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
-      }
-      stat = "INSERT INTO Balances VALUES (?, ?)";
-      try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(1, userId + "/" + portName);
-        prep.setInt(2, 1000000);
-        prep.executeUpdate();
-      } catch (SQLException e) {
-        e.printStackTrace();
+        return false;
       }
     } catch (SQLException e) {
       e.printStackTrace();
+      return false;
     }
+    return true;
   }
 
-  public static void removePortfolio(String userId, String portName) {
+  public static boolean removePortfolio(String userId, String portName) {
     String stat = "DELETE FROM UserPortfolios WHERE PortfolioId = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -135,10 +138,13 @@ public class DatabaseApi {
         prep.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
+        return false;
       }
     } catch (SQLException e) {
       e.printStackTrace();
+      return false;
     }
+    return true;
   }
 
   public static boolean stockTransaction(String portId, String ticker,

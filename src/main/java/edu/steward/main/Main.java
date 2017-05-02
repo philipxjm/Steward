@@ -24,8 +24,10 @@ import edu.steward.handlers.json.GetUnrealizedDataHandler;
 import edu.steward.handlers.json.LoginHandler;
 import edu.steward.handlers.json.LogoutHandler;
 import edu.steward.handlers.json.NewPortfolioHandler;
+import edu.steward.handlers.json.RenamePortfolioHandler;
 import edu.steward.handlers.json.StockActionHandler;
 import edu.steward.login.LoginConfigFactory;
+import edu.steward.user.DeletePortfolioHandler;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -122,6 +124,8 @@ public class Main {
     Spark.get("/logout", new LogoutHandler());
     // JSON
     Spark.post("/newPortfolio", new NewPortfolioHandler());
+    Spark.post("/deletePortfolio", new DeletePortfolioHandler());
+    Spark.post("/renamePortfolio", new RenamePortfolioHandler());
     Spark.post("/getPortfolio", new GetPortfolioHandler());
     Spark.post("/stockAction", new StockActionHandler());
     Spark.post("/getGraphData", new GetGraphDataHandler());
