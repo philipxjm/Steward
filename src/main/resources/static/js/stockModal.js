@@ -14,8 +14,22 @@ $('#addStock').click((e) => {
         time = + new Date();
     }
 
+    if (isNaN(time)) {
+        $('#stockError')[0].innerText = "ERROR: Enter a past date for the action.";
+        return;
+    }
+
     let ticker = $('#ticker').val().toUpperCase();
+    if (!ticker) {
+        $('#stockError')[0].innerText = "ERROR: Enter a ticker for the action.";
+        return;        
+    }
+
     let shares = $('#shares').val();
+    if (!shares) {
+        $('#stockError')[0].innerText = "ERROR: Enter an amount for the action.";
+        return;        
+    }
     let port = getCurrentPort();
     let data = {
         current: !$('#pastAction').prop("checked"),
@@ -25,20 +39,17 @@ $('#addStock').click((e) => {
         ticker: ticker,
         shares: shares
     }
-    let valid = true; // TODO actually validate
-    if (valid) {
-        $.post('/stockAction', data, (res) => {
-            let resData = JSON.parse(res);
-            if (resData["success"]) {
-                $('#addStockModal').modal('hide');
-                getStocks(getCurrentPort());
-            } else {
-                $('#stockError')[0].innerText = "ERROR: " + resData["error"];
-            }
-        });
-    } else {
-        // TODO: Show validation error
-    }
+
+    $.post('/stockAction', data, (res) => {
+        let resData = JSON.parse(res);
+        if (resData["success"]) {
+            $('#addStockModal').modal('hide');
+            getStocks(getCurrentPort());
+        } else {
+            $('#stockError')[0].innerText = "ERROR: " + resData["error"];
+        }
+    });
+
     return false;
 });
 
