@@ -269,6 +269,45 @@ public class DatabaseApi {
     return balance;
   }
 
+  public static Price getPrice(String ticker, int time) {
+    System.out.println("get price called in DatabaseAPI");
+    System.out.println("ticker: " + ticker + ", time: " + time);
+    List<Price> prices = new ArrayList<>();
+    String query = "SELECT time, price FROM quotes "
+            + "WHERE stock = ? "
+            + "AND time <= ? "
+            + "AND time >= ?;";
+    try (Connection c = DriverManager.getConnection(quoteUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, ticker);
+        prep.setInt(2, time + 43200);
+        prep.setInt(3, time - 604800);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            System.out.println("flag");
+            Integer timestamp = Integer.parseInt(rs.getString(1));
+            Double priceValue = Double.parseDouble(rs.getString(2));
+            Price price = new Price(priceValue, (long) timestamp);
+            prices.add(price);
+          }
+          Collections.sort(prices, new Comparator<Price>() {
+            @Override
+            public int compare(Price o1, Price o2) {
+              return o2.getTime().compareTo(o1.getTime());
+            }
+          });
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return prices.get(0);
+  }
+
   public static List<Price> getPrices(String ticker) {
     String query = "SELECT time, price FROM quotes " + "WHERE stock = ?;";
     List<Price> prices = new ArrayList<>();
@@ -289,7 +328,7 @@ public class DatabaseApi {
           Collections.sort(prices, new Comparator<Price>() {
             @Override
             public int compare(Price o1, Price o2) {
-              return o1.getTime().compareTo(o2.getTime());
+              return o2.getTime().compareTo(o1.getTime());
             }
           });
         }
@@ -320,7 +359,7 @@ public class DatabaseApi {
       Calendar from = Calendar.getInstance();
       from.add(Calendar.YEAR, -10);
       yahoofinance.Stock stock = YahooFinance.get(ticker);
-      List<HistoricalQuote> quotes = stock.getHistory(from, Interval.WEEKLY);
+      List<HistoricalQuote> quotes = stock.getHistory(from, Interval.DAILY);
       for (HistoricalQuote q : quotes) {
         Double priceVal = q.getAdjClose().doubleValue();
         Long time = q.getDate().getTimeInMillis() / 1000;

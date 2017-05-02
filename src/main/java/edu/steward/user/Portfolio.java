@@ -7,6 +7,8 @@ import java.util.Map;
 import com.google.common.collect.ImmutableList;
 
 import edu.steward.sql.DatabaseApi;
+import edu.steward.sql.GainsOverTime;
+import edu.steward.stock.Fundamentals.Gains;
 
 public class Portfolio {
   private String name;
@@ -82,17 +84,29 @@ public class Portfolio {
     return name;
   }
 
+//  public List<List<Double>> getUnrealized() {
+//    // TODO Implement, this is mock
+//    // Also should probably use a class rather than List<Double>
+//    List<List<Double>> ret = new ArrayList<>();
+//    double time = 0;
+//    int endTime = 100;
+//    double val = 0;
+//    ret.add(ImmutableList.of(time, val));
+//    for (; time < endTime; time++) {
+//      val += ((Math.random() * 11) - 5);
+//      ret.add(ImmutableList.of(time, val));
+//    }
+//    return ret;
+//  }
+
   public List<List<Double>> getUnrealized() {
-    // TODO Implement, this is mock
-    // Also should probably use a class rather than List<Double>
+    List<Gains> gains = GainsOverTime.getGainsPortfolioGraph(portfolioId);
     List<List<Double>> ret = new ArrayList<>();
-    double time = 0;
-    int endTime = 100;
-    double val = 0;
-    ret.add(ImmutableList.of(time, val));
-    for (; time < endTime; time++) {
-      val += ((Math.random() * 11) - 5);
-      ret.add(ImmutableList.of(time, val));
+    for (Gains gain : gains) {
+      List<Double> datum = new ArrayList<>();
+      datum.add((double) gain.getTime());
+      datum.add(gain.getValue());
+      ret.add(datum);
     }
     return ret;
   }
