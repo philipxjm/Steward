@@ -26,6 +26,7 @@ public class GetPortfolioHandler implements Route {
     Map<String, Integer> stocks = user.getPortfolio(name).getHoldings();
     List<Map<String, Object>> ret = new ArrayList<>();
     for (String ticker : stocks.keySet()) {
+      System.out.println("ticker: " + ticker + " shares: " + stocks.get(ticker));
       ret.add(ImmutableMap.of("ticker", ticker, "shares",
           stocks.get(ticker)));
     }
