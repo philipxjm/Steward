@@ -51,10 +51,10 @@ public class Portfolio {
       } else {
         newShares = shares + currShares;
       }
-      System.out.println("current shares: " + currShares);
-      System.out.println("new Shares: " + newShares);
+
       holdings.replace(ticker, newShares);
       balance -= cost;
+
       // TODO: this should add the transaction to history and change the balance
       return DatabaseApi.stockTransaction(portfolioId, ticker, shares, time,
           price);
@@ -62,15 +62,12 @@ public class Portfolio {
   }
 
   public boolean sellStock(String ticker, int shares, int time, double price) {
-    System.out.println("Portfolio.sellStock called");
     // TODO
     double cost = price * shares;
     Integer currShares = holdings.get(ticker);
     if (currShares == null) {
       return false;
     } else if (currShares < shares) {
-      System.out.println("curr Shares: " + currShares);
-      System.out.println("You dont have enough shares to sell.");
       return false;
     } else {
       holdings.replace(ticker, currShares - shares);

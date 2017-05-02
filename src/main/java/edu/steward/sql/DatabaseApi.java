@@ -16,12 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Multimap;
-import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
 
 import edu.steward.pools.Pool;
 import edu.steward.stock.Fundamentals.Price;
-import edu.steward.user.Holding;
 import edu.steward.user.Portfolio;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
@@ -37,11 +35,9 @@ public class DatabaseApi {
   private static String quoteUrl = base + "data/quotes.sqlite3";
 
   public static List<Portfolio> getPortfoliosFromUser(String userId) {
-    System.out.println("get port from user called");
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
         + "WHERE UserId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
-    System.out.println("id: " + userId);
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -53,7 +49,6 @@ public class DatabaseApi {
             String id = rs.getString(2);
             Portfolio port = new Portfolio(name, id);
             portfolios.add(port);
-            System.out.println(id);
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -148,22 +143,18 @@ public class DatabaseApi {
 
   public static boolean stockTransaction(String portId, String ticker,
       int amount, int time, double price) {
-    System.out.println("abcddbca");
     Double cost = amount * price;
-    String query = "SELECT trans FROM History "
-        + "WHERE portfolio = ? " + "AND stock = ?;";
+    String query = "SELECT trans FROM History " + "WHERE portfolio = ? "
+        + "AND stock = ?;";
     Integer total = 0;
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(query)) {
         prep.setString(1, portId);
-        System.out.println("portId: " + portId);
         prep.setString(2, ticker);
-        System.out.println("ticker: " + ticker);
         try (ResultSet rs = prep.executeQuery()) {
           while (rs.next()) {
-            System.out.println("printed dis123");
             String transString = rs.getString(1);
             Integer trans = Integer.parseInt(transString);
             total += trans;
@@ -185,7 +176,6 @@ public class DatabaseApi {
         Statement s = c.createStatement();
         s.executeUpdate("PRAGMA foreign_keys = ON;");
         try (PreparedStatement prep = c.prepareStatement(stat)) {
-
           prep.setString(1, portId);
 
           prep.setString(2, ticker);
@@ -203,7 +193,6 @@ public class DatabaseApi {
         stat = "UPDATE Balances " + "SET balance = (balance + ?) "
             + "WHERE portfolio = ?;";
         try (PreparedStatement prep = c.prepareStatement(stat)) {
-          System.out.println("lkjlkj");
           prep.setDouble(1, -cost);
           prep.setString(2, portId);
           prep.executeUpdate();
@@ -219,8 +208,7 @@ public class DatabaseApi {
 
   public static Map<String, Integer> getStocksFromPortfolio(String portId) {
     Multimap<String, Integer> transactionHistory = TreeMultimap.create();
-    String query = "SELECT stock, trans FROM History "
-        + "WHERE portfolio = ?;";
+    String query = "SELECT stock, trans FROM History " + "WHERE portfolio = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -242,6 +230,7 @@ public class DatabaseApi {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+
     Map<String, Integer> ret = new HashMap<>();
     for (String ticker : transactionHistory.keySet()) {
       Integer total = 0;
@@ -279,8 +268,6 @@ public class DatabaseApi {
   }
 
   public static List<Price> getPrices(String ticker) {
-    System.out.println("made it in get prices");
-    System.out.println("ticker: " + ticker);
     String query = "SELECT time, price FROM quotes " + "WHERE stock = ?;";
     List<Price> prices = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(quoteUrl)) {
@@ -290,15 +277,11 @@ public class DatabaseApi {
         prep.setString(1, ticker);
         try (ResultSet rs = prep.executeQuery()) {
           while (rs.next()) {
-            System.out.println("heia");
             String time = rs.getString(1);
             String priceValue = rs.getString(2);
-            System.out.println("priceval: " + priceValue);
-            System.out.println("time: " + time);
             Price price = new Price(Double.valueOf(priceValue),
                 Long.valueOf(time));
-            System.out.println(price.getTime());
-            System.out.println(price.getValue());
+
             prices.add(price);
           }
           Collections.sort(prices, new Comparator<Price>() {
@@ -309,12 +292,10 @@ public class DatabaseApi {
           });
         }
       } catch (SQLException e) {
-        System.out.println("flag 1");
         e.printStackTrace();
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("flag 2");
     }
     if (prices.size() == 0) {
       updatePrices(ticker);
@@ -323,14 +304,8 @@ public class DatabaseApi {
       Collections.sort(prices);
       if ((System.currentTimeMillis() / 1000)
           - prices.get(0).getTime() < 777600) {
-        System.out.println("twas returned");
         return prices;
       } else {
-        System.out.println("hasnt been updated in nine days so it is updating");
-        System.out.println("priceztyme: " + prices.get(0).getTime());
-        System.out.println(
-            "lastpriceztyme: " + prices.get(prices.size() - 1).getTime());
-        System.out.println("currtyme: " + (System.currentTimeMillis() / 1000));
         updatePrices(ticker);
         return getPrices(ticker);
       }
@@ -338,7 +313,6 @@ public class DatabaseApi {
   }
 
   public static void updatePrices(String ticker) {
-    System.out.println("update prices called");
     List<Price> ret = new ArrayList<>();
     try {
       Calendar from = Calendar.getInstance();
@@ -346,7 +320,6 @@ public class DatabaseApi {
       yahoofinance.Stock stock = YahooFinance.get(ticker);
       List<HistoricalQuote> quotes = stock.getHistory(from, Interval.WEEKLY);
       for (HistoricalQuote q : quotes) {
-        System.out.println("adddddddded");
         Double priceVal = q.getAdjClose().doubleValue();
         Long time = q.getDate().getTimeInMillis() / 1000;
         Price p = new Price(priceVal, time);
@@ -395,11 +368,9 @@ public class DatabaseApi {
   }
 
   public static List<Portfolio> getPortsFromPool(String pool) {
-    System.out.println("get ports from pool called");
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
         + "WHERE PoolId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
-    System.out.println("id: " + pool);
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -411,7 +382,6 @@ public class DatabaseApi {
             String id = rs.getString(2);
             Portfolio port = new Portfolio(name, id);
             portfolios.add(port);
-            System.out.println(id);
           }
         } catch (SQLException e) {
           e.printStackTrace();

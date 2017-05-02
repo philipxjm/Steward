@@ -4,11 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Calendar;
-import java.util.List;
 
-import edu.steward.stock.Fundamentals.Price;
-import edu.steward.stock.Stock;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 
@@ -17,6 +13,7 @@ import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.PoolsHandler;
 import edu.steward.handlers.html.StockHandler;
 import edu.steward.handlers.html.WatchlistHandler;
+import edu.steward.handlers.json.DeletePortfolioHandler;
 import edu.steward.handlers.json.GetGraphDataHandler;
 import edu.steward.handlers.json.GetPortfolioHandler;
 import edu.steward.handlers.json.GetStockPredictionHandler;
@@ -27,7 +24,6 @@ import edu.steward.handlers.json.NewPortfolioHandler;
 import edu.steward.handlers.json.RenamePortfolioHandler;
 import edu.steward.handlers.json.StockActionHandler;
 import edu.steward.login.LoginConfigFactory;
-import edu.steward.user.DeletePortfolioHandler;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -36,9 +32,6 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes.Interval;
 
 public class Main {
   private static final int DEFAULT_PORT = 4567;
@@ -54,32 +47,12 @@ public class Main {
   }
 
   private void run() {
-//     Parse command line arguments
-//     Workaround for redirect issue (#69) in yahoo finance library
-//     System.setProperty("yahoofinance.baseurl.histquotes",
-//     "https://ichart.yahoo.com/table.csv");
-//     System.setProperty("yahoofinance.baseurl.quotes",
-//     "http://download.finance.yahoo.com/d/quotes.csv");
-     Calendar from = Calendar.getInstance();
-     from.add(Calendar.YEAR, -50);
-     try {
-     yahoofinance.Stock fb = YahooFinance.get("FB");
-     fb.getQuote();
-     yahoofinance.Stock apple = YahooFinance.get("FB", true);
-     List<HistoricalQuote> quotes = apple.getHistory(from, Interval.WEEKLY);
-     for (HistoricalQuote quote : quotes) {
-     System.out.println(quote.getDate().getTimeInMillis() + ": " +
-     quote.getAdjClose());
-     }
-     } catch (IOException e) {
-     e.printStackTrace();
-     }
-
-    Stock stock = new Stock("AAPL");
-     Price p = stock.getPrice(1493690308);
-    System.out.println(p.getValue());
-    System.out.println(p.getTime());
-
+    // Parse command line arguments
+    // Workaround for redirect issue (#69) in yahoo finance library
+    // System.setProperty("yahoofinance.baseurl.histquotes",
+    // "https://ichart.yahoo.com/table.csv");
+    // System.setProperty("yahoofinance.baseurl.quotes",
+    // "http://download.finance.yahoo.com/d/quotes.csv");
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)

@@ -39,10 +39,10 @@ $('#addStock').click((e) => {
         ticker: ticker,
         shares: shares
     }
-
     $.post('/stockAction', data, (res) => {
         let resData = JSON.parse(res);
         if (resData["success"]) {
+            $('#stockError')[0].innerText = "";
             $('#addStockModal').modal('hide');
             getStocks(getCurrentPort());
         } else {

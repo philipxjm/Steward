@@ -5,7 +5,6 @@ CREATE TABLE "UserPortfolios" (
 	`UserId`	TEXT NOT NULL,
 	PRIMARY KEY(`PortfolioId`)
 );
-INSERT INTO `UserPortfolios` VALUES ('102000514618071456907/New Portfolio 1','New Portfolio 1','102000514618071456907');
 CREATE TABLE "History" (
 	`portfolio`	TEXT NOT NULL,
 	`stock`	TEXT NOT NULL,
@@ -20,5 +19,4 @@ CREATE TABLE "Balances" (
 	PRIMARY KEY(`portfolio`),
 	FOREIGN KEY(`portfolio`) REFERENCES `UserPortfolios`(`PortfolioId`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-INSERT INTO `Balances` VALUES ('102000514618071456907/New Portfolio 1',1000000.0);
 COMMIT;
