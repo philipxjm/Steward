@@ -3,8 +3,6 @@ package edu.steward.pools;
 import edu.steward.sql.DatabaseApi;
 import edu.steward.user.Portfolio;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
