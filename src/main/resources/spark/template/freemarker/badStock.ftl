@@ -1,3 +1,4 @@
+<#assign name="badStock">
 <#assign css="/css/badStock.css">
 <#assign content>
 <div id="badStock" class="container">

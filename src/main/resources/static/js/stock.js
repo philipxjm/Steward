@@ -3,7 +3,7 @@ const ticker = $('h2')[0].innerText;
 
 // Make chart
 const ctx = $("#graph");
-let stockGraph = new StockGraph(ctx, ticker, "FIVE_DAY"); // Default to showing FIVE_DAY
+let stockGraph = new StockGraph(ctx, ticker, "SIX_MONTH"); // Default to showing FIVE_DAY
 
 // Change timeseries on button click
 $('.time').click((e) => {

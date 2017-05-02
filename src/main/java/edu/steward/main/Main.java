@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 
+import com.google.common.collect.ImmutableList;
+
 import edu.steward.handlers.html.AboutHandler;
 import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.PoolsHandler;
@@ -23,6 +25,7 @@ import edu.steward.handlers.json.LogoutHandler;
 import edu.steward.handlers.json.NewPortfolioHandler;
 import edu.steward.handlers.json.RenamePortfolioHandler;
 import edu.steward.handlers.json.StockActionHandler;
+import edu.steward.handlers.json.SuggestHandler;
 import edu.steward.login.LoginConfigFactory;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -96,6 +99,8 @@ public class Main {
     Spark.get("/login", new LoginHandler());
     Spark.get("/logout", new LogoutHandler());
     // JSON
+    Spark.post("/suggest", new SuggestHandler(
+        ImmutableList.of("data/allStocksNDQ.csv", "data/allStocks.csv")));
     Spark.post("/newPortfolio", new NewPortfolioHandler());
     Spark.post("/deletePortfolio", new DeletePortfolioHandler());
     Spark.post("/renamePortfolio", new RenamePortfolioHandler());

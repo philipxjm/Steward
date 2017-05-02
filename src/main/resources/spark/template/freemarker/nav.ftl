@@ -15,12 +15,7 @@
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <div id="searchBox" class="input-group">
-            <input id="searchText" type="text" class="form-control" placeholder="Search for...">
-              <span class="input-group-btn">
-              <button id="searchButton" class="btn btn-secondary" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
-            </span>
-          </div>    
+          <div id="searchBox" class="input-group"></div>    
         </li>
         <li class="nav-item">
             <#if user??>
