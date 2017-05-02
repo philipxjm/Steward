@@ -19,34 +19,60 @@ function getCurrentPort() {
 
 // Click handler for potfolio
 const portfolioClickHandler = (e) => {
-    if ($(e.target).hasClass("active")) {
-        return;
+    let elm = $(e.target);
+    if(elm.hasClass("deletePort")) {
+        deletePortfolio(elm.parent());
+        return false;
+    }
+
+    if(elm.hasClass("editPort")) {
+        let parent = elm.parent();
+        parent.click();        
+        parent.empty();
+        parent.addClass("newPort");
+        parent.append($('<input id="newPort" type="text"><p id="portErr" class="text-danger"></p>'));
+        return false;
+    }
+
+    if (elm.hasClass("active")) {
+        return false;
     }
 
     $('.port').removeClass("active");
-    $(e.target).addClass("active");
-    const portName = $(e.target).children('.portName')[0].innerText;
+    elm.addClass("active");
+    const portName = elm.children('.portName')[0].innerText;
     getStocks(portName);
     graph.update(portName);
 }
 $('.port').click(portfolioClickHandler);
 
-$('.editPort').click((e) => {
-    console.log(e.target);
-    console.log("HERE");
-});
-
-$('.deletePort').click((e) => {
-    console.log(e.target);
-    console.log("HERE");
-});
+function deletePortfolio(elm) {
+    let name = elm.children('.portName')[0].innerText;
+    $.post('/deletePortfolio', {name:name}, (res) => {
+        let success = JSON.parse(res);
+        if (success) {
+          elm.remove();
+        }
+        let next = $('.port')[0];
+        if (!next) {
+            if(!$('#noPort')[0]) {
+                $('#graphContainer').append($('<h2 id="noPort" class="text-muted">Make a new portfolio!</h2>'));
+            }
+            $('#noPort').show();
+            $('#gains').hide();
+            $('#stocks').empty();
+        } else {
+            $($('.port')[0]).click();
+        }
+    });
+}
 
 function makeNewPort(name) {
-   return  $(`<div class="list-group-item list-group-item-action active port">         
+   return  $(`<div class="list-group-item list-group-item-action port">         
               <span class="portName">${name}</span>
-              <a class="editPort float-right"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-              <a class="deletePort float-right"><i class="fa fa-trash" aria-hidden="true"></i></a>
-    </div>`);
+              <a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
+              <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>
+          </div>`);
 }
 
 // Add portfolio button
@@ -67,7 +93,8 @@ $('#addPort').click((e) => {
                             $('.port').removeClass("active");
                             if( $('#addButton').prop('disabled')) {
                                 $('#addButton').prop('disabled', false);
-                                $('#noPort').hide();                                
+                                $('#noPort').hide(); 
+                                $('#gains').show();                               
                                 // Initialize graph with new portfolio
                                 graph = new UnrealizedGraph(ctx, name);
                             }
@@ -76,7 +103,7 @@ $('#addPort').click((e) => {
                             let newPort = makeNewPort(name);
                             newPortInput.replaceWith(newPort);
                             newPort.click(portfolioClickHandler);
-
+                            newPort.click();
                             $('#stocks').empty();
                         }
                     });

@@ -52,6 +52,11 @@ public class User {
     return portfolios.get(name);
   }
 
+  public boolean deletePortfolio(String name) {
+    portfolios.remove(name);
+    return DatabaseApi.removePortfolio(this.getId(), name);
+  }
+
   public boolean addPortfolio(String portName) {
     System.out.println(portName);
     if (portfolios.get(portName) == null) {

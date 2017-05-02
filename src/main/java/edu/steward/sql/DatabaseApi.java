@@ -102,7 +102,7 @@ public class DatabaseApi {
     return createPortfolio(userId, portName, 1000000);
   }
 
-  public static void removePortfolio(String userId, String portName) {
+  public static boolean removePortfolio(String userId, String portName) {
     String stat = "DELETE FROM UserPortfolios WHERE PortfolioId = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -113,10 +113,13 @@ public class DatabaseApi {
         prep.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
+        return false;
       }
     } catch (SQLException e) {
       e.printStackTrace();
+      return false;
     }
+    return true;
   }
 
   public static boolean stockTransaction(String portId, String ticker,

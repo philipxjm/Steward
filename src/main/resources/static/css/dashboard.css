@@ -34,3 +34,7 @@ form {
 .editPort, .deletePort {
 	margin: 0 5px;
 }
+
+.actionButton {
+	padding: 5px;
+}
