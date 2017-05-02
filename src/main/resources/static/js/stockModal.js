@@ -12,10 +12,11 @@ $('#addStock').click((e) => {
         time = + new Date($('#actionDate').val());
     } else {   
         time = + new Date();
-     }
+    }
+
     let ticker = $('#ticker').val().toUpperCase();
     let shares = $('#shares').val();
-    let port = $('.port.active')[0].innerText;
+    let port = getCurrentPort();
     let data = {
         current: !$('#pastAction').prop("checked"),
         port: port,
@@ -30,7 +31,7 @@ $('#addStock').click((e) => {
             let resData = JSON.parse(res);
             if (resData["success"]) {
                 $('#addStockModal').modal('hide');
-                getStocks($('.port.active')[0].innerText);
+                getStocks(getCurrentPort());
             } else {
                 $('#stockError')[0].innerText = "ERROR: " + resData["error"];
             }

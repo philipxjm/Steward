@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
+
 import edu.steward.sql.DatabaseApi;
 
 public class Portfolio {
@@ -31,10 +32,6 @@ public class Portfolio {
       loadInfo();
     }
     return holdings;
-  }
-
-  private enum ActionResult {
-    SUCCESS, INSUFICIENT, NO;
   }
 
   public boolean buyStock(String ticker, int shares, int time, double price) {

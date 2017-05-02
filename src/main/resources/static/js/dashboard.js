@@ -13,6 +13,10 @@ function getStocks(ticker) {
     });
 }
 
+function getCurrentPort() {
+    return $('.port.active > .portName')[0].innerText;
+}
+
 // Click handler for potfolio
 const portfolioClickHandler = (e) => {
     if ($(e.target).hasClass("active")) {
@@ -97,8 +101,8 @@ $(()=> {
         $('#addButton').prop('disabled', true);
         $('#noPort').show();
     } else {
-        $('#noPort').hide();
-      let name = $('.port > .portName')[0].innerText;
+        $('#noPort').hide();        
+      let name = getCurrentPort();
       graph = new UnrealizedGraph(ctx, name);
     }
 });
