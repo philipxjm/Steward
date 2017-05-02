@@ -1,3 +1,4 @@
+<#assign name="stock">
 <#assign chart=true>
 <#assign js>
   <script src="/js/StockGraph.js"></script>

@@ -1,3 +1,4 @@
+<#assign name="index">
 <#assign css="/css/index.css">
 <#assign content>
 <!-- Main jumbotron for a primary marketing message or call to action -->

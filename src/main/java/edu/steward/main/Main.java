@@ -12,6 +12,7 @@ import edu.steward.handlers.html.AboutHandler;
 import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.PoolsHandler;
 import edu.steward.handlers.html.StockHandler;
+import edu.steward.handlers.html.WatchlistHandler;
 import edu.steward.handlers.json.GetGraphDataHandler;
 import edu.steward.handlers.json.GetPortfolioHandler;
 import edu.steward.handlers.json.GetStockPredictionHandler;
@@ -98,18 +99,22 @@ public class Main {
     final CallbackRoute callback = new CallbackRoute(config, null, true);
 
     // Spark routes
+    // Pages
     Spark.get("/", new IndexHandler(), freeMarker);
+    Spark.get("/about", new AboutHandler(), freeMarker);
+    Spark.get("/pools", new PoolsHandler(), freeMarker);
+    Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
+    Spark.get("/watchlist", new WatchlistHandler(), freeMarker);
+    // Auth
+    Spark.get("/login", new LoginHandler());
+    Spark.get("/logout", new LogoutHandler());
+    // JSON
     Spark.post("/newPortfolio", new NewPortfolioHandler());
     Spark.post("/getPortfolio", new GetPortfolioHandler());
     Spark.post("/stockAction", new StockActionHandler());
-    Spark.get("/about", new AboutHandler(), freeMarker);
-    Spark.get("/pools", new PoolsHandler(), freeMarker);
     Spark.post("/getGraphData", new GetGraphDataHandler());
     Spark.post("/getStockPrediction", new GetStockPredictionHandler());
     Spark.post("/getUnrealizedData", new GetUnrealizedDataHandler());
-    Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
-    Spark.get("/login", new LoginHandler());
-    Spark.get("/logout", new LogoutHandler());
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

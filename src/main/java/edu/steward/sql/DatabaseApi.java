@@ -1,6 +1,23 @@
 package edu.steward.sql;
 
-import com.google.common.collect.*;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.common.collect.SortedSetMultimap;
+import com.google.common.collect.TreeMultimap;
+
 import edu.steward.pools.Pool;
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.user.Holding;
@@ -9,17 +26,14 @@ import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
-import java.io.IOException;
-import java.sql.*;
-import java.util.*;
-
 /**
  * Created by kjin on 4/24/17.
  */
 public class DatabaseApi {
 
-  private static String dbloc = "data/users.sqlite3";
-  private static String url = "jdbc:sqlite:" + dbloc;
+  private static String base = "jdbc:sqlite:";
+  private static String userUrl = base + "data/users.sqlite3";
+  private static String quoteUrl = base + "data/quotes.sqlite3";
 
   public static List<Portfolio> getPortfoliosFromUser(String userId) {
     System.out.println("get port from user called");
@@ -27,7 +41,7 @@ public class DatabaseApi {
         + "WHERE UserId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
     System.out.println("id: " + userId);
-    try (Connection c = DriverManager.getConnection(url)) {
+    try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(query)) {
@@ -52,9 +66,10 @@ public class DatabaseApi {
     return portfolios;
   }
 
-  public static void createPortfolio(String userId, String portName, Integer initialBalance) {
+  public static void createPortfolio(String userId, String portName,
+      Integer initialBalance) {
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
-    try (Connection c = DriverManager.getConnection(url)) {
+    try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
@@ -82,7 +97,7 @@ public class DatabaseApi {
 
   public static void createPortfolio(String userId, String portName) {
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
-    try (Connection c = DriverManager.getConnection(url)) {
+    try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
@@ -110,7 +125,7 @@ public class DatabaseApi {
 
   public static void removePortfolio(String userId, String portName) {
     String stat = "DELETE FROM UserPortfolios WHERE PortfolioId = ?;";
-    try (Connection c = DriverManager.getConnection(url)) {
+    try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
@@ -125,19 +140,14 @@ public class DatabaseApi {
     }
   }
 
-  public static boolean stockTransaction(
-          String portId,
-          String ticker,
-          int amount,
-          int time,
-          double price) {
+  public static boolean stockTransaction(String portId, String ticker,
+      int amount, int time, double price) {
     System.out.println("abcddbca");
     Double cost = amount * price;
     String query = "SELECT time, quantity FROM History "
-            + "WHERE portfolio = ? "
-            + "AND stock = ?;";
+        + "WHERE portfolio = ? " + "AND stock = ?;";
     Integer lastQuantity = 0;
-    try (Connection c = DriverManager.getConnection(url)) {
+    try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(query)) {
@@ -177,7 +187,7 @@ public class DatabaseApi {
       return false;
     } else {
       String stat = "INSERT INTO History VALUES (?, ?, ?, ?, ?, ?);";
-      try (Connection c = DriverManager.getConnection(url)) {
+      try (Connection c = DriverManager.getConnection(userUrl)) {
         Statement s = c.createStatement();
         s.executeUpdate("PRAGMA foreign_keys = ON;");
         try (PreparedStatement prep = c.prepareStatement(stat)) {
@@ -200,9 +210,8 @@ public class DatabaseApi {
         } catch (SQLException e) {
           e.printStackTrace();
         }
-        stat = "UPDATE Balances "
-                + "SET balance = (balance + ?) "
-                + "WHERE portfolio = ?;";
+        stat = "UPDATE Balances " + "SET balance = (balance + ?) "
+            + "WHERE portfolio = ?;";
         try (PreparedStatement prep = c.prepareStatement(stat)) {
           System.out.println("lkjlkj");
           prep.setDouble(1, -cost);
@@ -219,10 +228,11 @@ public class DatabaseApi {
   }
 
   public static Map<String, Integer> getStocksFromPortfolio(String portId) {
-    SortedSetMultimap<String, Holding> transactionHistory = TreeMultimap.create();
+    SortedSetMultimap<String, Holding> transactionHistory = TreeMultimap
+        .create();
     String query = "SELECT stock, time, quantity FROM History "
-            + "WHERE portfolio = ?;";
-    try (Connection c = DriverManager.getConnection(url)) {
+        + "WHERE portfolio = ?;";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(query)) {
@@ -232,11 +242,8 @@ public class DatabaseApi {
             String ticker = rs.getString(1);
             String timeString = rs.getString(2);
             String quantityString = rs.getString(3);
-            Holding holding = new Holding(
-                    ticker,
-                    Integer.parseInt(quantityString),
-                    Integer.parseInt(timeString)
-                    );
+            Holding holding = new Holding(ticker,
+                Integer.parseInt(quantityString), Integer.parseInt(timeString));
             transactionHistory.put(ticker, holding);
           }
         } catch (SQLException e) {
@@ -257,9 +264,8 @@ public class DatabaseApi {
 
   public static Double getBalanceFromPortfolio(String portId) {
     Double balance = 0.0;
-    String query = "SELECT balance FROM Balances "
-            + "WHERE portfolio = ?;";
-    try (Connection c = DriverManager.getConnection(url)) {
+    String query = "SELECT balance FROM Balances " + "WHERE portfolio = ?;";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(query)) {
@@ -286,7 +292,7 @@ public class DatabaseApi {
     System.out.println("ticker: " + ticker);
     String query = "SELECT time, price FROM quotes " + "WHERE stock = ?;";
     List<Price> prices = new ArrayList<>();
-    try (Connection c = DriverManager.getConnection(url)) {
+    try (Connection c = DriverManager.getConnection(quoteUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(query)) {
@@ -331,7 +337,8 @@ public class DatabaseApi {
       } else {
         System.out.println("hasnt been updated in nine days so it is updating");
         System.out.println("priceztyme: " + prices.get(0).getTime());
-        System.out.println("lastpriceztyme: " + prices.get(prices.size() - 1).getTime());
+        System.out.println(
+            "lastpriceztyme: " + prices.get(prices.size() - 1).getTime());
         System.out.println("currtyme: " + (System.currentTimeMillis() / 1000));
         updatePrices(ticker);
         return getPrices(ticker);
@@ -354,7 +361,7 @@ public class DatabaseApi {
         Price p = new Price(priceVal, time);
         ret.add(p);
         String stat = "INSERT OR REPLACE INTO quotes VALUES (?, ?, ?);";
-        try (Connection c = DriverManager.getConnection(url)) {
+        try (Connection c = DriverManager.getConnection(quoteUrl)) {
           Statement s = c.createStatement();
           s.executeUpdate("PRAGMA foreign_keys = ON;");
           try (PreparedStatement prep = c.prepareStatement(stat)) {
@@ -374,9 +381,9 @@ public class DatabaseApi {
     }
   }
 
-  public static boolean initializePool (Pool p) {
+  public static boolean initializePool(Pool p) {
     String stat = "INSERT INTO Pools VALUES (?, ?, ?, ?);";
-    try (Connection c = DriverManager.getConnection(url)) {
+    try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
@@ -396,13 +403,13 @@ public class DatabaseApi {
     return true;
   }
 
-  public static List<Portfolio> getPortsFromPool (String pool) {
+  public static List<Portfolio> getPortsFromPool(String pool) {
     System.out.println("get ports from pool called");
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
         + "WHERE PoolId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
     System.out.println("id: " + pool);
-    try (Connection c = DriverManager.getConnection(url)) {
+    try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(query)) {

@@ -1,4 +1,5 @@
 <#assign chart=true>
+<#assign name="index">
 <#assign js>
   <script src="/js/UnrealizedGraph.js"></script>
   <script src="/js/dashboard.js"></script>
@@ -14,14 +15,14 @@
       </div>
     	<div id="ports" class="list-group expand">
         <#list portfolios as port>
-		   	 <div class="list-group-item list-group-item-action port <#if port_index == 0>active</#if>">
+		   	 <div class="list-group-item list-group-item-action port <#if port_index == 0>active</#if>">         
               ${port.name}
           </div>
         </#list>
 		  </div>
     </div>
     <div class="col-6">
-      <h2 id="noPort" class="text-muted">Make a new portfolio!</h2>
+      <#if portfolios?size == 0><h2 id="noPort" class="text-muted">Make a new portfolio!</h2></#if>
 	   <canvas id="gains"></canvas>
     </div>
     <div class="col-3">
