@@ -15,9 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.SortedSetMultimap;
-import com.google.common.collect.TreeMultimap;
+import com.google.common.collect.*;
 
 import edu.steward.pools.Pool;
 import edu.steward.stock.Fundamentals.Price;
@@ -218,7 +216,7 @@ public class DatabaseApi {
   }
 
   public static Map<String, Integer> getStocksFromPortfolio(String portId) {
-    Multimap<String, Integer> transactionHistory = TreeMultimap.create();
+    ListMultimap<String, Integer> transactionHistory = ArrayListMultimap.create();
     String query = "SELECT stock, trans FROM History "
         + "WHERE portfolio = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {

@@ -13,6 +13,8 @@ import spark.Response;
 import spark.Route;
 import yahoofinance.YahooFinance;
 
+import java.io.FileNotFoundException;
+
 public class StockActionHandler implements Route {
   private final Gson gson = new Gson();
 
@@ -39,8 +41,14 @@ public class StockActionHandler implements Route {
     if (current) {
       priceObj = stock.getCurrPrice();
     } else {
-//      time = (int) (System.currentTimeMillis() / 1000L);
-      priceObj = stock.getPrice(transTime);
+        priceObj = stock.getPrice(transTime);
+
+        if (priceObj == null) {
+          System.out.println("here somehting went horribly wrong oh no");
+          return gson
+                  .toJson(ImmutableMap.of(
+                          "success", false, "error", "Stock did not exist at specified time."));
+        }
     }
     // No such ticker
     if (priceObj == null) {
