@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
+
 import edu.steward.sql.DatabaseApi;
 
 public class Portfolio {
@@ -21,6 +22,10 @@ public class Portfolio {
     loadInfo();
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public void loadInfo() {
     holdings = DatabaseApi.getStocksFromPortfolio(portfolioId);
     balance = DatabaseApi.getBalanceFromPortfolio(portfolioId);
@@ -31,10 +36,6 @@ public class Portfolio {
       loadInfo();
     }
     return holdings;
-  }
-
-  private enum ActionResult {
-    SUCCESS, INSUFICIENT, NO;
   }
 
   public boolean buyStock(String ticker, int shares, int time, double price) {
@@ -50,10 +51,10 @@ public class Portfolio {
       } else {
         newShares = shares + currShares;
       }
-      System.out.println("current shares: " + currShares);
-      System.out.println("new Shares: " + newShares);
+
       holdings.replace(ticker, newShares);
       balance -= cost;
+
       // TODO: this should add the transaction to history and change the balance
       return DatabaseApi.stockTransaction(portfolioId, ticker, shares, time,
           price);
@@ -61,15 +62,12 @@ public class Portfolio {
   }
 
   public boolean sellStock(String ticker, int shares, int time, double price) {
-    System.out.println("Portfolio.sellStock called");
     // TODO
     double cost = price * shares;
     Integer currShares = holdings.get(ticker);
     if (currShares == null) {
       return false;
     } else if (currShares < shares) {
-      System.out.println("curr Shares: " + currShares);
-      System.out.println("You dont have enough shares to sell.");
       return false;
     } else {
       holdings.replace(ticker, currShares - shares);

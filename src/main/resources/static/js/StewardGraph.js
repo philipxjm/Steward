@@ -11,8 +11,9 @@ class StewardGraph {
         };
         this.predictStyle = Object.assign({}, this.defaultLineStyle);
         this.predictStyle.pointBorderColor = "red";
-        this.predictStyle.pointBackgroundColor = "red";
         this.predictStyle.label = "Predicted";
+        this.predictStyle.borderDash = [5,15];
+        this.predictStyle.borderColor = "red";
 	}
 	makeGraph() {
         this.getData(() => {
@@ -46,7 +47,7 @@ class StewardGraph {
                         mode: 'single',
                         callbacks: {
                             title: (info) => { 
-                                return this.dateToString(this.labels[info[0].index], true);
+                                return this.dateToString(this.labels[info[0].xLabel], true);
                             }
                         }
                     }                    
@@ -80,10 +81,12 @@ class StewardGraph {
     makeDataSet() {
         let ret = [];
         ret.push(Object.assign({data: this.data}, this.defaultLineStyle));
-        if (this.predict && (this.timeseries == "ONE_DAY" || this.timeseries == "FIVE_DAY")) {
+        if (this.predict && (this.timeseries == "FIVE_DAY")) {
             let last = this.data[this.data.length - 1];
-            ret.push(Object.assign({data: [last, {x: last.x + 1, y: this.predict[1]}]}, this.predictStyle));
-            this.labels.push(new Date(this.predict[0]*1000));
+            ret.push(Object.assign({data: [last, {x: last.x + 15, y: this.predict[1]}]}, this.predictStyle));
+            for (let i = 0; i < 15;i++) {
+                this.labels.push(new Date(this.predict[0]*1000));
+            }
         }
 
         return ret;

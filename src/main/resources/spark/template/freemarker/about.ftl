@@ -1,3 +1,4 @@
+<#assign name="about">
 <#assign css="/css/about.css">
 <#assign content>
 <div class="container">

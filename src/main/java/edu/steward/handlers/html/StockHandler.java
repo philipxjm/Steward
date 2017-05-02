@@ -26,10 +26,14 @@ public class StockHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {
     String ticker = req.params(":ticker").toUpperCase();
-
+    ImmutableMap.Builder<Object, Object> variables = new ImmutableMap.Builder<>();
+    String user = req.session().attribute("user");
+    if (user != null) {
+      variables.put("user", user);
+    }
+    variables.put("ticker", ticker);
     Stock stock = new Stock(ticker);
 
-    ImmutableMap.Builder<Object, Object> variables = new ImmutableMap.Builder<>();
     List<Fundamental> fundamentals = stock.getStockFundamentals();
     if (fundamentals == null) {
       variables.put("title", "Bad Stock");
@@ -45,11 +49,19 @@ public class StockHandler implements TemplateViewRoute {
     // Combine Ask and Size
     String p = funds.remove("Ask");
     String s = funds.remove("Ask Size");
-    ret.add(ImmutableList.of("Ask (Size)", String.format("%s (%s)", p, s)));
+    if (p == null || s == null) {
+      ret.add(ImmutableList.of("Ask (Size)", "N/A"));
+    } else {
+      ret.add(ImmutableList.of("Ask (Size)", String.format("%s (%s)", p, s)));
+    }
     // Combine Bid and Size
     p = funds.remove("Bid");
     s = funds.remove("Bid Size");
-    ret.add(ImmutableList.of("Bid (Size)", String.format("%s (%s)", p, s)));
+    if (p == null || s == null) {
+      ret.add(ImmutableList.of("Bid (Size)", "N/A"));
+    } else {
+      ret.add(ImmutableList.of("Bid (Size)", String.format("%s (%s)", p, s)));
+    }
     // Combine High and Low
     String h = funds.remove("52 Week High");
     String l = funds.remove("52 Week Low");
@@ -57,16 +69,15 @@ public class StockHandler implements TemplateViewRoute {
     // Combine div and yield
     String d = funds.remove("Dividend");
     String y = funds.remove("Yield (%)");
-    ret.add(
-        ImmutableList.of("Dividend & Yield", String.format("%s (%s%%)", d, y)));
-    for (String key : funds.keySet()) {
-      ret.add(ImmutableList.of(key, funds.get(key)));
+    if (d == null || y == null) {
+      ret.add(ImmutableList.of("Dividend & Yield", "N/A"));
+    } else {
+      ret.add(ImmutableList.of("Dividend & Yield",
+          String.format("%s (%s%%)", d, y)));
     }
 
-    variables.put("ticker", ticker);
-    String user = req.session().attribute("user");
-    if (user != null) {
-      variables.put("user", user);
+    for (String key : funds.keySet()) {
+      ret.add(ImmutableList.of(key, funds.get(key)));
     }
 
     Price currPrice = stock.getCurrPrice();

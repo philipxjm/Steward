@@ -1,11 +1,11 @@
 package edu.steward.user;
 
-import edu.steward.sql.DatabaseApi;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import edu.steward.sql.DatabaseApi;
 
 /**
  * Created by Philip on 4/16/17.
@@ -24,12 +24,10 @@ public class User {
   }
 
   public void loadPortfolios() {
-    System.out.println("load portfolios called");
     List<Portfolio> ret = DatabaseApi.getPortfoliosFromUser(this.getId());
     for (Portfolio port : ret) {
       portfolios.put(port.getName(), port);
     }
-    System.out.println(ret);
   }
 
   public List<Portfolio> getPortfolios() {
@@ -48,16 +46,39 @@ public class User {
     if (portfolios.isEmpty()) {
       loadPortfolios();
     }
+
     portfolios.get(name).loadInfo();
     return portfolios.get(name);
   }
 
+  public boolean deletePortfolio(String name) {
+    portfolios.remove(name);
+    return DatabaseApi.removePortfolio(this.getId(), name);
+  }
+
+  public boolean renamePortfolio(String oldName, String newName) {
+    if (portfolios.isEmpty()) {
+      loadPortfolios();
+    }
+    if (DatabaseApi.renamePortfolio(this.getId(), oldName, newName)) {
+      Portfolio old = portfolios.remove(oldName);
+      old.setName(newName);
+      portfolios.put(newName, old);
+      return true;
+    }
+    return false;
+  }
+
   public boolean addPortfolio(String portName) {
     if (portfolios.get(portName) == null) {
+      boolean success = DatabaseApi.createPortfolio(this.getId(), portName);
+      if (!success) {
+        return false;
+      }
       portfolios.put(portName,
           new Portfolio(portName, this.getId() + "/" + portName));
-      DatabaseApi.createPortfolio(this.getId(), portName);
       return true;
+
     }
     return false;
   }

@@ -387,4 +387,9 @@ public class AlphaVantageAPI implements StockAPI {
     }
     return ret;
   }
+
+  @Override
+  public Price getPrice(String ticker, int time) {
+    return null;
+  }
 }

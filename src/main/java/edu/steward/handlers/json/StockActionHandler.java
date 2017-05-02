@@ -24,12 +24,28 @@ public class StockActionHandler implements Route {
     String portfolioName = qm.value("port");
     String ticker = qm.value("ticker");
     String action = qm.value("action");
-    Integer time = (int) (Long.parseLong(qm.value("time")) / 1000);
+    Integer transTime = (int) (Long.parseLong(qm.value("time")) / 1000);
     Integer shares = (int) Long.parseLong(qm.value("shares"));
-    System.out.println("time: " + time);
+    System.out.println("time: " + transTime);
     System.out.println("shares: " + shares);
     Stock stock = new Stock(ticker);
-    Price priceObj = stock.getCurrPrice();
+
+    // TODO: This should not be currPrice
+
+    Boolean current = Boolean.parseBoolean(qm.value("current"));
+    Integer time = transTime;
+    Price priceObj;
+    if (current) {
+      priceObj = stock.getCurrPrice();
+    } else {
+      priceObj = stock.getPrice(transTime);
+
+      if (priceObj == null) {
+        System.out.println("here somehting went horribly wrong oh no");
+        return gson.toJson(ImmutableMap.of("success", false, "error",
+            "Stock did not exist at specified time."));
+      }
+    }
     // No such ticker
     if (priceObj == null) {
       return gson
@@ -41,6 +57,7 @@ public class StockActionHandler implements Route {
     System.out.println("pfName: " + port);
     boolean success;
     // No such portfolio
+    System.out.println("help pls " + port);
     if (port == null) {
       return gson.toJson(
           ImmutableMap.of("success", false, "error", "No such portfolio"));

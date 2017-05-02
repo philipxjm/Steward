@@ -32,7 +32,8 @@ public class GetStockPredictionHandler implements Route {
       List<Price> predictPrices = stock.getStockPrices(TIMESERIES.ONE_MONTH);
       Price p = mlp.run(predictPrices.subList(predictPrices.size() - 15,
           predictPrices.size()), null);
-      return GSON.toJson(ImmutableList.of(p.getTime(), p.getValue()));
+      return GSON.toJson(ImmutableList.of(p.getTime(),
+          Math.round(p.getValue() * 100.0) / 100.0));
     } else {
       return GSON.toJson(null);
     }

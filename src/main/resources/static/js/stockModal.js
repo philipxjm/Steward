@@ -9,34 +9,47 @@ $('#addStock').click((e) => {
     // Get timestamp
     let time;
     if ($('#pastAction').prop("checked")) {
-        time = + new Date($('#actionDate').val() + "T" + $('#actionTime').val());
+        time = + new Date($('#actionDate').val());
     } else {   
         time = + new Date();
-     }
-    let ticker = $('#ticker').val();
+    }
+
+    if (isNaN(time)) {
+        $('#stockError')[0].innerText = "ERROR: Enter a past date for the action.";
+        return;
+    }
+
+    let ticker = $('#ticker').val().toUpperCase();
+    if (!ticker) {
+        $('#stockError')[0].innerText = "ERROR: Enter a ticker for the action.";
+        return;        
+    }
+
     let shares = $('#shares').val();
-    let port = $('.port.active')[0].innerText;
+    if (!shares) {
+        $('#stockError')[0].innerText = "ERROR: Enter an amount for the action.";
+        return;        
+    }
+    let port = getCurrentPort();
     let data = {
+        current: !$('#pastAction').prop("checked"),
         port: port,
         time: time,
         action: action,
         ticker: ticker,
         shares: shares
     }
-    let valid = true; // TODO actually validate
-    if (valid) {
-        $.post('/stockAction', data, (res) => {
-            let resData = JSON.parse(res);
-            if (resData["success"]) {
-                $('#addStockModal').modal('hide');
-                getStocks($('.port.active')[0].innerText);
-            } else {
-                $('#stockError')[0].innerText = "ERROR: " + resData["error"];
-            }
-        });
-    } else {
-        // TODO: Show validation error
-    }
+    $.post('/stockAction', data, (res) => {
+        let resData = JSON.parse(res);
+        if (resData["success"]) {
+            $('#stockError')[0].innerText = "";
+            $('#addStockModal').modal('hide');
+            getStocks(getCurrentPort());
+        } else {
+            $('#stockError')[0].innerText = "ERROR: " + resData["error"];
+        }
+    });
+
     return false;
 });
 

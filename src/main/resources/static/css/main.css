@@ -9,3 +9,19 @@
 #user, #login {
 	margin-left: 10px;
 }
+
+.autoInp {
+  width: 100%;
+}
+
+.autoDropdown {
+  width: 100%;
+  border: 1px solid lightgrey;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.autoDropdown > li{
+  background-color: white;
+}
