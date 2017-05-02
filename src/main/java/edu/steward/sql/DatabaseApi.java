@@ -102,6 +102,30 @@ public class DatabaseApi {
     return createPortfolio(userId, portName, 1000000);
   }
 
+  public static boolean renamePortfolio(String userId, String oldName,
+      String newName) {
+    String stat = "UPDATE UserPortfolios SET Name=?,PortfolioId=? WHERE PortfolioId=?;";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(stat)) {
+        String oldPortId = userId + "/" + oldName;
+        String newPortId = userId + "/" + newName;
+        prep.setString(1, newName);
+        prep.setString(2, newPortId);
+        prep.setString(3, oldPortId);
+        prep.executeUpdate();
+      } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
+  }
+
   public static boolean removePortfolio(String userId, String portName) {
     String stat = "DELETE FROM UserPortfolios WHERE PortfolioId = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {

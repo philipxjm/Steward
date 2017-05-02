@@ -22,6 +22,10 @@ public class Portfolio {
     loadInfo();
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public void loadInfo() {
     holdings = DatabaseApi.getStocksFromPortfolio(portfolioId);
     balance = DatabaseApi.getBalanceFromPortfolio(portfolioId);

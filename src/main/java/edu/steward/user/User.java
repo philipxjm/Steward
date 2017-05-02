@@ -57,6 +57,22 @@ public class User {
     return DatabaseApi.removePortfolio(this.getId(), name);
   }
 
+  public boolean renamePortfolio(String oldName, String newName) {
+    if (portfolios.isEmpty()) {
+      loadPortfolios();
+    }
+    if (DatabaseApi.renamePortfolio(this.getId(), oldName, newName)) {
+      System.out.println("AHSDHASHDA");
+      System.out.println(oldName);
+      System.out.println(portfolios);
+      Portfolio old = portfolios.remove(oldName);
+      old.setName(newName);
+      portfolios.put(newName, old);
+      return true;
+    }
+    return false;
+  }
+
   public boolean addPortfolio(String portName) {
     System.out.println(portName);
     if (portfolios.get(portName) == null) {

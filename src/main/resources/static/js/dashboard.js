@@ -25,12 +25,45 @@ const portfolioClickHandler = (e) => {
         return false;
     }
 
+    if(elm.hasClass("portName")) {
+        elm = elm.parent();
+    }
+
     if(elm.hasClass("editPort")) {
+        $('#addPort').prop('disabled', true);
+        $('#addButton').prop('disabled', true);
+
         let parent = elm.parent();
-        parent.click();        
+        parent.click();
+        let oldName = getCurrentPort();
         parent.empty();
-        parent.addClass("newPort");
-        parent.append($('<input id="newPort" type="text"><p id="portErr" class="text-danger"></p>'));
+        parent.append($('<input id="renamePort" type="text"><p id="portErr" class="text-danger"></p>'));
+        let $input = $('#renamePort');
+        $input.val(oldName);
+        $input.focus();
+        $input.keydown((e) => {
+            if (e.keyCode == 13) { // Enter
+                e.preventDefault();
+                let name = $(e.target).val();
+                if (oldName == name || !name) {
+                                        // Remove
+                    finishRename($input, oldName);
+                } else {
+                    $.post('/renamePortfolio', {old: oldName, new: name}, (res) => {
+                        let resData = JSON.parse(res);
+                        if (!resData) {
+                            $('#portErr')[0].innerText = "That portfolio already exists";
+                        } else {
+                            finishRename($input, name);
+                        }
+                    });
+                }
+            } else if (e.keyCode == 27) { // Escape
+                e.preventDefault();
+                // Remove
+                finishRename($input, oldName);
+            }
+        });
         return false;
     }
 
@@ -45,6 +78,15 @@ const portfolioClickHandler = (e) => {
     graph.update(portName);
 }
 $('.port').click(portfolioClickHandler);
+
+function finishRename($input, name) {
+    let elm = makeNewPort(name);
+    $input.parent().replaceWith(elm);
+    elm.click(portfolioClickHandler);
+    elm.click();
+    $('#addPort').prop('disabled', false);
+    $('#addButton').prop('disabled', false);
+}
 
 function deletePortfolio(elm) {
     let name = elm.children('.portName')[0].innerText;
@@ -68,11 +110,12 @@ function deletePortfolio(elm) {
 }
 
 function makeNewPort(name) {
-   return  $(`<div class="list-group-item list-group-item-action port">         
+   let ret = $(`<div class="list-group-item list-group-item-action port">         
               <span class="portName">${name}</span>
               <a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
               <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>
           </div>`);
+   return ret;
 }
 
 // Add portfolio button
@@ -90,7 +133,6 @@ $('#addPort').click((e) => {
                         if (!resData) {
                             $('#portErr')[0].innerText = "That portfolio already exists";
                         } else {
-                            $('.port').removeClass("active");
                             if( $('#addButton').prop('disabled')) {
                                 $('#addButton').prop('disabled', false);
                                 $('#noPort').hide(); 
@@ -103,7 +145,7 @@ $('#addPort').click((e) => {
                             let newPort = makeNewPort(name);
                             newPortInput.replaceWith(newPort);
                             newPort.click(portfolioClickHandler);
-                            newPort.click();
+                            newPort.click();                            
                             $('#stocks').empty();
                         }
                     });
