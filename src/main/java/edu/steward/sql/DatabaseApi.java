@@ -70,12 +70,11 @@ public class DatabaseApi {
   public static boolean createPortfolio(String userId, String portName,
       Integer initialBalance) {
 
-    String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
+    String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(4, "NULL");
         prep.setString(3, userId);
         prep.setString(2, portName);
         String portId = userId + "/" + portName;
