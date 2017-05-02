@@ -35,6 +35,8 @@ public interface StockAPI {
 
   Price getCurrPrice(String ticker);
 
+  Price getPrice(String ticker, int time);
+
   DailyChange getDailyChange(String ticker);
 //
 //  List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries);

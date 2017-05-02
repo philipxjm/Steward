@@ -51,6 +51,11 @@ public class Stock {
     return stockAPI.getCurrPrice(ticker);
   }
 
+  public Price getPrice(int time) {
+    setStockAPI(new YahooFinanceAPI());
+    return stockAPI.getPrice(ticker, time);
+  }
+
   public DailyChange getDailyChange() {
     setStockAPI(new YahooFinanceAPI());
     return stockAPI.getDailyChange(ticker);

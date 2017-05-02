@@ -3,6 +3,7 @@ package edu.steward.stock.api;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.steward.sql.DatabaseApi;
@@ -22,8 +23,12 @@ import edu.steward.stock.Fundamentals.Volume;
 import edu.steward.stock.Fundamentals.YearHigh;
 import edu.steward.stock.Fundamentals.YearLow;
 import edu.steward.stock.Fundamentals.YieldPercent;
+import org.joda.time.DateTime;
+import org.joda.time.field.MillisDurationField;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.HistoricalQuote;
+import yahoofinance.histquotes.Interval;
 
 /**
  * Created by mrobins on 4/20/17.
@@ -34,7 +39,7 @@ public class YahooFinanceAPI implements StockAPI {
 
   @Override
   public List<Price> getStockPrices(String ticker, TIMESERIES timeSeries) {
-    System.out.println("lkmlkm");
+
     return priceIntervalClean(DatabaseApi.getPrices(ticker), timeSeries);
   }
 
@@ -227,4 +232,25 @@ public class YahooFinanceAPI implements StockAPI {
     return ret;
   }
 
+  @Override
+  public Price getPrice(String ticker, int time) {
+    Calendar from = Calendar.getInstance();
+    from.set(Calendar.YEAR, -40);
+    Calendar to = Calendar.getInstance();
+    to.setTimeInMillis(1000L * (long) time);
+    System.out.println("toz: " + to);
+    System.out.println("time: " + time);
+    System.out.println(to.getTimeInMillis());
+    try {
+      Stock stock = YahooFinance.get(ticker, true);
+      List<HistoricalQuote> quotes = stock.getHistory(from, to, Interval.DAILY);
+      return new Price(
+              quotes.get(0).getAdjClose().doubleValue(),
+              (long) time);
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.out.println("Stock not found");
+      return null;
+    }
+  }
 }

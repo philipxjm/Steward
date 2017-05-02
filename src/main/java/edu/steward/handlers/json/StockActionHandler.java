@@ -11,6 +11,7 @@ import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import yahoofinance.YahooFinance;
 
 public class StockActionHandler implements Route {
   private final Gson gson = new Gson();
@@ -24,12 +25,23 @@ public class StockActionHandler implements Route {
     String portfolioName = qm.value("port");
     String ticker = qm.value("ticker");
     String action = qm.value("action");
-    Integer time = (int) (Long.parseLong(qm.value("time")) / 1000);
+    Integer transTime = (int) (Long.parseLong(qm.value("time")) / 1000);
     Integer shares = (int) Long.parseLong(qm.value("shares"));
-    System.out.println("time: " + time);
+    System.out.println("time: " + transTime);
     System.out.println("shares: " + shares);
     Stock stock = new Stock(ticker);
-    Price priceObj = stock.getCurrPrice();
+
+//    TODO: This should not be currPrice
+
+    Boolean current = Boolean.parseBoolean(qm.value("current"));
+    Integer time = transTime;
+    Price priceObj;
+    if (current) {
+      priceObj = stock.getCurrPrice();
+    } else {
+//      time = (int) (System.currentTimeMillis() / 1000L);
+      priceObj = stock.getPrice(transTime);
+    }
     // No such ticker
     if (priceObj == null) {
       return gson

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Multimap;
 import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
 
@@ -144,9 +145,9 @@ public class DatabaseApi {
       int amount, int time, double price) {
     System.out.println("abcddbca");
     Double cost = amount * price;
-    String query = "SELECT time, quantity FROM History "
+    String query = "SELECT trans FROM History "
         + "WHERE portfolio = ? " + "AND stock = ?;";
-    Integer lastQuantity = 0;
+    Integer total = 0;
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -156,23 +157,11 @@ public class DatabaseApi {
         prep.setString(2, ticker);
         System.out.println("ticker: " + ticker);
         try (ResultSet rs = prep.executeQuery()) {
-          int recentTime = 0;
           while (rs.next()) {
             System.out.println("printed dis123");
-            String timeString = rs.getString(1);
-            System.out.println("time string: " + time);
-            Integer timeStamp = Integer.parseInt(timeString);
-            System.out.println("timeStamp " + timeStamp);
-
-            String quantityString = rs.getString(2);
-            System.out.println("qString: " + quantityString);
-            Integer quantity = Integer.parseInt(quantityString);
-            System.out.println("q: " + quantity);
-
-            if (timeStamp > recentTime) {
-              recentTime = timeStamp;
-              lastQuantity = quantity;
-            }
+            String transString = rs.getString(1);
+            Integer trans = Integer.parseInt(transString);
+            total += trans;
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -183,16 +172,14 @@ public class DatabaseApi {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    if (lastQuantity + amount < 0) {
+    if (total + amount < 0) {
       return false;
     } else {
-      String stat = "INSERT INTO History VALUES (?, ?, ?, ?, ?, ?);";
+      String stat = "INSERT INTO History VALUES (?, ?, ?, ?, ?);";
       try (Connection c = DriverManager.getConnection(userUrl)) {
         Statement s = c.createStatement();
         s.executeUpdate("PRAGMA foreign_keys = ON;");
         try (PreparedStatement prep = c.prepareStatement(stat)) {
-
-          System.out.println("made it in hghkj");
 
           prep.setString(1, portId);
 
@@ -202,9 +189,7 @@ public class DatabaseApi {
 
           prep.setInt(4, amount);
 
-          prep.setInt(5, lastQuantity + amount);
-
-          prep.setDouble(6, price);
+          prep.setDouble(5, price);
 
           prep.executeUpdate();
         } catch (SQLException e) {
@@ -228,9 +213,8 @@ public class DatabaseApi {
   }
 
   public static Map<String, Integer> getStocksFromPortfolio(String portId) {
-    SortedSetMultimap<String, Holding> transactionHistory = TreeMultimap
-        .create();
-    String query = "SELECT stock, time, quantity FROM History "
+    Multimap<String, Integer> transactionHistory = TreeMultimap.create();
+    String query = "SELECT stock, trans FROM History "
         + "WHERE portfolio = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -240,11 +224,9 @@ public class DatabaseApi {
         try (ResultSet rs = prep.executeQuery()) {
           while (rs.next()) {
             String ticker = rs.getString(1);
-            String timeString = rs.getString(2);
-            String quantityString = rs.getString(3);
-            Holding holding = new Holding(ticker,
-                Integer.parseInt(quantityString), Integer.parseInt(timeString));
-            transactionHistory.put(ticker, holding);
+            String transString = rs.getString(2);
+            Integer trans = Integer.parseInt(transString);
+            transactionHistory.put(ticker, trans);
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -257,7 +239,11 @@ public class DatabaseApi {
     }
     Map<String, Integer> ret = new HashMap<>();
     for (String ticker : transactionHistory.keySet()) {
-      ret.put(ticker, transactionHistory.get(ticker).last().getShares());
+      Integer total = 0;
+      for (Integer t : transactionHistory.get(ticker)) {
+        total += t;
+      }
+      ret.put(ticker, total);
     }
     return ret;
   }
