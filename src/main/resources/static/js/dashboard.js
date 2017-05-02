@@ -21,11 +21,29 @@ const portfolioClickHandler = (e) => {
 
     $('.port').removeClass("active");
     $(e.target).addClass("active");
-    const portName = e.target.innerText;
+    const portName = $(e.target).children('.portName')[0].innerText;
     getStocks(portName);
     graph.update(portName);
 }
 $('.port').click(portfolioClickHandler);
+
+$('.editPort').click((e) => {
+    console.log(e.target);
+    console.log("HERE");
+});
+
+$('.deletePort').click((e) => {
+    console.log(e.target);
+    console.log("HERE");
+});
+
+function makeNewPort(name) {
+   return  $(`<div class="list-group-item list-group-item-action active port">         
+              <span class="portName">${name}</span>
+              <a class="editPort float-right"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+              <a class="deletePort float-right"><i class="fa fa-trash" aria-hidden="true"></i></a>
+    </div>`);
+}
 
 // Add portfolio button
 $('#addPort').click((e) => {
@@ -49,12 +67,11 @@ $('#addPort').click((e) => {
                                 // Initialize graph with new portfolio
                                 graph = new UnrealizedGraph(ctx, name);
                             }
-                            let newPort = $('.newPort');
+                            $('.port').removeClass('active');
+                            let newPortInput = $('.newPort');
+                            let newPort = makeNewPort(name);
+                            newPortInput.replaceWith(newPort);
                             newPort.click(portfolioClickHandler);
-                            newPort.removeClass('newPort');
-                            newPort.addClass('active');
-                            newPort.empty();
-                            newPort.append(name);
 
                             $('#stocks').empty();
                         }
@@ -81,7 +98,7 @@ $(()=> {
         $('#noPort').show();
     } else {
         $('#noPort').hide();
-      let name = $('.port.active')[0].innerText;
+      let name = $('.port > .portName')[0].innerText;
       graph = new UnrealizedGraph(ctx, name);
     }
 });

@@ -16,7 +16,9 @@
     	<div id="ports" class="list-group expand">
         <#list portfolios as port>
 		   	 <div class="list-group-item list-group-item-action port <#if port_index == 0>active</#if>">         
-              ${port.name}
+              <span class="portName">${port.name}</span>
+              <a class="editPort float-right"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+              <a class="deletePort float-right"><i class="fa fa-trash" aria-hidden="true"></i></a>
           </div>
         </#list>
 		  </div>
