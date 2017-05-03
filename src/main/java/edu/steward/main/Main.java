@@ -8,10 +8,14 @@ import java.io.StringWriter;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 
+import com.google.common.collect.ImmutableList;
+
 import edu.steward.handlers.html.AboutHandler;
 import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.PoolsHandler;
 import edu.steward.handlers.html.StockHandler;
+import edu.steward.handlers.html.WatchlistHandler;
+import edu.steward.handlers.json.DeletePortfolioHandler;
 import edu.steward.handlers.json.GetGraphDataHandler;
 import edu.steward.handlers.json.GetPortfolioHandler;
 import edu.steward.handlers.json.GetStockPredictionHandler;
@@ -19,7 +23,9 @@ import edu.steward.handlers.json.GetUnrealizedDataHandler;
 import edu.steward.handlers.json.LoginHandler;
 import edu.steward.handlers.json.LogoutHandler;
 import edu.steward.handlers.json.NewPortfolioHandler;
+import edu.steward.handlers.json.RenamePortfolioHandler;
 import edu.steward.handlers.json.StockActionHandler;
+import edu.steward.handlers.json.SuggestHandler;
 import edu.steward.login.LoginConfigFactory;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -50,21 +56,6 @@ public class Main {
     // "https://ichart.yahoo.com/table.csv");
     // System.setProperty("yahoofinance.baseurl.quotes",
     // "http://download.finance.yahoo.com/d/quotes.csv");
-    // Calendar from = Calendar.getInstance();
-    // from.add(Calendar.YEAR, -10);
-    // try {
-    // yahoofinance.Stock fb = YahooFinance.get("FB");
-    // fb.getQuote();
-    // yahoofinance.Stock apple = YahooFinance.get("FB", true);
-    // List<HistoricalQuote> quotes = apple.getHistory(from, Interval.WEEKLY);
-    // for (HistoricalQuote quote : quotes) {
-    //// System.out.println(quote.getDate().getTimeInMillis() + ": " +
-    // quote.getAdjClose());
-    // }
-    // } catch (IOException e) {
-    // e.printStackTrace();
-    // }
-
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
@@ -98,18 +89,26 @@ public class Main {
     final CallbackRoute callback = new CallbackRoute(config, null, true);
 
     // Spark routes
+    // Pages
     Spark.get("/", new IndexHandler(), freeMarker);
-    Spark.post("/newPortfolio", new NewPortfolioHandler());
-    Spark.post("/getPortfolio", new GetPortfolioHandler());
-    Spark.post("/stockAction", new StockActionHandler());
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.get("/pools", new PoolsHandler(), freeMarker);
+    Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
+    Spark.get("/watchlist", new WatchlistHandler(), freeMarker);
+    // Auth
+    Spark.get("/login", new LoginHandler());
+    Spark.get("/logout", new LogoutHandler());
+    // JSON
+    Spark.post("/suggest", new SuggestHandler(
+        ImmutableList.of("data/allStocksNDQ.csv", "data/allStocks.csv")));
+    Spark.post("/newPortfolio", new NewPortfolioHandler());
+    Spark.post("/deletePortfolio", new DeletePortfolioHandler());
+    Spark.post("/renamePortfolio", new RenamePortfolioHandler());
+    Spark.post("/getPortfolio", new GetPortfolioHandler());
+    Spark.post("/stockAction", new StockActionHandler());
     Spark.post("/getGraphData", new GetGraphDataHandler());
     Spark.post("/getStockPrediction", new GetStockPredictionHandler());
     Spark.post("/getUnrealizedData", new GetUnrealizedDataHandler());
-    Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
-    Spark.get("/login", new LoginHandler());
-    Spark.get("/logout", new LogoutHandler());
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

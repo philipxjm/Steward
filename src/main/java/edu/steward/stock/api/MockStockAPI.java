@@ -36,6 +36,11 @@ public class MockStockAPI implements StockAPI {
     return null;
   }
 
+  @Override
+  public Price getPrice(String ticker, int time) {
+    return null;
+  }
+
   //
 //  @Override
 //  public List<Fundamental> getGraphData(String ticker, TIMESERIES timeseries) {

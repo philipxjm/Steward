@@ -3,6 +3,7 @@ package edu.steward.stock.api;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.steward.sql.DatabaseApi;
@@ -22,8 +23,12 @@ import edu.steward.stock.Fundamentals.Volume;
 import edu.steward.stock.Fundamentals.YearHigh;
 import edu.steward.stock.Fundamentals.YearLow;
 import edu.steward.stock.Fundamentals.YieldPercent;
+import org.joda.time.DateTime;
+import org.joda.time.field.MillisDurationField;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.HistoricalQuote;
+import yahoofinance.histquotes.Interval;
 
 /**
  * Created by mrobins on 4/20/17.
@@ -34,7 +39,6 @@ public class YahooFinanceAPI implements StockAPI {
 
   @Override
   public List<Price> getStockPrices(String ticker, TIMESERIES timeSeries) {
-    System.out.println("lkmlkm");
     return priceIntervalClean(DatabaseApi.getPrices(ticker), timeSeries);
   }
 
@@ -193,38 +197,71 @@ public class YahooFinanceAPI implements StockAPI {
     int size = prices.size();
     List<Price> ret = new ArrayList<>();
     switch (t) {
-    case SIX_MONTH:
-      System.out.println("6 month");
-      for (int i = 0; i < Math.min(26, size); i++) {
-        ret.add(prices.get(i));
-      }
-      break;
-    case ONE_YEAR:
-      System.out.println("1 year");
-      for (int i = 0; i < Math.min(52, size); i++) {
-        ret.add(prices.get(i));
-      }
-      break;
-    case TWO_YEAR:
-      System.out.println("2 year");
-      for (int i = 0; i < Math.min(104, size); i++) {
-        ret.add(prices.get(i));
-      }
-      break;
-    case FIVE_YEAR:
-      System.out.println("5 year");
-      for (int i = 0; i < Math.min(260, size); i++) {
-        ret.add(prices.get(i));
-      }
-      break;
-    case TEN_YEAR:
-      System.out.println("10 year");
-      for (int i = 0; i < Math.min(520, size); i++) {
-        ret.add(prices.get(i));
-      }
-      break;
+      case ONE_MONTH:
+        System.out.println("1 month");
+        //      ~23 days of daily data
+        for (int i = 0; i < Math.min(23, size); i += 1) {
+          ret.add(prices.get(i));
+        }
+        break;
+      case SIX_MONTH:
+        System.out.println("6 month");
+//      ~130 days of daily data
+        for (int i = 0; i < Math.min(130, size); i += 2) {
+          ret.add(prices.get(i));
+        }
+        break;
+      case ONE_YEAR:
+        System.out.println("1 year");
+//      ~260 days of daily data
+        for (int i = 0; i < Math.min(260, size); i += 3) {
+          ret.add(prices.get(i));
+        }
+        break;
+      case TWO_YEAR:
+        System.out.println("2 year");
+//      ~520 days of daily data
+        for (int i = 0; i < Math.min(520, size); i += 5) {
+          ret.add(prices.get(i));
+        }
+        break;
+      case FIVE_YEAR:
+        System.out.println("5 year");
+//      ~1300 days of daily data
+        for (int i = 0; i < Math.min(1300, size); i += 10) {
+          ret.add(prices.get(i));
+        }
+        break;
+      case TEN_YEAR:
+        System.out.println("10 year");
+        //      ~2600 days of daily data
+        for (int i = 0; i < Math.min(2600, size); i += 10) {
+          ret.add(prices.get(i));
+        }
+        break;
     }
     return ret;
   }
 
+  @Override
+  public Price getPrice(String ticker, int time) {
+    Calendar from = Calendar.getInstance();
+    from.setTimeInMillis(1000L * (long) time - 100000L);
+    Calendar to = Calendar.getInstance();
+    to.setTimeInMillis(1000L * (long) time);
+    System.out.println("toz: " + to);
+    System.out.println("time: " + time);
+    System.out.println(to.getTimeInMillis());
+    try {
+      Stock stock = YahooFinance.get(ticker, true);
+      List<HistoricalQuote> quotes = stock.getHistory(from, to, Interval.DAILY);
+      return new Price(
+              quotes.get(0).getAdjClose().doubleValue(),
+              (long) time);
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.out.println("Stock not found");
+      return null;
+    }
+  }
 }

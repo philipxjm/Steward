@@ -330,7 +330,9 @@ public class AlphaVantageAPI implements StockAPI {
     Long cutoffTime;
     switch (t) {
       case ONE_DAY:
-        cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 34200);
+        cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 48600);
+        System.out.println("last time: " + prices.get(0).getTime());
+        System.out.println("cutoff time: " + cutoffTime);
         for (Price p : prices) {
           if (p.getTime() >= cutoffTime) {
             ret.add(p);
@@ -342,7 +344,7 @@ public class AlphaVantageAPI implements StockAPI {
       case FIVE_DAY:
         int counter = 0;
 //        Gets the start of the day
-        cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 34200);
+        cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 48600);
 //        Counts where the last day begins
         for (Price p : prices) {
           if (p.getTime() >= cutoffTime) {
@@ -386,5 +388,10 @@ public class AlphaVantageAPI implements StockAPI {
         break;
     }
     return ret;
+  }
+
+  @Override
+  public Price getPrice(String ticker, int time) {
+    return null;
   }
 }

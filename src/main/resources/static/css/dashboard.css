@@ -26,3 +26,15 @@ form {
 #noPort {
 	text-align: center;
 }
+
+.portName {
+	margin-right: auto;
+}
+
+.editPort, .deletePort {
+	margin: 0 5px;
+}
+
+.actionButton {
+	padding: 5px;
+}

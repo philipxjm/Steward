@@ -1,3 +1,4 @@
+<#assign name="stock">
 <#assign chart=true>
 <#assign js>
   <script src="/js/StockGraph.js"></script>
@@ -15,14 +16,14 @@
             <label class="btn btn-primary time">
               <input type="radio" name="timespan" id="ONE_DAY" autocomplete="off">One Day
             </label>
-            <label class="btn btn-primary active time">
-              <input type="radio" name="timespan" id="FIVE_DAY" autocomplete="off" checked>Five Day
+            <label class="btn btn-primary time">
+              <input type="radio" name="timespan" id="FIVE_DAY" autocomplete="off">Five Day
             </label>
             <label class="btn btn-primary time">
               <input type="radio" name="timespan" id="ONE_MONTH" autocomplete="off">One Month
             </label>
-            <label class="btn btn-primary time">
-              <input type="radio" name="timespan" id="SIX_MONTH" autocomplete="off">Six Month
+            <label class="btn btn-primary active time">
+              <input type="radio" name="timespan" id="SIX_MONTH" autocomplete="off" checked>Six Month
             </label>
             <label class="btn btn-primary time">
               <input type="radio" name="timespan" id="ONE_YEAR" autocomplete="off">One Year
