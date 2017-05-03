@@ -31,6 +31,9 @@ class StockGraph extends StewardGraph {
                 pastData.push({x: c, y: p[1]});
                 c += 1;
             }
+            let curPrice =  parseFloat($('#price').text().substring(1));
+            pastData.push({x: c, y: curPrice})
+            labels.push(new Date());
 
             this.data = pastData;
             this.labels = labels;
