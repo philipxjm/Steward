@@ -88,6 +88,21 @@ public class User {
     return false;
   }
 
+  public boolean addPortfolio(String portName, String poolId) {
+    if (portfolios.get(portName) == null) {
+      boolean success = DatabaseApi.createPortfolio(this.getId(), portName);
+      if (!success) {
+        return false;
+      }
+      Portfolio port = new Portfolio(portName, this.getId() + "/" + portName);
+      port.joinPool(poolId);
+      portfolios.put(portName, port);
+      return true;
+
+    }
+    return false;
+  }
+
   public boolean removePortfolio(String portName) {
     Portfolio port = portfolios.get(portName);
     if (port == null) {

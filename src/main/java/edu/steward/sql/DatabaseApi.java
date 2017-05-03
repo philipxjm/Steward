@@ -395,7 +395,7 @@ public class DatabaseApi {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(4, "NULL");
+        prep.setString(4, p.getEnd());
         prep.setString(3, p.getStart());
         prep.setString(2, p.getBal());
         prep.setString(1, p.getName());
@@ -423,7 +423,9 @@ public class DatabaseApi {
             String name = rs.getString(1);
             String bal = rs.getString(2);
             String start = rs.getString(3);
-            return new Pool(name, bal, start);
+            Pool pool = new Pool(name, bal, start);
+            pool.setEnd(rs.getString(4));
+            return pool;
           }
         } catch (SQLException e) {
           e.printStackTrace();

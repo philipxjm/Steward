@@ -117,6 +117,10 @@ public class Portfolio {
     return pool;
   }
 
+  public boolean joinPool(String poolId) {
+    return DatabaseApi.addPortToPool(portfolioId, poolId);
+  }
+
   public void setPool(Pool pool) {
     this.pool = pool;
   }
