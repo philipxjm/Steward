@@ -424,7 +424,7 @@ public class DatabaseApi {
     List<Price> ret = new ArrayList<>();
     try {
       Calendar from = Calendar.getInstance();
-      from.add(Calendar.YEAR, -30);
+      from.add(Calendar.YEAR, -10);
       yahoofinance.Stock stock = YahooFinance.get(ticker);
       List<HistoricalQuote> quotes = stock.getHistory(from, Interval.DAILY);
       for (HistoricalQuote q : quotes) {
