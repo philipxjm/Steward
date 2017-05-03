@@ -134,36 +134,36 @@ public class MLPNetwork implements NeuralNet {
   public static void main(String[] args) throws IOException {
     DateTimeFormatter formatter1 =
             DateTimeFormat.forPattern("yyyy-MM-dd");
-    List<List<Price>> priceSeries = new ArrayList<>();
-
-    BufferedReader reader = new BufferedReader(new FileReader(
-            "C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\aapl-1.csv"));
-
-    String line = reader.readLine();
-    String[] companies = line.split(",");
-
-    for (int i = 0; i < companies.length - 1; i++) {
-      priceSeries.add(new ArrayList<>());
-    }
-
-    while ((line = reader.readLine()) != null) {
-      String[] attributes = line.split(",");
-      for (int i = 1; i < attributes.length; i++) {
-        if (!attributes[i].equals("NaN")) {
-          priceSeries.get(i - 1).add(new Price(Double.parseDouble(attributes[i]),
-                  formatter1.parseDateTime(attributes[0]).getMillis() / 1000));
-        }
-      }
-    }
-
-    for (int i = 1; i < companies.length; i++) {
-      MLPNetwork mlp = new MLPNetwork(15);
-      mlp.train(priceSeries.get(i - 1));
-      mlp.saveModel("C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\technology\\" + companies[i]);
-    }
+//    List<List<Price>> priceSeries = new ArrayList<>();
+//
+//    BufferedReader reader = new BufferedReader(new FileReader(
+//            "C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\aapl-1.csv"));
+//
+//    String line = reader.readLine();
+//    String[] companies = line.split(",");
+//
+//    for (int i = 0; i < companies.length - 1; i++) {
+//      priceSeries.add(new ArrayList<>());
+//    }
+//
+//    while ((line = reader.readLine()) != null) {
+//      String[] attributes = line.split(",");
+//      for (int i = 1; i < attributes.length; i++) {
+//        if (!attributes[i].equals("NaN")) {
+//          priceSeries.get(i - 1).add(new Price(Double.parseDouble(attributes[i]),
+//                  formatter1.parseDateTime(attributes[0]).getMillis() / 1000));
+//        }
+//      }
+//    }
+//
+//    for (int i = 1; i < companies.length; i++) {
+//      MLPNetwork mlp = new MLPNetwork(15);
+//      mlp.train(priceSeries.get(i - 1));
+//      mlp.saveModel("C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\technology\\" + companies[i]);
+//    }
 
     MLPNetwork mlp = new MLPNetwork(15);
-    mlp.readModel("C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\technology\\AAPL");
+    mlp.readModel("data/technology/AAPL");
 
     List<Price> testSeries =
             ImmutableList.of(new Price(143.699997, formatter1.parseDateTime("2017-04-03").getMillis() / 1000),

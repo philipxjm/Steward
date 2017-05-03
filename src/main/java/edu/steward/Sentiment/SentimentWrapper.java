@@ -46,13 +46,6 @@ public class SentimentWrapper {
     }
 
     double difference = (sentiment - bullish) / 6.0;
-    double finalSentiment = bullish + difference;
-
-    return finalSentiment;
-  }
-
-  public static void main(String[] args) {
-    SentimentWrapper sw = new SentimentWrapper();
-    System.out.println(sw.findSentimentOf("ETSY"));
+    return bullish + difference;
   }
 }

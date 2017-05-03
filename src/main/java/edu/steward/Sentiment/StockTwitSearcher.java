@@ -69,8 +69,7 @@ public class StockTwitSearcher {
     return sb.toString();
   }
 
-  private static String removeUrl(String commentstr)
-  {
+  private static String removeUrl(String commentstr) {
     String urlPattern = "((https?|ftp|gopher|telnet|file|Unsure|http):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
     Pattern p = Pattern.compile(urlPattern,Pattern.CASE_INSENSITIVE);
     Matcher m = p.matcher(commentstr);
@@ -83,12 +82,12 @@ public class StockTwitSearcher {
   }
 
   private List<String> stockTwits(String Ticker) throws ParseException,
-          IOException
-  {
+          IOException {
     InputStream is = new URL("https://api.stocktwits" +
             ".com/api/2/streams/symbol/"+Ticker+".json?-filter=links")
             .openStream();
-    BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+    BufferedReader rd
+            = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
     String jsonText = readAll(rd);
 
     ArrayList<String> lst_body = new ArrayList<String>();
@@ -100,19 +99,16 @@ public class StockTwitSearcher {
     String result;
     String time;
 
-    for(int i=0;i<30;i++)
-    {
+    for(int i = 0; i < 30; i++) {
       result= jarray.get(i).getAsJsonObject().get("body").toString();
 
       time = jarray.get(i).getAsJsonObject().get("created_at").toString();
 
       lst_body.add(result.substring(1,result.length()-1));
       lst_time.add(time.substring(time.indexOf("T")+1,time.indexOf("Z")));
-
     }
 
     return lst_body;
-
   }
 
   private static String readAll(Reader rd) throws IOException {
