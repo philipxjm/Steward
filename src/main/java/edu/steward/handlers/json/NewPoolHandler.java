@@ -1,6 +1,7 @@
 package edu.steward.handlers.json;
 
 import com.google.gson.Gson;
+
 import edu.steward.pools.Pool;
 import edu.steward.user.User;
 import spark.QueryParamsMap;
@@ -20,10 +21,10 @@ public class NewPoolHandler implements Route {
     String userId = req.session().attribute("id");
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
-    String poolName = qm.value("id");
+    String poolName = qm.value("name");
     String balance = qm.value("balance");
-    String start = String.valueOf(System.currentTimeMillis());
-    Pool pool = new Pool(poolName,balance,start);
+    String start = String.valueOf(System.currentTimeMillis() / 1000);
+    Pool pool = new Pool(poolName, balance, start);
     pool.setEnd(qm.value("end"));
     return GSON.toJson(true);
   }

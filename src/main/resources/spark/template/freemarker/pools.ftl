@@ -2,8 +2,9 @@
 <#assign name="pools">
 <#assign js>
   <script src="/js/UnrealizedGraph.js"></script>
-  <script src="/js/dashboard.js"></script>
-  <script src="/js/stockModal.js"></script>
+  <!--<script src="/js/dashboard.js"></script>
+  <script src="/js/stockModal.js"></script>-->
+  <script src="/js/pools.js"></script>
 </#assign>
 <#assign css>
 <link rel="stylesheet" href="/css/dashboard.css">

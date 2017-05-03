@@ -39,11 +39,13 @@ $('#addStock').click((e) => {
         ticker: ticker,
         shares: shares
     }
+    $('#addStock').prop('disabled', true);
     $.post('/stockAction', data, (res) => {
         let resData = JSON.parse(res);
         if (resData["success"]) {
             $('#stockError')[0].innerText = "";
             $('#addStockModal').modal('hide');
+            $('#addStock').prop('disabled', false);
             getStocks(getCurrentPort());
         } else {
             $('#stockError')[0].innerText = "ERROR: " + resData["error"];
