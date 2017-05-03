@@ -9,9 +9,11 @@
       <li class="nav-item active">
         <a class="nav-link" href=<#if name=="watchlist">"#"<#else>"/watchlist"</#if>>Watchlist</a>
       </li>         
+      <#if user??>
       <li class="nav-item active">
         <a class="nav-link" href=<#if name=="pools">"#"<#else>"/pools"</#if>>Pools</a>
-      </li>      
+      </li>  
+      </#if>    
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">

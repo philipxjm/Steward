@@ -38,8 +38,9 @@ public class StockActionHandler implements Route {
     if (current) {
       priceObj = stock.getCurrPrice();
     } else {
+      System.out.println("made it in diss");
       priceObj = stock.getPrice(transTime);
-
+      System.out.println("abcdefg" + priceObj);
       if (priceObj == null) {
         System.out.println("here somehting went horribly wrong oh no");
         return gson.toJson(ImmutableMap.of("success", false, "error",

@@ -1,5 +1,7 @@
 <#assign name="index">
-<#assign css="/css/index.css">
+<#assign css>
+<link rel="stylesheet" href="/css/index.css">
+</#assign>
 <#assign content>
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">

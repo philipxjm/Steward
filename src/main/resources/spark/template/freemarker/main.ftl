@@ -9,7 +9,7 @@
 	      <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
   	  </#if>
   	  <#if css??>
-  	      <link rel="stylesheet" href=${css}></head>
+  	      ${css}
   	  </#if>
       <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
       <meta name="google-signin-client_id" content="993833341053-f3ks9cqj041b1uvj8an5omd7rdmu16j7.apps.googleusercontent.com">

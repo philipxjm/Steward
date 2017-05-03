@@ -15,6 +15,7 @@ public class Pool {
   private String bal;
   private String start;
   private String name;
+  private String end;
 
   public Pool (String balance, String startTime, String name, Portfolio...
       ports) {
@@ -58,5 +59,13 @@ public class Pool {
 
   public void setStart(String start) {
     this.start = start;
+  }
+
+  public String getEnd() {
+    return end;
+  }
+
+  public void setEnd(String end) {
+    this.end = end;
   }
 }

@@ -22,6 +22,7 @@ class StockGraph extends StewardGraph {
 
             for(let p of resData) {
                 if(p[0] - last > 3000 && (this.timeseries == "ONE_DAY" || this.timeseries == "FIVE_DAY")) {
+                    c += 1;
                     pastData.push({x: NaN, y: NaN})
                     labels.push(new Date(p[0]*1000));
                 }

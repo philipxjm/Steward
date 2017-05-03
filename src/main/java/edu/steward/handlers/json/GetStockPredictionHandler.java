@@ -25,13 +25,21 @@ public class GetStockPredictionHandler implements Route {
     String path = "data/technology/" + ticker;
     File f = new File(path);
     if (f.exists() && !f.isDirectory()) {
-      MLPNetwork mlp = new MLPNetwork(15);
+      int n;
+      if (ticker.toUpperCase().equals("AAPL")) {
+        n = 15;
+      } else {
+        n = 5;
+      }
+      MLPNetwork mlp = new MLPNetwork(n);
       mlp.readModel(path);
       // TODO: Change to adjusted close?
       Stock stock = new Stock(ticker);
       List<Price> predictPrices = stock.getStockPrices(TIMESERIES.ONE_MONTH);
-      Price p = mlp.run(predictPrices.subList(predictPrices.size() - 15,
-          predictPrices.size()), null);
+      Price p = mlp.run(
+          predictPrices.subList(predictPrices.size() - n, predictPrices.size()),
+          null);
+
       return GSON.toJson(ImmutableList.of(p.getTime(),
           Math.round(p.getValue() * 100.0) / 100.0));
     } else {

@@ -7,13 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.DayOfWeek;
+import java.util.*;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -24,8 +19,6 @@ import edu.steward.user.Portfolio;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
-
-import javax.sound.sampled.Port;
 
 /**
  * Created by kjin on 4/24/17.
@@ -38,7 +31,7 @@ public class DatabaseApi {
 
   public static List<Portfolio> getPortfoliosFromUser(String userId) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
-        + "WHERE UserId = ?;";
+            + "WHERE UserId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -72,13 +65,14 @@ public class DatabaseApi {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(4, "NULL");
+        prep.setNull(4, 0);
         prep.setString(3, userId);
         prep.setString(2, portName);
         String portId = userId + "/" + portName;
         prep.setString(1, portId);
         prep.executeUpdate();
       } catch (SQLException e) {
+        e.printStackTrace();
         // Portfolio already exists
         return false;
       }
@@ -148,7 +142,7 @@ public class DatabaseApi {
                                          int amount, int time, double price) {
     Double cost = amount * price;
     String query = "SELECT trans FROM History " + "WHERE portfolio = ? "
-        + "AND stock = ?;";
+            + "AND stock = ?;";
     Integer total = 0;
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -194,7 +188,7 @@ public class DatabaseApi {
           e.printStackTrace();
         }
         stat = "UPDATE Balances " + "SET balance = (balance + ?) "
-            + "WHERE portfolio = ?;";
+                + "WHERE portfolio = ?;";
         try (PreparedStatement prep = c.prepareStatement(stat)) {
           prep.setDouble(1, -cost);
           prep.setString(2, portId);
@@ -211,7 +205,7 @@ public class DatabaseApi {
 
   public static Map<String, Integer> getStocksFromPortfolio(String portId) {
     ListMultimap<String, Integer> transactionHistory = ArrayListMultimap
-        .create();
+            .create();
     String query = "SELECT stock, trans FROM History " + "WHERE portfolio = ?;";
 
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -273,42 +267,51 @@ public class DatabaseApi {
   }
 
   public static Price getPrice(String ticker, int time) {
-    System.out.println("get price called in DatabaseAPI");
-    System.out.println("ticker: " + ticker + ", time: " + time);
-    List<Price> prices = new ArrayList<>();
-    String query = "SELECT time, price FROM quotes "
-            + "WHERE stock = ? "
-            + "AND time <= ? "
-            + "AND time >= ?;";
-    try (Connection c = DriverManager.getConnection(quoteUrl)) {
-      Statement s = c.createStatement();
-      s.executeUpdate("PRAGMA foreign_keys = ON;");
-      try (PreparedStatement prep = c.prepareStatement(query)) {
-        prep.setString(1, ticker);
-        prep.setInt(2, time + 43200);
-        prep.setInt(3, time - 604800);
-        try (ResultSet rs = prep.executeQuery()) {
-          while (rs.next()) {
-            System.out.println("flag");
-            Integer timestamp = Integer.parseInt(rs.getString(1));
-            Double priceValue = Double.parseDouble(rs.getString(2));
-            Price price = new Price(priceValue, (long) timestamp);
-            prices.add(price);
-          }
-          Collections.sort(prices, new Comparator<Price>() {
-            @Override
-            public int compare(Price o1, Price o2) {
-              return o2.getTime().compareTo(o1.getTime());
+    if (isUpdated(ticker)) {
+      System.out.println("get price called in DatabaseAPI");
+      System.out.println("ticker: " + ticker + ", time: " + time);
+      List<Price> prices = new ArrayList<>();
+      String query = "SELECT time, price FROM quotes "
+              + "WHERE stock = ? "
+              + "AND time <= ? "
+              + "AND time >= ?;";
+      try (Connection c = DriverManager.getConnection(quoteUrl)) {
+        Statement s = c.createStatement();
+        s.executeUpdate("PRAGMA foreign_keys = ON;");
+        try (PreparedStatement prep = c.prepareStatement(query)) {
+          prep.setString(1, ticker);
+          prep.setInt(2, time + 43200);
+          prep.setInt(3, time - 604800);
+          try (ResultSet rs = prep.executeQuery()) {
+            while (rs.next()) {
+              System.out.println("flag");
+              Integer timestamp = Integer.parseInt(rs.getString(1));
+              Double priceValue = Double.parseDouble(rs.getString(2));
+              Price price = new Price(priceValue, (long) timestamp);
+              prices.add(price);
             }
-          });
+            Collections.sort(prices, new Comparator<Price>() {
+              @Override
+              public int compare(Price o1, Price o2) {
+                return o2.getTime().compareTo(o1.getTime());
+              }
+            });
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
         }
       } catch (SQLException e) {
         e.printStackTrace();
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
+      if (prices.size() == 0) {
+        return null;
+      } else {
+        return prices.get(0);
+      }
+    } else {
+      updatePrices(ticker);
+      return getPrice(ticker, time);
     }
-    return prices.get(0);
   }
 
   public static List<Price> getPrices(String ticker) {
@@ -324,7 +327,7 @@ public class DatabaseApi {
             String time = rs.getString(1);
             String priceValue = rs.getString(2);
             Price price = new Price(Double.valueOf(priceValue),
-                Long.valueOf(time));
+                    Long.valueOf(time));
 
             prices.add(price);
           }
@@ -341,22 +344,83 @@ public class DatabaseApi {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    if (prices.size() == 0) {
+    Collections.sort(prices);
+    if (isUpdated(ticker)) {
+      return prices;
+    } else {
       updatePrices(ticker);
       return getPrices(ticker);
+    }
+  }
+
+  public static boolean isUpdated(String ticker) {
+    String query = "SELECT time FROM quotes " + "WHERE stock = ?;";
+    List<Integer> timestamps = new ArrayList<>();
+    try (Connection c = DriverManager.getConnection(quoteUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, ticker);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            Integer time = Integer.parseInt(rs.getString(1));
+            timestamps.add(time);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    if (timestamps.size() == 0) {
+      return false;
     } else {
-      Collections.sort(prices);
-      if ((System.currentTimeMillis() / 1000)
-          - prices.get(0).getTime() < 777600) {
-        return prices;
+      Collections.sort(timestamps);
+      Calendar c = Calendar.getInstance();
+      int day = c.get(Calendar.DAY_OF_WEEK);
+      int timeCheck;
+      switch (day) {
+        case Calendar.SUNDAY:
+//          three days in seconds
+          timeCheck = 259200;
+          break;
+        case Calendar.MONDAY:
+//          four days in seconds
+          timeCheck = 345600;
+          break;
+        default:
+//          two days in seconds
+          timeCheck = 172800;
+          break;
+      }
+      int currTime = (int) (System.currentTimeMillis() / 1000L);
+      int lastNineThirtyAM =
+              currTime - (currTime % 48600);
+      if (currTime - timestamps.get(timestamps.size() - 1) < timeCheck) {
+        return true;
       } else {
-        updatePrices(ticker);
-        return getPrices(ticker);
+        return false;
       }
     }
   }
 
   public static void updatePrices(String ticker) {
+    String stat = "DELETE FROM quotes WHERE stock = ?;";
+    try (Connection c = DriverManager.getConnection(quoteUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(stat)) {
+        prep.setString(1, ticker);
+        prep.executeUpdate();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     List<Price> ret = new ArrayList<>();
     try {
       Calendar from = Calendar.getInstance();
@@ -368,7 +432,7 @@ public class DatabaseApi {
         Long time = q.getDate().getTimeInMillis() / 1000;
         Price p = new Price(priceVal, time);
         ret.add(p);
-        String stat = "INSERT OR REPLACE INTO quotes VALUES (?, ?, ?);";
+        stat = "INSERT INTO quotes VALUES (?, ?, ?);";
         try (Connection c = DriverManager.getConnection(quoteUrl)) {
           Statement s = c.createStatement();
           s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -389,13 +453,14 @@ public class DatabaseApi {
     }
   }
 
+
   public static boolean initializePool(Pool p) {
     String stat = "INSERT INTO Pools VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(4, "NULL");
+        prep.setString(4, p.getEnd());
         prep.setString(3, p.getStart());
         prep.setString(2, p.getBal());
         prep.setString(1, p.getName());
@@ -423,7 +488,9 @@ public class DatabaseApi {
             String name = rs.getString(1);
             String bal = rs.getString(2);
             String start = rs.getString(3);
-            return new Pool(name, bal, start);
+            Pool pool = new Pool(name, bal, start);
+            pool.setEnd(rs.getString(4));
+            return pool;
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -439,7 +506,7 @@ public class DatabaseApi {
 
   public static List<Portfolio> getPortsFromPool(String pool) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
-        + "WHERE PoolId = ?;";
+            + "WHERE PoolId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -487,7 +554,7 @@ public class DatabaseApi {
 
   public static List<Portfolio> getPoolsFromUser(String userId) {
     String query = "SELECT * FROM UserPortfolios "
-        + "WHERE UserId = ? AND PoolId IS NOT NULL;";
+            + "WHERE UserId = ? AND PoolId IS NOT NULL;";
     List<Portfolio> ports = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
