@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 
 /**

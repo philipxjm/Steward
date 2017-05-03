@@ -4,6 +4,9 @@
   <script src="/js/StockGraph.js"></script>
   <script src="/js/stock.js"></script>
 </#assign>
+<#assign css>
+<link rel="stylesheet" type="text/css" href="/css/graph.css">
+</#assign>
 <#assign content>
     <div class="expand container-fluid">
       <div class="expand row">

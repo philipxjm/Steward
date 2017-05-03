@@ -1,5 +1,7 @@
 <#assign name="about">
-<#assign css="/css/about.css">
+<#assign css>
+<link rel="stylesheet" href="/css/about.css">
+</#assign>
 <#assign content>
 <div class="container">
   <div class="row">

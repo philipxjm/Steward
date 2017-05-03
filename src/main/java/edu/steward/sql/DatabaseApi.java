@@ -25,8 +25,6 @@ import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
-import javax.sound.sampled.Port;
-
 /**
  * Created by kjin on 4/24/17.
  */
@@ -65,20 +63,21 @@ public class DatabaseApi {
   }
 
   public static boolean createPortfolio(String userId, String portName,
-                                        Integer initialBalance) {
+      Integer initialBalance) {
 
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(4, "NULL");
+        prep.setNull(4, 0);
         prep.setString(3, userId);
         prep.setString(2, portName);
         String portId = userId + "/" + portName;
         prep.setString(1, portId);
         prep.executeUpdate();
       } catch (SQLException e) {
+        e.printStackTrace();
         // Portfolio already exists
         return false;
       }
@@ -101,7 +100,7 @@ public class DatabaseApi {
   }
 
   public static boolean renamePortfolio(String userId, String oldName,
-                                        String newName) {
+      String newName) {
     String stat = "UPDATE UserPortfolios SET Name=?,PortfolioId=? WHERE PortfolioId=?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -145,7 +144,7 @@ public class DatabaseApi {
   }
 
   public static boolean stockTransaction(String portId, String ticker,
-                                         int amount, int time, double price) {
+      int amount, int time, double price) {
     Double cost = amount * price;
     String query = "SELECT trans FROM History " + "WHERE portfolio = ? "
         + "AND stock = ?;";
@@ -276,10 +275,8 @@ public class DatabaseApi {
     System.out.println("get price called in DatabaseAPI");
     System.out.println("ticker: " + ticker + ", time: " + time);
     List<Price> prices = new ArrayList<>();
-    String query = "SELECT time, price FROM quotes "
-            + "WHERE stock = ? "
-            + "AND time <= ? "
-            + "AND time >= ?;";
+    String query = "SELECT time, price FROM quotes " + "WHERE stock = ? "
+        + "AND time <= ? " + "AND time >= ?;";
     try (Connection c = DriverManager.getConnection(quoteUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");

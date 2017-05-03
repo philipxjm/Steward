@@ -5,7 +5,11 @@
   <script src="/js/dashboard.js"></script>
   <script src="/js/stockModal.js"></script>
 </#assign>
-<#assign css="/css/dashboard.css">
+
+<#assign css>
+  <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
+</#assign>
+
 <#assign content>
 <div class="container">
   <div class="row" id="main">
