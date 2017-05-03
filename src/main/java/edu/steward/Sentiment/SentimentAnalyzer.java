@@ -14,15 +14,14 @@ import java.util.Properties;
  * Created by Philip on 4/16/17.
  */
 public class SentimentAnalyzer {
+  private StanfordCoreNLP pipeline;
   public SentimentAnalyzer() {
-
+    Properties props = new Properties();
+    props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
+    pipeline = new StanfordCoreNLP(props);
   }
 
   public int findSentiment(String line) {
-
-    Properties props = new Properties();
-    props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
-    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
     int mainSentiment = 0;
     if (line != null && line.length() > 0) {
       int longest = 0;
