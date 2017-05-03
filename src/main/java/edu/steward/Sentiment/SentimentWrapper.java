@@ -8,13 +8,24 @@ import java.util.List;
  * Created by Philip on 5/1/17.
  */
 public class SentimentWrapper {
-  public static void main(String[] args) {
-    TwitterSentimentFinder tsf = new TwitterSentimentFinder();
-    System.out.println(sentimentNormalizer(tsf.sentiments(ImmutableList.of
-            ("AMZN")).get("AMZN")));
+
+  private TwitterSentimentFinder tsf;
+
+  public SentimentWrapper() {
+    tsf = new TwitterSentimentFinder();
   }
 
-  private static double sentimentNormalizer(List<Integer> sentiments) {
+  public double findSentimentOf(String ticker) {
+    List<Integer> sentiments
+            = tsf.sentiments(ImmutableList.of(ticker)).get(ticker);
+    return sentimentNormalizer(ticker, sentiments);
+  }
+
+  private double sentimentNormalizer(String ticker, List<Integer> sentiments) {
+
+    double bullish = StockTwitSentimentsScrapper
+            .getSentiments(ticker) / 100.0;
+
     int total = sentiments.size();
     int pos = 0;
     int neu = 0;
@@ -29,11 +40,19 @@ public class SentimentWrapper {
       }
     }
 
-    System.out.println("Total:" + total);
-    System.out.println("Positives: " + pos);
-    System.out.println("Negatives: " + neg);
-    System.out.println("Neutrals : " + neu);
+    double sentiment = (((double) (pos - neg) / (double) total) + 1.0);
+    if (sentiment > 1.0) {
+      sentiment = 1.0;
+    }
 
-    return 0.0;
+    double difference = (sentiment - bullish) / 6.0;
+    double finalSentiment = bullish + difference;
+
+    return finalSentiment;
+  }
+
+  public static void main(String[] args) {
+    SentimentWrapper sw = new SentimentWrapper();
+    System.out.println(sw.findSentimentOf("ETSY"));
   }
 }
