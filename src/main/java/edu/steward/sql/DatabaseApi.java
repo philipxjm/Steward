@@ -305,7 +305,11 @@ public class DatabaseApi {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    return prices.get(0);
+    if (prices.size() == 0) {
+      return null;
+    } else {
+      return prices.get(0);
+    }
   }
 
   public static List<Price> getPrices(String ticker) {
