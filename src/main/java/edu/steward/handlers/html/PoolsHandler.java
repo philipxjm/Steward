@@ -38,6 +38,7 @@ public class PoolsHandler implements TemplateViewRoute {
 
       Map<String, Object> variables = ImmutableMap.of("title", "Pools", "user",
           name, "pools", pools, "stocks", stocks);
+      System.out.println("HERE");
       return new ModelAndView(variables, "pools.ftl");
     } else {
       // TODO: Show not authorized?

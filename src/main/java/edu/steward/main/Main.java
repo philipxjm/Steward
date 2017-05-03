@@ -22,6 +22,7 @@ import edu.steward.handlers.json.GetStockPredictionHandler;
 import edu.steward.handlers.json.GetUnrealizedDataHandler;
 import edu.steward.handlers.json.LoginHandler;
 import edu.steward.handlers.json.LogoutHandler;
+import edu.steward.handlers.json.NewPoolHandler;
 import edu.steward.handlers.json.NewPortfolioHandler;
 import edu.steward.handlers.json.RenamePortfolioHandler;
 import edu.steward.handlers.json.StockActionHandler;
@@ -102,6 +103,7 @@ public class Main {
     Spark.post("/suggest", new SuggestHandler(
         ImmutableList.of("data/allStocksNDQ.csv", "data/allStocks.csv")));
     Spark.post("/newPortfolio", new NewPortfolioHandler());
+    Spark.post("/newPool", new NewPoolHandler());
     Spark.post("/deletePortfolio", new DeletePortfolioHandler());
     Spark.post("/renamePortfolio", new RenamePortfolioHandler());
     Spark.post("/getPortfolio", new GetPortfolioHandler());
