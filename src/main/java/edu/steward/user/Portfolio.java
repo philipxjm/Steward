@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 
+import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 import edu.steward.sql.GainsOverTime;
 import edu.steward.stock.Fundamentals.Gains;
@@ -15,6 +16,7 @@ public class Portfolio {
   private String portfolioId;
   private Map<String, Integer> holdings;
   private Double balance = 1000.0;
+  private Pool pool;
   // TODO: Add in balance to the below methods
 
   public Portfolio(String name, String portfolioId) {
@@ -109,5 +111,13 @@ public class Portfolio {
       ret.add(datum);
     }
     return ret;
+  }
+
+  public Pool getPool() {
+    return pool;
+  }
+
+  public void setPool(Pool pool) {
+    this.pool = pool;
   }
 }

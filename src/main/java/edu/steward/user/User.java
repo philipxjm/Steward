@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 
 /**
@@ -28,6 +29,10 @@ public class User {
     for (Portfolio port : ret) {
       portfolios.put(port.getName(), port);
     }
+  }
+
+  public List<Portfolio> getPoolPorts() {
+    return DatabaseApi.getPoolsFromUser(this.getId());
   }
 
   public List<Portfolio> getPortfolios() {

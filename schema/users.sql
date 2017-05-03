@@ -3,7 +3,15 @@ CREATE TABLE "UserPortfolios" (
 	`PortfolioId`	TEXT NOT NULL UNIQUE,
 	`Name`	TEXT,
 	`UserId`	TEXT NOT NULL,
-	PRIMARY KEY(`PortfolioId`)
+	'PoolId' TEXT,
+	PRIMARY KEY(`PortfolioId`),
+	FOREIGN KEY('PoolId') REFERENCES 'Pools'('PoolId') ON UPDATE CASCADE
+);
+CREATE TABLE "Pools" (
+	'PoolId' TEXT NOT NULL UNIQUE,
+	'Balance' INTEGER NOT NULL,
+	'Start' INTEGER NOT NULL,
+	'End' INTEGER
 );
 CREATE TABLE "History" (
 	`portfolio`	TEXT NOT NULL,
