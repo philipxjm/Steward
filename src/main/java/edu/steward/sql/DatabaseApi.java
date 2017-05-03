@@ -25,6 +25,8 @@ import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
+import javax.sound.sampled.Port;
+
 /**
  * Created by kjin on 4/24/17.
  */
@@ -63,13 +65,14 @@ public class DatabaseApi {
   }
 
   public static boolean createPortfolio(String userId, String portName,
-      Integer initialBalance) {
+                                        Integer initialBalance) {
 
-    String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?);";
+    String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
+        prep.setString(4, "NULL");
         prep.setString(3, userId);
         prep.setString(2, portName);
         String portId = userId + "/" + portName;
@@ -98,7 +101,7 @@ public class DatabaseApi {
   }
 
   public static boolean renamePortfolio(String userId, String oldName,
-      String newName) {
+                                        String newName) {
     String stat = "UPDATE UserPortfolios SET Name=?,PortfolioId=? WHERE PortfolioId=?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -142,7 +145,7 @@ public class DatabaseApi {
   }
 
   public static boolean stockTransaction(String portId, String ticker,
-      int amount, int time, double price) {
+                                         int amount, int time, double price) {
     Double cost = amount * price;
     String query = "SELECT trans FROM History " + "WHERE portfolio = ? "
         + "AND stock = ?;";
@@ -369,6 +372,32 @@ public class DatabaseApi {
     return true;
   }
 
+  public static Pool getPool(String id) {
+    String query = "SELECT * FROM Pools WHERE PoolId = ?";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, id);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            String name = rs.getString(1);
+            String bal = rs.getString(2);
+            String start = rs.getString(3);
+            return new Pool(name, bal, start);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   public static List<Portfolio> getPortsFromPool(String pool) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
         + "WHERE PoolId = ?;";
@@ -395,5 +424,56 @@ public class DatabaseApi {
       e.printStackTrace();
     }
     return portfolios;
+  }
+
+  public static boolean addPortToPool(String portId, String poolId) {
+    String query = "UPDATE UserPortfolios SET PoolId = ? WHERE PortfolioId = ?";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, poolId);
+        prep.setString(2, portId);
+        prep.executeUpdate();
+      } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
+  }
+
+  public static List<Portfolio> getPoolsFromUser(String userId) {
+    String query = "SELECT * FROM UserPortfolios "
+        + "WHERE UserId = ? AND PoolId IS NOT NULL;";
+    List<Portfolio> ports = new ArrayList<>();
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, userId);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            String pool = rs.getString(4);
+            Pool p = getPool(pool);
+            String id = rs.getString(1);
+            String name = rs.getString(2);
+            Portfolio port = new Portfolio(id, name);
+            port.setPool(p);
+            ports.add(port);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return ports;
   }
 }
