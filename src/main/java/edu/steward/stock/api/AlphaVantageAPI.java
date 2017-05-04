@@ -35,65 +35,99 @@ public class AlphaVantageAPI implements StockAPI {
       Map<String, Map<String, Double>> timeSeriesData = new HashMap<>();
       String rawData;
       switch (timeSeries) {
-      case ONE_DAY:
-        rawData = getFromAlphaVantage(ticker,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
-            AlphaVantageConstants.INTERVAL.FIVE_MIN,
-            AlphaVantageConstants.APIKEY.APIKEY);
-        timeSeriesData = parseAlphaVantage(rawData,
-            AlphaVantageConstants.INTERVAL.FIVE_MIN);
-        break;
-      case FIVE_DAY:
-        rawData = getFromAlphaVantage(ticker,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
-            AlphaVantageConstants.INTERVAL.THIRTY_MIN,
-            AlphaVantageConstants.APIKEY.APIKEY);
-        timeSeriesData = parseAlphaVantage(rawData,
-            AlphaVantageConstants.INTERVAL.THIRTY_MIN);
-        break;
-      case ONE_MONTH:
-        rawData = getFromAlphaVantage(ticker,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
-            AlphaVantageConstants.OUTPUT_SIZE.COMPACT,
-            AlphaVantageConstants.APIKEY.APIKEY);
-        timeSeriesData = parseAlphaVantage(rawData,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY);
-        break;
-      case SIX_MONTH:
-        rawData = getFromAlphaVantage(ticker,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-            AlphaVantageConstants.APIKEY.APIKEY);
-        timeSeriesData = parseAlphaVantage(rawData,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-        break;
-      case ONE_YEAR:
-        rawData = getFromAlphaVantage(ticker,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-            AlphaVantageConstants.APIKEY.APIKEY);
-        timeSeriesData = parseAlphaVantage(rawData,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-        break;
-      case TWO_YEAR:
-        rawData = getFromAlphaVantage(ticker,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-            AlphaVantageConstants.APIKEY.APIKEY);
-        timeSeriesData = parseAlphaVantage(rawData,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-        break;
-      case FIVE_YEAR:
-        rawData = getFromAlphaVantage(ticker,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-            AlphaVantageConstants.APIKEY.APIKEY);
-        timeSeriesData = parseAlphaVantage(rawData,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-        break;
-      case TEN_YEAR:
-        rawData = getFromAlphaVantage(ticker,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-            AlphaVantageConstants.APIKEY.APIKEY);
-        timeSeriesData = parseAlphaVantage(rawData,
-            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-        break;
+        case ONE_DAY:
+          rawData = getFromAlphaVantage(
+                  ticker,
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
+                  AlphaVantageConstants.INTERVAL.FIVE_MIN,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.INTERVAL.FIVE_MIN);
+          break;
+        case FIVE_DAY:
+          rawData = getFromAlphaVantage(
+                  ticker,
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
+                  AlphaVantageConstants.INTERVAL.THIRTY_MIN,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.INTERVAL.THIRTY_MIN);
+          break;
+        case ONE_MONTH:
+          rawData = getFromAlphaVantage(
+                  ticker,
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
+                  AlphaVantageConstants.OUTPUT_SIZE.COMPACT,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY);
+          break;
+        case SIX_MONTH:
+          rawData = getFromAlphaVantage(
+                  ticker,
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+          break;
+        case ONE_YEAR:
+          rawData = getFromAlphaVantage(
+                  ticker,
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+          break;
+        case TWO_YEAR:
+          rawData = getFromAlphaVantage(
+                  ticker,
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+          break;
+        case FIVE_YEAR:
+          rawData = getFromAlphaVantage(
+                  ticker,
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+          break;
+        case TEN_YEAR:
+          rawData = getFromAlphaVantage(
+                  ticker,
+                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+                  AlphaVantageConstants.APIKEY.APIKEY
+          );
+          timeSeriesData =
+                  parseAlphaVantage(
+                          rawData,
+                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+          break;
       }
       List<Price> prices = parseTimeSeriesMap(timeSeriesData);
       return priceIntervalClean(prices, timeSeries);

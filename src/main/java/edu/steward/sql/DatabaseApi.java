@@ -328,7 +328,6 @@ public class DatabaseApi {
   }
 
   public static Price getPrice(String ticker, int time) {
-    if (isUpdated(ticker)) {
       System.out.println("get price called in DatabaseAPI");
       System.out.println("ticker: " + ticker + ", time: " + time);
       List<Price> prices = new ArrayList<>();
@@ -363,14 +362,15 @@ public class DatabaseApi {
         e.printStackTrace();
       }
       if (prices.size() == 0) {
-        return null;
+//        Stock not found
+        if (initializePrices(ticker).size() == 0) {
+          return null;
+        } else {
+          return getPrice(ticker, time);
+        }
       } else {
         return prices.get(0);
       }
-    } else {
-      updatePrices(ticker);
-      return getPrice(ticker, time);
-    }
   }
 
   public static List<Price> getPrices(String ticker) {
@@ -404,68 +404,73 @@ public class DatabaseApi {
       e.printStackTrace();
     }
     Collections.sort(prices);
-    if (isUpdated(ticker)) {
+//    if (isUpdated(ticker)) {
+//      return prices;
+//    }
+//    Legacy code above
+//    If there are no prices than update the table with update prices.
+    if (prices.size() == 0) {
+      return initializePrices(ticker);
+    } else {
       return prices;
-    } else {
-      updatePrices(ticker);
-      return getPrices(ticker);
     }
   }
 
-  public static boolean isUpdated(String ticker) {
-    String query = "SELECT time FROM quotes " + "WHERE stock = ?;";
-    List<Integer> timestamps = new ArrayList<>();
-    try (Connection c = DriverManager.getConnection(quoteUrl)) {
-      Statement s = c.createStatement();
-      s.executeUpdate("PRAGMA foreign_keys = ON;");
-      try (PreparedStatement prep = c.prepareStatement(query)) {
-        prep.setString(1, ticker);
-        try (ResultSet rs = prep.executeQuery()) {
-          while (rs.next()) {
-            Integer time = Integer.parseInt(rs.getString(1));
-            timestamps.add(time);
-          }
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    if (timestamps.size() == 0) {
-      return false;
-    } else {
-      Collections.sort(timestamps);
-      Calendar c = Calendar.getInstance();
-      int day = c.get(Calendar.DAY_OF_WEEK);
-      int timeCheck;
-      switch (day) {
-      case Calendar.SUNDAY:
-        // three days in seconds
-        timeCheck = 259200;
-        break;
-      case Calendar.MONDAY:
-        // four days in seconds
-        timeCheck = 345600;
-        break;
-      default:
-        // two days in seconds
-        timeCheck = 172800;
-        break;
-      }
-      int currTime = (int) (System.currentTimeMillis() / 1000L);
-      int lastNineThirtyAM = currTime - (currTime % 48600);
-      if (currTime - timestamps.get(timestamps.size() - 1) < timeCheck) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
+//  public static boolean isUpdated(String ticker) {
+//    String query = "SELECT time FROM quotes " + "WHERE stock = ?;";
+//    List<Integer> timestamps = new ArrayList<>();
+//    try (Connection c = DriverManager.getConnection(quoteUrl)) {
+//      Statement s = c.createStatement();
+//      s.executeUpdate("PRAGMA foreign_keys = ON;");
+//      try (PreparedStatement prep = c.prepareStatement(query)) {
+//        prep.setString(1, ticker);
+//        try (ResultSet rs = prep.executeQuery()) {
+//          while (rs.next()) {
+//            Integer time = Integer.parseInt(rs.getString(1));
+//            timestamps.add(time);
+//          }
+//        } catch (SQLException e) {
+//          e.printStackTrace();
+//        }
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//    } catch (SQLException e) {
+//      e.printStackTrace();
+//    }
+//    if (timestamps.size() == 0) {
+//      return false;
+//    } else {
+//      Collections.sort(timestamps);
+//      Calendar c = Calendar.getInstance();
+//      int day = c.get(Calendar.DAY_OF_WEEK);
+//      int timeCheck;
+//      switch (day) {
+//        case Calendar.SUNDAY:
+////          three days in seconds
+//          timeCheck = 259200;
+//          break;
+//        case Calendar.MONDAY:
+////          four days in seconds
+//          timeCheck = 345600;
+//          break;
+//        default:
+////          two days in seconds
+//          timeCheck = 172800;
+//          break;
+//      }
+//      int currTime = (int) (System.currentTimeMillis() / 1000L);
+//      int lastNineThirtyAM =
+//              currTime - (currTime % 48600);
+//      if (currTime - timestamps.get(timestamps.size() - 1) < timeCheck) {
+//        return true;
+//      } else {
+//        return false;
+//      }
+//    }
+//  }
 
-  public static void updatePrices(String ticker) {
+  public static List<Price> initializePrices(String ticker) {
     String stat = "DELETE FROM quotes WHERE stock = ?;";
     try (Connection c = DriverManager.getConnection(quoteUrl)) {
       Statement s = c.createStatement();
@@ -484,6 +489,7 @@ public class DatabaseApi {
       Calendar from = Calendar.getInstance();
       from.add(Calendar.YEAR, -10);
       yahoofinance.Stock stock = YahooFinance.get(ticker);
+//      Gets daily data from the past ten years
       List<HistoricalQuote> quotes = stock.getHistory(from, Interval.DAILY);
       for (HistoricalQuote q : quotes) {
         Double priceVal = q.getAdjClose().doubleValue();
@@ -509,6 +515,7 @@ public class DatabaseApi {
     } catch (IOException e) {
       // Not found
     }
+    return ret;
   }
 
   public static boolean initializePool(Pool p) {

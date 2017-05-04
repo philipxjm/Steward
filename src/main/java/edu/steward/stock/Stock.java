@@ -3,6 +3,7 @@ package edu.steward.stock;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.steward.sql.DailyDataUpdater;
 import edu.steward.sql.DatabaseApi;
 import edu.steward.stock.Fundamentals.DailyChange;
 import edu.steward.stock.Fundamentals.Fundamental;
@@ -29,10 +30,10 @@ public class Stock {
   // TODO: Add getters for fundamentals using the StockAPI
   public List<Price> getStockPrices(StockAPI.TIMESERIES timeseries) {
     // TODO: Abstract this later on
-    if (timeseries == StockAPI.TIMESERIES.ONE_DAY
-        || timeseries == StockAPI.TIMESERIES.FIVE_DAY) {
-      setStockAPI(new AlphaVantageAPI());
-      return stockAPI.getStockPrices(ticker, timeseries);
+    if (timeseries == StockAPI.TIMESERIES.ONE_DAY) {
+      return DailyDataUpdater.initializeIfEmptyFive(ticker);
+    } else if (timeseries == StockAPI.TIMESERIES.FIVE_DAY) {
+      return DailyDataUpdater.initializeIfEmptyThirty(ticker);
     } else {
       try {
         setStockAPI(new YahooFinanceAPI());
