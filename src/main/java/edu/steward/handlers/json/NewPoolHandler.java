@@ -21,11 +21,13 @@ public class NewPoolHandler implements Route {
     String userId = req.session().attribute("id");
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
-    String poolName = qm.value("name");
+    String poolId = System.currentTimeMillis() + "/" + qm.value("name");
     String balance = qm.value("balance");
-    String start = String.valueOf(System.currentTimeMillis() / 1000);
-    Pool pool = new Pool(poolName, balance, start);
+    String start = String.valueOf(System.currentTimeMillis());
+    Pool pool = new Pool(poolId, balance, start);
     pool.setEnd(qm.value("end"));
+    user.addPortfolio("Pool" + "/" + poolId, poolId);
+    System.out.println(qm);
     return GSON.toJson(true);
   }
 }

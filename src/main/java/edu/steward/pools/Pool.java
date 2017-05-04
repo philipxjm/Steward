@@ -17,10 +17,11 @@ public class Pool {
   private String name;
   private String end;
 
-  public Pool (String balance, String startTime, String name, Portfolio...
+  public Pool (String name, String balance, String startTime, Portfolio...
       ports) {
     bal = balance;
     start = startTime;
+    this.name = name;
     portfolios = Arrays.asList(ports);
     DatabaseApi.initializePool(this);
   }
