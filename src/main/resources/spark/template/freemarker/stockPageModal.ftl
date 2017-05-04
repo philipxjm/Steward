@@ -1,4 +1,4 @@
-<div class="modal fade" id="addStockModal" tabindex="-1" role="dialog" aria-labelledby="addStockModal" aria-hidden="true">
+<div class="modal fade" id="stockPageModal" tabindex="-1" role="dialog" aria-labelledby="stockPageModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -18,11 +18,31 @@
                 <input type="radio" name="action" autocomplete="off">Sell
               </label>
             </div>
-
             <br/>
 
+            <!-- Ticker -->
+            <div class="row">
+              Ticker: ${ticker}
+            </div>
 
-            <!-- Add time input? -->
+            <!-- Portfolio -->
+            <select class="custom-select">
+              <option>Buy for</option>
+              <optgroup label="Portfolios">
+                <option>Port 1</option>
+                <option>Port 2</option>
+                <option>Port 3</option>
+              </optgroup>
+              <optgroup label="Pools">
+                <option>Pool 1</option>
+                <option>Pool 2</option>
+                <option>Pool 3</option>
+              </optgroup>
+            </select>
+
+
+
+            <!-- TODO Re-enable for non-pools?
             <label id="pastActionLabel" class="custom-control custom-checkbox">
               <input id="pastAction" type="checkbox" class="custom-control-input">
               <span class="custom-control-indicator"></span>
@@ -31,23 +51,20 @@
 
             <div id="time" class="form-control row">
               <input id="actionDate" class="form-control" type="date">
-            </div>
-
-            <!-- Ticker -->
-            <div class="row">
-              <label for="ticker">Ticker <input class="form-control" type="text" id="ticker"  autocomplete="off"></label>
-            </div>
+            </div>-->
 
             <!-- Shares -->
             <div class="row">
               <!-- TODO move validation into JS? -->
               <label for="shares">Shares <input class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="shares"  autocomplete="off"></label>
             </div>
+
           </form>
           <p id="stockError" class="text-danger"></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!-- TODO: Actually make this buy -->
         <button id="addStock" type="button" class="btn btn-primary">Add</button>
       </div>
     </div>

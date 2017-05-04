@@ -16,7 +16,7 @@ function onSignIn(googleUser) {
     $.get("/login", {name: userName, id: userId, email:email, pic:pic});
 
     // Refresh page
-    window.location = window.location;
+    window.location.reload(false); 
   }
 }	
 
@@ -27,5 +27,6 @@ function onSignOut() {
   $.get("/logout");
 
   // Refresh page
-  window.location = window.location;
+  console.log(window.location);
+  window.location.reload(false); 
 }

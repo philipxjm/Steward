@@ -1,5 +1,6 @@
-function getStocks(ticker) {
-    $.post('/getPortfolio', {name: ticker}, (resJson) => {
+// Gets stocks for portfolio
+function getStocks(name) {
+    $.post('/getPortfolio', {name: name}, (resJson) => {
         let data = JSON.parse(resJson);
         $('#stocks').empty();
         // Add stocks
@@ -13,25 +14,34 @@ function getStocks(ticker) {
     });
 }
 
+// Gets name of active portfolio
 function getCurrentPort() {
-    return $('.port.active > .portName')[0].innerText;
+    if (activeTabIsPort) {
+        return $('.port.active > .portName').text();
+    } else {
+        return $('.pool.active > .portName').text();
+    }
 }
 
 // Click handler for potfolio
 const portfolioClickHandler = (e) => {
     let elm = $(e.target);
+
+    // Delete portfolio
     if(elm.hasClass("deletePort")) {
         deletePortfolio(elm.parent());
         return false;
     }
 
+    // If text look at parent
     if(elm.hasClass("portName")) {
         elm = elm.parent();
     }
 
+    // Edit name
     if(elm.hasClass("editPort")) {
         $('#addPort').prop('disabled', true);
-        $('#addButton').prop('disabled', true);
+        $('.disabler').prop('disabled', true);
 
         let parent = elm.parent();
         parent.click();
@@ -67,10 +77,12 @@ const portfolioClickHandler = (e) => {
         return false;
     }
 
+    // Don't do anything if it's already active
     if (elm.hasClass("active")) {
         return false;
     }
 
+    // Switch active
     $('.port').removeClass("active");
     elm.addClass("active");
     const portName = elm.children('.portName')[0].innerText;
@@ -79,15 +91,17 @@ const portfolioClickHandler = (e) => {
 }
 $('.port').click(portfolioClickHandler);
 
+// Tidy's up when rename of portfolio is done
 function finishRename($input, name) {
     let elm = makeNewPort(name);
     $input.parent().replaceWith(elm);
     elm.click(portfolioClickHandler);
     elm.click();
     $('#addPort').prop('disabled', false);
-    $('#addButton').prop('disabled', false);
+    $('.disabler').prop('disabled', false);
 }
 
+// Delete portfolio for elm
 function deletePortfolio(elm) {
     let name = elm.children('.portName')[0].innerText;
     $.post('/deletePortfolio', {name:name}, (res) => {
@@ -97,18 +111,18 @@ function deletePortfolio(elm) {
         }
         let next = $('.port')[0];
         if (!next) {
-            if(!$('#noPort')[0]) {
-                $('#graphContainer').append($('<h2 id="noPort" class="text-muted">Make a new portfolio!</h2>'));
-            }
+            showEmptyMessage(true);
             $('#noPort').show();
             $('#gains').hide();
             $('#stocks').empty();
+            $('.disabler').prop('disabled', true);            
         } else {
             $($('.port')[0]).click();
         }
     });
 }
 
+// Returns new jQuery obj for the name of a portfolio
 function makeNewPort(name) {
    let ret = $(`<div class="list-group-item list-group-item-action port">         
               <span class="portName">${name}</span>
@@ -121,7 +135,7 @@ function makeNewPort(name) {
 // Add portfolio button
 $('#addPort').click((e) => {
     if($('#newPort').length == 0) {
-        $('#ports').append('<div class="list-group-item list-group-item-action port newPort"><input id="newPort" type="text"><p id="portErr" class="text-danger"></p></div>');
+        $('#ports').append('<div class="list-group-item list-group-item-action port newPort"><input class="form-control" id="newPort" type="text"><p id="portErr" class="text-danger"></p></div>');
         let inputDiv = $('#newPort').parent();
         $('#newPort').keydown((e) => {
             if (e.keyCode == 13) { // Enter
@@ -133,8 +147,8 @@ $('#addPort').click((e) => {
                         if (!resData) {
                             $('#portErr')[0].innerText = "That portfolio already exists";
                         } else {
-                            if( $('#addButton').prop('disabled')) {
-                                $('#addButton').prop('disabled', false);
+                            if( $('.disabler').prop('disabled')) {
+                                $('.disabler').prop('disabled', false);
                                 $('#noPort').hide(); 
                                 $('#gains').show();                               
                                 // Initialize graph with new portfolio
@@ -164,15 +178,57 @@ $('#addPort').click((e) => {
 });
 
 let ctx, graph;
+// Initialize graph
 $(()=> {
     ctx = $('#gains');
-    if ($('.port').length == 0) {
-        $('#addButton').prop('disabled', true);
-        $('#noPort').show();
+    loadUpDashType(true);
+});
+
+function showEmptyMessage(port) {
+    if (port) {
+        $('#noPort').html("<h2>Make a new portfolio!</h2><p>TODO: Add port description.</p>");
     } else {
-        $('#noPort').hide();        
-      let name = getCurrentPort();
-      graph = new UnrealizedGraph(ctx, name);
+        $('#noPort').html("<h2>Make a new pool!</h2><p>TODO: Add pool description.</p>");        
     }
+}
+
+function loadUpDashType(port) { 
+    if (port) {
+        $('#pastActionLabel').show();
+        if ($('.port').length == 0) {
+            $('.disabler').prop('disabled', true);
+            $('#gains').hide();
+            showEmptyMessage(true);
+        } else {
+            $('#noPort').html('');
+            $('.disabler').prop('disabled', false);  
+            $('#gains').show();    
+            let name = getCurrentPort();
+            if (!graph) {
+                graph = new UnrealizedGraph(ctx, name);
+            } else {
+                // Click active to update dash center
+            }
+        }  
+    } else {
+        $('#pastActionLabel').hide();
+        if ($('.pool').length == 0) {
+            $('.disabler').prop('disabled', true);
+            $('#gains').hide();
+            showEmptyMessage(false);
+        } else {
+            $('#noPort').html('');
+            $('.disabler').prop('disabled', false);
+            $('#gains').show();
+            // Click active to update dash center
+        }         
+    }
+}
+let activeTabIsPort = true;
+// Called on tab switch
+$('.tabToggle').click((e) => {
+    let port = e.target.innerText == "Portfolios";
+    loadUpDashType(port);
+    activeTabIsPort = port;
 });
 

@@ -31,7 +31,7 @@
       <p><a class="btn btn-secondary" href="/about#sentiment" role="button">View details &raquo;</a></p>
     </div>
     <div class="col">
-      <h2>Friendly Competition</h2>
+      <h2>Stock Market Game</h2>
       <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
       <p><a class="btn btn-secondary" href="/about#pools" role="button">View details &raquo;</a></p>
     </div>  
