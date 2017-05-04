@@ -42,77 +42,77 @@ public class GainsOverTime {
     return ret;
   }
 
-  private static Gains getUnrealizedGains(String portId, INTERVAL interval) {
-    Map<String, Integer> stockQuantities = new HashMap<>();
-    Multimap<String, Holding> holdingHistory = TreeMultimap.create(new Comparator<String>() {
-      @Override
-      public int compare(String o1, String o2) {
-        return o1.compareTo(o2);
-      }
-    }, new Comparator<Holding>() {
-      @Override
-      public int compare(Holding o1, Holding o2) {
-        return o1.getTime() - o2.getTime();
-      }
-    });
-    Double purchasedCost = 0.0;
-    Double soldCost = 0.0;
-    String query1 = "";
-    String query2 = "";
-    switch (interval) {
-      case SHORT_TERM:
-        query1 = "SELECT stock, time, trans, price FROM History "
-                + "WHERE portfolio = ?;";
-        break;
-      case LONG_TERM:
-        query1 = "SELECT stock, time, trans, price FROM History "
-                + "WHERE portfolio = ?;";
-        break;
-    }
-    try (Connection c = DriverManager.getConnection(userUrl)) {
-      Statement s = c.createStatement();
-      s.executeUpdate("PRAGMA foreign_keys = ON;");
-      try (PreparedStatement prep = c.prepareStatement(query1)) {
-        prep.setString(1, portId);
-        try (ResultSet rs = prep.executeQuery()) {
-          while (rs.next()) {
-            String ticker = rs.getString(1);
-            Integer time = Integer.parseInt(rs.getString(2));
-            Integer trans = Integer.parseInt(rs.getString(3));
-            Double price = Double.parseDouble(rs.getString(4));
-
-
-//            Keeps track of the quantity held of the stock.
-            if (stockQuantities.get(ticker) == null) {
-              stockQuantities.put(ticker, trans);
-            } else {
-              Integer quantity = stockQuantities.get(ticker);
-              stockQuantities.replace(ticker, quantity + trans);
-            }
-
-            Integer updatedQuantity = stockQuantities.get(ticker);
-            Holding holding = new Holding(ticker, updatedQuantity, time);
-            holdingHistory.put(ticker, holding);
-
-//            Purchase of stocks.
-            if (trans > 0) {
-              purchasedCost += trans * price;
-            }
-//            Sale of stocks.
-            else if (trans < 0) {
-              soldCost += -trans * price;
-            }
-          }
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
+//  private static Gains getUnrealizedGains(String portId, INTERVAL interval) {
+//    Map<String, Integer> stockQuantities = new HashMap<>();
+//    Multimap<String, Holding> holdingHistory = TreeMultimap.create(new Comparator<String>() {
+//      @Override
+//      public int compare(String o1, String o2) {
+//        return o1.compareTo(o2);
+//      }
+//    }, new Comparator<Holding>() {
+//      @Override
+//      public int compare(Holding o1, Holding o2) {
+//        return o1.getTime() - o2.getTime();
+//      }
+//    });
+//    Double purchasedCost = 0.0;
+//    Double soldCost = 0.0;
+//    String query1 = "";
+//    String query2 = "";
+//    switch (interval) {
+//      case SHORT_TERM:
+//        query1 = "SELECT stock, time, trans, price FROM History "
+//                + "WHERE portfolio = ?;";
+//        break;
+//      case LONG_TERM:
+//        query1 = "SELECT stock, time, trans, price FROM History "
+//                + "WHERE portfolio = ?;";
+//        break;
+//    }
+//    try (Connection c = DriverManager.getConnection(userUrl)) {
+//      Statement s = c.createStatement();
+//      s.executeUpdate("PRAGMA foreign_keys = ON;");
+//      try (PreparedStatement prep = c.prepareStatement(query1)) {
+//        prep.setString(1, portId);
+//        try (ResultSet rs = prep.executeQuery()) {
+//          while (rs.next()) {
+//            String ticker = rs.getString(1);
+//            Integer time = Integer.parseInt(rs.getString(2));
+//            Integer trans = Integer.parseInt(rs.getString(3));
+//            Double price = Double.parseDouble(rs.getString(4));
+//
+//
+////            Keeps track of the quantity held of the stock.
+//            if (stockQuantities.get(ticker) == null) {
+//              stockQuantities.put(ticker, trans);
+//            } else {
+//              Integer quantity = stockQuantities.get(ticker);
+//              stockQuantities.replace(ticker, quantity + trans);
+//            }
+//
+//            Integer updatedQuantity = stockQuantities.get(ticker);
+//            Holding holding = new Holding(ticker, updatedQuantity, time);
+//            holdingHistory.put(ticker, holding);
+//
+////            Purchase of stocks.
+//            if (trans > 0) {
+//              purchasedCost += trans * price;
+//            }
+////            Sale of stocks.
+//            else if (trans < 0) {
+//              soldCost += -trans * price;
+//            }
+//          }
+//        } catch (SQLException e) {
+//          e.printStackTrace();
+//        }
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//    } catch (SQLException e) {
+//      e.printStackTrace();
+//    }
+//  }
 
   /**
    * Gets a list of time intervals to show for the unrealized gains graph.
