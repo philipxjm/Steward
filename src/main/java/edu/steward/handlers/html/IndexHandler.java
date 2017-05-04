@@ -30,6 +30,7 @@ public class IndexHandler implements TemplateViewRoute {
       String id = req.session().attribute("id");
       User user = new User(id);
       List<Portfolio> portNames = user.getPortfolios();
+      List<Portfolio> pools = user.getPoolPorts();
       List<Holding> stocks = new ArrayList<>();
       if (!portNames.isEmpty()) {
         Map<String, Integer> m = portNames.get(0).getHoldings();
@@ -42,7 +43,8 @@ public class IndexHandler implements TemplateViewRoute {
       }
 
       Map<String, Object> variables = ImmutableMap.of("title", "Dashboard",
-          "user", name, "portfolios", portNames, "stocks", stocks);
+          "user", name, "pools", pools, "portfolios", portNames, "stocks",
+          stocks);
       return new ModelAndView(variables, "dashboard.ftl");
     } else {
       Map<String, String> variables = ImmutableMap.of("title", "Steward");
