@@ -21,7 +21,7 @@
       </div>
     	<div id="ports" class="list-group expand">
         <#list pools as pool>
-		   	 <div class="list-group-item list-group-item-action port <#if port_index == 0>active</#if>">         
+		   	 <div class="list-group-item list-group-item-action port <#if pool_index == 0>active</#if>">         
               <span class="portName">${pool.name}</span>
               <a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
               <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>

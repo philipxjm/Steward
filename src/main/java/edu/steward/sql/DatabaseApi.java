@@ -7,8 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.DayOfWeek;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -31,7 +36,7 @@ public class DatabaseApi {
 
   public static List<Portfolio> getPortfoliosFromUser(String userId) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
-            + "WHERE UserId = ?;";
+        + "WHERE UserId = ? PortId = NULL;";
     List<Portfolio> portfolios = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -58,7 +63,7 @@ public class DatabaseApi {
   }
 
   public static boolean createPortfolio(String userId, String portName,
-                                        Integer initialBalance) {
+      Integer initialBalance) {
 
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -95,7 +100,7 @@ public class DatabaseApi {
   }
 
   public static boolean renamePortfolio(String userId, String oldName,
-                                        String newName) {
+      String newName) {
     String stat = "UPDATE UserPortfolios SET Name=?,PortfolioId=? WHERE PortfolioId=?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -139,10 +144,10 @@ public class DatabaseApi {
   }
 
   public static boolean stockTransaction(String portId, String ticker,
-                                         int amount, int time, double price) {
+      int amount, int time, double price) {
     Double cost = amount * price;
     String query = "SELECT trans FROM History " + "WHERE portfolio = ? "
-            + "AND stock = ?;";
+        + "AND stock = ?;";
     Integer total = 0;
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -188,7 +193,7 @@ public class DatabaseApi {
           e.printStackTrace();
         }
         stat = "UPDATE Balances " + "SET balance = (balance + ?) "
-                + "WHERE portfolio = ?;";
+            + "WHERE portfolio = ?;";
         try (PreparedStatement prep = c.prepareStatement(stat)) {
           prep.setDouble(1, -cost);
           prep.setString(2, portId);
@@ -205,7 +210,7 @@ public class DatabaseApi {
 
   public static Map<String, Integer> getStocksFromPortfolio(String portId) {
     ListMultimap<String, Integer> transactionHistory = ArrayListMultimap
-            .create();
+        .create();
     String query = "SELECT stock, trans FROM History " + "WHERE portfolio = ?;";
 
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -271,10 +276,8 @@ public class DatabaseApi {
       System.out.println("get price called in DatabaseAPI");
       System.out.println("ticker: " + ticker + ", time: " + time);
       List<Price> prices = new ArrayList<>();
-      String query = "SELECT time, price FROM quotes "
-              + "WHERE stock = ? "
-              + "AND time <= ? "
-              + "AND time >= ?;";
+      String query = "SELECT time, price FROM quotes " + "WHERE stock = ? "
+          + "AND time <= ? " + "AND time >= ?;";
       try (Connection c = DriverManager.getConnection(quoteUrl)) {
         Statement s = c.createStatement();
         s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -327,7 +330,7 @@ public class DatabaseApi {
             String time = rs.getString(1);
             String priceValue = rs.getString(2);
             Price price = new Price(Double.valueOf(priceValue),
-                    Long.valueOf(time));
+                Long.valueOf(time));
 
             prices.add(price);
           }
@@ -383,22 +386,21 @@ public class DatabaseApi {
       int day = c.get(Calendar.DAY_OF_WEEK);
       int timeCheck;
       switch (day) {
-        case Calendar.SUNDAY:
-//          three days in seconds
-          timeCheck = 259200;
-          break;
-        case Calendar.MONDAY:
-//          four days in seconds
-          timeCheck = 345600;
-          break;
-        default:
-//          two days in seconds
-          timeCheck = 172800;
-          break;
+      case Calendar.SUNDAY:
+        // three days in seconds
+        timeCheck = 259200;
+        break;
+      case Calendar.MONDAY:
+        // four days in seconds
+        timeCheck = 345600;
+        break;
+      default:
+        // two days in seconds
+        timeCheck = 172800;
+        break;
       }
       int currTime = (int) (System.currentTimeMillis() / 1000L);
-      int lastNineThirtyAM =
-              currTime - (currTime % 48600);
+      int lastNineThirtyAM = currTime - (currTime % 48600);
       if (currTime - timestamps.get(timestamps.size() - 1) < timeCheck) {
         return true;
       } else {
@@ -453,7 +455,6 @@ public class DatabaseApi {
     }
   }
 
-
   public static boolean initializePool(Pool p) {
     String stat = "INSERT INTO Pools VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -506,7 +507,7 @@ public class DatabaseApi {
 
   public static List<Portfolio> getPortsFromPool(String pool) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
-            + "WHERE PoolId = ?;";
+        + "WHERE PoolId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -554,7 +555,7 @@ public class DatabaseApi {
 
   public static List<Portfolio> getPoolsFromUser(String userId) {
     String query = "SELECT * FROM UserPortfolios "
-            + "WHERE UserId = ? AND PoolId IS NOT NULL;";
+        + "WHERE UserId = ? AND PoolId IS NOT NULL;";
     List<Portfolio> ports = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
