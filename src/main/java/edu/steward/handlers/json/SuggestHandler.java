@@ -71,7 +71,6 @@ public class SuggestHandler implements Route {
           String name = line[1].replace("\"", "");
           try {
             double cap = Double.parseDouble(line[3].replace("\"", ""));
-
             StockSuggest inner = new StockSuggest(sym, name, cap);
             if (!toMake.containsKey(sym.toLowerCase())) {
               toMake.put(sym.toLowerCase(), inner);
