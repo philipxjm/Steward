@@ -18,8 +18,28 @@
                 <input type="radio" name="action" autocomplete="off">Sell
               </label>
             </div>
-
             <br/>
+
+            <!-- Ticker -->
+            <div class="row">
+              Ticker: ${ticker}
+            </div>
+
+            <!-- Portfolio -->
+            <select class="custom-select">
+              <option>Buy for</option>
+              <optgroup label="Portfolios">
+                <option>Port 1</option>
+                <option>Port 2</option>
+                <option>Port 3</option>
+              </optgroup>
+              <optgroup label="Pools">
+                <option>Pool 1</option>
+                <option>Pool 2</option>
+                <option>Pool 3</option>
+              </optgroup>
+            </select>
+
 
 
             <!-- TODO Re-enable for non-pools?
@@ -32,11 +52,6 @@
             <div id="time" class="form-control row">
               <input id="actionDate" class="form-control" type="date">
             </div>-->
-
-            <!-- Ticker -->
-            <div class="row">
-              Ticker: ${ticker}
-            </div>
 
             <!-- Shares -->
             <div class="row">

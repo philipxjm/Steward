@@ -13,7 +13,11 @@
         <!-- Main -->
         <main class="content col-md-8 offset-md-2">
           <div class="row row-first">
-            <h2><span id="ticker">${ticker}</span> - ${company}<button class="btn btn-secondary float-right" data-toggle="modal" data-target="#stockPageModal">Buy/Sell</button></h2>
+            <h2><span id="ticker">${ticker}</span> - ${company}
+              <#if user??>
+                <button class="btn btn-secondary float-right" data-toggle="modal" data-target="#stockPageModal">Buy/Sell</button>
+              </#if>
+            </h2>
           </div>
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary time">
