@@ -2,3 +2,11 @@ h1 {
 	text-align: left;
 	margin: 1rem;
 }
+
+#filter {
+	opacity: 0.2;
+}
+
+#jumbo {
+  background-image: url(/img/bg.jpg); 
+}
