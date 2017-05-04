@@ -16,9 +16,15 @@ public class SentimentWrapper {
   }
 
   public double findSentimentOf(String ticker) {
-    List<Integer> sentiments
-            = tsf.sentiments(ImmutableList.of(ticker)).get(ticker);
-    return sentimentNormalizer(ticker, sentiments);
+    if (SentimentCache.doesContain(ticker)) {
+      return SentimentCache.getFromCache(ticker);
+    } else {
+      List<Integer> sentiments
+              = tsf.sentiments(ImmutableList.of(ticker)).get(ticker);
+      double finalSentiment = sentimentNormalizer(ticker, sentiments);
+      SentimentCache.insertToCache(ticker, finalSentiment);
+      return finalSentiment;
+    }
   }
 
   private double sentimentNormalizer(String ticker, List<Integer> sentiments) {
