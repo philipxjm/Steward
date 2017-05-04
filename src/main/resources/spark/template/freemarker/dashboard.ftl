@@ -17,10 +17,10 @@
     <div class="col-3">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#portTab" role="tab">Portfolios</a>
+          <a class="tabToggle nav-link active" data-toggle="tab" href="#portTab" role="tab">Portfolios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#poolTab" role="tab">Pools</a>
+          <a class="tabToggle nav-link" data-toggle="tab" href="#poolTab" role="tab">Pools</a>
         </li>
       </ul>
       <div class="tab-content">
@@ -40,15 +40,15 @@
       </div>
       <div id="poolTab" class="tab-pane" role="tabpanel">
         <div class="buttonBar btn-group float-right">
-          <button type="button" id="join" data-toggle="modal" data-target="#joinPoolModal" class="btn btn-secondary btn-sm">Join</button>
+          <button type="button" id="joinPool" data-toggle="modal" data-target="#joinPoolModal" class="btn btn-secondary btn-sm">Join</button>
           <button type="button" id="create" data-toggle="modal" data-target="#createPoolModal" class="btn btn-secondary btn-sm">Create</button>          
         </div>
         <div id="pools" class="list-group expand">
           <#list pools as pool>
-           <div class="list-group-item list-group-item-action port <#if pool_index == 0>active</#if>">         
+           <div class="list-group-item list-group-item-action pool <#if pool_index == 0>active</#if>">         
                 <span class="portName">${pool.name}</span>
-                <a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
-                <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>
+                <!--<a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
+                <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>-->
             </div>
           </#list>
         </div>
@@ -56,14 +56,13 @@
       </div>
     </div>
     <div id="graphContainer" class="col-6">
-      <#if portfolios?size == 0><h2 id="noPort" class="text-muted">Make a new portfolio!</h2></#if>
+      <div id="noPort" class="text-muted"></div>
 	   <canvas id="gains"></canvas>
     </div>
     <div class="col-3">
       <div class="header">
         Stocks
         <div class="btn-group float-right">
-        <button id="histButton" type="button" class="btn float-right btn-secondary btn-sm"><i class="fa fa-history" aria-hidden="true"></i></button>
         <button id="addButton" type="button" data-toggle="modal" data-target="#addStockModal" class="btn float-right btn-secondary btn-sm">+</button>
         </div>
       </div>

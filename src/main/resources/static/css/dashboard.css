@@ -42,3 +42,12 @@ form {
 .buttonBar {
 	margin: 5px 0;
 }
+
+#newPool {
+	width: 100px;
+}
+
+.newPool > label {
+	margin-right: 5px;
+	margin-bottom: 0;
+}
