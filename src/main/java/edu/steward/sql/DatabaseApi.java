@@ -36,7 +36,7 @@ public class DatabaseApi {
 
   public static List<Portfolio> getPortfoliosFromUser(String userId) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
-        + "WHERE UserId = ? PortId = NULL;";
+        + "WHERE UserId = ? AND PoolId IS NULL;";
     List<Portfolio> portfolios = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -456,15 +456,17 @@ public class DatabaseApi {
   }
 
   public static boolean initializePool(Pool p) {
-    String stat = "INSERT INTO Pools VALUES (?, ?, ?, ?);";
+    String stat = "INSERT INTO Pools "
+        + "VALUES (?, ?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(4, p.getEnd());
-        prep.setString(3, p.getStart());
-        prep.setString(2, p.getBal());
-        prep.setString(1, p.getName());
+        prep.setString(5, p.getEnd());
+        prep.setString(4, p.getStart());
+        prep.setString(3, p.getBal());
+        prep.setString(2, p.getName());
+        prep.setString(1, p.getId());
         prep.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
@@ -486,11 +488,11 @@ public class DatabaseApi {
         prep.setString(1, id);
         try (ResultSet rs = prep.executeQuery()) {
           while (rs.next()) {
-            String name = rs.getString(1);
-            String bal = rs.getString(2);
-            String start = rs.getString(3);
-            Pool pool = new Pool(name, bal, start);
-            pool.setEnd(rs.getString(4));
+            String name = rs.getString(2);
+            String bal = rs.getString(3);
+            String start = rs.getString(4);
+            Pool pool = new Pool(id, name, bal, start);
+            pool.setEnd(rs.getString(5));
             return pool;
           }
         } catch (SQLException e) {
@@ -568,7 +570,7 @@ public class DatabaseApi {
             Pool p = getPool(pool);
             String id = rs.getString(1);
             String name = rs.getString(2);
-            Portfolio port = new Portfolio(id, name);
+            Portfolio port = new Portfolio(name, id);
             port.setPool(p);
             ports.add(port);
           }

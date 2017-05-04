@@ -9,6 +9,7 @@ CREATE TABLE "UserPortfolios" (
 );
 CREATE TABLE "Pools" (
 	'PoolId' TEXT NOT NULL UNIQUE,
+	'Name' TEXT NOT NULL,
 	'Balance' INTEGER NOT NULL,
 	'Start' INTEGER NOT NULL,
 	'End' INTEGER

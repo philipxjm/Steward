@@ -14,6 +14,7 @@ public class Pool {
   private List<Portfolio> portfolios;
   private String bal;
   private String start;
+  private String id;
   private String name;
   private String end;
 
@@ -22,8 +23,19 @@ public class Pool {
     bal = balance;
     start = startTime;
     this.name = name;
+    id = name + "/" + startTime;
     portfolios = Arrays.asList(ports);
     DatabaseApi.initializePool(this);
+  }
+
+  public Pool (String id, String name, String balance, String startTime,
+               Portfolio...
+      ports) {
+    this.id = id;
+    bal = balance;
+    start = startTime;
+    this.name = name;
+    portfolios = Arrays.asList(ports);
   }
 
   public void addPortfolio(Portfolio port) {
@@ -60,6 +72,14 @@ public class Pool {
 
   public void setStart(String start) {
     this.start = start;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getEnd() {
