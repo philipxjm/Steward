@@ -31,8 +31,8 @@ $('#joinPool').click((e) => {
                         if (!resData) {
                             $('#poolErr')[0].innerText = "Bad pool ID";
                         } else {
-                            if( $('#addButton').prop('disabled')) {
-                                $('#addButton').prop('disabled', false);
+                            if( $('.disabler').prop('disabled')) {
+                                $('.disabler').prop('disabled', false);
                                 $('#noPool').html(''); 
                                 $('#gains').show();
                             }

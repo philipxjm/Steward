@@ -37,7 +37,7 @@ const portfolioClickHandler = (e) => {
     // Edit name
     if(elm.hasClass("editPort")) {
         $('#addPort').prop('disabled', true);
-        $('#addButton').prop('disabled', true);
+        $('.disabler').prop('disabled', true);
 
         let parent = elm.parent();
         parent.click();
@@ -94,7 +94,7 @@ function finishRename($input, name) {
     elm.click(portfolioClickHandler);
     elm.click();
     $('#addPort').prop('disabled', false);
-    $('#addButton').prop('disabled', false);
+    $('.disabler').prop('disabled', false);
 }
 
 // Delete portfolio for elm
@@ -111,7 +111,7 @@ function deletePortfolio(elm) {
             $('#noPort').show();
             $('#gains').hide();
             $('#stocks').empty();
-            $('#addButton').prop('disabled', true);            
+            $('.disabler').prop('disabled', true);            
         } else {
             $($('.port')[0]).click();
         }
@@ -143,8 +143,8 @@ $('#addPort').click((e) => {
                         if (!resData) {
                             $('#portErr')[0].innerText = "That portfolio already exists";
                         } else {
-                            if( $('#addButton').prop('disabled')) {
-                                $('#addButton').prop('disabled', false);
+                            if( $('.disabler').prop('disabled')) {
+                                $('.disabler').prop('disabled', false);
                                 $('#noPort').hide(); 
                                 $('#gains').show();                               
                                 // Initialize graph with new portfolio
@@ -192,12 +192,12 @@ function loadUpDashType(port) {
     if (port) {
         $('#pastActionLabel').show();
         if ($('.port').length == 0) {
-            $('#addButton').prop('disabled', true);
+            $('.disabler').prop('disabled', true);
             $('#gains').hide();
             showEmptyMessage(true);
         } else {
             $('#noPort').html('');
-            $('#addButton').prop('disabled', false);  
+            $('.disabler').prop('disabled', false);  
             $('#gains').show();    
             let name = getCurrentPort();
             if (!graph) {
@@ -209,12 +209,12 @@ function loadUpDashType(port) {
     } else {
         $('#pastActionLabel').hide();
         if ($('.pool').length == 0) {
-            $('#addButton').prop('disabled', true);
+            $('.disabler').prop('disabled', true);
             $('#gains').hide();
             showEmptyMessage(false);
         } else {
             $('#noPort').html('');
-            $('#addButton').prop('disabled', false);
+            $('.disabler').prop('disabled', false);
             $('#gains').show();
             // Click active to update dash center
         }         

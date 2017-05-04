@@ -1,4 +1,4 @@
-<div class="modal fade" id="addStockModal" tabindex="-1" role="dialog" aria-labelledby="addStockModal" aria-hidden="true">
+<div class="modal fade" id="stockPageModal" tabindex="-1" role="dialog" aria-labelledby="stockPageModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -22,7 +22,7 @@
             <br/>
 
 
-            <!-- Add time input? -->
+            <!-- TODO Re-enable for non-pools?
             <label id="pastActionLabel" class="custom-control custom-checkbox">
               <input id="pastAction" type="checkbox" class="custom-control-input">
               <span class="custom-control-indicator"></span>
@@ -31,11 +31,11 @@
 
             <div id="time" class="form-control row">
               <input id="actionDate" class="form-control" type="date">
-            </div>
+            </div>-->
 
             <!-- Ticker -->
             <div class="row">
-              <label for="ticker">Ticker <input class="form-control" type="text" id="ticker"  autocomplete="off"></label>
+              Ticker: ${ticker}
             </div>
 
             <!-- Shares -->
@@ -43,11 +43,13 @@
               <!-- TODO move validation into JS? -->
               <label for="shares">Shares <input class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="shares"  autocomplete="off"></label>
             </div>
+
           </form>
           <p id="stockError" class="text-danger"></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!-- TODO: Actually make this buy -->
         <button id="addStock" type="button" class="btn btn-primary">Add</button>
       </div>
     </div>

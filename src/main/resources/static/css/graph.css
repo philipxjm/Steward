@@ -3,8 +3,18 @@ html, body, main {
     height: 100%;
 }
 
+#stockForm {
+  margin-left: 10px;
+}
+
+
 #graph {
   height: 100%;
+}
+
+h2 {
+  margin-top: 20px;
+  width:100%;
 }
 
 /* Sets size of timespan buttons */
