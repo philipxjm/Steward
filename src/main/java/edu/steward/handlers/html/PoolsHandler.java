@@ -25,6 +25,7 @@ public class PoolsHandler implements TemplateViewRoute {
       String id = req.session().attribute("id");
       User user = new User(id);
       List<Portfolio> pools = user.getPoolPorts();
+      System.out.println(pools);
       List<Holding> stocks = new ArrayList<>();
       if (!pools.isEmpty()) {
         Map<String, Integer> m = pools.get(0).getHoldings();
