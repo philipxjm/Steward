@@ -16,7 +16,11 @@ function getStocks(name) {
 
 // Gets name of active portfolio
 function getCurrentPort() {
-    return $('.port.active > .portName')[0].innerText;
+    if (activeTabIsPort) {
+        return $('.port.active > .portName').text();
+    } else {
+        return $('.pool.active > .portName').text();
+    }
 }
 
 // Click handler for potfolio
@@ -220,7 +224,7 @@ function loadUpDashType(port) {
         }         
     }
 }
-
+let activeTabIsPort = true;
 // Called on tab switch
 $('.tabToggle').click((e) => {
     let port = e.target.innerText == "Portfolios";
