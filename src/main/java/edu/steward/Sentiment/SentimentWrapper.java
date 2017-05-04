@@ -16,7 +16,7 @@ public class SentimentWrapper {
   }
 
   public double findSentimentOf(String ticker) {
-    if (SentimentCache.doesContain(ticker)) {
+    if (SentimentCache.doesContainUpToDate(ticker)) {
       return SentimentCache.getFromCache(ticker);
     } else {
       List<Integer> sentiments
