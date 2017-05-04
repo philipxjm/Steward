@@ -13,7 +13,7 @@
         <!-- Main -->
         <main class="content col-md-8 offset-md-2">
           <div class="row row-first">
-            <h2>${ticker}</h2>
+            <h2><span id="ticker">${ticker}</span> - ${company}</h2>
           </div>
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary time">

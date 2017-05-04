@@ -1,5 +1,5 @@
 // Ticker to graph
-const ticker = $('h2')[0].innerText;
+const ticker = $('#ticker').text();
 
 // Make chart
 const ctx = $("#graph");

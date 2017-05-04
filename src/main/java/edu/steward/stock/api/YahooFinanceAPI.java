@@ -23,8 +23,6 @@ import edu.steward.stock.Fundamentals.Volume;
 import edu.steward.stock.Fundamentals.YearHigh;
 import edu.steward.stock.Fundamentals.YearLow;
 import edu.steward.stock.Fundamentals.YieldPercent;
-import org.joda.time.DateTime;
-import org.joda.time.field.MillisDurationField;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
@@ -167,6 +165,17 @@ public class YahooFinanceAPI implements StockAPI {
   // System.out.println(stock.getHistory());
   // }
 
+  public String getCompanyName(String ticker) {
+    try {
+      Stock s = YahooFinance.get(ticker);
+      String name = s.getName();
+      return name;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   public Price getCurrPrice(String ticker) {
     try {
       Stock stock = YahooFinance.get(ticker);
@@ -197,48 +206,48 @@ public class YahooFinanceAPI implements StockAPI {
     int size = prices.size();
     List<Price> ret = new ArrayList<>();
     switch (t) {
-      case ONE_MONTH:
-        System.out.println("1 month");
-        //      ~23 days of daily data
-        for (int i = 0; i < Math.min(23, size); i += 1) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case SIX_MONTH:
-        System.out.println("6 month");
-//      ~130 days of daily data
-        for (int i = 0; i < Math.min(130, size); i += 2) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case ONE_YEAR:
-        System.out.println("1 year");
-//      ~260 days of daily data
-        for (int i = 0; i < Math.min(260, size); i += 3) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case TWO_YEAR:
-        System.out.println("2 year");
-//      ~520 days of daily data
-        for (int i = 0; i < Math.min(520, size); i += 5) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case FIVE_YEAR:
-        System.out.println("5 year");
-//      ~1300 days of daily data
-        for (int i = 0; i < Math.min(1300, size); i += 10) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case TEN_YEAR:
-        System.out.println("10 year");
-        //      ~2600 days of daily data
-        for (int i = 0; i < Math.min(2600, size); i += 10) {
-          ret.add(prices.get(i));
-        }
-        break;
+    case ONE_MONTH:
+      System.out.println("1 month");
+      // ~23 days of daily data
+      for (int i = 0; i < Math.min(23, size); i += 1) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case SIX_MONTH:
+      System.out.println("6 month");
+      // ~130 days of daily data
+      for (int i = 0; i < Math.min(130, size); i += 2) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case ONE_YEAR:
+      System.out.println("1 year");
+      // ~260 days of daily data
+      for (int i = 0; i < Math.min(260, size); i += 3) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case TWO_YEAR:
+      System.out.println("2 year");
+      // ~520 days of daily data
+      for (int i = 0; i < Math.min(520, size); i += 5) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case FIVE_YEAR:
+      System.out.println("5 year");
+      // ~1300 days of daily data
+      for (int i = 0; i < Math.min(1300, size); i += 10) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case TEN_YEAR:
+      System.out.println("10 year");
+      // ~2600 days of daily data
+      for (int i = 0; i < Math.min(2600, size); i += 10) {
+        ret.add(prices.get(i));
+      }
+      break;
     }
     return ret;
   }
@@ -255,9 +264,7 @@ public class YahooFinanceAPI implements StockAPI {
     try {
       Stock stock = YahooFinance.get(ticker, true);
       List<HistoricalQuote> quotes = stock.getHistory(from, to, Interval.DAILY);
-      return new Price(
-              quotes.get(0).getAdjClose().doubleValue(),
-              (long) time);
+      return new Price(quotes.get(0).getAdjClose().doubleValue(), (long) time);
     } catch (IOException e) {
       e.printStackTrace();
       System.out.println("Stock not found");

@@ -1,24 +1,26 @@
 package edu.steward.stock.api;
 
-import com.google.common.collect.Lists;
-import edu.steward.main.JSONRetriever;
-import edu.steward.stock.Fundamentals.DailyChange;
-import edu.steward.stock.Fundamentals.Fundamental;
-import edu.steward.stock.Fundamentals.Price;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+
+import edu.steward.main.JSONRetriever;
+import edu.steward.stock.Fundamentals.DailyChange;
+import edu.steward.stock.Fundamentals.Fundamental;
+import edu.steward.stock.Fundamentals.Price;
 
 /**
  * Created by mrobins on 4/17/17.
@@ -33,97 +35,65 @@ public class AlphaVantageAPI implements StockAPI {
       Map<String, Map<String, Double>> timeSeriesData = new HashMap<>();
       String rawData;
       switch (timeSeries) {
-        case ONE_DAY:
-          rawData = getFromAlphaVantage(
-                  ticker,
-                  AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
-                  AlphaVantageConstants.INTERVAL.FIVE_MIN,
-                  AlphaVantageConstants.APIKEY.APIKEY
-          );
-          timeSeriesData =
-                  parseAlphaVantage(
-                          rawData,
-                          AlphaVantageConstants.INTERVAL.FIVE_MIN);
-          break;
-        case FIVE_DAY:
-          rawData = getFromAlphaVantage(
-                  ticker,
-                  AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
-                  AlphaVantageConstants.INTERVAL.THIRTY_MIN,
-                  AlphaVantageConstants.APIKEY.APIKEY
-          );
-          timeSeriesData =
-                  parseAlphaVantage(
-                          rawData,
-                          AlphaVantageConstants.INTERVAL.THIRTY_MIN);
-          break;
-        case ONE_MONTH:
-          rawData = getFromAlphaVantage(
-                  ticker,
-                  AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
-                  AlphaVantageConstants.OUTPUT_SIZE.COMPACT,
-                  AlphaVantageConstants.APIKEY.APIKEY
-          );
-          timeSeriesData =
-                  parseAlphaVantage(
-                          rawData,
-                          AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY);
-          break;
-        case SIX_MONTH:
-          rawData = getFromAlphaVantage(
-                  ticker,
-                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-                  AlphaVantageConstants.APIKEY.APIKEY
-          );
-          timeSeriesData =
-                  parseAlphaVantage(
-                          rawData,
-                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-          break;
-        case ONE_YEAR:
-          rawData = getFromAlphaVantage(
-                  ticker,
-                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-                  AlphaVantageConstants.APIKEY.APIKEY
-          );
-          timeSeriesData =
-                  parseAlphaVantage(
-                          rawData,
-                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-          break;
-        case TWO_YEAR:
-          rawData = getFromAlphaVantage(
-                  ticker,
-                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-                  AlphaVantageConstants.APIKEY.APIKEY
-          );
-          timeSeriesData =
-                  parseAlphaVantage(
-                          rawData,
-                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-          break;
-        case FIVE_YEAR:
-          rawData = getFromAlphaVantage(
-                  ticker,
-                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-                  AlphaVantageConstants.APIKEY.APIKEY
-          );
-          timeSeriesData =
-                  parseAlphaVantage(
-                          rawData,
-                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-          break;
-        case TEN_YEAR:
-          rawData = getFromAlphaVantage(
-                  ticker,
-                  AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
-                  AlphaVantageConstants.APIKEY.APIKEY
-          );
-          timeSeriesData =
-                  parseAlphaVantage(
-                          rawData,
-                          AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
-          break;
+      case ONE_DAY:
+        rawData = getFromAlphaVantage(ticker,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
+            AlphaVantageConstants.INTERVAL.FIVE_MIN,
+            AlphaVantageConstants.APIKEY.APIKEY);
+        timeSeriesData = parseAlphaVantage(rawData,
+            AlphaVantageConstants.INTERVAL.FIVE_MIN);
+        break;
+      case FIVE_DAY:
+        rawData = getFromAlphaVantage(ticker,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
+            AlphaVantageConstants.INTERVAL.THIRTY_MIN,
+            AlphaVantageConstants.APIKEY.APIKEY);
+        timeSeriesData = parseAlphaVantage(rawData,
+            AlphaVantageConstants.INTERVAL.THIRTY_MIN);
+        break;
+      case ONE_MONTH:
+        rawData = getFromAlphaVantage(ticker,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY,
+            AlphaVantageConstants.OUTPUT_SIZE.COMPACT,
+            AlphaVantageConstants.APIKEY.APIKEY);
+        timeSeriesData = parseAlphaVantage(rawData,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_DAILY);
+        break;
+      case SIX_MONTH:
+        rawData = getFromAlphaVantage(ticker,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+            AlphaVantageConstants.APIKEY.APIKEY);
+        timeSeriesData = parseAlphaVantage(rawData,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+        break;
+      case ONE_YEAR:
+        rawData = getFromAlphaVantage(ticker,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+            AlphaVantageConstants.APIKEY.APIKEY);
+        timeSeriesData = parseAlphaVantage(rawData,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+        break;
+      case TWO_YEAR:
+        rawData = getFromAlphaVantage(ticker,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+            AlphaVantageConstants.APIKEY.APIKEY);
+        timeSeriesData = parseAlphaVantage(rawData,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+        break;
+      case FIVE_YEAR:
+        rawData = getFromAlphaVantage(ticker,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+            AlphaVantageConstants.APIKEY.APIKEY);
+        timeSeriesData = parseAlphaVantage(rawData,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+        break;
+      case TEN_YEAR:
+        rawData = getFromAlphaVantage(ticker,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY,
+            AlphaVantageConstants.APIKEY.APIKEY);
+        timeSeriesData = parseAlphaVantage(rawData,
+            AlphaVantageConstants.FUNCTION.TIME_SERIES_WEEKLY);
+        break;
       }
       List<Price> prices = parseTimeSeriesMap(timeSeriesData);
       return priceIntervalClean(prices, timeSeries);
@@ -139,38 +109,36 @@ public class AlphaVantageAPI implements StockAPI {
     return JSONRetriever.getJSON(url, 5000);
   }
 
-  public Map<String, Map<String, Double>> parseAlphaVantage(
-          String json,
-          Enum timeSeries
-  ) {
+  public Map<String, Map<String, Double>> parseAlphaVantage(String json,
+      Enum timeSeries) {
     String time;
     switch (timeSeries.name()) {
-      case "ONE_MIN":
-        time = "Time Series (1min)";
-        break;
-      case "FIVE_MIN":
-        time = "Time Series (5min)";
-        break;
-      case "FIFTEEN_MIN":
-        time = "Time Series (15min)";
-        break;
-      case "THIRTY_MIN":
-        time = "Time Series (30min)";
-        break;
-      case "SIXTY_MIN":
-        time = "Time Series (60min)";
-        break;
-      case "TIME_SERIES_DAILY":
-        time = "Time Series (Daily)";
-        break;
-      case "TIME_SERIES_WEEKLY":
-        time = "Weekly Time Series";
-        break;
-      case "TIME_SERIES_MONTHLY":
-        time = "Monthly Time Series";
-        break;
-      default:
-        time = "";
+    case "ONE_MIN":
+      time = "Time Series (1min)";
+      break;
+    case "FIVE_MIN":
+      time = "Time Series (5min)";
+      break;
+    case "FIFTEEN_MIN":
+      time = "Time Series (15min)";
+      break;
+    case "THIRTY_MIN":
+      time = "Time Series (30min)";
+      break;
+    case "SIXTY_MIN":
+      time = "Time Series (60min)";
+      break;
+    case "TIME_SERIES_DAILY":
+      time = "Time Series (Daily)";
+      break;
+    case "TIME_SERIES_WEEKLY":
+      time = "Weekly Time Series";
+      break;
+    case "TIME_SERIES_MONTHLY":
+      time = "Monthly Time Series";
+      break;
+    default:
+      time = "";
     }
 
     JsonObject received = GSON.fromJson(json, JsonObject.class);
@@ -187,32 +155,32 @@ public class AlphaVantageAPI implements StockAPI {
     try {
       info = meta.get("1. Information").getAsString();
     } catch (NullPointerException e) {
-//      ignore
+      // ignore
     }
     try {
       sym = meta.get("2. Symbol").getAsString();
     } catch (NullPointerException e) {
-//      ignore
+      // ignore
     }
     try {
       last = meta.get("3. Last Refreshed").getAsString();
     } catch (NullPointerException e) {
-//      ignore
+      // ignore
     }
     try {
       inter = meta.get("4. Interval").getAsString();
     } catch (NullPointerException e) {
-//      ignore
+      // ignore
     }
     try {
       output = meta.get("5. Output Size").getAsString();
     } catch (NullPointerException e) {
-//      ignore
+      // ignore
     }
     try {
       timezone = meta.get("6. Time Zone").getAsString();
     } catch (NullPointerException e) {
-//      ignore
+      // ignore
     }
 
     // Timeseries
@@ -237,24 +205,21 @@ public class AlphaVantageAPI implements StockAPI {
       url = "http://www.alphavantage.co/query?function=";
       for (Enum e : args) {
         switch (getType(e)) {
-          case ("FUNCTION"):
-            url +=
-                    URLEncoder.encode(
-                            e.toString(),
-                            "UTF-8");
-            url += "&symbol=" + ticker;
-            break;
-          case ("INTERVAL"):
-            url += "&interval=";
-            url += URLEncoder.encode(e.toString(), "UTF-8");
-            break;
-          case ("OUTPUT_SIZE"):
-            url += "&outputsize=";
-            url += URLEncoder.encode(e.toString(), "UTF-8");
-            break;
-          case ("APIKEY"):
-            url += "&apikey=";
-            url += URLEncoder.encode(e.toString(), "UTF-8");
+        case ("FUNCTION"):
+          url += URLEncoder.encode(e.toString(), "UTF-8");
+          url += "&symbol=" + ticker;
+          break;
+        case ("INTERVAL"):
+          url += "&interval=";
+          url += URLEncoder.encode(e.toString(), "UTF-8");
+          break;
+        case ("OUTPUT_SIZE"):
+          url += "&outputsize=";
+          url += URLEncoder.encode(e.toString(), "UTF-8");
+          break;
+        case ("APIKEY"):
+          url += "&apikey=";
+          url += URLEncoder.encode(e.toString(), "UTF-8");
         }
       }
     } catch (UnsupportedEncodingException e) {
@@ -269,7 +234,7 @@ public class AlphaVantageAPI implements StockAPI {
   }
 
   private static List<Price> parseTimeSeriesMap(
-          Map<String, Map<String, Double>> timeSeriesData) {
+      Map<String, Map<String, Double>> timeSeriesData) {
     List<Price> ret = new ArrayList<>();
     for (String timeStamp : timeSeriesData.keySet()) {
       Long time = getTime(timeStamp);
@@ -287,15 +252,14 @@ public class AlphaVantageAPI implements StockAPI {
   }
 
   private static long getTime(String timeStamp) {
-    DateTimeFormatter formatter1 =
-            DateTimeFormat.forPattern("yyyy-MM-dd");
-    DateTimeFormatter formatter2 =
-            DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter formatter1 = DateTimeFormat.forPattern("yyyy-MM-dd");
+    DateTimeFormatter formatter2 = DateTimeFormat
+        .forPattern("yyyy-MM-dd HH:mm:ss");
     DateTime dateTime = new DateTime();
     try {
       dateTime = formatter1.parseDateTime(timeStamp);
     } catch (IllegalArgumentException e1) {
-//      try other format
+      // try other format
       try {
         dateTime = formatter2.parseDateTime(timeStamp);
       } catch (IllegalArgumentException e2) {
@@ -329,69 +293,75 @@ public class AlphaVantageAPI implements StockAPI {
     List<Price> ret = new ArrayList<>();
     Long cutoffTime;
     switch (t) {
-      case ONE_DAY:
-        cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 48600);
-        System.out.println("last time: " + prices.get(0).getTime());
-        System.out.println("cutoff time: " + cutoffTime);
-        for (Price p : prices) {
-          if (p.getTime() >= cutoffTime) {
-            ret.add(p);
-          } else {
-            break;
-          }
+    case ONE_DAY:
+      cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 48600);
+      System.out.println("last time: " + prices.get(0).getTime());
+      System.out.println("cutoff time: " + cutoffTime);
+      for (Price p : prices) {
+        if (p.getTime() >= cutoffTime) {
+          ret.add(p);
+        } else {
+          break;
         }
-        break;
-      case FIVE_DAY:
-        int counter = 0;
-//        Gets the start of the day
-        cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 48600);
-//        Counts where the last day begins
-        for (Price p : prices) {
-          if (p.getTime() >= cutoffTime) {
-            counter++;
-            ret.add(p);
-          }
+      }
+      break;
+    case FIVE_DAY:
+      int counter = 0;
+      // Gets the start of the day
+      cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 48600);
+      // Counts where the last day begins
+      for (Price p : prices) {
+        if (p.getTime() >= cutoffTime) {
+          counter++;
+          ret.add(p);
         }
-        for (int i = counter; i < counter + 56; i++) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case ONE_MONTH:
-        for (int i = 0; i < Math.min(24, size); i++) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case SIX_MONTH:
-        for (int i = 0; i < Math.min(26, size); i++) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case ONE_YEAR:
-        for (int i = 0; i < Math.min(52, size); i++) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case TWO_YEAR:
-        for (int i = 0; i < Math.min(104, size); i++) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case FIVE_YEAR:
-        for (int i = 0; i < Math.min(260, size); i++) {
-          ret.add(prices.get(i));
-        }
-        break;
-      case TEN_YEAR:
-        for (int i = 0; i < Math.min(520, size); i++) {
-          ret.add(prices.get(i));
-        }
-        break;
+      }
+      for (int i = counter; i < counter + 56; i++) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case ONE_MONTH:
+      for (int i = 0; i < Math.min(24, size); i++) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case SIX_MONTH:
+      for (int i = 0; i < Math.min(26, size); i++) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case ONE_YEAR:
+      for (int i = 0; i < Math.min(52, size); i++) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case TWO_YEAR:
+      for (int i = 0; i < Math.min(104, size); i++) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case FIVE_YEAR:
+      for (int i = 0; i < Math.min(260, size); i++) {
+        ret.add(prices.get(i));
+      }
+      break;
+    case TEN_YEAR:
+      for (int i = 0; i < Math.min(520, size); i++) {
+        ret.add(prices.get(i));
+      }
+      break;
     }
     return ret;
   }
 
   @Override
   public Price getPrice(String ticker, int time) {
+    return null;
+  }
+
+  @Override
+  public String getCompanyName(String ticker) {
+    // TODO Auto-generated method stub
     return null;
   }
 }
