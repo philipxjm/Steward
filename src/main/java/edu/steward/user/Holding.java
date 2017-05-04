@@ -24,6 +24,10 @@ public class Holding implements Comparable<Holding>{
     return shares;
   }
 
+  public int getTime() {
+    return time;
+  }
+
   @Override
   public int compareTo(Holding o) {
     return time - o.time;
