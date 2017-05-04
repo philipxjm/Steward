@@ -10,10 +10,13 @@ function onSignIn(googleUser) {
     // Send username and userId to backend
     userName = profile.getName();
     userId = profile.getId();
-    $.get("/login", {name: userName, id: userId});
+    let email = profile.getEmail();
+    let pic = profile.getImageUrl();
+
+    $.get("/login", {name: userName, id: userId, email:email, pic:pic});
 
     // Refresh page
-    window.location = window.location;
+    //window.location = window.location;
   }
 }	
 

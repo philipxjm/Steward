@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
 
 import edu.steward.Sentiment.SentimentWrapper;
 import edu.steward.handlers.html.AboutHandler;
+import edu.steward.handlers.html.AccountHandler;
 import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.PoolsHandler;
 import edu.steward.handlers.html.StockHandler;
@@ -98,6 +99,7 @@ public class Main {
     Spark.get("/pools", new PoolsHandler(), freeMarker);
     Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
     Spark.get("/watchlist", new WatchlistHandler(), freeMarker);
+    Spark.get("/account", new AccountHandler(), freeMarker);
     // Auth
     Spark.get("/login", new LoginHandler());
     Spark.get("/logout", new LogoutHandler());

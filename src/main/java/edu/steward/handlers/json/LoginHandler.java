@@ -1,6 +1,6 @@
 package edu.steward.handlers.json;
 
-import edu.steward.user.User;
+import edu.steward.sql.DatabaseApi;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -16,6 +16,11 @@ public class LoginHandler implements Route {
   @Override
   public Object handle(Request request, Response response) {
     QueryParamsMap qm = request.queryMap();
+    String name = qm.value("name");
+    String id = qm.value("id");
+    String email = qm.value("email");
+    String pic = qm.value("pic");
+    DatabaseApi.createUser(id, name, email, pic);
     request.session().attribute("user", qm.value("name"));
     request.session().attribute("id", qm.value("id"));
     return "";

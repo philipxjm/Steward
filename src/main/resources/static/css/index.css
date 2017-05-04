@@ -10,3 +10,9 @@ h1 {
 #jumbo {
   background-image: url(/img/bg.jpg); 
 }
+
+#jumbo > .container {
+	background-color: rgba(200,200,200,0.9);
+	border-radius: 5px;
+	padding: 15px 20px;
+}

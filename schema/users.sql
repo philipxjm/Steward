@@ -28,4 +28,11 @@ CREATE TABLE "Balances" (
 	PRIMARY KEY(`portfolio`),
 	FOREIGN KEY(`portfolio`) REFERENCES `UserPortfolios`(`PortfolioId`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+CREATE TABLE `Users` (
+	`UserId`	TEXT,
+	`Name`	TEXT,
+	`Pic`	TEXT,
+	`Email`	TEXT,
+	PRIMARY KEY(`UserId`)
+);
 COMMIT;

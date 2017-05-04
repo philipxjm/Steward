@@ -44,7 +44,7 @@ public class PoolsHandler implements TemplateViewRoute {
       // TODO: Show not authorized?
       res.status(401);
       res.redirect("/");
-      return new ModelAndView(ImmutableMap.of(), "about.ftl");
+      return new ModelAndView(ImmutableMap.of(), "index.ftl");
     }
   }
 

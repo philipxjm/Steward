@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 
 import edu.steward.pools.Pool;
@@ -33,6 +34,61 @@ public class DatabaseApi {
   private static String base = "jdbc:sqlite:";
   private static String userUrl = base + "data/users.sqlite3";
   private static String quoteUrl = base + "data/quotes.sqlite3";
+
+  public static boolean createUser(String userId, String name, String email,
+      String pic) {
+    String query = "INSERT INTO Users VALUES (?, ?, ?, ?);";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, userId);
+        prep.setString(2, name);
+        prep.setString(3, pic);
+        prep.setString(4, email);
+        prep.executeUpdate();
+
+      } catch (SQLException e) {
+        // User already exists
+        e.printStackTrace();
+        return false;
+      }
+    } catch (SQLException e) {
+      // Idk man
+      e.printStackTrace();
+      return false;
+    }
+    return true;
+  }
+
+  public static Map<String, String> getUserInfo(String userId) {
+    String query = "SELECT * FROM Users WHERE UserId = ?";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, userId);
+        try (ResultSet rs = prep.executeQuery()) {
+          rs.next();
+          String name = rs.getString(2);
+          String pic = rs.getString(3);
+          String email = rs.getString(4);
+          return ImmutableMap.of("user", name, "pic", pic, "email", email);
+        } catch (SQLException e) {
+          e.printStackTrace();
+          return null;
+        }
+      } catch (SQLException e) {
+        // User already exists
+        return null;
+      }
+    } catch (SQLException e) {
+      // Idk man
+      e.printStackTrace();
+      return null;
+    }
+  }
 
   public static List<Portfolio> getPortfoliosFromUser(String userId) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
@@ -456,8 +512,7 @@ public class DatabaseApi {
   }
 
   public static boolean initializePool(Pool p) {
-    String stat = "INSERT INTO Pools "
-        + "VALUES (?, ?, ?, ?, ?);";
+    String stat = "INSERT INTO Pools " + "VALUES (?, ?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
