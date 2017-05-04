@@ -45,11 +45,11 @@ $('#addStock').click((e) => {
         if (resData["success"]) {
             $('#stockError')[0].innerText = "";
             $('#addStockModal').modal('hide');
-            $('#addStock').prop('disabled', false);
             getStocks(getCurrentPort());
         } else {
             $('#stockError')[0].innerText = "ERROR: " + resData["error"];
         }
+        $('#addStock').prop('disabled', false);
     });
 
     return false;
