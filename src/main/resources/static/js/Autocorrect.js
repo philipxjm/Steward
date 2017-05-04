@@ -79,10 +79,9 @@ horrible and ugly but it works?
 function hoverHandler(e, ths) {
 	const inp = $("#inp" + ths.myId);
 	let txt = $(e.target).data("ticker");
-	console.log("txt " + txt);
+
 	inp.val(txt);
 	ths.optInd = $('.option' + ths.myId).index(e.target);
-	console.log($('.option' + ths.myId));
 	ths.updateUI();
 }
 
@@ -90,10 +89,10 @@ function hoverHandler(e, ths) {
 function clickHandler(e, ths) {
 	const dropdown = $("#dropdown" + ths.myId);
 	let txt = $(e.target).data("ticker");
-	console.log("txt " + txt)
+
 	const inp = $("#inp" + ths.myId);
-	inp.val(txt);
 	ths.buf = txt;
+
 	// Hide suggestions until user starts typing again
 	dropdown.css("display", "none");
 	// Focus back on input
@@ -124,7 +123,7 @@ function updateSuggestions(ths) {
 			newLi.data("ticker", suggest[0]);
 			// Attach handlers
 			newLi.on("mouseenter", function(e) {hoverHandler(e, ths);});
-			newLi.on("click", function(e) {clickHandler(e, ths);});
+			newLi.on("mousedown", function(e) {clickHandler(e, ths);});
 			dropdown.append(newLi);
 		}
 		// If no suggestions hide 
@@ -142,7 +141,7 @@ function blurHandler(ths) {
 	const dropdown = $('#dropdown' + ths.myId);
 	// Set input to this option
 	if (ths.optInd != -1) {
-		ths.buf = options[ths.optInd].innerText;
+		ths.buf = $(e.target).data("ticker");
 		inp.val(ths.buf);
 	}
 	// Hide suggestions until user starts typing again

@@ -3,6 +3,10 @@ html, body, main {
     height: 100%;
 }
 
+#graph {
+  height: 100%;
+}
+
 /* Sets size of timespan buttons */
 .time {
   font-size: 10px;

@@ -43,7 +43,7 @@
           </div>
           <div class="row row-second">
             <div id="graph-wrapper">
-              <canvas id="graph"></canvas>
+              <canvas height=300 id="graph"></canvas>
             </div>
           </div>
           <div class="row row-third justify-content-start">
