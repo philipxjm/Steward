@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import edu.steward.sql.Update;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 
@@ -15,7 +14,6 @@ import edu.steward.Sentiment.SentimentWrapper;
 import edu.steward.handlers.html.AboutHandler;
 import edu.steward.handlers.html.AccountHandler;
 import edu.steward.handlers.html.IndexHandler;
-import edu.steward.handlers.html.PoolsHandler;
 import edu.steward.handlers.html.StockHandler;
 import edu.steward.handlers.html.WatchlistHandler;
 import edu.steward.handlers.json.DeletePortfolioHandler;
@@ -32,6 +30,7 @@ import edu.steward.handlers.json.RenamePortfolioHandler;
 import edu.steward.handlers.json.StockActionHandler;
 import edu.steward.handlers.json.SuggestHandler;
 import edu.steward.login.LoginConfigFactory;
+import edu.steward.sql.Update;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -40,8 +39,6 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
 
 public class Main {
   private static final int DEFAULT_PORT = 4567;
@@ -102,7 +99,6 @@ public class Main {
     // Pages
     Spark.get("/", new IndexHandler(), freeMarker);
     Spark.get("/about", new AboutHandler(), freeMarker);
-    Spark.get("/pools", new PoolsHandler(), freeMarker);
     Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
     Spark.get("/watchlist", new WatchlistHandler(), freeMarker);
     Spark.get("/account", new AccountHandler(), freeMarker);
