@@ -111,6 +111,7 @@ function deletePortfolio(elm) {
             $('#noPort').show();
             $('#gains').hide();
             $('#stocks').empty();
+            $('#addButton').prop('disabled', true);            
         } else {
             $($('.port')[0]).click();
         }
@@ -189,6 +190,7 @@ function showEmptyMessage(port) {
 
 function loadUpDashType(port) { 
     if (port) {
+        $('#pastActionLabel').show();
         if ($('.port').length == 0) {
             $('#addButton').prop('disabled', true);
             $('#gains').hide();
@@ -205,6 +207,7 @@ function loadUpDashType(port) {
             }
         }  
     } else {
+        $('#pastActionLabel').hide();
         if ($('.pool').length == 0) {
             $('#addButton').prop('disabled', true);
             $('#gains').hide();
@@ -222,5 +225,6 @@ function loadUpDashType(port) {
 $('.tabToggle').click((e) => {
     let port = e.target.innerText == "Portfolios";
     loadUpDashType(port);
+    activeTabIsPort = port;
 });
 

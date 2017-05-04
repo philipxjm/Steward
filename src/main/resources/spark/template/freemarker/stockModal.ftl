@@ -23,7 +23,7 @@
 
 
             <!-- TODO Add time input? -->
-            <label class="custom-control custom-checkbox">
+            <label id="pastActionLabel" class="custom-control custom-checkbox">
               <input id="pastAction" type="checkbox" class="custom-control-input">
               <span class="custom-control-indicator"></span>
               <span class="custom-control-description">Past action</span>
