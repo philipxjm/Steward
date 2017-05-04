@@ -38,6 +38,7 @@ public class AlphaVantageAPI implements StockAPI {
                   ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
                   AlphaVantageConstants.INTERVAL.FIVE_MIN,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =
@@ -50,6 +51,7 @@ public class AlphaVantageAPI implements StockAPI {
                   ticker,
                   AlphaVantageConstants.FUNCTION.TIME_SERIES_INTRADAY,
                   AlphaVantageConstants.INTERVAL.THIRTY_MIN,
+                  AlphaVantageConstants.OUTPUT_SIZE.FULL,
                   AlphaVantageConstants.APIKEY.APIKEY
           );
           timeSeriesData =

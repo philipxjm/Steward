@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import edu.steward.sql.Update;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 
@@ -36,6 +37,8 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
 
 public class Main {
   private static final int DEFAULT_PORT = 4567;
@@ -57,6 +60,9 @@ public class Main {
     // "https://ichart.yahoo.com/table.csv");
     // System.setProperty("yahoofinance.baseurl.quotes",
     // "http://download.finance.yahoo.com/d/quotes.csv");
+
+    Update.update();
+
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)

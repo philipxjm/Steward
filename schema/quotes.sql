@@ -1,5 +1,15 @@
 BEGIN TRANSACTION;
+CREATE TABLE `thirtyMin` (
+	`stock`	TEXT NOT NULL,
+	`time`	INTEGER NOT NULL,
+	`price`	INTEGER NOT NULL
+);
 CREATE TABLE `quotes` (
+	`stock`	TEXT NOT NULL,
+	`time`	INTEGER NOT NULL,
+	`price`	REAL NOT NULL
+);
+CREATE TABLE "fiveMin" (
 	`stock`	TEXT NOT NULL,
 	`time`	INTEGER NOT NULL,
 	`price`	REAL NOT NULL
