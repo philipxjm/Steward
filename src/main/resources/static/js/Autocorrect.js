@@ -38,7 +38,7 @@ class Autocorrect {
 
 		// On user type
 		inp.on("input", function() { updateSuggestions(ths); });
-		inp.on("blur", function() { blurHandler(ths); });
+		inp.on("blur", function(e) { blurHandler(ths, e); });
 	}
 
 	// Function to update highlighting of suggestions and text in input
@@ -135,7 +135,7 @@ function updateSuggestions(ths) {
 	});
 }
 
-function blurHandler(ths) {
+function blurHandler(ths, e) {
 	const inp = $('#inp' + ths.myId);
 	const options = $('.option' + ths.myId);
 	const dropdown = $('#dropdown' + ths.myId);

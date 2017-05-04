@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.Trie;
@@ -89,14 +91,16 @@ public class SuggestHandler implements Route {
   public String handle(Request req, Response res) throws Exception {
     QueryParamsMap qm = req.queryMap();
     String input = qm.value("input");
-    List<StockSuggest> suggests = new ArrayList<>();
+    Set<StockSuggest> suggests = new HashSet<>();
     suggests.addAll(suggest.prefixMap(input).values());
-    Collections.sort(suggests);
-    suggests = suggests.subList(0, Math.min(suggests.size(), 10));
+    List<StockSuggest> toSort = new ArrayList<>();
+    toSort.addAll(suggests);
+    Collections.sort(toSort);
+    toSort = toSort.subList(0, Math.min(suggests.size(), 10));
 
-    List<List<String>> ret = suggests.stream()
+    Set<List<String>> ret = toSort.stream()
         .map((StockSuggest s) -> ImmutableList.of(s.ticker, s.name))
-        .collect(Collectors.toList());
+        .collect(Collectors.toSet());
 
     return gson.toJson(ret);
   }

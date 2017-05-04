@@ -54,6 +54,10 @@ body {
 
 .autoDropdown > li{
   background-color: white;
+
+  text-overflow: ellipsis; 
+  overflow: hidden; 
+  white-space: nowrap;
 }
 
 #content {
