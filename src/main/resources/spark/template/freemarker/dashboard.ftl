@@ -61,8 +61,13 @@
     </div>
     <div class="col-3">
       <div class="header">
-        Stocks <button id="addButton" type="button" data-toggle="modal" data-target="#addStockModal" class="btn float-right btn-secondary btn-sm">+</button>
+        Stocks
+        <div class="btn-group float-right">
+        <button id="histButton" type="button" class="btn float-right btn-secondary btn-sm"><i class="fa fa-history" aria-hidden="true"></i></button>
+        <button id="addButton" type="button" data-toggle="modal" data-target="#addStockModal" class="btn float-right btn-secondary btn-sm">+</button>
+        </div>
       </div>
+      <hr/>
     	<div id="stocks" class="list-group expand">
         <#list stocks as stock>
 			    <a href="/stock/${stock.ticker}" class="list-group-item list-group-item-action">${stock.ticker} ${stock.shares}</a>
