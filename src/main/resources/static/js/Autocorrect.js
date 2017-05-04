@@ -7,15 +7,15 @@ class Autocorrect {
 		}
 		this.myId = Autocorrect.idIndex;
 		Autocorrect.idIndex++;
-		let $input = $('<input class="autoInp formControl" id="inp' + this.myId + '" placeholder="Search for..." type="text" autocomplete="off">');
-		let $button = $(`<span class="input-group-btn">
-			<button id="searchButton" class="btn btn-secondary" type="button">
+		let $input = $('<input class="autoInp form-control" id="inp' + this.myId + '" placeholder="Search for..." type="text" autocomplete="off">');
+		let $button = $(`<button id="searchButton" class="btn btn-secondary" type="button">
 			<i class="fa fa-search" aria-hidden="true"></i>
-			</button></span>`);
+			</button>`);
 		let $dropdown = $('<ul class="dropdown-menu autoDropdown" id="dropdown' + this.myId + '"></ul>');
 		$toInsert.append($input);
 		$toInsert.append($button);
 		$toInsert.append($dropdown);
+
 		$button.click((e) => {
 			let search = $input.val();
 			if (search) {

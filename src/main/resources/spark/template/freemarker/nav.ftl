@@ -8,16 +8,10 @@
       </li>
       <li class="nav-item active">
         <a class="nav-link" href=<#if name=="watchlist">"#"<#else>"/watchlist"</#if>>Watchlist</a>
-      </li>         
-      <#if user??>
-      <li class="nav-item active">
-        <a class="nav-link" href=<#if name=="pools">"#"<#else>"/pools"</#if>>Pools</a>
-      </li>  
-      </#if>    
+      </li>           
     </ul>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <div id="searchBox" class="input-group"></div>    
+        <li id="searchBox" class="nav-item input-group">
         </li>
         <li class="nav-item">
             <#if user??>

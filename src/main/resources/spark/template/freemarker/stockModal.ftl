@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-          <form>
+          <form id="stockForm">
             <!-- Buy/Sell Toggle -->
             <div class="btn-group" data-toggle="buttons">
               <label id="buy" class="btn btn-primary active">
