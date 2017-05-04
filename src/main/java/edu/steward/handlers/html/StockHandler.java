@@ -82,13 +82,15 @@ public class StockHandler implements TemplateViewRoute {
 
     Price currPrice = stock.getCurrPrice();
     DailyChange dailyChange = stock.getDailyChange();
+    String company = stock.getCompanyName();
     String color = "up";
     if (dailyChange.getValue() < 0) {
       color = "down";
     }
     variables.put("color", color).put("fundamentals", ret)
         .put("price", currPrice).put("change", dailyChange)
-        .put("title", "Stock: " + ticker).put("css", "/css/graph.css");
+        .put("company", company).put("title", "Stock: " + ticker)
+        .put("css", "/css/graph.css");
     return new ModelAndView(variables.build(), "stock.ftl");
   }
 }

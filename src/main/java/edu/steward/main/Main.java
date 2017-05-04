@@ -11,7 +11,9 @@ import org.pac4j.sparkjava.CallbackRoute;
 
 import com.google.common.collect.ImmutableList;
 
+import edu.steward.Sentiment.SentimentWrapper;
 import edu.steward.handlers.html.AboutHandler;
+import edu.steward.handlers.html.AccountHandler;
 import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.PoolsHandler;
 import edu.steward.handlers.html.StockHandler;
@@ -19,6 +21,7 @@ import edu.steward.handlers.html.WatchlistHandler;
 import edu.steward.handlers.json.DeletePortfolioHandler;
 import edu.steward.handlers.json.GetGraphDataHandler;
 import edu.steward.handlers.json.GetPortfolioHandler;
+import edu.steward.handlers.json.GetSentimentHandler;
 import edu.steward.handlers.json.GetStockPredictionHandler;
 import edu.steward.handlers.json.GetUnrealizedDataHandler;
 import edu.steward.handlers.json.LoginHandler;
@@ -102,6 +105,7 @@ public class Main {
     Spark.get("/pools", new PoolsHandler(), freeMarker);
     Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
     Spark.get("/watchlist", new WatchlistHandler(), freeMarker);
+    Spark.get("/account", new AccountHandler(), freeMarker);
     // Auth
     Spark.get("/login", new LoginHandler());
     Spark.get("/logout", new LogoutHandler());
@@ -117,6 +121,8 @@ public class Main {
     Spark.post("/getGraphData", new GetGraphDataHandler());
     Spark.post("/getStockPrediction", new GetStockPredictionHandler());
     Spark.post("/getUnrealizedData", new GetUnrealizedDataHandler());
+    SentimentWrapper wrap = new SentimentWrapper();
+    Spark.post("/getSentiment", new GetSentimentHandler(wrap));
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

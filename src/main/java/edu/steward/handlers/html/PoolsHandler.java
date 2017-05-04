@@ -24,10 +24,10 @@ public class PoolsHandler implements TemplateViewRoute {
     if (loggedIn) {
       String id = req.session().attribute("id");
       User user = new User(id);
-      List<Portfolio> pools = user.getPoolPorts();
+      List<Portfolio> ports = user.getPoolPorts();
       List<Holding> stocks = new ArrayList<>();
-      if (!pools.isEmpty()) {
-        Map<String, Integer> m = pools.get(0).getHoldings();
+      if (!ports.isEmpty()) {
+        Map<String, Integer> m = ports.get(0).getHoldings();
         for (String ticker : m.keySet()) {
           Holding h = new Holding(ticker, m.get(ticker));
           if (h.getShares() > 0) {
@@ -37,12 +37,14 @@ public class PoolsHandler implements TemplateViewRoute {
       }
 
       Map<String, Object> variables = ImmutableMap.of("title", "Pools", "user",
-          name, "pools", pools, "stocks", stocks);
+          name, "pools", ports, "stocks", stocks);
       System.out.println("HERE");
       return new ModelAndView(variables, "pools.ftl");
     } else {
       // TODO: Show not authorized?
-      return null;
+      res.status(401);
+      res.redirect("/");
+      return new ModelAndView(ImmutableMap.of(), "index.ftl");
     }
   }
 

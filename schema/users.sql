@@ -9,6 +9,7 @@ CREATE TABLE "UserPortfolios" (
 );
 CREATE TABLE "Pools" (
 	'PoolId' TEXT NOT NULL UNIQUE,
+	'Name' TEXT NOT NULL,
 	'Balance' INTEGER NOT NULL,
 	'Start' INTEGER NOT NULL,
 	'End' INTEGER
@@ -26,5 +27,12 @@ CREATE TABLE "Balances" (
 	`balance`	REAL NOT NULL DEFAULT 1000000,
 	PRIMARY KEY(`portfolio`),
 	FOREIGN KEY(`portfolio`) REFERENCES `UserPortfolios`(`PortfolioId`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE `Users` (
+	`UserId`	TEXT,
+	`Name`	TEXT,
+	`Pic`	TEXT,
+	`Email`	TEXT,
+	PRIMARY KEY(`UserId`)
 );
 COMMIT;

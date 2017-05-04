@@ -36,9 +36,7 @@ public class User {
 
   public List<Portfolio> getPortfolios() {
     List<Portfolio> ret = new ArrayList<>();
-    if (portfolios.isEmpty()) {
-      loadPortfolios();
-    }
+    loadPortfolios();
     for (Portfolio port : portfolios.values()) {
       port.loadInfo();
       ret.add(port);

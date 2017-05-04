@@ -61,6 +61,11 @@ public class Stock {
     return stockAPI.getDailyChange(ticker);
   }
 
+  public String getCompanyName() {
+    setStockAPI(new YahooFinanceAPI());
+    return stockAPI.getCompanyName(ticker);
+  }
+
   public List<Fundamental> getStockFundamentals() {
     setStockAPI(new YahooFinanceAPI());
     List<Fundamental> ret = new ArrayList<>();

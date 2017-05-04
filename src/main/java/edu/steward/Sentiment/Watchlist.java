@@ -62,5 +62,6 @@ public class Watchlist {
 
   public static void main(String[] args) {
     System.out.println(trendingSentiments());
+    System.out.println(trendingSentiments());
   }
 }

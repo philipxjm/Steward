@@ -4,13 +4,17 @@ let userId;
 // Called when google auth successfully finishes
 function onSignIn(googleUser) {
   // Only redirect & login if this if the first time
+  console.log(googleUser);
   if ($('#login')[0].style.display != "none") {
     const profile = googleUser.getBasicProfile();
 
     // Send username and userId to backend
     userName = profile.getName();
     userId = profile.getId();
-    $.get("/login", {name: userName, id: userId});
+    let email = profile.getEmail();
+    let pic = profile.getImageUrl();
+
+    $.get("/login", {name: userName, id: userId, email:email, pic:pic});
 
     // Refresh page
     window.location = window.location;
