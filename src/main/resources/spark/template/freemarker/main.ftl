@@ -15,8 +15,11 @@
       <meta name="google-signin-client_id" content="993833341053-f3ks9cqj041b1uvj8an5omd7rdmu16j7.apps.googleusercontent.com">
   </head>
   <body>
+  <div class="wrapper">
   	<#include "nav.ftl">
     ${content}
+    <div class="push"></div>
+  </div>
 	<div id="footer" class="container">
 		<hr>
 		<footer>

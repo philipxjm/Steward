@@ -1,0 +1,18 @@
+#pic {
+	width: 100px;
+	height: 100px;
+}
+
+#main {
+	width: 400px;
+	margin-top: 25px;
+}
+
+img {
+	margin-bottom: 10px;
+	border: 2px solid black;
+}
+
+#inner {
+	width: auto;
+}
