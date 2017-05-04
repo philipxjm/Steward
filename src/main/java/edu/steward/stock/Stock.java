@@ -30,7 +30,7 @@ public class Stock {
   public List<Price> getStockPrices(StockAPI.TIMESERIES timeseries) {
     // TODO: Abstract this later on
     if (timeseries == StockAPI.TIMESERIES.ONE_DAY
-      || timeseries == StockAPI.TIMESERIES.FIVE_DAY) {
+        || timeseries == StockAPI.TIMESERIES.FIVE_DAY) {
       setStockAPI(new AlphaVantageAPI());
       return stockAPI.getStockPrices(ticker, timeseries);
     } else {
@@ -58,6 +58,11 @@ public class Stock {
   public DailyChange getDailyChange() {
     setStockAPI(new YahooFinanceAPI());
     return stockAPI.getDailyChange(ticker);
+  }
+
+  public String getCompanyName() {
+    setStockAPI(new YahooFinanceAPI());
+    return stockAPI.getCompanyName(ticker);
   }
 
   public List<Fundamental> getStockFundamentals() {
