@@ -24,7 +24,7 @@ public class Update {
     Trigger triggerFive1 = TriggerBuilder
             .newTrigger()
             .withIdentity("triggerFive1", "groupFive")
-            .withSchedule(cronSchedule("* 0/5 10-16 ? * MON-FRI"))
+            .withSchedule(cronSchedule("0 0/5 10-16 ? * MON-FRI"))
             .forJob(jobFiveMin)
             .build();
 
@@ -34,7 +34,7 @@ public class Update {
     Trigger triggerFive2 = TriggerBuilder
             .newTrigger()
             .withIdentity("triggerFive2", "groupFive")
-            .withSchedule(cronSchedule("* 30/5 9-10 ? * MON-FRI"))
+            .withSchedule(cronSchedule("0 30/5 9-10 ? * MON-FRI"))
             .forJob(jobFiveMin)
             .build();
 
@@ -58,8 +58,8 @@ public class Update {
     // Trigger every 30 minutes between 10:00am-4:00pm
     Trigger triggerThirty1 = TriggerBuilder
             .newTrigger()
-            .withIdentity("triggerThirty", "groupThirty")
-            .withSchedule(cronSchedule("* 0/30 10-16 ? * MON-FRI"))
+            .withIdentity("triggerThirty1", "groupThirty")
+            .withSchedule(cronSchedule("0 0/30 10-16 ? * MON-FRI"))
             .forJob(jobThirtyMin)
             .build();
 
@@ -68,8 +68,8 @@ public class Update {
     // Trigger every 5 minutes between 9:30am-10:00am
     Trigger triggerThirty2 = TriggerBuilder
             .newTrigger()
-            .withIdentity("triggerThirty", "groupThirty")
-            .withSchedule(cronSchedule("* 30/30 9-10 ? * MON-FRI"))
+            .withIdentity("triggerThirty2", "groupThirty")
+            .withSchedule(cronSchedule("0 30/30 9-10 ? * MON-FRI"))
             .forJob(jobThirtyMin)
             .build();
 
@@ -85,21 +85,21 @@ public class Update {
     }
 
     JobDetail jobDaily = JobBuilder.newJob(DailyJob.class)
-            .withIdentity("jobThirty", "groupDaily").build();
+            .withIdentity("jobDaily", "groupDaily").build();
 
     // Trigger every day at 4:00pm
     Trigger triggerDaily = TriggerBuilder
             .newTrigger()
-            .withIdentity("triggerThirty", "groupDaily")
+            .withIdentity("triggerDaily", "groupDaily")
             .withSchedule(cronSchedule("0 0 16 ? * MON-FRI"))
-            .forJob(jobThirtyMin)
+            .forJob(jobDaily)
             .build();
 
     // schedule it
     try {
       Scheduler schedulerDaily = new StdSchedulerFactory().getScheduler();
       schedulerDaily.start();
-      schedulerDaily.scheduleJob(jobThirtyMin, triggerDaily);
+      schedulerDaily.scheduleJob(jobDaily, triggerDaily);
     } catch (SchedulerException e) {
       e.printStackTrace();
     }

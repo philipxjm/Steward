@@ -155,6 +155,7 @@ public class DailyDataUpdater {
       }
       try (PreparedStatement prep = c.prepareStatement(query2)) {
         for (String ticker : tickers) {
+          System.out.println("ticker added: " + ticker);
           prep.setString(1, ticker);
           prep.setInt(2, timeCalled);
 

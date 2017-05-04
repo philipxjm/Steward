@@ -491,27 +491,28 @@ public class DatabaseApi {
       yahoofinance.Stock stock = YahooFinance.get(ticker);
 //      Gets daily data from the past ten years
       List<HistoricalQuote> quotes = stock.getHistory(from, Interval.DAILY);
-      for (HistoricalQuote q : quotes) {
-        Double priceVal = q.getAdjClose().doubleValue();
-        Long time = q.getDate().getTimeInMillis() / 1000;
-        Price p = new Price(priceVal, time);
-        ret.add(p);
         stat = "INSERT INTO quotes VALUES (?, ?, ?);";
         try (Connection c = DriverManager.getConnection(quoteUrl)) {
           Statement s = c.createStatement();
           s.executeUpdate("PRAGMA foreign_keys = ON;");
           try (PreparedStatement prep = c.prepareStatement(stat)) {
-            prep.setString(1, ticker);
-            prep.setString(2, time.toString());
-            prep.setString(3, priceVal.toString());
-            prep.executeUpdate();
+            for (HistoricalQuote q : quotes) {
+              Double priceVal = q.getAdjClose().doubleValue();
+              Long time = q.getDate().getTimeInMillis() / 1000;
+              Price p = new Price(priceVal, time);
+              ret.add(p);
+              prep.setString(1, ticker);
+              prep.setString(2, time.toString());
+              prep.setString(3, priceVal.toString());
+              prep.addBatch();
+            }
+            prep.executeBatch();
           } catch (SQLException e) {
             e.printStackTrace();
           }
         } catch (SQLException e) {
           e.printStackTrace();
         }
-      }
     } catch (IOException e) {
       // Not found
     }
