@@ -45,14 +45,17 @@ public class CSVReader {
    *
    */
   public CSVReader(Stream<String> s) throws NoSuchElementException {
-    Iterator<String[]> it = s.map((line) -> line.split(",", -1)).iterator();
+    Iterator<String[]> it = s
+        // Split on comma not in quotes
+        .map((line) -> line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1))
+        .iterator();
     header = it.next();
     columns = header.length;
     lines = Iterators.toArray(it, String[].class);
     // TODO: Should remove this?
-    // if (!validate(lines)) {
-    // throw new IllegalArgumentException();
-    // }
+    if (!validate(lines)) {
+      throw new IllegalArgumentException();
+    }
   }
 
   private boolean validate(String[][] ls) {

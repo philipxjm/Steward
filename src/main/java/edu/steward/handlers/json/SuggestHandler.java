@@ -71,7 +71,6 @@ public class SuggestHandler implements Route {
           String name = line[1].replace("\"", "");
           try {
             double cap = Double.parseDouble(line[3].replace("\"", ""));
-
             StockSuggest inner = new StockSuggest(sym, name, cap);
             if (!toMake.containsKey(sym.toLowerCase())) {
               toMake.put(sym.toLowerCase(), inner);
@@ -98,9 +97,9 @@ public class SuggestHandler implements Route {
     Collections.sort(toSort);
     toSort = toSort.subList(0, Math.min(suggests.size(), 10));
 
-    Set<List<String>> ret = toSort.stream()
+    List<List<String>> ret = toSort.stream()
         .map((StockSuggest s) -> ImmutableList.of(s.ticker, s.name))
-        .collect(Collectors.toSet());
+        .collect(Collectors.toList());
 
     return gson.toJson(ret);
   }

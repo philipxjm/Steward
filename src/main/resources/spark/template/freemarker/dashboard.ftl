@@ -3,6 +3,7 @@
 <#assign js>
   <script src="/js/UnrealizedGraph.js"></script>
   <script src="/js/dashboard.js"></script>
+  <script src="/js/pools.js"></script>
   <script src="/js/stockModal.js"></script>
 </#assign>
 
@@ -14,27 +15,59 @@
 <div class="container">
   <div class="row" id="main">
     <div class="col-3">
-      <div class="header">
-        Portfolios <button type="button" id="addPort" class="btn float-right btn-secondary btn-sm">+</button>
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="tabToggle nav-link active" data-toggle="tab" href="#portTab" role="tab">Portfolios</a>
+        </li>
+        <li class="nav-item">
+          <a class="tabToggle nav-link" data-toggle="tab" href="#poolTab" role="tab">Pools</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+      <div id="portTab" class="tab-pane active" role="tabpanel">
+        <div class="buttonBar btn-group float-right">
+          <button type="button" id="addPort" class="btn btn-secondary btn-sm">+</button>
+        </div>
+      	<div id="ports" class="list-group expand">
+          <#list portfolios as port>
+  		   	 <div class="list-group-item list-group-item-action port <#if port_index == 0>active</#if>">         
+                <span class="portName">${port.name}</span>
+                <a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
+                <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>
+            </div>
+          </#list>
+  		  </div>
       </div>
-    	<div id="ports" class="list-group expand">
-        <#list portfolios as port>
-		   	 <div class="list-group-item list-group-item-action port <#if port_index == 0>active</#if>">         
-              <span class="portName">${port.name}</span>
-              <a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
-              <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>
-          </div>
-        </#list>
-		  </div>
+      <div id="poolTab" class="tab-pane" role="tabpanel">
+        <div class="buttonBar btn-group float-right">
+          <button type="button" id="joinPool" data-toggle="modal" data-target="#joinPoolModal" class="btn btn-secondary btn-sm">Join</button>
+          <button type="button" id="create" data-toggle="modal" data-target="#createPoolModal" class="btn btn-secondary btn-sm">Create</button>          
+        </div>
+        <div id="pools" class="list-group expand">
+          <#list pools as pool>
+           <div class="list-group-item list-group-item-action pool <#if pool_index == 0>active</#if>">         
+                <span class="portName">${pool.name}</span>
+                <!--<a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
+                <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>-->
+            </div>
+          </#list>
+        </div>
+      </div>
+      </div>
     </div>
     <div id="graphContainer" class="col-6">
-      <#if portfolios?size == 0><h2 id="noPort" class="text-muted">Make a new portfolio!</h2></#if>
+      <div id="noPort" class="text-muted"></div>
 	   <canvas id="gains"></canvas>
     </div>
     <div class="col-3">
       <div class="header">
-        Stocks <button id="addButton" type="button" data-toggle="modal" data-target="#addStockModal" class="btn float-right btn-secondary btn-sm">+</button>
+        Stocks
+        <div class="btn-group float-right">
+        <button id="historyButton" type="button" class="disabler btn float-right btn-secondary btn-sm"><i class="fa fa-history" aria-hidden="true"></i></button>
+        <button id="addButton" type="button" data-toggle="modal" data-target="#addStockModal" class="disabler btn float-right btn-secondary btn-sm">+</button>
+        </div>
       </div>
+      <hr/>
     	<div id="stocks" class="list-group expand">
         <#list stocks as stock>
 			    <a href="/stock/${stock.ticker}" class="list-group-item list-group-item-action">${stock.ticker} ${stock.shares}</a>
@@ -42,7 +75,8 @@
 		  </div>
     </div>
 
-    <#include "stockModal.ftl">           
+    <#include "stockModal.ftl">
+    <#include "createPoolModal.ftl">         
   </div>
 </div>
 </#assign>

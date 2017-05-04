@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-          <form>
+          <form id="stockForm">
             <!-- Name -->
             <div class="row">
               <label for="name">Pool Name <input class="form-control" type="text" id="name"  autocomplete="off"></label>
