@@ -43,7 +43,6 @@ public class Stock {
         setStockAPI(new AlphaVantageAPI());
         return stockAPI.getStockPrices(ticker, timeseries);
       }
-
     }
   }
 

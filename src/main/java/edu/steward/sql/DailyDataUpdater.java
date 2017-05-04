@@ -84,6 +84,7 @@ public class DailyDataUpdater {
               prep2.addBatch();
             }
             prep2.executeBatch();
+            return prices;
           } catch (SQLException e) {
             e.printStackTrace();
           }
@@ -99,6 +100,7 @@ public class DailyDataUpdater {
     return ret;
   }
 
+//  TODO: find usages?? i should get rid of this
   public void update() {
     updateFive();
     updateThirty();
