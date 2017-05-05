@@ -26,9 +26,11 @@ public class StockTwitSentimentsScrapper {
       } else {
         return -100.0;
       }
+    } catch (NullPointerException e) {
+      return -100.0;
     } catch (IOException e) {
       e.printStackTrace();
-      return 0.0;
+      return -100.0;
     }
   }
 }
