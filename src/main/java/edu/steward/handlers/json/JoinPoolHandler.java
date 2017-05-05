@@ -1,6 +1,7 @@
 package edu.steward.handlers.json;
 
 import com.google.gson.Gson;
+import edu.steward.user.Portfolio;
 import edu.steward.user.User;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -20,11 +21,11 @@ public class JoinPoolHandler implements Route {
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("name");
-    String poolName = poolId.split("/")[0];
-    if (user.addPortfolio(poolName, poolId)) {
-      return GSON.toJson(poolName);
-    } else {
+    Portfolio p;
+    if ((p = user.addPool(poolId)) == null) {
       return GSON.toJson(null);
+    } else {
+      return GSON.toJson(p);
     }
   }
 }

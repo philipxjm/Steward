@@ -5,6 +5,7 @@ import edu.steward.user.Portfolio;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by kjin on 5/1/17.
@@ -20,10 +21,15 @@ public class Pool {
 
   public Pool (String name, String balance, String startTime, Portfolio...
       ports) {
+    Random r = new Random();
     bal = balance;
     start = startTime;
     this.name = name;
-    id = name + "/" + startTime;
+    id = "";
+    while (id.length() < 4 || DatabaseApi.getPool(id) != null) {
+      id = id + Integer.toString(r.nextInt(36), 36);
+    }
+    System.out.println(id);
     portfolios = Arrays.asList(ports);
     DatabaseApi.initializePool(this);
   }
