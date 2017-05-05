@@ -13,7 +13,7 @@ function poolClickHandler(e) {
  	$('.pool').removeClass('active');
  	elm.addClass('active');
   const portName = elm.children('.portName')[0].innerText;
-  getStocks(portName);
+  getStocks(getCurrentPort());
   graph.update(portName);
 }
 
@@ -41,7 +41,7 @@ $('#joinPool').click((e) => {
                             }
                             $('.port').removeClass('active');
                             let newPoolInput = $('.newPool');
-                            let newPool = makeNewPool(resData);
+                            let newPool = makeNewPool(resData.name);
                             newPoolInput.replaceWith(newPool);
                             newPool.click(poolClickHandler);
                             newPool.click();                            
