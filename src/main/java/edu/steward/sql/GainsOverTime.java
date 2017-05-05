@@ -149,7 +149,8 @@ public class GainsOverTime {
     return getCurrentNetGainsGame(portId) + (double) initBalance;
   }
 
-  private static TreeMultimap<String, Holding> getTransactionHistory(String portId) {
+  public static TreeMultimap<String, Holding> getTransactionHistory(String
+                                                                     portId) {
     TreeMultimap<String, Holding> transactionHistory = TreeMultimap
         .create(new Comparator<String>() {
           @Override
