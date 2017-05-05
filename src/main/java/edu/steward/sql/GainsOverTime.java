@@ -1,5 +1,6 @@
 package edu.steward.sql;
 
+import static edu.steward.sql.DatabaseApi.getBalanceFromPortfolio;
 import static edu.steward.sql.DatabaseApi.initializePrices;
 
 import java.sql.Connection;
@@ -29,6 +30,7 @@ import edu.steward.stock.Stock;
 import edu.steward.stock.Fundamentals.Gains;
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.user.Holding;
+import edu.steward.user.Portfolio;
 
 /**
  * Created by mrobins on 5/2/17.
@@ -134,19 +136,19 @@ public class GainsOverTime {
     return ret;
   }
 
-  public static Double getCurrentNetGainsGame(String portId) {
+  public static Double getCurrentNetWorth(String portId) {
+    Double netGains = 0.0;
     TreeMultimap<String, Holding> transHistory = getTransactionHistory(portId);
-    Double net = 0.0;
+    Map<String, Integer>  currHoldings = new HashMap<>();
     for (String ticker : transHistory.keySet()) {
+      Integer quant = 0;
       for (Holding h : transHistory.get(ticker)) {
-        net += h.getPrice() * h.getShares();
+        quant += h.getShares();
       }
+      Stock stock = new Stock(ticker);
+      netGains += quant * stock.getCurrPrice().getValue();
     }
-    return net;
-  }
-
-  public static Double getCurrentNetWorth(String portId, Integer initBalance) {
-    return getCurrentNetGainsGame(portId) + (double) initBalance;
+    return netGains + getBalanceFromPortfolio(portId);
   }
 
   public static TreeMultimap<String, Holding> getTransactionHistory(String

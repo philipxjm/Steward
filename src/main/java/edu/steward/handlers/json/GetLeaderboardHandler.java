@@ -11,6 +11,7 @@ import spark.Response;
 import spark.Route;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -26,16 +27,39 @@ public class GetLeaderboardHandler implements Route{
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("poolId");
     List<Portfolio> rankedPortfolios = DatabaseApi.getPortsFromPool(poolId);
-    rankedPortfolios.sort(
-        (a,b) ->
-        Double.compare(a
-        .getNetValue(), b.getNetValue()));
-    List<Object> l = new ArrayList<>();
+    List<Score> scores = new ArrayList<>();
     for (Portfolio p : rankedPortfolios) {
-      Map<String, String> info = p.getUser();
-      l.add(ImmutableMap.of("user", info.get("id"), "balance", p.getNetValue
-          (), "pic", info.get("pic")));
+      scores.add(new Score(p, p.getNetWorth()));
+    }
+    Collections.sort(scores);
+    List<Object> l = new ArrayList<>();
+    for (Score s : scores) {
+      Map<String, String> info = s.getPortfolio().getUser();
+      l.add(ImmutableMap.of("user", info.get("id"), "balance", s.getNetWorth(), "pic", info.get("pic")));
     }
     return gson.toJson(l);
+  }
+
+  private class Score implements Comparable<Score>{
+    private Portfolio portfolio;
+    private Double netWorth;
+
+    public Score(Portfolio portfolio, Double netWorth) {
+      this.portfolio = portfolio;
+      this.netWorth = netWorth;
+    }
+
+    public Portfolio getPortfolio() {
+      return portfolio;
+    }
+
+    public Double getNetWorth() {
+      return netWorth;
+    }
+
+    @Override
+    public int compareTo(Score o) {
+      return netWorth.compareTo(o.netWorth);
+    }
   }
 }
