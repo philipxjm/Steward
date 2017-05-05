@@ -7,6 +7,7 @@ import java.util.Map;
 
 import edu.steward.sql.DatabaseApi;
 
+
 /**
  * Created by Philip on 4/16/17.
  */
@@ -45,12 +46,9 @@ public class User {
   }
 
   public Portfolio getPortfolio(String name) {
-    if (portfolios.isEmpty()) {
-      loadPortfolios();
-    }
-    System.out.println(name);
-    portfolios.get(name).loadInfo();
-    return portfolios.get(name);
+    Portfolio port = DatabaseApi.getAllPorts(getId()).get(name);
+    port.loadInfo();
+    return port;
   }
 
   public boolean deletePortfolio(String name) {
@@ -87,15 +85,16 @@ public class User {
 
   public boolean addPortfolio(String portName, String poolId) {
     if (portfolios.get(portName) == null) {
-      boolean success = DatabaseApi.createPortfolio(this.getId(), portName);
-      if (!success) {
-        return false;
+      if (DatabaseApi.getPool(poolId) != null) {
+        boolean success = DatabaseApi.createPortfolio(this.getId(), portName);
+        if (!success) {
+          return false;
+        }
+        Portfolio port = new Portfolio(portName, this.getId() + "/" + portName);
+        port.joinPool(poolId);
+        portfolios.put(portName, port);
+        return true;
       }
-      Portfolio port = new Portfolio(portName, this.getId() + "/" + portName);
-      port.joinPool(poolId);
-      portfolios.put(portName, port);
-      return true;
-
     }
     return false;
   }
