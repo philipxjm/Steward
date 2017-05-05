@@ -3,6 +3,7 @@ package edu.steward.Sentiment;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Philip on 5/1/17.
@@ -19,11 +20,12 @@ public class SentimentWrapper {
     if (SentimentCache.doesContainUpToDate(ticker)) {
       return SentimentCache.getFromCache(ticker);
     } else {
-      List<Integer> sentiments
-              = tsf.sentiments(ImmutableList.of(ticker)).get(ticker);
-      double finalSentiment = sentimentNormalizer(ticker, sentiments);
-      SentimentCache.insertToCache(ticker, finalSentiment);
-      return finalSentiment;
+//      List<Integer> sentiments
+//              = tsf.sentiments(ImmutableList.of(ticker)).get(ticker);
+//      double finalSentiment = sentimentNormalizer(ticker, sentiments);
+//      SentimentCache.insertToCache(ticker, finalSentiment);
+//      return finalSentiment;
+      return Math.random();
     }
   }
 
