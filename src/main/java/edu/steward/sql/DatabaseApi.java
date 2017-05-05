@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
@@ -40,7 +41,7 @@ public class DatabaseApi {
   private static String quoteUrl = base + "data/quotes.sqlite3";
 
   public static boolean createUser(String userId, String name, String email,
-                                   String pic) {
+      String pic) {
     String query = "INSERT INTO Users VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -150,9 +151,8 @@ public class DatabaseApi {
     return portfolios;
   }
 
-  public static boolean createPortfolio(String userId, String portId, String
-      portName,
-                                        String initialBalance) {
+  public static boolean createPortfolio(String userId, String portId,
+      String portName, String initialBalance) {
 
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -183,13 +183,13 @@ public class DatabaseApi {
     return true;
   }
 
-  public static boolean createPortfolio(String userId, String portId, String
-      portName) {
+  public static boolean createPortfolio(String userId, String portId,
+      String portName) {
     return createPortfolio(userId, portId, portName, "1000000");
   }
 
   public static boolean renamePortfolio(String userId, String oldName,
-                                        String newName) {
+      String newName) {
     String stat = "UPDATE UserPortfolios SET Name=?,PortfolioId=? WHERE PortfolioId=?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -233,7 +233,7 @@ public class DatabaseApi {
   }
 
   public static boolean stockTransaction(String portId, String ticker,
-                                         int amount, int time, double price) {
+      int amount, int time, double price) {
     Double cost = amount * price;
     String query = "SELECT trans FROM History " + "WHERE portfolio = ? "
         + "AND stock = ?;";

@@ -10,11 +10,23 @@ function makeNewPool(name) {
 
 function poolClickHandler(e) {
   let elm = $(e.target);
+  let name = elm.text();
+  let id = elm.attr('poolId');
+  $('#info').empty();
  	$('.pool').removeClass('active');
  	elm.addClass('active');
   const portName = elm.children('.portName')[0].innerText;
   getStocks(getCurrentPort());
-  graph.update(portName);
+  $.post('/getLeaderboard', {poolId:id}, (res) => {
+    let data = JSON.parse(res);
+    console.log(data);
+    $('#info').html(`
+      Name: ${name} <br/>
+      ID: ${id} <br/>
+      Leaderboard: ${data}
+    `);
+  });
+  //graph.update(portName);
 }
 
 $('.pool').click(poolClickHandler);
@@ -91,7 +103,8 @@ $('#createPool').click((e) => {
 
 	$('#createPool').prop('disabled', true);
 	$.post('/newPool', param, (res) => {
-		console.log("HERE");
+    let resData = JSON.parse(res);
+
 		// TODO Update pool sidebar
 		$('#createPoolModal').modal('hide');
 		$('#poolError').text('');
@@ -99,6 +112,10 @@ $('#createPool').click((e) => {
 		$newPool = makeNewPool(name);
     $newPool.click(poolClickHandler);
 		$('#pools').append($newPool);
+
+    $newPool.attr("poolId", resData.name);
+    $('#noPort').hide();
+
     $newPool.click();
 		// TODO add click handlers
 	});

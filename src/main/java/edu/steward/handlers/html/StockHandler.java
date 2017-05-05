@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -12,6 +13,8 @@ import edu.steward.stock.Stock;
 import edu.steward.stock.Fundamentals.DailyChange;
 import edu.steward.stock.Fundamentals.Fundamental;
 import edu.steward.stock.Fundamentals.Price;
+import edu.steward.user.Portfolio;
+import edu.steward.user.User;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -87,10 +90,17 @@ public class StockHandler implements TemplateViewRoute {
     if (dailyChange.getValue() < 0) {
       color = "down";
     }
+
+    User u = new User(user);
+    List<String> ports = u.getPortfolios().stream()
+        .map((Portfolio mp) -> mp.getName()).collect(Collectors.toList());
+    List<String> pools = u.getPoolPorts().stream()
+        .map((Portfolio mp) -> mp.getName()).collect(Collectors.toList());
+
     variables.put("color", color).put("fundamentals", ret)
         .put("price", currPrice).put("change", dailyChange)
         .put("company", company).put("title", "Stock: " + ticker)
-        .put("css", "/css/graph.css");
+        .put("css", "/css/graph.css").put("pools", pools).put("ports", ports);
     return new ModelAndView(variables.build(), "stock.ftl");
   }
 }

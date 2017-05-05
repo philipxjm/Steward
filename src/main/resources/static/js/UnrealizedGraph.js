@@ -2,7 +2,13 @@ class UnrealizedGraph extends StewardGraph {
     constructor(ctx, port) {
         super("Unrealized Gains");
         this.port = port;
+        this.timeseries = "none";
+        this.redNegative = true;
         super.makeGraph();
+    }
+
+    static makePretty(v) {
+        return Math.round(v*100)/100 + '%';
     }
 
     update(name) {
