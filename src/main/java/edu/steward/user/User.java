@@ -71,7 +71,8 @@ public class User {
 
   public boolean addPortfolio(String portName) {
     if (portfolios.get(portName) == null) {
-      boolean success = DatabaseApi.createPortfolio(this.getId(), portName);
+      boolean success = DatabaseApi.createPortfolio(getId(), getId() + "/" +
+              portName, portName);
       if (!success) {
         return false;
       }
@@ -83,20 +84,22 @@ public class User {
     return false;
   }
 
-  public boolean addPortfolio(String portName, String poolId) {
+  public Portfolio addPool(String poolId) {
+    String portName = DatabaseApi.getPool(poolId).getName();
     if (portfolios.get(portName) == null) {
       if (DatabaseApi.getPool(poolId) != null) {
-        boolean success = DatabaseApi.createPortfolio(this.getId(), portName);
+        boolean success = DatabaseApi.createPortfolio(this.getId(), this
+                .getId() + "/pool/" + portName, portName);
         if (!success) {
-          return false;
+          return null;
         }
         Portfolio port = new Portfolio(portName, this.getId() + "/" + portName);
         port.joinPool(poolId);
         portfolios.put(portName, port);
-        return true;
+        return port;
       }
     }
-    return false;
+    return null;
   }
 
   public boolean removePortfolio(String portName) {
