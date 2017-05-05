@@ -22,6 +22,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.TreeMultimap;
 
 import edu.steward.stock.Stock;
@@ -156,6 +157,7 @@ public class GainsOverTime {
             }
             if (prices.size() == 0) {
               List<Price> temp = initializePrices(ticker);
+              temp = Lists.reverse(temp);
               // TODO: Could this be more efficient?
               for (Price p : temp) {
                 if (p.getTime() >= startTime) {

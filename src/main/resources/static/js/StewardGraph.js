@@ -73,6 +73,12 @@ class StewardGraph {
                                     }
                                 },
                             },
+                        }],
+                        yAxes: [{
+                          scaleLabel: {
+                            display: true,
+                            labelString: "% Gain"
+                          }
                         }]
                     },
                     tooltips: {

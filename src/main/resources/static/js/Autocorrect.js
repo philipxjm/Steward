@@ -88,7 +88,9 @@ function clickHandler(e, ths) {
 	dropdown.css("display", "none");
 	// Focus back on input
 	inp.focus();
-	console.log(inp.val());
+	if (ths.search) {
+		$('#searchButton').click();			
+	}
 }
 
 function updateSuggestions(ths) {
