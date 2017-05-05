@@ -45,7 +45,7 @@
         </div>
         <div id="pools" class="list-group expand">
           <#list pools as pool>
-           <div class="list-group-item list-group-item-action pool <#if pool_index == 0>active</#if>">         
+           <div poolId="${pool.pool.id}" class="list-group-item list-group-item-action pool <#if pool_index == 0>active</#if>">         
                 <span class="portName">${pool.name}</span>
                 <!--<a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
                 <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>-->
@@ -58,6 +58,7 @@
     <div id="graphContainer" class="col-6">
       <div id="noPort" class="text-muted"></div>
 	   <canvas id="gains"></canvas>
+     <div id="info"></div>
     </div>
     <div class="col-3">
       <div class="header">

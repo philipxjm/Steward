@@ -43,7 +43,8 @@ $('#addStock').click((e) => {
         time: time,
         action: action,
         ticker: ticker,
-        shares: shares
+        shares: shares,
+        isPool: !activeTabIsPort
     }
     $('#addStock').prop('disabled', true);
     $.post('/stockAction', data, (res) => {
