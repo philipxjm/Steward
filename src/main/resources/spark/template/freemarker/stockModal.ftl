@@ -34,8 +34,8 @@
             </div>
 
             <!-- Ticker -->
-            <div class="row">
-              <label for="ticker">Ticker <input class="form-control" type="text" id="ticker"  autocomplete="off"></label>
+            <div id="stockModalTickerDiv" class="row">
+              <!--<label for="ticker">-->Ticker <input class="autoInp form-control" type="text" id="ticker"  autocomplete="off"><!--</label>-->
             </div>
 
             <!-- Shares -->
@@ -48,7 +48,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="addStock" type="button" class="btn btn-primary">Add</button>
+        <button id="addStock" type="button" class="modal-submit btn btn-primary">Add</button>
       </div>
     </div>
   </div>

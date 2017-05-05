@@ -1,50 +1,42 @@
 class Autocorrect {
-	constructor($toInsert, correcter) {
-		if (correcter) {
-			this.correcter = correcter;
-		} else {
-			this.correcter = 'default';
-		}
+	constructor($toInsert, search) {
+		this.search = search;
+
 		this.myId = Autocorrect.idIndex;
 		Autocorrect.idIndex++;
-		let $input = $('<input class="autoInp form-control" id="inp' + this.myId + '" placeholder="Search for..." type="text" autocomplete="off">');
-		let $button = $(`<button id="searchButton" class="btn btn-secondary" type="button">
-			<i class="fa fa-search" aria-hidden="true"></i>
-			</button>`);
-		let $dropdown = $('<ul class="dropdown-menu autoDropdown" id="dropdown' + this.myId + '"></ul>');
-		$toInsert.append($input);
-		$toInsert.append($button);
-		$toInsert.append($dropdown);
+		let $input = $toInsert.find('.autoInp');
+		$input.addClass('inp' + this.myId);
 
-		$button.click((e) => {
-			let search = $input.val();
-			if (search) {
-				window.location = "/stock/"+search;
-			}
-		});		
+		
+		if ($toInsert.attr('id') == 'stockModalTickerDiv') {
+			let $dropdown = $('<div style="position:relative;left:0;margin:0 -10px;"><ul class="dropdown-menu autoDropdown" id="dropdown' + this.myId + '"></ul></div>');
+			$toInsert.after($dropdown);
+		} else {
+			let $dropdown = $('<ul class="dropdown-menu autoDropdown" id="dropdown' + this.myId + '"></ul>');
+			$toInsert.append($dropdown);
+		}
+	
 		// -1 indicates no suggestions highlighted
 		this.optInd = -1;
 		// Buffer that holds that the user is typing
 		this.buf = "";
 
-		// Input element
-		const inp = $("#inp" + this.myId);
 		// Suggestion box
 		const dropdown = $("#dropdown" + this.myId);
 
 		// Keydown event handler
 		var ths = this;
-		inp.keydown(function(e) {keyDownHandler(e, ths);});
+		$input.keydown(function(e) {keyDownHandler(e, ths);});
 
 		// On user type
-		inp.on("input", function() { updateSuggestions(ths); });
-		inp.on("blur", function(e) { blurHandler(ths, e); });
+		$input.on("input", function() { updateSuggestions(ths); });
+		$input.on("blur", function(e) { blurHandler(ths, e); });
 	}
 
 	// Function to update highlighting of suggestions and text in input
 	updateUI() {
 		const options = $('.option' + this.myId);
-		const inp = $("#inp" + this.myId);
+		const inp = $(".inp" + this.myId);
 		// For each suggestions
 		for (let i = 0; i < options.length; i++) {
 			// If its currently selected make it blue and set input text
@@ -65,7 +57,7 @@ class Autocorrect {
 	}
 
 	getElement() {
-		return $('#inp'+this.myId);
+		return $('.inp'+this.myId);
 	}
 }
 
@@ -77,7 +69,7 @@ horrible and ugly but it works?
 
 // Highlights suggestion on hover
 function hoverHandler(e, ths) {
-	const inp = $("#inp" + ths.myId);
+	const inp = $(".inp" + ths.myId);
 	let txt = $(e.target).data("ticker");
 
 	inp.val(txt);
@@ -90,18 +82,18 @@ function clickHandler(e, ths) {
 	const dropdown = $("#dropdown" + ths.myId);
 	let txt = $(e.target).data("ticker");
 
-	const inp = $("#inp" + ths.myId);
+	const inp = $(".inp" + ths.myId);
 	ths.buf = txt;
-
 	// Hide suggestions until user starts typing again
 	dropdown.css("display", "none");
 	// Focus back on input
 	inp.focus();
+	console.log(inp.val());
 }
 
 function updateSuggestions(ths) {
 	// Set buffer to current input
-	let inp = $("#inp" + ths.myId);
+	let inp = $(".inp" + ths.myId);
 	ths.buf = inp.val();
 	// Set highlight to none
 	ths.optInd = -1;
@@ -136,21 +128,23 @@ function updateSuggestions(ths) {
 }
 
 function blurHandler(ths, e) {
-	const inp = $('#inp' + ths.myId);
+	const inp = $('.inp' + ths.myId);
 	const options = $('.option' + ths.myId);
 	const dropdown = $('#dropdown' + ths.myId);
 	// Set input to this option
+	/*
 	if (ths.optInd != -1) {
 		ths.buf = $(e.target).data("ticker");
 		inp.val(ths.buf);
-	}
+	}*/
 	// Hide suggestions until user starts typing again
 	dropdown.css("display", "none");
+
 }
 
 function keyDownHandler(e, ths) {
 	const options = $('.option' + ths.myId);
-	const inp = $('#inp' + ths.myId);
+	const inp = $('.inp' + ths.myId);
 	const dropdown = $('#dropdown' + ths.myId);
 	// Update buffer
 	if (ths.optInd == -1) {
@@ -181,7 +175,10 @@ function keyDownHandler(e, ths) {
 			// Hide suggestions until user starts typing again
 			dropdown.css("display", "none");
 			e.preventDefault();
-			$('#searchButton').click();			
+			if (ths.search) {
+				$('#searchButton').click();			
+			}
+			break;
 		case 27:
 			dropdown.css("display", "none");
 		default: return; // Ignore everything else

@@ -150,7 +150,6 @@ public class GainsOverTime {
           try (ResultSet rs = prep.executeQuery()) {
             while (rs.next()) {
               Long priceTime = Long.parseLong(rs.getString(1));
-              System.out.println(priceTime > startTime);
               Double priceVal = Double.parseDouble(rs.getString(2));
               Price price = new Price(priceVal, priceTime);
               prices.add(price);

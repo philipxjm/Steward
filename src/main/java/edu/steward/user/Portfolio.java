@@ -86,21 +86,6 @@ public class Portfolio {
     return name;
   }
 
-  // public List<List<Double>> getUnrealized() {
-  // // TODO Implement, this is mock
-  // // Also should probably use a class rather than List<Double>
-  // List<List<Double>> ret = new ArrayList<>();
-  // double time = 0;
-  // int endTime = 100;
-  // double val = 0;
-  // ret.add(ImmutableList.of(time, val));
-  // for (; time < endTime; time++) {
-  // val += ((Math.random() * 11) - 5);
-  // ret.add(ImmutableList.of(time, val));
-  // }
-  // return ret;
-  // }
-
   public List<List<Object>> getUnrealized() {
     List<Gains> gains = GainsOverTime.getGainsPortfolioGraph(portfolioId);
     List<List<Object>> ret = new ArrayList<>();

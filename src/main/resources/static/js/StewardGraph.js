@@ -8,7 +8,7 @@ Chart.controllers.NegativeTransparentLine = Chart.controllers.line.extend({
         min = -1;
         max = 1
     }
-    console.log( this.chart.data.datasets[0].data);
+
     var yScale = this.getScaleForId(this.getDataset().yAxisID);
 
     // Figure out the pixels for these and the value 0
