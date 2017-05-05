@@ -605,7 +605,7 @@ public class DatabaseApi {
   }
 
   public static List<Portfolio> getPortsFromPool(String pool) {
-    String query = "SELECT Name, PortfolioId FROM UserPortfolios "
+    String query = "SELECT Name, PortfolioId, UserId FROM UserPortfolios "
         + "WHERE PoolId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
