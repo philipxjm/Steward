@@ -8,21 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.NavigableSet;
-import java.util.Set;
+import java.util.*;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.TreeMultimap;
+import com.google.common.collect.*;
 
 import edu.steward.stock.Stock;
 import edu.steward.stock.Fundamentals.Gains;
@@ -73,7 +61,7 @@ public class GainsOverTime {
         assetValue += prices.get(ticker).get(c).getValue()
             * quantities.get(ticker).get(c);
       }
-      double percentage = ((S + assetValue) - B) / B;
+      double percentage = ((S + assetValue) - B) / buySell.get(buySell.size() - 1).get(0);
       ret.add(new Gains(percentage, time));
       c += 1;
     }

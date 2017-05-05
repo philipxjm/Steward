@@ -471,19 +471,19 @@ public class DatabaseApi {
 //  }
 
   public static List<Price> initializePrices(String ticker) {
-    String stat = "DELETE FROM quotes WHERE stock = ?;";
-    try (Connection c = DriverManager.getConnection(quoteUrl)) {
-      Statement s = c.createStatement();
-      s.executeUpdate("PRAGMA foreign_keys = ON;");
-      try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(1, ticker);
-        prep.executeUpdate();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+//    String stat = "DELETE FROM quotes WHERE stock = ?;";
+//    try (Connection c = DriverManager.getConnection(quoteUrl)) {
+//      Statement s = c.createStatement();
+//      s.executeUpdate("PRAGMA foreign_keys = ON;");
+//      try (PreparedStatement prep = c.prepareStatement(stat)) {
+//        prep.setString(1, ticker);
+//        prep.executeUpdate();
+//      } catch (SQLException e) {
+//        e.printStackTrace();
+//      }
+//    } catch (SQLException e) {
+//      e.printStackTrace();
+//    }
     List<Price> ret = new ArrayList<>();
     try {
       Calendar from = Calendar.getInstance();
@@ -491,7 +491,7 @@ public class DatabaseApi {
       yahoofinance.Stock stock = YahooFinance.get(ticker);
 //      Gets daily data from the past ten years
       List<HistoricalQuote> quotes = stock.getHistory(from, Interval.DAILY);
-        stat = "INSERT INTO quotes VALUES (?, ?, ?);";
+        String stat = "INSERT INTO quotes VALUES (?, ?, ?);";
         try (Connection c = DriverManager.getConnection(quoteUrl)) {
           Statement s = c.createStatement();
           s.executeUpdate("PRAGMA foreign_keys = ON;");
