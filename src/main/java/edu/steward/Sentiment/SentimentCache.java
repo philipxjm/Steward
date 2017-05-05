@@ -20,7 +20,7 @@ public class SentimentCache {
 
   public static boolean doesContainUpToDate(String ticker) {
     return cache.containsKey(ticker) && (Math.abs(cache.get(ticker).getTime() -
-            (System.currentTimeMillis() / 1000L)) < 3000);
+            (System.currentTimeMillis() / 1000L)) < 30000);
   }
 
   public static String cacheString() {
