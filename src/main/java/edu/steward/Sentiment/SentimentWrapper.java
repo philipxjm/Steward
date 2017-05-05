@@ -51,7 +51,11 @@ public class SentimentWrapper {
       sentiment = 1.0;
     }
 
-    double difference = (sentiment - bullish) / 6.0;
-    return bullish + difference;
+    if (bullish >= 0) {
+      double difference = (sentiment - bullish) / 6.0;
+      return bullish + difference;
+    } else {
+      return sentiment;
+    }
   }
 }
