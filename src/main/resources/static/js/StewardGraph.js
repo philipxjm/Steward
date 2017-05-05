@@ -1,12 +1,40 @@
+Chart.defaults.NegativeTransparentLine = Chart.helpers.clone(Chart.defaults.line);
+Chart.controllers.NegativeTransparentLine = Chart.controllers.line.extend({
+  update: function() {
+    // Get the min and max values
+    var min = Math.min.apply(null, this.chart.data.datasets[0].data.map((d)=>{return d.y}));
+    var max = Math.max.apply(null, this.chart.data.datasets[0].data.map((d)=>{return d.y}));
+    var yScale = this.getScaleForId(this.getDataset().yAxisID);
+
+    // Figure out the pixels for these and the value 0
+    var top = yScale.getPixelForValue(max);
+    var zero = yScale.getPixelForValue(0);
+    var bottom = yScale.getPixelForValue(min-10); // -10 to make sure goes to x-axis
+
+    // Build a gradient that switches color at the 0 point
+    var ctx = this.chart.chart.ctx;
+    var gradient = ctx.createLinearGradient(0, top, 0, bottom);
+    var ratio = Math.min((zero - top) / (bottom - top), 1);
+    gradient.addColorStop(0, 'rgba(0,200,0,0.4)');
+    gradient.addColorStop(ratio, 'rgba(0,200,0,0.4)');
+    gradient.addColorStop(ratio, 'rgba(200,0,0,0.4)');
+    gradient.addColorStop(1, 'rgba(200,0,0,0.4)');
+    this.chart.data.datasets[0].backgroundColor = gradient;
+
+    return Chart.controllers.line.prototype.update.apply(this, arguments);
+  }
+});
+
 class StewardGraph {
 	constructor(lineLabel) {
 		this.lineLabel = lineLabel;
 		this.defaultLineStyle = {
+                yAxisID : 'y-axis-0',
                 lineTension: 0,
                 label: this.lineLabel,
                 pointBorderColor: "black",
                 pointBackgroundColor: "rgba(0,0,0,0)",
-                pointRadius: 2,
+                pointRadius: 0,
                 cubicInterpolationMode: "monotone"
         };
         this.predictStyle = Object.assign({}, this.defaultLineStyle);
@@ -18,7 +46,7 @@ class StewardGraph {
 	makeGraph() {
         this.getData(() => {
             const graphData = {
-                type: 'line',
+                type: this.lineLabel == "Stock Price" ? "line" : 'NegativeTransparentLine',
                 data: {
                     datasets: this.makeDataSet()
                 },
@@ -54,6 +82,7 @@ class StewardGraph {
                 }
             }
             this.graph = new Chart(ctx, graphData);
+            console.log(this.graph);
         });
 
         this.getPredict(() => {
