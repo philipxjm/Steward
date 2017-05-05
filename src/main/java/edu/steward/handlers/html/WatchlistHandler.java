@@ -32,5 +32,4 @@ public class WatchlistHandler implements TemplateViewRoute {
     }
     return new ModelAndView(variables, "watchlist.ftl");
   }
-
 }
