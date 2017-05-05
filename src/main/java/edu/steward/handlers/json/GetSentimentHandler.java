@@ -22,5 +22,4 @@ public class GetSentimentHandler implements Route {
     String ticker = qm.value("ticker");
     return gson.toJson(sentiment.findSentimentOf(ticker));
   }
-
 }
