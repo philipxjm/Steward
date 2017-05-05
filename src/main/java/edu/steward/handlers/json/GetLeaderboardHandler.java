@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Created by kjin on 5/5/17.
  */
-public class GetLeaderboardHandler implements Route{
+public class GetLeaderboardHandler implements Route {
   private final Gson gson = new Gson();
   @Override
   public String handle(Request req, Response res) {
@@ -29,6 +29,7 @@ public class GetLeaderboardHandler implements Route{
     List<Portfolio> rankedPortfolios = DatabaseApi.getPortsFromPool(poolId);
     List<Score> scores = new ArrayList<>();
     for (Portfolio p : rankedPortfolios) {
+      System.out.println("once");
       scores.add(new Score(p, p.getNetWorth()));
     }
     Collections.sort(scores);

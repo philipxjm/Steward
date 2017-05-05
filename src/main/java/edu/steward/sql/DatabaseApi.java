@@ -79,7 +79,8 @@ public class DatabaseApi {
           String name = rs.getString(2);
           String pic = rs.getString(3);
           String email = rs.getString(4);
-          return ImmutableMap.of("user", name, "pic", pic, "email", email);
+          return ImmutableMap.of("user", name, "pic", pic, "email", email,
+              "id", userId);
         } catch (SQLException e) {
           e.printStackTrace();
           return null;

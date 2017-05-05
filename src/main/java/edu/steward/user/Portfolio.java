@@ -1,11 +1,13 @@
 package edu.steward.user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 
+import com.google.common.collect.ImmutableMap;
 import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 import edu.steward.sql.GainsOverTime;
@@ -122,8 +124,7 @@ public class Portfolio {
   }
 
   public Map<String, String> getUser() {
-    Map<String, String> userInfo = DatabaseApi.getUserInfo(userId);
-    userInfo.put("id", userId);
-    return userInfo;
+    return DatabaseApi
+        .getUserInfo(userId);
   }
 }
