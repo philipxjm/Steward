@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
 
 import edu.steward.sql.DatabaseApi;
 import edu.steward.stock.Fundamentals.Ask;
@@ -33,7 +34,9 @@ import yahoofinance.histquotes.Interval;
  */
 public class YahooFinanceAPI implements StockAPI {
 
-  private YahooFinance yahooFinance = new YahooFinance();
+  public YahooFinanceAPI() {
+    YahooFinance.logger.setLevel(Level.OFF);
+  }
 
   @Override
   public List<Price> getStockPrices(String ticker, TIMESERIES timeSeries) {
