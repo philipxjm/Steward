@@ -25,10 +25,10 @@ public class WatchlistHandler implements TemplateViewRoute {
       ret.add(ImmutableList.of(key, trending.get(key)));
     }
     if (user != null) {
-      variables = ImmutableMap.of("title", "Watchlist", "trending", trending,
-          "user", user);
+      variables = ImmutableMap.of("title", "Watchlist", "trending", ret, "user",
+          user);
     } else {
-      variables = ImmutableMap.of("title", "Watchlist", "trending", trending);
+      variables = ImmutableMap.of("title", "Watchlist", "trending", ret);
     }
     return new ModelAndView(variables, "watchlist.ftl");
   }
