@@ -1,6 +1,6 @@
 // Gets stocks for portfolio
 function getStocks(name, callback) {
-    let url = activeTabIsPort ? '/getPortfolioStocks' : '/getPoolStocks';
+    let url = '/getPortfolioStocks';
 
     $.post(url, {name: name}, (resJson) => {
         let data = JSON.parse(resJson);
