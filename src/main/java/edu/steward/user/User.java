@@ -76,8 +76,9 @@ public class User {
       if (!success) {
         return false;
       }
-      portfolios.put(portName,
-          new Portfolio(portName, this.getId() + "/" + portName));
+      Portfolio port = new Portfolio(portName, this.getId() + "/" + portName);
+      port.setUser(getId());
+      portfolios.put(portName, port);
       return true;
 
     }
@@ -93,7 +94,7 @@ public class User {
         if (!success) {
           return null;
         }
-        Portfolio port = new Portfolio(portName, this.getId() + "/" + portName);
+        Portfolio port = new Portfolio(portName, this.getId() + "/pool/" + portName);
         port.joinPool(poolId);
         portfolios.put(portName, port);
         return port;
