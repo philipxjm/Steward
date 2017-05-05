@@ -14,7 +14,7 @@ function poolClickHandler(e) {
  	elm.addClass('active');
   const portName = elm.children('.portName')[0].innerText;
   getStocks(portName);
-  graph.update(portName);    
+  graph.update(portName);
 }
 
 $('.pool').click(poolClickHandler);
@@ -29,7 +29,7 @@ $('#joinPool').click((e) => {
                 e.preventDefault();
                 let poolId = $(e.target).val();
                 if (poolId) {
-                    $.post('/joinPool', {name: name}, (res) => {
+                    $.post('/joinPool', {name: poolId}, (res) => {
                         let resData = JSON.parse(res);
                         if (!resData) {
                             $('#poolErr')[0].innerText = "Bad pool ID";
@@ -41,7 +41,7 @@ $('#joinPool').click((e) => {
                             }
                             $('.port').removeClass('active');
                             let newPoolInput = $('.newPool');
-                            let newPool = makeNewPool(name);
+                            let newPool = makeNewPool(resData);
                             newPoolInput.replaceWith(newPool);
                             newPool.click(poolClickHandler);
                             newPool.click();                            
@@ -91,11 +91,11 @@ $('#createPool').click((e) => {
 
 	$('#createPool').prop('disabled', true);
 	$.post('/newPool', param, (res) => {
-		
+		console.log("HERE");
 		// TODO Update pool sidebar
 		$('#createPoolModal').modal('hide');
 		$('#poolError').text('');
-		$('#createPool').prop('disable', false);
+		$('#createPool').prop('disabled', false);
 		$newPool = makeNewPool(name);
     $newPool.click(poolClickHandler);
 		$('#pools').append($newPool);

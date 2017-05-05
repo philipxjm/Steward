@@ -19,6 +19,11 @@ $('#addStock').click((e) => {
         return;
     }
 
+    if(time > + new Date) {
+        $('#stockError')[0].innerText = "ERROR: You can't buy a stock in the future.";
+        return;
+    }
+
     let ticker = $('#ticker').val().toUpperCase();
     if (!ticker) {
         $('#stockError')[0].innerText = "ERROR: Enter a ticker for the action.";
@@ -31,6 +36,7 @@ $('#addStock').click((e) => {
         return;        
     }
     let port = getCurrentPort();
+    console.log(port);
     let data = {
         current: !$('#pastAction').prop("checked"),
         port: port,
@@ -41,7 +47,9 @@ $('#addStock').click((e) => {
     }
     $('#addStock').prop('disabled', true);
     $.post('/stockAction', data, (res) => {
+    console.log("happening");
         let resData = JSON.parse(res);
+        console.log(resData);
         if (resData["success"]) {
             $('#stockError')[0].innerText = "";
             $('#addStockModal').modal('hide');

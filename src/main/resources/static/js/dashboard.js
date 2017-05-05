@@ -1,16 +1,17 @@
 // Gets stocks for portfolio
 function getStocks(name, callback) {
-    let url = activeTabIsPort ? '/getPortfolioStocks' : '/getPoolStocks';
+    let url = '/getPortfolioStocks';
 
     $.post(url, {name: name}, (resJson) => {
         let data = JSON.parse(resJson);
+        console.log(data);
         $('#stocks').empty();
         // Add stocks
         for (let i = 0; i < data.length; i++) {
             let ticker = data[i]["ticker"];
             let shares = data[i]["shares"];
             if (shares > 0) {
-                $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`);
+                $('#stocks').append(`<a href="/stock/${ticker}" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`);
             }
         }
         if (callback) {
