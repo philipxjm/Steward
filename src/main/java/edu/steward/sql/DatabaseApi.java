@@ -159,7 +159,7 @@ public class DatabaseApi {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(4, initialBalance);
+        prep.setNull(4, 0);
         prep.setString(3, userId);
         prep.setString(2, portName);
         prep.setString(1, portId);
@@ -171,7 +171,7 @@ public class DatabaseApi {
       }
       stat = "INSERT INTO Balances VALUES (?, ?)";
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(1, userId + "/" + portName);
+        prep.setString(1, portId);
         prep.setString(2, initialBalance);
         prep.executeUpdate();
       } catch (SQLException e) {
