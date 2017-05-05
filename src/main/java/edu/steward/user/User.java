@@ -48,7 +48,7 @@ public class User {
     if (portfolios.isEmpty()) {
       loadPortfolios();
     }
-
+    System.out.println(name);
     portfolios.get(name).loadInfo();
     return portfolios.get(name);
   }

@@ -1,4 +1,4 @@
-// Returns new jQuery obj for the name of a portfolio
+// Returns new jQuery obj for the name of a pool
 function makeNewPool(name) {
    let ret = $(`<div class="list-group-item list-group-item-action pool">         
               <span class="portName">${name}</span>
@@ -9,9 +9,12 @@ function makeNewPool(name) {
 }
 
 function poolClickHandler(e) {
-   	$('.pool').removeClass('active');
-   	console.log(e.target);
-   	$(e.target).addClass('active');
+  let elm = $(e.target);
+ 	$('.pool').removeClass('active');
+ 	elm.addClass('active');
+  const portName = elm.children('.portName')[0].innerText;
+  getStocks(portName);
+  graph.update(portName);    
 }
 
 $('.pool').click(poolClickHandler);
@@ -94,7 +97,9 @@ $('#createPool').click((e) => {
 		$('#poolError').text('');
 		$('#createPool').prop('disable', false);
 		$newPool = makeNewPool(name);
+    $newPool.click(poolClickHandler);
 		$('#pools').append($newPool);
+    $newPool.click();
 		// TODO add click handlers
 	});
 });
