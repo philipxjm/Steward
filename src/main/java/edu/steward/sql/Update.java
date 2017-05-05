@@ -24,7 +24,7 @@ public class Update {
     Trigger triggerFive1 = TriggerBuilder
             .newTrigger()
             .withIdentity("triggerFive1", "groupFive")
-            .withSchedule(cronSchedule("0 0/5 10-16 ? * MON-FRI"))
+            .withSchedule(cronSchedule("0 0/5 10-15 ? * MON-FRI"))
             .forJob(jobFiveMin)
             .build();
 
@@ -34,12 +34,21 @@ public class Update {
     Trigger triggerFive2 = TriggerBuilder
             .newTrigger()
             .withIdentity("triggerFive2", "groupFive")
-            .withSchedule(cronSchedule("0 30/5 9-10 ? * MON-FRI"))
+            .withSchedule(cronSchedule("0 30/5 9 ? * MON-FRI"))
             .forJob(jobFiveMin)
             .build();
 
     triggerSetFive.add(triggerFive2);
 
+//    Trigger at 4:00 p.m. market close
+    Trigger triggerFive3 = TriggerBuilder
+            .newTrigger()
+            .withIdentity("triggerFive3", "groupFive")
+            .withSchedule(cronSchedule("0 0 16 ? * MON-FRI"))
+            .forJob(jobFiveMin)
+            .build();
+
+    triggerSetFive.add(triggerFive3);
 
     // schedule it
     try {
@@ -59,7 +68,7 @@ public class Update {
     Trigger triggerThirty1 = TriggerBuilder
             .newTrigger()
             .withIdentity("triggerThirty1", "groupThirty")
-            .withSchedule(cronSchedule("0 0/30 10-16 ? * MON-FRI"))
+            .withSchedule(cronSchedule("0 0/30 10-15 ? * MON-FRI"))
             .forJob(jobThirtyMin)
             .build();
 
@@ -69,11 +78,21 @@ public class Update {
     Trigger triggerThirty2 = TriggerBuilder
             .newTrigger()
             .withIdentity("triggerThirty2", "groupThirty")
-            .withSchedule(cronSchedule("0 30/30 9-10 ? * MON-FRI"))
+            .withSchedule(cronSchedule("0 30/30 9 ? * MON-FRI"))
             .forJob(jobThirtyMin)
             .build();
 
     triggerSetThirty.add(triggerThirty2);
+
+    //    Trigger at 4:00 p.m. market close
+    Trigger triggerThirty3 = TriggerBuilder
+            .newTrigger()
+            .withIdentity("triggerThirty3", "groupThirty")
+            .withSchedule(cronSchedule("0 0 16 ? * MON-FRI"))
+            .forJob(jobThirtyMin)
+            .build();
+
+    triggerSetThirty.add(triggerThirty3);
 
     // schedule it
     try {

@@ -3,12 +3,20 @@ package edu.steward.user;
 public class Holding implements Comparable<Holding>{
   private String ticker;
   private int shares;
-  private int time;
+  private long time;
+  private double price;
 
-  public Holding(String ticker, int shares, int time) {
+  public Holding(String ticker, int shares, long time) {
     this.ticker = ticker;
     this.shares = shares;
     this.time = time;
+  }
+
+  public Holding(String ticker, int shares, long time, double price) {
+    this.ticker = ticker;
+    this.shares = shares;
+    this.time = time;
+    this.price = price;
   }
 
   public Holding(String ticker, int shares) {
@@ -24,12 +32,16 @@ public class Holding implements Comparable<Holding>{
     return shares;
   }
 
-  public int getTime() {
+  public double getPrice() {
+    return price;
+  }
+
+  public long getTime() {
     return time;
   }
 
   @Override
   public int compareTo(Holding o) {
-    return time - o.time;
+    return Long.compare(time, o.time);
   }
 }

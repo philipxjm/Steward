@@ -1,7 +1,6 @@
 package edu.steward.sql;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.TreeMultimap;
+import com.google.common.collect.*;
 import edu.steward.stock.Fundamentals.Gains;
 import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.Stock;
@@ -11,108 +10,240 @@ import edu.steward.user.Portfolio;
 import java.sql.*;
 import java.util.*;
 
+import static edu.steward.sql.DatabaseApi.initializePrices;
+
 /**
  * Created by mrobins on 5/2/17.
  */
 public class GainsOverTime {
 
-  enum INTERVAL {
-    SHORT_TERM,
-    LONG_TERM
-  }
-
   private static String base = "jdbc:sqlite:";
   private static String userUrl = base + "data/users.sqlite3";
+  private static String quoteUrl = base + "data/quotes.sqlite3";
   private static final int secInDay = 86400;
 
-
-
   public static List<Gains> getGainsPortfolioGraph(String portId) {
-    List<Gains> ret = new ArrayList<>();
-    List<Integer> times = getPortfolioTimes(portId);
-//    Adds historic gains
-    for (Integer time : times) {
-      Gains gains = new Gains(getGainsPortfolio(portId, time) , (long) time);
-      ret.add(gains);
+    TreeMultimap<String, Holding> trans = getTransactionHistory(portId);
+
+    long startTime = Long.MAX_VALUE;
+    for(String ticker : trans.keySet()) {
+      NavigableSet<Holding> holdings = trans.get(ticker);
+      Holding firstHolding = holdings.first();
+      if (firstHolding.getTime() < startTime) {
+        startTime = firstHolding.getTime();
+      }
     }
-//    Adds current gains (at the real time)
-    Long currTime = System.currentTimeMillis() / 1000L;
-    Gains g = new Gains(getGainsPortfolio(portId), currTime);
-    ret.add(g);
+
+    Set<String> tickers = getStocksFromPortfolio(portId);
+    Map<String, List<Price>> prices = getPrices(tickers, startTime);
+    List<Long> times = new ArrayList<>();
+    for (Price p : prices.get(tickers.iterator().next())) {
+      times.add(p.getTime());
+    }
+    Collections.sort(times);
+    ListMultimap<String, Integer> quantities = getQuantityOverTime(trans,times);
+    List<List<Double>> buySell = getBuySellOverTime(trans,times);
+
+    List<Gains> ret = new ArrayList<>();
+    int c = 0;
+    for (long time : times) {
+      List<Double> temp = buySell.get(c);
+      double B = temp.get(0);
+      double S = temp.get(1);
+      double assetValue = 0;
+      for(String ticker : tickers) {
+        assetValue += prices.get(ticker).get(c).getValue() * quantities.get(ticker).get(c);
+      }
+      double percentage = ((S + assetValue) - B) / B;
+      ret.add(new Gains(percentage, time));
+      c += 1;
+    }
     return ret;
   }
 
-//  private static Gains getUnrealizedGains(String portId, INTERVAL interval) {
-//    Map<String, Integer> stockQuantities = new HashMap<>();
-//    Multimap<String, Holding> holdingHistory = TreeMultimap.create(new Comparator<String>() {
-//      @Override
-//      public int compare(String o1, String o2) {
-//        return o1.compareTo(o2);
-//      }
-//    }, new Comparator<Holding>() {
-//      @Override
-//      public int compare(Holding o1, Holding o2) {
-//        return o1.getTime() - o2.getTime();
-//      }
-//    });
-//    Double purchasedCost = 0.0;
-//    Double soldCost = 0.0;
-//    String query1 = "";
-//    String query2 = "";
-//    switch (interval) {
-//      case SHORT_TERM:
-//        query1 = "SELECT stock, time, trans, price FROM History "
-//                + "WHERE portfolio = ?;";
-//        break;
-//      case LONG_TERM:
-//        query1 = "SELECT stock, time, trans, price FROM History "
-//                + "WHERE portfolio = ?;";
-//        break;
-//    }
-//    try (Connection c = DriverManager.getConnection(userUrl)) {
-//      Statement s = c.createStatement();
-//      s.executeUpdate("PRAGMA foreign_keys = ON;");
-//      try (PreparedStatement prep = c.prepareStatement(query1)) {
-//        prep.setString(1, portId);
-//        try (ResultSet rs = prep.executeQuery()) {
-//          while (rs.next()) {
-//            String ticker = rs.getString(1);
-//            Integer time = Integer.parseInt(rs.getString(2));
-//            Integer trans = Integer.parseInt(rs.getString(3));
-//            Double price = Double.parseDouble(rs.getString(4));
-//
-//
-////            Keeps track of the quantity held of the stock.
-//            if (stockQuantities.get(ticker) == null) {
-//              stockQuantities.put(ticker, trans);
-//            } else {
-//              Integer quantity = stockQuantities.get(ticker);
-//              stockQuantities.replace(ticker, quantity + trans);
-//            }
-//
-//            Integer updatedQuantity = stockQuantities.get(ticker);
-//            Holding holding = new Holding(ticker, updatedQuantity, time);
-//            holdingHistory.put(ticker, holding);
-//
-////            Purchase of stocks.
-//            if (trans > 0) {
-//              purchasedCost += trans * price;
-//            }
-////            Sale of stocks.
-//            else if (trans < 0) {
-//              soldCost += -trans * price;
-//            }
-//          }
-//        } catch (SQLException e) {
-//          e.printStackTrace();
-//        }
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//    } catch (SQLException e) {
-//      e.printStackTrace();
-//    }
-//  }
+  private static TreeMultimap<String, Holding> getTransactionHistory(String portId) {
+    TreeMultimap<String, Holding> transactionHistory = TreeMultimap.create(new Comparator<String>() {
+      @Override
+      public int compare(String o1, String o2) {
+        return o1.compareTo(o2);
+      }
+    }, new Comparator<Holding>() {
+      @Override
+      public int compare(Holding o1, Holding o2) {
+        return Long.compare(o1.getTime(), o2.getTime());
+      }
+    });
+    String query = "SELECT stock, time, trans, price FROM History "
+                + "WHERE portfolio = ? ORDER BY time ASC;";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, portId);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            String ticker = rs.getString(1);
+            Integer time = Integer.parseInt(rs.getString(2));
+            Integer trans = Integer.parseInt(rs.getString(3));
+            Double price = Double.parseDouble(rs.getString(4));
+
+            Holding holding = new Holding(ticker, trans, time, price);
+            transactionHistory.put(ticker, holding);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return transactionHistory;
+  }
+
+  private static Map<String, List<Price>> getPrices(Set<String> tickers, long startTime) {
+//    TODO: Have this method get the historical prices for a set of stocks after a given start time
+    Map<String, List<Price>> ret = new HashMap<>();
+    String query = "SELECT time, price FROM quotes "
+            + "WHERE stock = ? "
+            + "AND time >= ? ORDER BY time ASC;";
+    try (Connection c = DriverManager.getConnection(quoteUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setLong(2, startTime);
+        for (String ticker : tickers) {
+          List<Price> prices = new ArrayList<>();
+          prep.setString(1, ticker);
+          try (ResultSet rs = prep.executeQuery()) {
+            while (rs.next()) {
+              Integer priceTime = Integer.parseInt(rs.getString(1));
+              Double priceVal = Double.parseDouble(rs.getString(2));
+              Price price = new Price(priceVal, priceTime.longValue());
+              prices.add(price);
+            }
+            if (prices.size() == 0) {
+              prices = initializePrices(ticker);
+            }
+            ret.put(ticker, prices);
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return ret;
+  }
+
+  private static ListMultimap<String, Integer> getQuantityOverTime(
+          TreeMultimap<String, Holding> transHist,
+//          TODO: This should derive from the timestamps on the prices
+          List<Long> times
+  ) {
+    ListMultimap<String, Integer> ret = ArrayListMultimap.create();
+    long lastTime = 0;
+    for (Long time : times) {
+      for (String ticker : transHist.keySet()) {
+        NavigableSet<Holding> holdings = transHist.get(ticker);
+        Holding h = new Holding("",0, time);
+        if (!ret.containsKey(ticker)) {
+          lastTime = time;
+          NavigableSet<Holding> pastTrans = holdings.headSet(h, true);
+          int total = 0;
+          for (Holding holding : pastTrans) {
+            total+=holding.getShares();
+
+          }
+          ret.put(ticker,total);
+        } else {
+          int currTotal = Iterables.getLast(ret.get(ticker));
+          Holding hMostRecent = new Holding("", 0, lastTime);
+          NavigableSet<Holding> sinceLastTrans = holdings.subSet(hMostRecent, false, h, true);
+          for (Holding holding : sinceLastTrans) {
+            currTotal+=holding.getShares();
+          }
+          lastTime = time;
+          ret.put(ticker,currTotal);
+        }
+      }
+    }
+    return ret;
+  }
+
+  private static List<List<Double>> getBuySellOverTime(
+          TreeMultimap<String, Holding> transHist,
+//          TODO: This should derive from the timestamps on the prices
+          List<Long> times
+  ) {
+    List<List<Double>> ret = new ArrayList<>();
+    long lastTime = 0;
+    for (Long time : times) {
+      double boughtTotal = 0;
+      double sellTotal = 0;
+      for (String ticker : transHist.keySet()) {
+        NavigableSet<Holding> holdings = transHist.get(ticker);
+        Holding h = new Holding("",0, time);
+        if (ret.size() == 0) {
+          lastTime = time;
+          NavigableSet<Holding> pastTrans = holdings.headSet(h, true);
+
+          for (Holding holding : pastTrans) {
+            if (holding.getShares() > 0) { // Buy
+              boughtTotal += holding.getShares() * holding.getPrice();
+            } else { // Sell
+              sellTotal -= holding.getShares() * holding.getPrice();
+            }
+          }
+        } else {
+          List<Double> currTotal = Iterables.getLast(ret);
+          boughtTotal += currTotal.get(0);
+          sellTotal += currTotal.get(1);
+          Holding hMostRecent = new Holding("", 0, lastTime);
+          NavigableSet<Holding> sinceLastTrans = holdings.subSet(hMostRecent, false, h, true);
+          for (Holding holding : sinceLastTrans) {
+            if (holding.getShares() > 0) { // Buy
+              boughtTotal += holding.getShares() * holding.getPrice();
+            } else { // Sell
+              sellTotal -= holding.getShares() * holding.getPrice();
+            }
+          }
+          lastTime = time;
+        }
+      }
+      ret.add(ImmutableList.of(boughtTotal, sellTotal));
+    }
+    return ret;
+  }
+
+  public static Set<String> getStocksFromPortfolio(String portId) {
+    Set<String> ret = new HashSet<>();
+    String query = "SELECT stock FROM History " + "WHERE portfolio = ?;";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, portId);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            String ticker = rs.getString(1);
+            ret.add(ticker);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return ret;
+  }
 
   /**
    * Gets a list of time intervals to show for the unrealized gains graph.
@@ -220,7 +351,7 @@ public class GainsOverTime {
     Double quanityHeld = 0.0;
     String query = "SELECT trans, price FROM History "
             + "WHERE portfolio = ? "
-            + "AND time <= ?;";
+            + "AND time >= ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
