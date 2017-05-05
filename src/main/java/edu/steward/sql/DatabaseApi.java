@@ -150,7 +150,8 @@ public class DatabaseApi {
     return portfolios;
   }
 
-  public static boolean createPortfolio(String userId, String portName,
+  public static boolean createPortfolio(String userId, String portId, String
+                                        portName,
       Integer initialBalance) {
 
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
@@ -161,7 +162,6 @@ public class DatabaseApi {
         prep.setNull(4, 0);
         prep.setString(3, userId);
         prep.setString(2, portName);
-        String portId = userId + "/" + portName;
         prep.setString(1, portId);
         prep.executeUpdate();
       } catch (SQLException e) {
@@ -183,8 +183,9 @@ public class DatabaseApi {
     return true;
   }
 
-  public static boolean createPortfolio(String userId, String portName) {
-    return createPortfolio(userId, portName, 1000000);
+  public static boolean createPortfolio(String userId, String portId, String
+      portName) {
+    return createPortfolio(userId, portId, portName, 1000000);
   }
 
   public static boolean renamePortfolio(String userId, String oldName,
