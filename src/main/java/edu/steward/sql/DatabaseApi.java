@@ -152,14 +152,14 @@ public class DatabaseApi {
 
   public static boolean createPortfolio(String userId, String portId, String
       portName,
-                                        Integer initialBalance) {
+                                        String initialBalance) {
 
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setNull(4, 0);
+        prep.setString(4, initialBalance);
         prep.setString(3, userId);
         prep.setString(2, portName);
         prep.setString(1, portId);
@@ -172,7 +172,7 @@ public class DatabaseApi {
       stat = "INSERT INTO Balances VALUES (?, ?)";
       try (PreparedStatement prep = c.prepareStatement(stat)) {
         prep.setString(1, userId + "/" + portName);
-        prep.setInt(2, initialBalance);
+        prep.setString(2, initialBalance);
         prep.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
@@ -185,7 +185,7 @@ public class DatabaseApi {
 
   public static boolean createPortfolio(String userId, String portId, String
       portName) {
-    return createPortfolio(userId, portId, portName, 1000000);
+    return createPortfolio(userId, portId, portName, "1000000");
   }
 
   public static boolean renamePortfolio(String userId, String oldName,

@@ -117,4 +117,9 @@ public class Portfolio {
     userInfo.put("id", userId);
     return userInfo;
   }
+
+  public double getNetValue() {
+    int initialBalance = Integer.parseInt(this.getPool().getBal());
+    return GainsOverTime.getCurrentNetWorth(portfolioId, initialBalance);
+  }
 }

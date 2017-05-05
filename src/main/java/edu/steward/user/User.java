@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 
 
@@ -72,7 +73,7 @@ public class User {
   public boolean addPortfolio(String portName) {
     if (portfolios.get(portName) == null) {
       boolean success = DatabaseApi.createPortfolio(getId(), getId() + "/" +
-              portName, portName);
+          portName, portName);
       if (!success) {
         return false;
       }
@@ -86,11 +87,12 @@ public class User {
   }
 
   public Portfolio addPool(String poolId) {
-    String portName = DatabaseApi.getPool(poolId).getName();
-    if (portfolios.get(portName) == null) {
-      if (DatabaseApi.getPool(poolId) != null) {
+    Pool pool = DatabaseApi.getPool(poolId);
+    if (pool != null) {
+      String portName = pool.getName();
+      if (portfolios.get(portName) == null) {
         boolean success = DatabaseApi.createPortfolio(this.getId(), this
-                .getId() + "/pool/" + portName, portName);
+            .getId() + "/pool/" + portName, portName, pool.getBal());
         if (!success) {
           return null;
         }
