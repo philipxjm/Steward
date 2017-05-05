@@ -17,6 +17,7 @@ public class Portfolio {
   private Map<String, Integer> holdings;
   private Double balance = 1000.0;
   private Pool pool;
+  private String userId;
   // TODO: Add in balance to the below methods
 
   public Portfolio(String name, String portfolioId) {
@@ -105,5 +106,15 @@ public class Portfolio {
 
   public void setPool(Pool pool) {
     this.pool = pool;
+  }
+
+  public void setUser(String userId) {
+    this.userId = userId;
+  }
+
+  public Map<String, String> getUser() {
+    Map<String, String> userInfo = DatabaseApi.getUserInfo(userId);
+    userInfo.put("id", userId);
+    return userInfo;
   }
 }
