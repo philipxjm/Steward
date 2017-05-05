@@ -1,6 +1,7 @@
 package edu.steward.handlers.html;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,13 +31,9 @@ public class WatchlistHandler implements TemplateViewRoute {
       } else {
         bad.add(toAdd);
       }
-      good.sort((List<Object> a, List<Object> b) -> {
-        return Double.compare((double) a.get(1), (double) b.get(1));
-      });
+      good.sort(Comparator.comparingDouble(a -> (double) a.get(1)));
 
-      bad.sort((List<Object> a, List<Object> b) -> {
-        return Double.compare(-(double) a.get(1), -(double) b.get(1));
-      });
+      bad.sort(Comparator.comparingDouble(a -> -(double) a.get(1)));
     }
     if (user != null) {
       variables = ImmutableMap.of("title", "Watchlist", "good", good, "bad",

@@ -11,7 +11,7 @@ function getStocks(name, callback) {
             let ticker = data[i]["ticker"];
             let shares = data[i]["shares"];
             if (shares > 0) {
-                $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`);
+                $('#stocks').append(`<a href="/stock/${ticker}" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`);
             }
         }
         if (callback) {

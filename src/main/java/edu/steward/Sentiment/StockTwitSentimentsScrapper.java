@@ -20,9 +20,8 @@ public class StockTwitSentimentsScrapper {
       Connection.Response resp = con.execute();
       if (resp.statusCode() == 200) {
         Document doc = con.get();
-        double bullish = Double.parseDouble(
+        return Double.parseDouble(
                 doc.select("span.bullish").first().text().replace("%", ""));
-        return bullish;
       } else {
         return -100.0;
       }

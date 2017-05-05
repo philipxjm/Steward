@@ -19,6 +19,11 @@ $('#addStock').click((e) => {
         return;
     }
 
+    if(time > + new Date) {
+        $('#stockError')[0].innerText = "ERROR: You can't buy a stock in the future.";
+        return;
+    }
+
     let ticker = $('#ticker').val().toUpperCase();
     if (!ticker) {
         $('#stockError')[0].innerText = "ERROR: Enter a ticker for the action.";

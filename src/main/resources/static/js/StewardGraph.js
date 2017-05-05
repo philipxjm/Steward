@@ -37,9 +37,9 @@ class StewardGraph {
                 yAxisID : 'y-axis-0',
                 lineTension: 0,
                 label: this.lineLabel,
-                pointBorderColor: "black",
+                pointBorderColor: "rgba(0,0,0,0)",
                 pointBackgroundColor: "rgba(0,0,0,0)",
-                pointRadius: 0,
+                pointRadius: 10,
                 cubicInterpolationMode: "monotone"
         };
         this.predictStyle = Object.assign({}, this.defaultLineStyle);
@@ -87,6 +87,9 @@ class StewardGraph {
                         callbacks: {
                             title: (info) => { 
                                 return this.dateToString(this.labels[info[0].xLabel], true);
+                            },
+                            label: function(tooltipItems, data) { 
+                                return '$' + Math.round(tooltipItems.yLabel*100)/100;
                             }
                         }
                     }                    
