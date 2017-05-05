@@ -24,8 +24,13 @@ class UnrealizedGraph extends StewardGraph {
             }
             this.data = chartData;
             this.labels = labels;
-            this.min = chartData[0].x;
-            this.max = chartData[chartData.length - 1].x;
+            if (chartData.length > 0) {
+                this.min = chartData[0].x;
+                this.max = chartData[chartData.length - 1].x;
+            } else {
+                this.min = -1;
+                this.max = 1;
+            }
             callback();
         });
     }

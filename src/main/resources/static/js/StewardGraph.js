@@ -4,6 +4,11 @@ Chart.controllers.NegativeTransparentLine = Chart.controllers.line.extend({
     // Get the min and max values
     var min = Math.min.apply(null, this.chart.data.datasets[0].data.map((d)=>{return d.y}));
     var max = Math.max.apply(null, this.chart.data.datasets[0].data.map((d)=>{return d.y}));
+    if (!isFinite(min) || !isFinite(max)) {
+        min = -1;
+        max = 1
+    }
+    console.log( this.chart.data.datasets[0].data);
     var yScale = this.getScaleForId(this.getDataset().yAxisID);
 
     // Figure out the pixels for these and the value 0
@@ -82,7 +87,6 @@ class StewardGraph {
                 }
             }
             this.graph = new Chart(ctx, graphData);
-            console.log(this.graph);
         });
 
         this.getPredict(() => {
@@ -122,6 +126,9 @@ class StewardGraph {
     }
     update() {
         this.getData(() => {
+            if(!this.graph) {
+                this.makeGraph();
+            }
             let dataset = this.graph.data.datasets.pop();
             this.graph.data.datasets = this.makeDataSet();
             this.graph.update();            

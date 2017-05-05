@@ -1,5 +1,5 @@
 // Gets stocks for portfolio
-function getStocks(name) {
+function getStocks(name, callback) {
     $.post('/getPortfolio', {name: name}, (resJson) => {
         let data = JSON.parse(resJson);
         $('#stocks').empty();
@@ -10,6 +10,9 @@ function getStocks(name) {
             if (shares > 0) {
                 $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`);
             }
+        }
+        if (callback) {
+            callback();
         }
     });
 }

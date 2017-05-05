@@ -45,7 +45,7 @@ $('#addStock').click((e) => {
         if (resData["success"]) {
             $('#stockError')[0].innerText = "";
             $('#addStockModal').modal('hide');
-            getStocks(getCurrentPort());
+            getStocks(getCurrentPort(), ()=>{graph.update(port);});
         } else {
             $('#stockError')[0].innerText = "ERROR: " + resData["error"];
         }

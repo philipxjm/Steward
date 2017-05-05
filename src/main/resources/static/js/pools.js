@@ -1,4 +1,4 @@
-// Returns new jQuery obj for the name of a portfolio
+// Returns new jQuery obj for the name of a pool
 function makeNewPool(name) {
    let ret = $(`<div class="list-group-item list-group-item-action pool">         
               <span class="portName">${name}</span>
