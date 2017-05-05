@@ -90,7 +90,7 @@ public class Portfolio {
     List<Gains> gains = GainsOverTime.getGainsPortfolioGraph(portfolioId);
     List<List<Object>> ret = new ArrayList<>();
     for (Gains gain : gains) {
-      ret.add(ImmutableList.of(gain.getTime(), gain.getValue()));
+      ret.add(ImmutableList.of(gain.getTime(), gain.getValue() * 100));
     }
     return ret;
   }
