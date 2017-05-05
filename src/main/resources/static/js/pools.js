@@ -91,7 +91,7 @@ $('#createPool').click((e) => {
 
 	$('#createPool').prop('disabled', true);
 	$.post('/newPool', param, (res) => {
-		console.log("HERE");
+    console.log(res);
 		// TODO Update pool sidebar
 		$('#createPoolModal').modal('hide');
 		$('#poolError').text('');

@@ -48,10 +48,13 @@ class StewardGraph {
         this.predictStyle.borderDash = [5,15];
         this.predictStyle.borderColor = "red";
 	}
+
+    makePretty() {}
+
 	makeGraph() {
         this.getData(() => {
             const graphData = {
-                type: this.lineLabel == "Stock Price" ? "line" : 'NegativeTransparentLine',
+                type: this.redNegative ? 'NegativeTransparentLine' : 'line',
                 data: {
                     datasets: this.makeDataSet()
                 },
@@ -86,10 +89,10 @@ class StewardGraph {
                         mode: 'single',
                         callbacks: {
                             title: (info) => { 
-                                return this.dateToString(this.labels[info[0].xLabel], true);
+                                return this.dateToString(this.labels[info[0].xLabel]);
                             },
-                            label: function(tooltipItems, data) { 
-                                return '$' + Math.round(tooltipItems.yLabel*100)/100;
+                            label: (tooltipItems, data) => {
+                                return this.makePretty(tooltipItems.yLabel);
                             }
                         }
                     }                    
