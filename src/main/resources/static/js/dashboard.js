@@ -2,6 +2,7 @@
 function getStocks(name) {
     $.post('/getPortfolio', {name: name}, (resJson) => {
         let data = JSON.parse(resJson);
+        console.log(data);
         $('#stocks').empty();
         // Add stocks
         for (let i = 0; i < data.length; i++) {

@@ -7,13 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
@@ -105,6 +99,34 @@ public class DatabaseApi {
             String id = rs.getString(2);
             Portfolio port = new Portfolio(name, id);
             portfolios.add(port);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return portfolios;
+  }
+
+  public static Map<String, Portfolio> getAllPorts(String userId) {
+    String query = "SELECT Name, PortfolioId FROM UserPortfolios "
+        + "WHERE UserId = ?";
+    HashMap<String, Portfolio> portfolios = new HashMap();
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, userId);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            String name = rs.getString(1);
+            String id = rs.getString(2);
+            Portfolio port = new Portfolio(name, id);
+            portfolios.put(name, port);
           }
         } catch (SQLException e) {
           e.printStackTrace();
