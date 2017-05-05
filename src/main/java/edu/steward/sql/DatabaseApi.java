@@ -616,7 +616,9 @@ public class DatabaseApi {
           while (rs.next()) {
             String name = rs.getString(1);
             String id = rs.getString(2);
+            String user = rs.getString(3);
             Portfolio port = new Portfolio(name, id);
+            port.setUser(user);
             portfolios.add(port);
           }
         } catch (SQLException e) {
