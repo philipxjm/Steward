@@ -30,7 +30,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="createPool" type="button" class="btn btn-primary">Create</button>
+        <button id="createPool" type="button" class="modal-submit btn btn-primary">Create</button>
       </div>
     </div>
   </div>

@@ -1,6 +1,8 @@
 // Gets stocks for portfolio
-function getStocks(name) {
-    $.post('/getPortfolio', {name: name}, (resJson) => {
+function getStocks(name, callback) {
+    let url = activeTabIsPort ? '/getPortfolioStocks' : '/getPoolStocks';
+
+    $.post(url, {name: name}, (resJson) => {
         let data = JSON.parse(resJson);
         console.log(data);
         $('#stocks').empty();
@@ -11,6 +13,9 @@ function getStocks(name) {
             if (shares > 0) {
                 $('#stocks').append(`<a href="" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`);
             }
+        }
+        if (callback) {
+            callback();
         }
     });
 }
@@ -209,6 +214,7 @@ function loadUpDashType(port) {
                 graph = new UnrealizedGraph(ctx, name);
             } else {
                 // Click active to update dash center
+                $('#ports > .port').first().click();
             }
         }  
     } else {
@@ -222,6 +228,7 @@ function loadUpDashType(port) {
             $('.disabler').prop('disabled', false);
             $('#gains').show();
             // Click active to update dash center
+            $('#pools > .pool').first().click();
         }         
     }
 }
@@ -229,7 +236,7 @@ let activeTabIsPort = true;
 // Called on tab switch
 $('.tabToggle').click((e) => {
     let port = e.target.innerText == "Portfolios";
-    loadUpDashType(port);
     activeTabIsPort = port;
+    loadUpDashType(port);
 });
 

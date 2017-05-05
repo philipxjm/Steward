@@ -41,7 +41,9 @@ public class GainsOverTime {
 
   public static List<Gains> getGainsPortfolioGraph(String portId) {
     TreeMultimap<String, Holding> trans = getTransactionHistory(portId);
-
+    if (trans.size() == 0) {
+      return new ArrayList<>();
+    }
     long startTime = Long.MAX_VALUE;
     for (String ticker : trans.keySet()) {
       NavigableSet<Holding> holdings = trans.get(ticker);
@@ -53,6 +55,11 @@ public class GainsOverTime {
 
     Set<String> tickers = getStocksFromPortfolio(portId);
     Map<String, List<Price>> prices = getPrices(tickers, startTime);
+    for (String ticker : tickers) {
+      Stock s = new Stock(ticker);
+      Price p = s.getCurrPrice();
+      prices.get(ticker).add(p);
+    }
     List<Long> times = new ArrayList<>();
     for (Price p : prices.get(tickers.iterator().next())) {
       times.add(p.getTime());
@@ -73,7 +80,9 @@ public class GainsOverTime {
         assetValue += prices.get(ticker).get(c).getValue()
             * quantities.get(ticker).get(c);
       }
-      double percentage = ((S + assetValue) - B) / B;
+
+      double percentage = ((S + assetValue) - B)
+          / buySell.get(buySell.size() - 1).get(0);
       ret.add(new Gains(percentage, time));
       c += 1;
     }
@@ -140,13 +149,20 @@ public class GainsOverTime {
           prep.setString(1, ticker);
           try (ResultSet rs = prep.executeQuery()) {
             while (rs.next()) {
-              Integer priceTime = Integer.parseInt(rs.getString(1));
+              Long priceTime = Long.parseLong(rs.getString(1));
               Double priceVal = Double.parseDouble(rs.getString(2));
-              Price price = new Price(priceVal, priceTime.longValue());
+              Price price = new Price(priceVal, priceTime);
               prices.add(price);
             }
             if (prices.size() == 0) {
-              prices = initializePrices(ticker);
+              List<Price> temp = initializePrices(ticker);
+              // TODO: Could this be more efficient?
+              for (Price p : temp) {
+                if (p.getTime() >= startTime) {
+                  prices.add(p);
+                }
+              }
+
             }
             ret.put(ticker, prices);
           } catch (SQLException e) {
@@ -159,6 +175,7 @@ public class GainsOverTime {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+
     return ret;
   }
 

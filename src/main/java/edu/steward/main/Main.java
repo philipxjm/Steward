@@ -101,7 +101,7 @@ public class Main {
     Spark.post("/joinPool", new JoinPoolHandler());
     Spark.post("/deletePortfolio", new DeletePortfolioHandler());
     Spark.post("/renamePortfolio", new RenamePortfolioHandler());
-    Spark.post("/getPortfolio", new GetPortfolioHandler());
+    Spark.post("/getPortfolioStocks", new GetPortfolioHandler());
     Spark.post("/stockAction", new StockActionHandler());
     Spark.post("/getGraphData", new GetGraphDataHandler());
     Spark.post("/getStockPrediction", new GetStockPredictionHandler());

@@ -17,8 +17,6 @@ public class GetUnrealizedDataHandler implements Route {
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String portfolioName = qm.value("name");
-    System.out
-        .println(gson.toJson(user.getPortfolio(portfolioName).getUnrealized()));
     return gson.toJson(user.getPortfolio(portfolioName).getUnrealized());
   }
 }

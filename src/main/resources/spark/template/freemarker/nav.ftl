@@ -12,6 +12,10 @@
     </ul>
     <ul class="navbar-nav ml-auto">
         <li id="searchBox" class="nav-item input-group">
+          <input class="autoInp form-control" placeholder="Search for..." type="text" autocomplete="off">
+          <button id="searchButton" class="btn btn-secondary" type="button">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </button>
         </li>
         <li class="nav-item">
             <#if user??>
