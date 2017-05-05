@@ -96,6 +96,15 @@ public class Portfolio {
     return ret;
   }
 
+  public Double getBalance() {
+    balance = DatabaseApi.getBalanceFromPortfolio(portfolioId);
+    return balance;
+  }
+
+  public Double getNetWorth() {
+    return GainsOverTime.getCurrentNetWorth(portfolioId);
+  }
+
   public Pool getPool() {
     return pool;
   }
@@ -116,10 +125,5 @@ public class Portfolio {
     Map<String, String> userInfo = DatabaseApi.getUserInfo(userId);
     userInfo.put("id", userId);
     return userInfo;
-  }
-
-  public double getNetValue() {
-    int initialBalance = Integer.parseInt(this.getPool().getBal());
-    return GainsOverTime.getCurrentNetWorth(portfolioId, initialBalance);
   }
 }
