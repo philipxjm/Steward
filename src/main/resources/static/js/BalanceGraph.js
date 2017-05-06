@@ -22,7 +22,6 @@ class BalanceGraph extends StewardGraph {
     getData(callback) {
         let url = '/getNetWorthGraph';
         let data = { poolId: this.poolId };
-
         console.assert(this.poolId != null);
 
         $.post(url, data, (res) => {  

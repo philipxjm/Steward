@@ -43,6 +43,9 @@ const portfolioClickHandler = (e) => {
     // Delete portfolio
     if(elm.hasClass("deletePort")) {
         deletePortfolio(elm.parent());
+        if ($('.ports').length == 0) {
+            $('#portGraph').hide();
+        }
         return false;
     }
 
@@ -173,6 +176,7 @@ $('#addPort').click((e) => {
                             newPort.click(portfolioClickHandler);
                             newPort.click();
                             $('#stocks').empty();
+                            $('#portGraph').show();
                         }
                     });
                 } else {
@@ -204,13 +208,13 @@ $(()=> {
 // Sets html for empty msg and shows
 function showEmptyMessage(port) {
     if (port) {
-        $('#noPort').html("<h2>Make a new portfolio!</h2><p>Create a new " +
+        $('#noPort').html("<h2>You don't have any portfolios!</h2><p>Create a new " +
         "portfolio to keep track of your holdings or any stocks you have an " +
         "eye on. Check our <a href = '/watchlist'>Watchlist</a> for an " +
         "idea of which stocks to buy. </p>");
     } else {
         $('#poolInfo').hide();
-        $('#noPort').html("<h2>Make a new pool!</h2><p>TODO: Add pool description.</p>");        
+        $('#noPort').html("<h2>You're not in any pools!</h2><p>Want to face off against your friends? Create a new pool, or join a friend's. Start buying and see who can make the most cash.</p>");        
     }
     $('#noPort').show();
 }
