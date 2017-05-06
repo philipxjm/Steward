@@ -8,19 +8,26 @@
         </button>
       </div>
       <div class="modal-body">
-          <form id="stockForm">
+          <form class="form-horizontal" id="stockForm">
             <!-- Name -->
-            <div class="row">
+            <div class="form-group row">
               <label for="name">Pool Name <input class="form-control" type="text" id="name"  autocomplete="off"></label>
             </div>
 
+            <!-- AI -->
+            <div class="form-group row">
+              <div class="checkbox">
+                <input id="ai" type="checkbox"> Include AI in game?
+              </div>
+            </div>
+
             <!-- End Date -->
-            <div class="row">
+            <div class="form-group row">
               <label for="end">End Date <input class="form-control" type="date" id="end"  autocomplete="off"></label>
             </div>
 
             <!-- Start Balance -->
-            <div class="row">
+            <div class="form-group row">
               <label for="balance">Start Balance <input class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="balance"  autocomplete="off"></label>
             </div>
 
