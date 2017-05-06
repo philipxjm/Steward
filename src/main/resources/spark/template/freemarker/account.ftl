@@ -5,7 +5,7 @@
 <#assign content>
 <div id="main" class="container">
 <div class="row">
-	<img id="pic" src="${pic}?sz=700">
+	<img id="pic" class="rounded" src="${pic}?sz=700">
 </div>
 <div id="inner" class="row">
 	<div class="col">
