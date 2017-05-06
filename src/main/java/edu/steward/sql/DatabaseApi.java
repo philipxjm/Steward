@@ -364,49 +364,57 @@ public class DatabaseApi {
   }
 
   public static Price getPrice(String ticker, int time) {
-    System.out.println("get price called in DatabaseAPI");
-    System.out.println("ticker: " + ticker + ", time: " + time);
-    List<Price> prices = new ArrayList<>();
-    String query = "SELECT time, price FROM quotes " + "WHERE stock = ? "
-        + "AND time <= ? " + "AND time >= ?;";
-    try (Connection c = DriverManager.getConnection(quoteUrl)) {
-      Statement s = c.createStatement();
-      s.executeUpdate("PRAGMA foreign_keys = ON;");
-      try (PreparedStatement prep = c.prepareStatement(query)) {
-        prep.setString(1, ticker);
-        prep.setInt(2, time + 43200);
-        prep.setInt(3, time - 604800);
-        try (ResultSet rs = prep.executeQuery()) {
-          while (rs.next()) {
-            System.out.println("flag");
-            Integer timestamp = Integer.parseInt(rs.getString(1));
-            Double priceValue = Double.parseDouble(rs.getString(2));
-            Price price = new Price(priceValue, (long) timestamp);
-            prices.add(price);
-          }
-          Collections.sort(prices, new Comparator<Price>() {
-            @Override
-            public int compare(Price o1, Price o2) {
-              return o2.getTime().compareTo(o1.getTime());
+    return getPriceHelp(ticker, time, 0);
+  }
+
+  private static Price getPriceHelp(String ticker, int time, int calls) {
+    if (calls == 0 || calls == 1) {
+      System.out.println("get price called in DatabaseAPI");
+      System.out.println("ticker: " + ticker + ", time: " + time);
+      List<Price> prices = new ArrayList<>();
+      String query = "SELECT time, price FROM quotes " + "WHERE stock = ? "
+              + "AND time <= ? " + "AND time >= ?;";
+      try (Connection c = DriverManager.getConnection(quoteUrl)) {
+        Statement s = c.createStatement();
+        s.executeUpdate("PRAGMA foreign_keys = ON;");
+        try (PreparedStatement prep = c.prepareStatement(query)) {
+          prep.setString(1, ticker);
+          prep.setInt(2, time + 43200);
+          prep.setInt(3, time - 604800);
+          try (ResultSet rs = prep.executeQuery()) {
+            while (rs.next()) {
+              System.out.println("flag");
+              Integer timestamp = Integer.parseInt(rs.getString(1));
+              Double priceValue = Double.parseDouble(rs.getString(2));
+              Price price = new Price(priceValue, (long) timestamp);
+              prices.add(price);
             }
-          });
+            Collections.sort(prices, new Comparator<Price>() {
+              @Override
+              public int compare(Price o1, Price o2) {
+                return o2.getTime().compareTo(o1.getTime());
+              }
+            });
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
         }
       } catch (SQLException e) {
         e.printStackTrace();
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    if (prices.size() == 0) {
-      // Stock not found
-      System.out.println("init f1");
-      if (initializePrices(ticker).size() == 0) {
-        return null;
+      if (prices.size() == 0) {
+        // Stock not found
+        System.out.println("init f1");
+        if (initializePrices(ticker).size() == 0) {
+          return null;
+        } else {
+          return getPriceHelp(ticker, time, calls + 1);
+        }
       } else {
-        return getPrice(ticker, time);
+        return prices.get(0);
       }
     } else {
-      return prices.get(0);
+      return null;
     }
   }
 
