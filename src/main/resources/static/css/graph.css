@@ -27,15 +27,6 @@ h2 {
   width: 100%;
 }
 
-/* Colors for % change */
-.down {
-  color: red;
-}
-
-.up {
-  color: green;
-}
-
 /* Styles ticker name */
 h1 {
   text-align: left;

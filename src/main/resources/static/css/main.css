@@ -58,3 +58,12 @@ html, body {
   padding-left: 0px;
   border: 1px solid black;
 }
+
+/* Colors for % change */
+.down {
+  color: red;
+}
+
+.up {
+  color: green;
+}

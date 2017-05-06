@@ -13,11 +13,15 @@ function getStocks(name, callback) {
             let shares = data[i]["shares"];
             let currPrice = data[i]["currPrice"].price;
             let dailyChange = data[i]["change"].dailyChange;
+            let color = 'down';
+            if (dailyChange > 0) {
+                color = 'up';
+            }
             // Don't show stocks if they don't have any shares
             if (shares > 0) {
                 $('#stocks').append(`
                     <a href="/stock/${ticker}" class="list-group-item list-group-item-action stock">
-                        ${ticker} ${shares} shares <br/>$${currPrice} (${dailyChange}%)
+                        <span>${ticker} ${shares} shares</span><br/><span>$${currPrice} <span class="${color}">(${dailyChange}%)</span></span>
                     </a>`);
             }
         }
