@@ -22,6 +22,7 @@ public class AccountHandler implements TemplateViewRoute {
       return new ModelAndView(ImmutableList.of(), "index.ftl");
     }
     Map<String, String> userInfo = DatabaseApi.getUserInfo(id);
+    System.out.println(userInfo);
     Map<Object, Object> ret = ImmutableMap.builder().putAll(userInfo)
         .put("title", "Account").build();
     return new ModelAndView(ret, "account.ftl");
