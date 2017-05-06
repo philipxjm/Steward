@@ -58,8 +58,7 @@ body { font-family: sans-serif; }
 
 .grid-item {
     width: 20%;
-    height: 120px;
-    float: left;
-    border: 1px solid grey;
-    padding: 1rem;
+    /*height: 120px;*/
+    /*float: left;*/
+    padding: 0.25rem;
 }
