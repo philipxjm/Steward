@@ -25,7 +25,6 @@ class UnrealizedGraph extends StewardGraph {
             url = '/getNetWorthGraph';
             data = { id: this.poolId };
         }
-        console.log(url)
         console.log(data);
         $.post(url, data, (res) => {  
             let data = JSON.parse(res);

@@ -26,9 +26,8 @@ function poolClickHandler(e) {
       Leaderboard: ${data}
     `);
   });
-
-  graph.update(portName);
   graph.poolId = id;
+  graph.update(portName);
 }
 
 $('.pool').click(poolClickHandler);
