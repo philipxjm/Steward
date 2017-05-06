@@ -20,13 +20,14 @@ function poolClickHandler(e) {
   getStocks(getCurrentPort());
   $.post('/getLeaderboard', {poolId:id}, (res) => {
     let data = JSON.parse(res);
-    console.log(data);
-    $('#info').html(`
+    console.log("HERE");
+    $('#poolInfo').html(`
       Name: ${name} <br/>
       ID: ${id} <br/>
       Leaderboard: ${data}
     `);
   });
+
   graph.update(portName);
   graph.poolId = id;
 }

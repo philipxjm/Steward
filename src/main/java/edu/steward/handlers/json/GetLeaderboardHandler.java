@@ -1,25 +1,26 @@
 package edu.steward.handlers.json;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import edu.steward.sql.DatabaseApi;
-import edu.steward.user.Portfolio;
-import edu.steward.user.User;
-import spark.QueryParamsMap;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+
+import edu.steward.sql.DatabaseApi;
+import edu.steward.user.Portfolio;
+import spark.QueryParamsMap;
+import spark.Request;
+import spark.Response;
+import spark.Route;
 
 /**
  * Created by kjin on 5/5/17.
  */
 public class GetLeaderboardHandler implements Route {
   private final Gson gson = new Gson();
+
   @Override
   public String handle(Request req, Response res) {
     QueryParamsMap qm = req.queryMap();
@@ -34,13 +35,14 @@ public class GetLeaderboardHandler implements Route {
     List<Object> l = new ArrayList<>();
     for (Score s : scores) {
       Map<String, String> info = s.getPortfolio().getUser();
-      l.add(ImmutableMap.of("user", info.get("name"), "balance", s.getNetWorth()
-          , "pic", info.get("pic")));
+
+      l.add(ImmutableMap.of("user", info.get("user"), "balance",
+          s.getNetWorth(), "pic", info.get("pic")));
     }
     return gson.toJson(l);
   }
 
-  private class Score implements Comparable<Score>{
+  private class Score implements Comparable<Score> {
     private Portfolio portfolio;
     private Double netWorth;
 
