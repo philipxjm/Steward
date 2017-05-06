@@ -2,6 +2,7 @@ package edu.steward.handlers.json;
 
 import com.google.gson.Gson;
 
+import edu.steward.sql.DatabaseApi;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -13,8 +14,9 @@ public class GetCurrentBalanceHandler implements Route {
   @Override
   public String handle(Request req, Response res) throws Exception {
     QueryParamsMap qm = req.queryMap();
-    // qm
-    return "";
+    String name = qm.value("name");
+    String id = req.session().attribute("id") + "/pool/" + name;
+    return gson.toJson(DatabaseApi.getBalanceFromPortfolio(id));
   }
 
 }

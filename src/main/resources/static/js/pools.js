@@ -18,6 +18,10 @@ function poolClickHandler(e) {
  	elm.addClass('active');
   const portName = elm.children('.portName')[0].innerText;
   getStocks(getCurrentPort());
+  $.post('/getCurrentBalance', {name: name}, (res) => {
+    let data = JSON.parse(res);
+    $('#currBalance').text(data);
+  });
   $.post('/getLeaderboard', {poolId:id}, (res) => {
     let data = JSON.parse(res);
     $('#poolId').text(id);

@@ -28,6 +28,7 @@ class UnrealizedGraph extends StewardGraph {
         console.log(data);
         $.post(url, data, (res) => {  
             let data = JSON.parse(res);
+            console.log("A");
             console.log(data);
             let labels = [];
             let chartData = [];
