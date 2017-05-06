@@ -56,7 +56,12 @@ public class GainsOverTime {
       }
     }
 
+    System.out.println("new start time = " + startTime);
+
     Set<String> tickers = trans.keySet();
+    for (String ticker : tickers) {
+      System.out.println("tickerz : " + ticker);
+    }
     Map<String, List<Price>> prices = getPrices(tickers, startTime);
     for (String ticker : tickers) {
       Stock s = new Stock(ticker);
@@ -97,10 +102,13 @@ public class GainsOverTime {
           Long startTime,
           Integer initBalance
   ) {
+    System.out.println("getGainsGameGraph Called!");
     TreeMultimap<String, Holding> trans = getTransactionHistory(portId);
     if (trans.size() == 0) {
+      System.out.println("nada");
       return new ArrayList<>();
     }
+
     Set<String> tickers = trans.keySet();
     Map<String, List<Price>> prices = getPrices(tickers, startTime);
     for (String ticker : tickers) {
@@ -133,6 +141,7 @@ public class GainsOverTime {
       ret.add(new Gains(netWorth, time));
       c += 1;
     }
+    System.out.println("made it into the end of the method!");
     return ret;
   }
 
@@ -192,11 +201,15 @@ public class GainsOverTime {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    System.out.println("made it to the end of transaction History");
     return transactionHistory;
   }
 
   private static Map<String, List<Price>> getPrices(Set<String> tickers,
       long startTime) {
+    System.out.println("getPrices called in GainsOverTime");
+    System.out.println(tickers);
+    System.out.println(startTime);
     // TODO: Have this method get the historical prices for a set of stocks
     // after a given start time
     Map<String, List<Price>> ret = new HashMap<>();
@@ -217,7 +230,11 @@ public class GainsOverTime {
               Price price = new Price(priceVal, priceTime);
               prices.add(price);
             }
+            Stock stock = new Stock(ticker);
+            prices.add(stock.getCurrPrice());
+//            TODO: check to see if starttime is within 24 hours or something like that
             if (prices.size() == 0) {
+              System.out.println("init f3");
               List<Price> temp = initializePrices(ticker);
               temp = Lists.reverse(temp);
               // TODO: Could this be more efficient?

@@ -36,6 +36,7 @@ public class Portfolio {
   public void loadInfo() {
     holdings = DatabaseApi.getStocksFromPortfolio(portfolioId);
     balance = DatabaseApi.getBalanceFromPortfolio(portfolioId);
+    getPool();
   }
 
   public Map<String, Integer> getHoldings() {
@@ -108,15 +109,27 @@ public class Portfolio {
   }
 
   public List<Gains> getGainsOverTime() {
+    System.out.println("called getGainsOverTime");
+    System.out.println(portfolioId);
+    System.out.println(pool);
+    System.out.println(1);
+    System.out.println("init balance: " + pool.getBal());
     return GainsOverTime.getGainsGameGraph(
         portfolioId,
-        Long.parseLong(pool.getStart()),
+            (long) pool.getStart(),
         pool.getBal()
     );
   }
 
   public Pool getPool() {
+//    if (pool == null) {
+//      pool = DatabaseApi.getPoolFromPortfolio(portfolioId);
+//    }
     return pool;
+  }
+
+  public String getPortfolioId() {
+    return portfolioId;
   }
 
   public boolean joinPool(String poolId) {
@@ -135,4 +148,5 @@ public class Portfolio {
     return DatabaseApi
         .getUserInfo(userId);
   }
+
 }
