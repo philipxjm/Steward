@@ -27,7 +27,8 @@ function poolClickHandler(e) {
       Leaderboard: ${data}
     `);
   });
-  //graph.update(portName);
+  graph.update(portName);
+  graph.poolId = id;
 }
 
 $('.pool').click(poolClickHandler);
@@ -110,6 +111,7 @@ $('#createPool').click((e) => {
 		$('#createPoolModal').modal('hide');
 		$('#poolError').text('');
 		$('#createPool').prop('disabled', false);
+    $('#addButton').prop('disabled', false);
 		$newPool = makeNewPool(name);
     $newPool.click(poolClickHandler);
 		$('#pools').append($newPool);

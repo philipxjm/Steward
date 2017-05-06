@@ -17,9 +17,19 @@ class UnrealizedGraph extends StewardGraph {
     }
 
     getData(callback) {
-        let url = activeTabIsPort ? '/getUnrealizedData' : '/getBalanceOverTime';
-        $.post(url, {name:this.port}, (res) => {            
+        let url, data;
+        if (activeTabIsPort) {
+            url = '/getUnrealizedData';
+            data = { name: this.name };
+        } else {
+            url = '/getNetWorthGraph';
+            data = { id: this.poolId };
+        }
+
+        $.post(url, {name:this.port}, (res) => {  
             let data = JSON.parse(res);
+            console.log(data);
+            return
             let labels = [];
             let chartData = [];
             let c = 0;
