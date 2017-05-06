@@ -28,8 +28,9 @@ function poolClickHandler(e) {
   getStocks(getCurrentPort());
   $.post('/getPoolInfo', {name: name, poolId: id}, (res) => {
     let data = JSON.parse(res);
-    $('#currBalance').text(res.curr);
-    $('#initBalance').text(res.init);
+    console.log(data);
+    $('#currBalance').text(data.curr);
+    $('#initBalance').text(data.init);
   });
   console.log({poolId:id});
   $.post('/getLeaderboard', {poolId:id}, (res) => {
