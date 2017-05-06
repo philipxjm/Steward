@@ -25,6 +25,7 @@ public class GetPortfolioHandler implements Route {
     String portfolioName = pool ? "pool/" + qm.value("name") : qm.value
         ("name");
     User user = new User(req.session().attribute("id"));
+    System.out.println(portfolioName);
     Map<String, Integer> stocks = user.getPortfolio(portfolioName).getHoldings();
     List<Map<String, Object>> ret = new ArrayList<>();
     for (String ticker : stocks.keySet()) {
