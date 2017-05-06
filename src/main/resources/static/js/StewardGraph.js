@@ -81,7 +81,7 @@ class StewardGraph {
                         yAxes: [{
                           scaleLabel: {
                             display: true,
-                            labelString: "% Gain"
+                            labelString: this.yLabel
                           }
                         }]
                     },
