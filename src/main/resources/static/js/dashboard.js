@@ -279,9 +279,12 @@ function loadUpDashType(port) {
 let activeTabIsPort = true;
 // Called on tab switch
 $('.tabToggle').click((e) => {
-    $('#stocks').empty();
     let port = (e.target.innerText == "Portfolios");
+    if (port == activeTabIsPort) {
+        return;
+    }
     activeTabIsPort = port;
+    $('#stocks').empty();
     if (activeTabIsPort) {
         $('.port').removeClass('active');
     } else {

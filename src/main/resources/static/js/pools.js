@@ -50,9 +50,9 @@ function poolClickHandler(e) {
     let percentage = 100*(data.curr-data.init) / data.init;
     $('#change').text(Math.round(percentage*100)/100 + '%');
   });
-
+  let data = { poolId: poolId }
   // Get leaderboard for pool
-  $.post('/getLeaderboard', {poolId: poolId}, (res) => {
+  $.post('/getLeaderboard', data, (res) => {
     let data = JSON.parse(res);
     $leaderboard = $('#leaderboard')
     // Remove old leaderboard
@@ -179,6 +179,7 @@ $('#createPool').click((e) => {
     if (!poolGraph) {
       poolGraph = new BalanceGraph(poolCtx, resData.name, resData.id);
     }
+    $('#poolGraph').show();
     $('#gains').show();
     $newPool.click();
 	});

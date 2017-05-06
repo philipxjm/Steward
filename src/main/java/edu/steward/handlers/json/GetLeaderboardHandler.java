@@ -35,7 +35,9 @@ public class GetLeaderboardHandler implements Route {
     Collections.sort(scores);
     List<Object> l = new ArrayList<>();
     for (Score s : scores) {
+      System.out.println(poolId);
       Map<String, String> info = s.getPortfolio().getUser();
+      System.out.println(info);
       l.add(ImmutableMap.of("user", info.get("user"), "balance",
           s.getNetWorth(), "pic", info.get("pic"), "userId", info.get("id")));
     }
