@@ -47,7 +47,6 @@ function poolClickHandler(e) {
     let data = JSON.parse(res);
     $('#currBalance').text('$' + data.curr);
     $('#initBalance').text('$' + data.init);
-
     // TODO: Fix this
     let percentage = 100*(data.curr-data.init) / data.init;
     $('#change').text(Math.round(percentage*100)/100 + '%');

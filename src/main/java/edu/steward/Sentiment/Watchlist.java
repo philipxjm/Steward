@@ -40,7 +40,14 @@ public class Watchlist {
 
       List<String> symbols = new ArrayList<>();
       for(int i = 0; i < jarray.size(); i++) {
-        symbols.add(jarray.get(i).getAsJsonObject().get("symbol").toString().replaceAll("^\"|\"$", ""));
+        String symbol = jarray.get(i).getAsJsonObject().get("symbol")
+                .toString().replaceAll("^\"|\"$", "");
+        if (!(symbol.contains(".") || symbol.contains("^"))) {
+          symbols.add(symbol);
+        }
+      }
+      if (symbols.size() > 20) {
+        symbols = symbols.subList(0, 20);
       }
       return symbols;
     } catch (IOException e) {
