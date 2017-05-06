@@ -193,6 +193,7 @@ function showEmptyMessage(port) {
     if (port) {
         $('#noPort').html("<h2>Make a new portfolio!</h2><p>TODO: Add port description.</p>");
     } else {
+        $('#poolInfo').hide();
         $('#noPort').html("<h2>Make a new pool!</h2><p>TODO: Add pool description.</p>");        
     }
 }
