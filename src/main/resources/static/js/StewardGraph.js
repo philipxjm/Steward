@@ -92,6 +92,7 @@ class StewardGraph {
                                 return this.dateToString(this.labels[info[0].xLabel]);
                             },
                             label: (tooltipItems, data) => {
+                                console.log("HERE");
                                 return this.makePretty(tooltipItems.yLabel);
                             }
                         }
@@ -150,7 +151,7 @@ class StewardGraph {
                 this.makeGraph(callback);
             } else {
                 callback();
-            }           
+            }
         });
     }
 }

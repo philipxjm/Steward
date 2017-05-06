@@ -22,19 +22,27 @@ public class Pool {
   public Pool(String name, int balance, long startTime, long end,
       Portfolio... ports) {
     System.out.println("pool constructor called");
-    Random r = new Random();
     bal = balance;
     start = startTime;
     this.name = name;
-    id = "";
     this.end = end;
-    while (id.length() < 4 || DatabaseApi.getPool(id) != null) {
-      id = id + Integer.toString(r.nextInt(36), 36);
-    }
+    generateRandom();
     id = id.toUpperCase();
+    while (DatabaseApi.getPool(id) != null) {
+      generateRandom();
+    }
     System.out.println(id);
     portfolios = Arrays.asList(ports);
     DatabaseApi.initializePool(this);
+  }
+
+  private void generateRandom() {
+    Random r = new Random();
+    id = "";
+    while (id.length() < 4) {
+      id = id + Integer.toString(r.nextInt(36), 36);
+    }
+
   }
 
   public Pool(String id, String name, int balance, long startTime, long endTime,

@@ -3,6 +3,7 @@ package edu.steward.handlers.json;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -14,14 +15,28 @@ public class GetPoolInfoHandler implements Route {
 
   @Override
   public String handle(Request req, Response res) throws Exception {
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
     QueryParamsMap qm = req.queryMap();
     String name = qm.value("name");
-    System.out.println("name: |" + name + "| this");
-    String id = req.session().attribute("id") + "/pool/" + name;
-    System.out.println("get curr balance called, id: " + id);
-
-    return gson.toJson(ImmutableMap.of("curr", DatabaseApi.getBalanceFromPortfolio(id),
-            "init", DatabaseApi.getPoolFromPortfolio(id)));
+    System.out.println(name);
+    String poolId = qm.value("poolId");
+    System.out.println(poolId);
+    String portId = req.session().attribute("id") + "/pool/" + name;
+    System.out.println(portId);
+    Double curr = DatabaseApi.getBalanceFromPortfolio(portId);
+    System.out.println("currr: " + curr);
+    Integer init = DatabaseApi.getPool(poolId).getBal();
+    System.out.println("initt: " + init);
+    System.out.println("made it hereaaa");
+    return gson.toJson(ImmutableMap.of("curr", curr,
+            "init", init));
   }
 
 }

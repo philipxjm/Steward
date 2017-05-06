@@ -1,3 +1,9 @@
+$(() => {
+    let d = new Date();
+    d.setDate(d.getDate() - 10);
+    $('#actionDate').val(d.toISOString().substr(0,10));
+});
+
 // Stock add
 $('#addStock').click((e) => {
     let action;

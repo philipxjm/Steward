@@ -21,8 +21,8 @@ public class JoinPoolHandler implements Route {
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("name");
-    Portfolio p;
-    if ((p = user.addPool(poolId)) == null) {
+    Portfolio p = user.addPool(poolId);
+    if (p == null) {
       return GSON.toJson(null);
     } else {
       return GSON.toJson(p);

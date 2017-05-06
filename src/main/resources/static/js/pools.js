@@ -1,3 +1,10 @@
+// Set default date for create modal
+$(() => {
+    let d = new Date();
+    d.setDate(d.getDate() + 10);
+    $('#end').val(d.toISOString().substr(0,10));
+});
+
 // Returns new jQuery obj for the name of a pool
 function makeNewPool(name) {
    let ret = $(`<div class="list-group-item list-group-item-action pool">         
@@ -19,10 +26,12 @@ function poolClickHandler(e) {
   $('#stocks').empty();
  	elm.addClass('active');
   getStocks(getCurrentPort());
-  $.post('/getPoolInfo', {name: name}, (res) => {
+  $.post('/getPoolInfo', {name: name, poolId: id}, (res) => {
     let data = JSON.parse(res);
-    $('#currBalance').text(res.curr);
-    $('#initBalance').text(res.init);
+    $('#currBalance').text(data.curr);
+    $('#initBalance').text(data.init);
+    let p = 100*data.curr / data.init;
+    $('#change').text(Math.round(p*100)/100);
   });
   console.log({poolId:id});
   $.post('/getLeaderboard', {poolId:id}, (res) => {
@@ -139,6 +148,8 @@ $('#createPool').click((e) => {
     $newPool.attr("poolId", resData.id);
     $('#noPort').hide();
     $('#poolInfo').show();
+    console.log(ctx);
+    console.log(resData.name);
     if (!graph) {
       graph = new UnrealizedGraph(ctx, resData.name);
     }
