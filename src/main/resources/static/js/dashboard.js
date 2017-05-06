@@ -200,7 +200,6 @@ function showEmptyMessage(port) {
 
 function loadUpDashType(port) { 
     if (port) {
-        $('#poolInfo').hide();
         $('#pastActionLabel').show();
         $('#time').show();
         if ($('.port').length == 0) {
@@ -218,7 +217,8 @@ function loadUpDashType(port) {
                 // Click active to update dash center
                 $('#ports > .port').first().click();
             }
-        }  
+        }
+        $('#poolInfo').hide();  
     } else {
         $('#poolInfo').show();
         $('#pastActionLabel').hide();
@@ -228,6 +228,10 @@ function loadUpDashType(port) {
             $('#gains').hide();
             showEmptyMessage(false);
         } else {
+            if (!graph) {
+                graph = new UnrealizedGraph(ctx, name);
+            }
+            $('#gains').show();
             $('#noPort').html('');
             $('.disabler').prop('disabled', false);
             $('#gains').show();
@@ -251,4 +255,3 @@ $('.tabToggle').click((e) => {
 });
 
 $('#poolInfo').hide();
-
