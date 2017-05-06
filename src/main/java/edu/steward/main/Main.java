@@ -108,6 +108,7 @@ public class Main {
     Spark.post("/getLeaderboard", new GetLeaderboardHandler());
     Spark.post("/getNetWorthGraph", new GetNetWorthOverTime());
     Spark.post("/getCurrPrice", new GetCurrPriceHandler());
+    Spark.post("/getCurrentBalance", new GetCurrentBalanceHandler());
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

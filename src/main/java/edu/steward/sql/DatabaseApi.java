@@ -338,6 +338,7 @@ public class DatabaseApi {
   }
 
   public static Double getBalanceFromPortfolio(String portId) {
+    System.out.println("port id " + portId);
     Double balance = 0.0;
     String query = "SELECT balance FROM Balances " + "WHERE portfolio = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
