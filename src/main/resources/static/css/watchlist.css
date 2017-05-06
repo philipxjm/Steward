@@ -1,26 +1,13 @@
-/* -- Box model ------------------------------- */
-*,
-*:after,
-*:before {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-/* -- Demo style ------------------------------- */
 #stocks {
-    /*font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;*/
-    font-style: normal;
-    font-weight: 300;
     margin: 20px auto;
     max-width: 960px;
 }
+
 #stocks h1 {
     font-size: 2.4rem;
     line-height: 3.2rem;
     letter-spacing: 0;
-    font-weight: 300;
     color: #212121;
-    text-transform: inherit;
     margin-bottom: 1rem;
     text-align: center;
 }
@@ -30,12 +17,7 @@
     letter-spacing: 0.01rem;
     font-weight: 400;
     color: #212121;
-    text-align: center;
 }
-
-* { box-sizing: border-box; }
-
-/* ---- grid ---- */
 
 .grid {
     background: #EEE;
@@ -43,18 +25,7 @@
     padding: 0.25rem;
 }
 
-/* clearfix */
-.grid:after {
-    content: '';
-    display: block;
-    clear: both;
-}
-
-/* ---- grid-item ---- */
-
 .grid-item {
     width: 20%;
-    /*height: 120px;*/
-    /*float: left;*/
     padding: 0.25rem;
 }
