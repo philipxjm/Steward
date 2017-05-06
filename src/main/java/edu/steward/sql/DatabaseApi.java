@@ -603,8 +603,8 @@ public class DatabaseApi {
             String name = rs.getString(2);
             int bal = Integer.parseInt(rs.getString(3));
             long start = rs.getLong(4);
-            Pool pool = new Pool(id, name, bal, start);
-            pool.setEnd(rs.getLong(5));
+            long end = rs.getLong(5);
+            Pool pool = new Pool(id, name, bal, start, end);
             return pool;
           }
         } catch (SQLException e) {
@@ -732,7 +732,7 @@ public class DatabaseApi {
             Integer initBalance = Integer.parseInt(rs.getString(2));
             long startTime = rs.getLong(3);
             long endTime = rs.getLong(4);
-            pool = new Pool(poolName, initBalance, startTime, endTime);
+            pool = new Pool(poolId, poolName, initBalance, startTime, endTime);
             return pool;
           }
         } catch (SQLException e) {
