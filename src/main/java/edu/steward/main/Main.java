@@ -109,6 +109,7 @@ public class Main {
     Spark.post("/getNetWorthGraph", new GetNetWorthOverTime());
     Spark.post("/getCurrPrice", new GetCurrPriceHandler());
     Spark.post("/getPoolInfo", new GetPoolInfoHandler());
+    Spark.post("/getTransactionHistory", new GetTransactionHistoryHandler());
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {
