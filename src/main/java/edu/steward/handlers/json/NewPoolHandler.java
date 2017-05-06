@@ -27,6 +27,10 @@ public class NewPoolHandler implements Route {
     Pool pool = new Pool(poolName, Integer.parseInt(balance), start);
     pool.setEnd(qm.value("end"));
     user.addPool(pool.getId());
+    if (Boolean.parseBoolean(qm.value("ai"))) {
+      User ai = new User("ai");
+      ai.addPool(pool.getId());
+    }
     return GSON.toJson(pool);
   }
 }
