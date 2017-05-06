@@ -79,8 +79,8 @@ public class DatabaseApi {
           String name = rs.getString(2);
           String pic = rs.getString(3);
           String email = rs.getString(4);
-          return ImmutableMap.of("user", name, "pic", pic, "email", email,
-              "id", userId);
+          return ImmutableMap.of("user", name, "pic", pic, "email", email, "id",
+              userId);
         } catch (SQLException e) {
           e.printStackTrace();
           return null;
@@ -373,7 +373,7 @@ public class DatabaseApi {
       System.out.println("ticker: " + ticker + ", time: " + time);
       List<Price> prices = new ArrayList<>();
       String query = "SELECT time, price FROM quotes " + "WHERE stock = ? "
-              + "AND time <= ? " + "AND time >= ?;";
+          + "AND time <= ? " + "AND time >= ?;";
       try (Connection c = DriverManager.getConnection(quoteUrl)) {
         Statement s = c.createStatement();
         s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -545,7 +545,7 @@ public class DatabaseApi {
         try (PreparedStatement prep = c.prepareStatement(stat)) {
           for (HistoricalQuote q : quotes) {
             Double priceVal = q.getAdjClose().doubleValue();
-//            Shifts a midnight time 16 hours to the 4 pm close time
+            // Shifts a midnight time 16 hours to the 4 pm close time
             Long time = (q.getDate().getTimeInMillis() / 1000) + 57600;
             Price p = new Price(priceVal, time);
             ret.add(p);
@@ -649,6 +649,7 @@ public class DatabaseApi {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    System.out.println(portfolios);
     return portfolios;
   }
 
@@ -706,7 +707,7 @@ public class DatabaseApi {
   public static Pool getPoolFromPortfolio(String portId) {
     Pool pool;
     String query = "SELECT PoolId FROM UserPortfolios "
-            + "WHERE UserId = ? AND PoolId IS NOT NULL;";
+        + "WHERE UserId = ? AND PoolId IS NOT NULL;";
     String poolId = "";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -724,7 +725,7 @@ public class DatabaseApi {
         e.printStackTrace();
       }
       query = "SELECT Name, Balance, Start, End FROM POOLS "
-              + "WHERE PoolId = ?;";
+          + "WHERE PoolId = ?;";
       try (PreparedStatement prep = c.prepareStatement(query)) {
         prep.setString(1, poolId);
         try (ResultSet rs = prep.executeQuery()) {

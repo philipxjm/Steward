@@ -1,24 +1,24 @@
 // Gets stocks for portfolio
 function getStocks(name, callback) {
     let url = '/getPortfolioStocks';
-    console.log(name);
 
     $.post(url, {name: name, isPool: !activeTabIsPort}, (resJson) => {
         let data = JSON.parse(resJson);
+        // Empty out old stocks
         $('#stocks').empty();
-        console.log(data);
+
         // Add stocks
         for (let i = 0; i < data.length; i++) {
             let ticker = data[i]["ticker"];
             let shares = data[i]["shares"];
             let currPrice = data[i]["currPrice"].price;
             let dailyChange = data[i]["change"].dailyChange;
+            // Don't show stocks if they don't have any shares
             if (shares > 0) {
-                $('#stocks').append(`<a href="/stock/${ticker}"
-                class="list-group-item list-group-item-action
-                stock">${ticker} ${shares} shares <br/>$${currPrice}
-                (${dailyChange}%)
-                </a>`);
+                $('#stocks').append(`
+                    <a href="/stock/${ticker}" class="list-group-item list-group-item-action stock">
+                        ${ticker} ${shares} shares <br/>$${currPrice} (${dailyChange}%)
+                    </a>`);
             }
         }
         if (callback) {
@@ -68,8 +68,7 @@ const portfolioClickHandler = (e) => {
             if (e.keyCode == 13) { // Enter
                 e.preventDefault();
                 let name = $(e.target).val();
-                if (oldName == name || !name) {
-                                        // Remove
+                if (oldName == name || !name) { // Remove
                     finishRename($input, oldName);
                 } else {
                     $.post('/renamePortfolio', {old: oldName, new: name}, (res) => {
@@ -98,9 +97,9 @@ const portfolioClickHandler = (e) => {
     // Switch active
     $('.port').removeClass("active");
     elm.addClass("active");
-    const portName = elm.children('.portName')[0].innerText;
+    const portName = getCurrentPort();
     getStocks(portName);
-    graph.update(portName);
+    portGraph.update(portName);
 }
 $('.port').click(portfolioClickHandler);
 
@@ -165,7 +164,7 @@ $('#addPort').click((e) => {
                                 $('#noPort').hide(); 
                                 $('#gains').show();      
                                 // Initialize graph with new portfolio
-                                graph = new UnrealizedGraph(ctx, name);
+                                portGraph = new UnrealizedGraph(portCtx, name);
                             }
                             $('.port').removeClass('active');
                             let newPortInput = $('.newPort');
@@ -190,15 +189,19 @@ $('#addPort').click((e) => {
     }
 });
 
-let ctx, graph;
+// Global vars for graph and ctx
+let poolCtx, poolGraph, portCtx, portGraph;
+
 // Initialize graph
 $(()=> {
-    ctx = $('#gains');
+    portCtx = $('#portGraph');
+    poolCtx = $('#poolGraph');
     loadUpDashType(true);
     $('.port').removeClass("active");
     $('#ports > .port').first().click();
 });
 
+// Sets html for empty msg and shows
 function showEmptyMessage(port) {
     if (port) {
         $('#noPort').html("<h2>Make a new portfolio!</h2><p>Create a new " +
@@ -212,59 +215,74 @@ function showEmptyMessage(port) {
     $('#noPort').show();
 }
 
-
-function loadStocks() {
-    $('#ports > .port').first().click();
-}
-
 function loadUpDashType(port) { 
     if (port) {
+        // Show checkbox & time for past action
         $('#pastActionLabel').show();
         $('#time').show();
+        // Hide poolInfo (leaderboard, etc.)
+        $('#poolInfo').hide();  
+        // Hide pool & show port Graph
+        $('#poolGraph').hide();
+        $('#portGraph').hide();
+        // If no ports shown empty message, hide graph, and disable buttons
         if ($('.port').length == 0) {
             $('.disabler').prop('disabled', true);
-            $('#gains').hide();
-            showEmptyMessage(true);
+            $('#portGraph').hide();
+            showEmptyMessage(false);
         } else {
+            // Clear the empty msg
             $('#noPort').html('');
+            // Reenable buttons
             $('.disabler').prop('disabled', false);  
-            $('#gains').show();    
+            // Show graph
+            $('#portGraph').show();    
             let name = getCurrentPort();
-            if (!graph) {
-                graph = new UnrealizedGraph(ctx, name);
+            if (!portGraph) {
+                portGraph = new UnrealizedGraph(portCtx, name);
             } else {
                 // Click active to update dash center
                 $('#ports > .port').first().click();
             }
         }
-        $('#poolInfo').hide();  
     } else {
-        $('#poolInfo').show();
+        // Hide checkbox & time for past action
         $('#pastActionLabel').hide();
         $('#time').hide();
+        // Hide poolInfo (leaderboard, etc.)
+        $('#poolInfo').show();
+        // Show pool & hide port Graph
+        $('#poolGraph').hide();
+        $('#portGraph').hide(); 
+        // If no pools shown empty message, hide graph, and disable buttons
         if ($('.pool').length == 0) {
             $('.disabler').prop('disabled', true);
-            $('#gains').hide();
+            $('#poolGraph').hide();
             showEmptyMessage(false);
         } else {
-            // Name is not defined?
-            if (!graph) {
-                graph = new UnrealizedGraph(ctx, name);
-            }
-            $('#gains').show();
+            // Clear the empty msg
             $('#noPort').html('');
-            $('.disabler').prop('disabled', false);
-            $('#gains').show();
-            // Click active to update dash center
-            $('#pools > .pool').first().click();
+            // Reenable buttons
+            $('.disabler').prop('disabled', false);  
+            // Show graph
+            $('#poolGraph').show(); 
+            let name = getCurrentPort();
+            if (!poolGraph) {
+                let poolId = $('#pools > .pool').first().attr("poolId");
+                poolGraph = new BalanceGraph(poolCtx, name, poolId);
+            } else {
+                // Click active to update dash center
+                $('#pools > .pool').first().click();
+            }                                       
         }         
     }
 }
+
 let activeTabIsPort = true;
 // Called on tab switch
 $('.tabToggle').click((e) => {
     $('#stocks').empty();
-    let port = e.target.innerText == "Portfolios";
+    let port = (e.target.innerText == "Portfolios");
     activeTabIsPort = port;
     if (activeTabIsPort) {
         $('.port').removeClass('active');
@@ -274,4 +292,5 @@ $('.tabToggle').click((e) => {
     loadUpDashType(port);
 });
 
+// Hide leaderboard initially
 $('#poolInfo').hide();
