@@ -61,7 +61,7 @@ public class GetLeaderboardHandler implements Route {
 
     @Override
     public int compareTo(Score o) {
-      return netWorth.compareTo(o.netWorth);
+      return o.netWorth.compareTo(netWorth);
     }
   }
 }
