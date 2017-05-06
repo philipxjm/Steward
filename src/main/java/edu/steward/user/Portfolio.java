@@ -64,6 +64,7 @@ public class Portfolio {
       balance -= cost;
 
       // TODO: this should add the transaction to history and change the balance
+      System.out.println(portfolioId);
       return DatabaseApi.stockTransaction(portfolioId, ticker, shares, time,
           price);
     }
