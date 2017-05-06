@@ -67,17 +67,20 @@ public class StockActionHandler implements Route {
           ImmutableMap.of("success", false, "error", "No such portfolio"));
     } else if (action.equals("buy")) {
       System.out.println("buy called");
-      success = port.buyStock(ticker, shares, time, price);
+      if (success = port.buyStock(ticker, shares, time, price)) {
+        return gson.toJson(ImmutableMap.of("success", success));
+      } else {
+        return gson.toJson(ImmutableMap.of("success", success, "error",
+            "Not enough money to buy"));
+      }
     } else {
       System.out.println("Sell called");
-      success = port.sellStock(ticker, shares, time, price);
-    }
-    if (success) {
-      return gson.toJson(ImmutableMap.of("success", success));
-    } else {
-      return gson.toJson(ImmutableMap.of("success", success, "error",
-          "Not enough stocks to sell"));
+      if (success = port.sellStock(ticker, shares, time, price)) {
+        return gson.toJson(ImmutableMap.of("success", success));
+      } else {
+        return gson.toJson(ImmutableMap.of("success", success, "error",
+            "Not enough stocks to sell"));
+      }
     }
   }
-
 }
