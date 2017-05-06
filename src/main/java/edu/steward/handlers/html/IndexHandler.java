@@ -32,15 +32,6 @@ public class IndexHandler implements TemplateViewRoute {
       List<Portfolio> portNames = user.getPortfolios();
       List<Portfolio> pools = user.getPoolPorts();
       List<Holding> stocks = new ArrayList<>();
-      if (!portNames.isEmpty()) {
-        Map<String, Integer> m = portNames.get(0).getHoldings();
-        for (String ticker : m.keySet()) {
-          Holding h = new Holding(ticker, m.get(ticker));
-          if (h.getShares() > 0) {
-            stocks.add(h);
-          }
-        }
-      }
 
       Map<Object, Object> variables = ImmutableMap.builder()
           .put("title", "Dashboard").put("user", name).put("pic", pic)
