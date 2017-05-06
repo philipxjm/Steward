@@ -105,6 +105,14 @@ public class Portfolio {
     return GainsOverTime.getCurrentNetWorth(portfolioId);
   }
 
+  public List<Gains> getGainsOverTime() {
+    return GainsOverTime.getGainsGameGraph(
+            portfolioId,
+            pool.getBal(),
+            Integer.parseInt(pool.getStart()),
+            );
+  }
+
   public Pool getPool() {
     return pool;
   }

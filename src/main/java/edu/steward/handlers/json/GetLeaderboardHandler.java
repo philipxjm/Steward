@@ -22,8 +22,6 @@ public class GetLeaderboardHandler implements Route{
   private final Gson gson = new Gson();
   @Override
   public String handle(Request req, Response res) {
-    String userId = req.session().attribute("id");
-    User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("poolId");
     List<Portfolio> rankedPortfolios = DatabaseApi.getPortsFromPool(poolId);
