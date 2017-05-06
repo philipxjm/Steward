@@ -9,12 +9,14 @@ function getStocks(name, callback) {
         for (let i = 0; i < data.length; i++) {
             let ticker = data[i]["ticker"];
             let shares = data[i]["shares"];
-            let currPrice = data[i]["currPrice"];
-            let dailyChange = data[i]["dailyChange"];
+            let currPrice = data[i]["currPrice"].price;
+            let dailyChange = data[i]["change"].dailyChange;
+            console.log(currPrice, dailyChange);
             if (shares > 0) {
                 $('#stocks').append(`<a href="/stock/${ticker}"
                 class="list-group-item list-group-item-action
-                stock">${ticker} ${shares} shares ${currPrice} ${dailyChange}
+                stock">${ticker} ${shares} shares <br/>$${currPrice}
+                (${dailyChange}%)
                 </a>`);
             }
         }
@@ -248,6 +250,7 @@ function loadUpDashType(port) {
     }
 }
 let activeTabIsPort = true;
+console.log(getStocks());
 // Called on tab switch
 $('.tabToggle').click((e) => {
     $('#stocks').empty();

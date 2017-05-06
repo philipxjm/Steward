@@ -26,7 +26,7 @@ public class WatchlistHandler implements TemplateViewRoute {
       ret.add(ImmutableList.of(key, trending.get(key)));
     }
     ret.sort((List<Object> a, List<Object> b) -> Double
-        .compare((double) a.get(1), (double) b.get(1)));
+        .compare((double) b.get(1), (double) a.get(1)));
     if (user != null) {
       variables = ImmutableMap.of("title", "Watchlist", "trending", ret, "user",
           user, "pic", pic);
