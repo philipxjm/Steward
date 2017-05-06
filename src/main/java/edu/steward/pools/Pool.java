@@ -21,6 +21,7 @@ public class Pool {
 
   public Pool(String name, int balance, long startTime, long end,
       Portfolio... ports) {
+    System.out.println("pool constructor called");
     Random r = new Random();
     bal = balance;
     start = startTime;
@@ -36,11 +37,12 @@ public class Pool {
     DatabaseApi.initializePool(this);
   }
 
-  public Pool(String id, String name, int balance, long startTime,
+  public Pool(String id, String name, int balance, long startTime, long endTime,
       Portfolio... ports) {
     this.id = id;
-    bal = balance;
-    start = startTime;
+    this.bal = balance;
+    this.start = startTime;
+    this.end = endTime;
     this.name = name;
     portfolios = Arrays.asList(ports);
   }

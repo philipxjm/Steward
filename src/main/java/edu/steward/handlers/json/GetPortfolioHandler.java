@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import edu.steward.stock.Stock;
 import edu.steward.user.Holding;
 import edu.steward.user.User;
 import spark.QueryParamsMap;
@@ -29,9 +30,11 @@ public class GetPortfolioHandler implements Route {
     Map<String, Integer> stocks = user.getPortfolio(portfolioName).getHoldings();
     List<Map<String, Object>> ret = new ArrayList<>();
     for (String ticker : stocks.keySet()) {
+      Stock stock = new Stock(ticker);
+
       System.out.println("ticker: " + ticker + " shares: " + stocks.get(ticker));
-      ret.add(ImmutableMap.of("ticker", ticker, "shares",
-          stocks.get(ticker)));
+      ret.add(ImmutableMap.of("ticker", ticker, "shares", stocks.get(ticker),
+              "currPrice", stock.getCurrPrice(), "change", stock.getDailyChange()));
     }
     return GSON.toJson(ret);
   }

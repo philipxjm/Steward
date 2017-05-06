@@ -568,6 +568,7 @@ public class DatabaseApi {
   }
 
   public static boolean initializePool(Pool p) {
+    System.out.println("initialze pool calledz");
     String stat = "INSERT INTO Pools " + "VALUES (?, ?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -702,7 +703,7 @@ public class DatabaseApi {
   }
 
   public static Pool getPoolFromPortfolio(String portId) {
-    Pool pool = new Pool("", 0, 0, 0);
+    Pool pool;
     String query = "SELECT PoolId FROM UserPortfolios "
             + "WHERE UserId = ? AND PoolId IS NOT NULL;";
     String poolId = "";
@@ -732,6 +733,7 @@ public class DatabaseApi {
             long startTime = rs.getLong(3);
             long endTime = rs.getLong(4);
             pool = new Pool(poolName, initBalance, startTime, endTime);
+            return pool;
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -742,6 +744,6 @@ public class DatabaseApi {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    return pool;
+    return null;
   }
 }
