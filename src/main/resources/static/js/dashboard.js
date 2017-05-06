@@ -204,7 +204,10 @@ $(()=> {
 // Sets html for empty msg and shows
 function showEmptyMessage(port) {
     if (port) {
-        $('#noPort').html("<h2>Make a new portfolio!</h2><p>TODO: Add port description.</p>");
+        $('#noPort').html("<h2>Make a new portfolio!</h2><p>Create a new " +
+        "portfolio to keep track of your holdings or any stocks you have an " +
+        "eye on. Check our <a href = '/watchlist'>Watchlist</a> for an " +
+        "idea of which stocks to buy. </p>");
     } else {
         $('#poolInfo').hide();
         $('#noPort').html("<h2>Make a new pool!</h2><p>TODO: Add pool description.</p>");        
