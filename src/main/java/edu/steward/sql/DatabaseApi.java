@@ -591,20 +591,21 @@ public class DatabaseApi {
     return true;
   }
 
-  public static Pool getPool(String id) {
+  public static Pool getPool(String poolId) {
     String query = "SELECT * FROM Pools WHERE PoolId = ?";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(query)) {
-        prep.setString(1, id);
+        prep.setString(1, poolId);
         try (ResultSet rs = prep.executeQuery()) {
-          while (rs.next()) {
+          if (rs.next()) {
+            System.out.println("klip klop");
             String name = rs.getString(2);
             int bal = Integer.parseInt(rs.getString(3));
             long start = rs.getLong(4);
             long end = rs.getLong(5);
-            Pool pool = new Pool(id, name, bal, start, end);
+            Pool pool = new Pool(poolId, name, bal, start, end);
             return pool;
           }
         } catch (SQLException e) {

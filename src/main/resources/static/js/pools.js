@@ -28,9 +28,9 @@ function poolClickHandler(e) {
   getStocks(getCurrentPort());
   $.post('/getPoolInfo', {name: name, poolId: id}, (res) => {
     let data = JSON.parse(res);
-    $('#currBalance').text(res.curr);
-    $('#initBalance').text(res.init);
-    let p = 100*res.curr / res.init;
+    $('#currBalance').text(data.curr);
+    $('#initBalance').text(data.init);
+    let p = 100*data.curr / data.init;
     $('#change').text(Math.round(p*100)/100);
   });
   console.log({poolId:id});
