@@ -88,7 +88,7 @@
         <#list stocks as stock>
 			    <a href="/stock/${stock.ticker}" class="stocks
 			    list-group-item list-group-item-action">${stock.ticker}
-			    ${stock.shares} shares ${}</a>
+			    ${stock.shares} shares</a>
         </#list>
 		  </div>
     </div>
