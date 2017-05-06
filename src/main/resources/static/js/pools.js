@@ -29,14 +29,12 @@ function poolClickHandler(e) {
 
   // Set pool id in info section
   $('#poolId').text(poolId);
-
   poolGraph.update(name, poolId);
 
   // Remove active from old
  	$('.pool').removeClass('active');
   // Add active to new
   elm.addClass('active');
-
   // Remove old stocks
   $('#stocks').empty();
   // Get stocks for new pool portfolio
@@ -103,16 +101,19 @@ $('#joinPool').click((e) => {
                         } else {
                             if( $('.disabler').prop('disabled')) {
                                 $('.disabler').prop('disabled', false);
-                                $('#noPool').html(''); 
-                                $('#gains').show();
+                                $('#noPort').html(''); 
+                            }
+                            if (!poolGraph) {
+                              poolGraph = new BalanceGraph(poolCtx, resData.name, poolId)
+                              $('#poolGraph').show();
                             }
                             $('.port').removeClass('active');
                             let newPoolInput = $('.newPool');
                             let newPool = makeNewPool(resData.name);
+                            newPool.attr("poolId", poolId);
                             newPoolInput.replaceWith(newPool);
-                            newPool.click(poolClickHandler);
-                            newPool.click();                            
-                            $('#stocks').empty();
+                            newPool.click(poolClickHandler);                            
+                            newPool.click();
                         }
                     });
                 } else {

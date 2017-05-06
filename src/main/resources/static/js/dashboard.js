@@ -43,6 +43,9 @@ const portfolioClickHandler = (e) => {
     // Delete portfolio
     if(elm.hasClass("deletePort")) {
         deletePortfolio(elm.parent());
+        if ($('.ports').length == 0) {
+            $('#portGraph').hide();
+        }
         return false;
     }
 
