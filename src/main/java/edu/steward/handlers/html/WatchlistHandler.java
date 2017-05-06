@@ -26,7 +26,8 @@ public class WatchlistHandler implements TemplateViewRoute {
     for (String key : trending.keySet()) {
       Stock s = new Stock(key);
       System.out.println(key);
-      ret.add(ImmutableList.of(key, trending.get(key), s.getCurrPrice(), s.getDailyChange()));
+      ret.add(ImmutableList.of(key, trending.get(key), s.getCurrPrice().getValue(),
+              s.getDailyChange().getValue()));
     }
     ret.sort((List<Object> a, List<Object> b) -> Double
         .compare((double) b.get(1), (double) a.get(1)));
