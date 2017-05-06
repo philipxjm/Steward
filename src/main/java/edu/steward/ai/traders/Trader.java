@@ -1,6 +1,7 @@
 package edu.steward.ai.traders;
 
 import edu.steward.Sentiment.Watchlist;
+import edu.steward.stock.Fundamentals.Price;
 import edu.steward.stock.Stock;
 import edu.steward.user.Portfolio;
 
@@ -22,26 +23,26 @@ public class Trader extends Portfolio {
 
   public static List<String> goodShit() {
     Map<String, Double> sentiments
-            = sortByValue(Watchlist.trendingSentiments());
+        = sortByValue(Watchlist.trendingSentiments());
     List<String> list = new ArrayList<String>();
     for (Map.Entry<String, Double> entry : sentiments.entrySet()) {
-      if (list.size() > 4) break;
+      if (list.size() > 2) break;
       list.add(entry.getKey());
     }
     return list;
   }
 
   private static <K, V extends Comparable<? super V>> Map<K, V> sortByValue
-          (Map<K, V> map) {
+      (Map<K, V> map) {
     return map.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue(/*Collections.reverseOrder()*/))
-            .collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    Map.Entry::getValue,
-                    (e1, e2) -> e1,
-                    LinkedHashMap::new
-            ));
+        .stream()
+        .sorted(Map.Entry.comparingByValue(/*Collections.reverseOrder()*/))
+        .collect(Collectors.toMap(
+            Map.Entry::getKey,
+            Map.Entry::getValue,
+            (e1, e2) -> e1,
+            LinkedHashMap::new
+        ));
   }
 
   public void executeTransaction() {
@@ -53,16 +54,20 @@ public class Trader extends Portfolio {
     System.out.println("bought shit");
     int currTime = (int) (System.currentTimeMillis() / 1000L);
     List<Stock> goodStocks = goodShit()
-            .stream()
-            .map(Stock::new)
-            .collect(Collectors.toList());
+        .stream()
+        .map(Stock::new)
+        .collect(Collectors.toList());
     double singleStockCash = getBalance() / 5.0;
     for (Stock shit : goodStocks) {
-      System.out.println("buying " + shit.getTicker() + " -- " + shit.getCurrPrice());
-      buyStock(shit.getTicker(),
-              (int) Math.floor(singleStockCash / shit.getCurrPrice().getValue()),
-              currTime,
-              shit.getCurrPrice().getValue());
+      double p = shit.getCurrPrice().getValue();
+      System.out.println("buying " + shit.getTicker() + " -- " + p);
+      int shares = (int) Math.floor(singleStockCash / p);
+      if (shares > 0) {
+        buyStock(shit.getTicker(),
+            shares,
+            currTime,
+            p);
+      }
     }
     return true;
   }
@@ -72,10 +77,14 @@ public class Trader extends Portfolio {
     int currTime = (int) (System.currentTimeMillis() / 1000L);
     List<String> ownedStocks = new ArrayList<String>(getHoldings().keySet());
     for (String ticker : ownedStocks) {
-      sellStock(ticker,
-              getHoldings().get(ticker),
-              currTime,
-              (new Stock(ticker)).getCurrPrice().getValue());
+      System.out.println("selling all " + ticker);
+      int shares = getHoldings().get(ticker);
+      if (shares > 0) {
+        sellStock(ticker,
+            shares,
+            currTime,
+            (new Stock(ticker)).getCurrPrice().getValue());
+      }
     }
     return true;
   }

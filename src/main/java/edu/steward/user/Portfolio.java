@@ -53,7 +53,7 @@ public class Portfolio {
       return false;
     } else {
       Integer currShares = holdings.get(ticker);
-      Integer newShares;
+      int newShares;
       if (currShares == null) {
         newShares = shares;
       } else {

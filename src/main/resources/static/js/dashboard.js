@@ -229,7 +229,7 @@ function loadUpDashType(port) {
         if ($('.port').length == 0) {
             $('.disabler').prop('disabled', true);
             $('#portGraph').hide();
-            showEmptyMessage(false);
+            showEmptyMessage(true);
         } else {
             // Clear the empty msg
             $('#noPort').html('');
