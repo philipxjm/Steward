@@ -109,10 +109,10 @@ public class Portfolio {
 
   public List<Gains> getGainsOverTime() {
     return GainsOverTime.getGainsGameGraph(
-            portfolioId,
-            pool.getBal(),
-            Integer.parseInt(pool.getStart()),
-            );
+        portfolioId,
+        Long.parseLong(pool.getStart()),
+        pool.getBal()
+    );
   }
 
   public Pool getPool() {
