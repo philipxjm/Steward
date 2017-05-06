@@ -43,7 +43,8 @@
     </div>
     <div class="col">
       <h2>Stock Market Game</h2>
-      <p></p>
+      <p>For prospective investors of all levels, whether you want to dip a
+      toe into market speculation or test your </p>
       <p><a class="btn btn-secondary" href="/about#pools" role="button">View
       details &raquo;</a></p>
     </div>  
