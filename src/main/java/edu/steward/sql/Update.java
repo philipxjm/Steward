@@ -122,5 +122,25 @@ public class Update {
     } catch (SchedulerException e) {
       e.printStackTrace();
     }
+
+//    JobDetail watchlistUpdate = JobBuilder.newJob(WatchListJob.class)
+//            .withIdentity("watchlistUpdate", "groupWatchlist").build();
+//
+////  Trigger every hour
+//    Trigger triggerWatchlist = TriggerBuilder
+//            .newTrigger()
+//            .withIdentity("triggerWatchlist", "groupWatchlist")
+////            TODO: Uncomment this, this is what we want
+////            .withSchedule(cronSchedule("0 0 0-23 ? * ?"))
+//            .withSchedule(cronSchedule("0 0/1 * * * ?"))
+//            .forJob(watchlistUpdate)
+//            .build();
+//    try {
+//      Scheduler schedulerWatchlist = new StdSchedulerFactory().getScheduler();
+//      schedulerWatchlist.start();
+//      schedulerWatchlist.scheduleJob(watchlistUpdate, triggerWatchlist);
+//    } catch (SchedulerException e) {
+//      e.printStackTrace();
+//    }
   }
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 
 
@@ -46,7 +47,8 @@ public class User {
   }
 
   public Portfolio getPortfolio(String name) {
-    Portfolio port = DatabaseApi.getAllPorts(getId()).get(name);
+    System.out.println(getId() + "/" + name);
+    Portfolio port = DatabaseApi.getAllPorts(getId()).get(getId() + "/" + name);
     port.loadInfo();
     return port;
   }
@@ -72,12 +74,13 @@ public class User {
   public boolean addPortfolio(String portName) {
     if (portfolios.get(portName) == null) {
       boolean success = DatabaseApi.createPortfolio(getId(), getId() + "/" +
-              portName, portName);
+          portName, portName);
       if (!success) {
         return false;
       }
-      portfolios.put(portName,
-          new Portfolio(portName, this.getId() + "/" + portName));
+      Portfolio port = new Portfolio(portName, this.getId() + "/" + portName);
+      port.setUser(getId());
+      portfolios.put(portName, port);
       return true;
 
     }
@@ -85,15 +88,16 @@ public class User {
   }
 
   public Portfolio addPool(String poolId) {
-    String portName = DatabaseApi.getPool(poolId).getName();
-    if (portfolios.get(portName) == null) {
-      if (DatabaseApi.getPool(poolId) != null) {
+    Pool pool = DatabaseApi.getPool(poolId);
+    if (pool != null) {
+      String portName = pool.getName();
+      if (portfolios.get(portName) == null) {
         boolean success = DatabaseApi.createPortfolio(this.getId(), this
-                .getId() + "/pool/" + portName, portName);
+            .getId() + "/pool/" + portName, portName, pool.getBal());
         if (!success) {
           return null;
         }
-        Portfolio port = new Portfolio(portName, this.getId() + "/" + portName);
+        Portfolio port = new Portfolio(portName, this.getId() + "/pool/" + portName);
         port.joinPool(poolId);
         portfolios.put(portName, port);
         return port;

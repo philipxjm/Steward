@@ -1,11 +1,13 @@
 package edu.steward.user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 
+import com.google.common.collect.ImmutableMap;
 import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 import edu.steward.sql.GainsOverTime;
@@ -17,6 +19,7 @@ public class Portfolio {
   private Map<String, Integer> holdings;
   private Double balance = 0.0;
   private Pool pool;
+  private String userId;
   // TODO: Add in balance to the below methods
 
   public Portfolio(String name, String portfolioId) {
@@ -95,6 +98,15 @@ public class Portfolio {
     return ret;
   }
 
+  public Double getBalance() {
+    balance = DatabaseApi.getBalanceFromPortfolio(portfolioId);
+    return balance;
+  }
+
+  public Double getNetWorth() {
+    return GainsOverTime.getCurrentNetWorth(portfolioId);
+  }
+
   public Pool getPool() {
     return pool;
   }
@@ -107,7 +119,12 @@ public class Portfolio {
     this.pool = pool;
   }
 
-  public Double getBalance() {
-    return balance;
+  public void setUser(String userId) {
+    this.userId = userId;
+  }
+
+  public Map<String, String> getUser() {
+    return DatabaseApi
+        .getUserInfo(userId);
   }
 }

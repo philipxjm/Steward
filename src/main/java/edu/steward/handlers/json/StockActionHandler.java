@@ -21,9 +21,11 @@ public class StockActionHandler implements Route {
     String userId = req.session().attribute("id");
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
-    String portfolioName = qm.value("port");
     String ticker = qm.value("ticker");
     String action = qm.value("action");
+    boolean pool = Boolean.parseBoolean(qm.value("isPool"));
+    String portfolioName = pool ? "pool/" + qm.value("port") : qm.value
+        ("port");
     Integer transTime = (int) (Long.parseLong(qm.value("time")) / 1000);
     Integer shares = (int) Long.parseLong(qm.value("shares"));
     System.out.println("time: " + transTime);
@@ -54,6 +56,7 @@ public class StockActionHandler implements Route {
     }
     double price = priceObj.getValue();
 
+    System.out.println(portfolioName);
     Portfolio port = user.getPortfolio(portfolioName);
     System.out.println("pfName: " + port);
     boolean success;

@@ -29,14 +29,14 @@
             <select class="custom-select">
               <option>Buy for</option>
               <optgroup label="Portfolios">
-                <option>Port 1</option>
-                <option>Port 2</option>
-                <option>Port 3</option>
+                <#list ports as port>
+                <option>${port}</option>
+                </#list>
               </optgroup>
               <optgroup label="Pools">
-                <option>Pool 1</option>
-                <option>Pool 2</option>
-                <option>Pool 3</option>
+                <#list pools as port>
+                <option>${port}</option>
+                </#list>
               </optgroup>
             </select>
 

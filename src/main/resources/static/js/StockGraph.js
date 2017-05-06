@@ -3,7 +3,12 @@ class StockGraph extends StewardGraph {
         super("Stock Price");
         this.timeseries = timeseries;
         this.ticker = ticker;
+        this.redNegative = false;
         super.makeGraph();
+    }
+
+    static makePretty(v) {
+        return '$' + Math.round(v*100)/100;
     }
 
     getData(callback) {

@@ -2,9 +2,8 @@
 function getStocks(name, callback) {
     let url = '/getPortfolioStocks';
 
-    $.post(url, {name: name}, (resJson) => {
+    $.post(url, {name: name, isPool: !activeTabIsPort}, (resJson) => {
         let data = JSON.parse(resJson);
-        console.log(data);
         $('#stocks').empty();
         // Add stocks
         for (let i = 0; i < data.length; i++) {
@@ -235,8 +234,14 @@ function loadUpDashType(port) {
 let activeTabIsPort = true;
 // Called on tab switch
 $('.tabToggle').click((e) => {
+    $('#stocks').empty();
     let port = e.target.innerText == "Portfolios";
     activeTabIsPort = port;
+    if (activeTabIsPort) {
+        $('.port').removeClass('active');
+    } else {
+        $('.pool').removeClass('active')
+    }
     loadUpDashType(port);
 });
 

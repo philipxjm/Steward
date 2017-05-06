@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
@@ -78,7 +79,8 @@ public class DatabaseApi {
           String name = rs.getString(2);
           String pic = rs.getString(3);
           String email = rs.getString(4);
-          return ImmutableMap.of("user", name, "pic", pic, "email", email);
+          return ImmutableMap.of("user", name, "pic", pic, "email", email,
+              "id", userId);
         } catch (SQLException e) {
           e.printStackTrace();
           return null;
@@ -125,7 +127,7 @@ public class DatabaseApi {
   public static Map<String, Portfolio> getAllPorts(String userId) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
         + "WHERE UserId = ?";
-    HashMap<String, Portfolio> portfolios = new HashMap();
+    HashMap<String, Portfolio> portfolios = new HashMap<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -136,7 +138,8 @@ public class DatabaseApi {
             String name = rs.getString(1);
             String id = rs.getString(2);
             Portfolio port = new Portfolio(name, id);
-            portfolios.put(name, port);
+            portfolios.put(id, port);
+            System.out.println(id);
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -150,9 +153,8 @@ public class DatabaseApi {
     return portfolios;
   }
 
-  public static boolean createPortfolio(String userId, String portId, String
-                                        portName,
-      Integer initialBalance) {
+  public static boolean createPortfolio(String userId, String portId,
+      String portName, String initialBalance) {
 
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -171,8 +173,8 @@ public class DatabaseApi {
       }
       stat = "INSERT INTO Balances VALUES (?, ?)";
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(1, userId + "/" + portName);
-        prep.setInt(2, initialBalance);
+        prep.setString(1, portId);
+        prep.setString(2, initialBalance);
         prep.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
@@ -183,9 +185,9 @@ public class DatabaseApi {
     return true;
   }
 
-  public static boolean createPortfolio(String userId, String portId, String
-      portName) {
-    return createPortfolio(userId, portId, portName, 1000000);
+  public static boolean createPortfolio(String userId, String portId,
+      String portName) {
+    return createPortfolio(userId, portId, portName, "1000000");
   }
 
   public static boolean renamePortfolio(String userId, String oldName,
@@ -604,7 +606,7 @@ public class DatabaseApi {
   }
 
   public static List<Portfolio> getPortsFromPool(String pool) {
-    String query = "SELECT Name, PortfolioId FROM UserPortfolios "
+    String query = "SELECT Name, PortfolioId, UserId FROM UserPortfolios "
         + "WHERE PoolId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -616,7 +618,9 @@ public class DatabaseApi {
           while (rs.next()) {
             String name = rs.getString(1);
             String id = rs.getString(2);
+            String user = rs.getString(3);
             Portfolio port = new Portfolio(name, id);
+            port.setUser(user);
             portfolios.add(port);
           }
         } catch (SQLException e) {
@@ -681,4 +685,5 @@ public class DatabaseApi {
     }
     return ports;
   }
+
 }
