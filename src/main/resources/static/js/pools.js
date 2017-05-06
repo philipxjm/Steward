@@ -146,6 +146,8 @@ $('#createPool').click((e) => {
     $newPool.attr("poolId", resData.id);
     $('#noPort').hide();
     $('#poolInfo').show();
+    console.log(ctx);
+    console.log(resData.name);
     if (!graph) {
       graph = new UnrealizedGraph(ctx, resData.name);
     }

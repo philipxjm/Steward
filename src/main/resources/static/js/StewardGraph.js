@@ -150,7 +150,7 @@ class StewardGraph {
                 this.makeGraph(callback);
             } else {
                 callback();
-            }           
+            }
         });
     }
 }
