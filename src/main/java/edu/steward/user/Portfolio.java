@@ -134,9 +134,9 @@ public class Portfolio {
   }
 
   public Pool getPool() {
-//    if (pool == null) {
-//      pool = DatabaseApi.getPoolFromPortfolio(portfolioId);
-//    }
+    if (pool == null) {
+      pool = DatabaseApi.getPoolFromPortfolio(portfolioId);
+    }
     return pool;
   }
 

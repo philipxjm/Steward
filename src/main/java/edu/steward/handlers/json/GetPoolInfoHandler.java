@@ -1,5 +1,6 @@
 package edu.steward.handlers.json;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.steward.sql.DatabaseApi;
@@ -18,7 +19,9 @@ public class GetPoolInfoHandler implements Route {
     System.out.println("name: |" + name + "| this");
     String id = req.session().attribute("id") + "/pool/" + name;
     System.out.println("get curr balance called, id: " + id);
-    return gson.toJson(DatabaseApi.getBalanceFromPortfolio(id));
+
+    return gson.toJson(ImmutableMap.of("curr", DatabaseApi.getBalanceFromPortfolio(id),
+            "init", DatabaseApi.getPoolFromPortfolio(id)));
   }
 
 }
