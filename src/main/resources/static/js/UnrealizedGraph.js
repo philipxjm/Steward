@@ -23,12 +23,12 @@ class UnrealizedGraph extends StewardGraph {
             data = { name: this.port };
         } else {
             url = '/getNetWorthGraph';
-            data = { id: this.poolId };
+            data = { poolId: this.poolId };
         }
         console.log(data);
         $.post(url, data, (res) => {  
             let data = JSON.parse(res);
-
+            console.log("Data: " + data);
             let labels = [];
             let chartData = [];
             let c = 0;

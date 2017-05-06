@@ -199,6 +199,7 @@ function showEmptyMessage(port) {
 
 function loadUpDashType(port) { 
     if (port) {
+        $('#poolInfo').hide();
         $('#pastActionLabel').show();
         if ($('.port').length == 0) {
             $('.disabler').prop('disabled', true);
@@ -217,6 +218,7 @@ function loadUpDashType(port) {
             }
         }  
     } else {
+        $('#poolInfo').show();
         $('#pastActionLabel').hide();
         if ($('.pool').length == 0) {
             $('.disabler').prop('disabled', true);
@@ -244,4 +246,6 @@ $('.tabToggle').click((e) => {
     }
     loadUpDashType(port);
 });
+
+$('#poolInfo').hide();
 

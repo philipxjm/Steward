@@ -20,11 +20,25 @@ function poolClickHandler(e) {
   getStocks(getCurrentPort());
   $.post('/getLeaderboard', {poolId:id}, (res) => {
     let data = JSON.parse(res);
-    $('#poolInfo').html(`
-      Name: ${name} <br/>
-      ID: ${id} <br/>
-      Leaderboard: ${data}
-    `);
+    $('#poolId').text(id);
+    $leaderboard = $('#leaderboard')
+    $('.position').remove();
+    let lastBalance = -1;
+    let lastPlace;
+    for (var i = 0; i < data.length; i++) {
+      let pic = data[i].pic;
+      let name = data[i].user;
+      let balance = data[i].balance;
+      let place;
+      if (lastBalance == balance) {
+        place = lastPlace;
+      } else {
+        place = i+1;
+      }
+      lastPlace = place;
+      lastBalance = balance;
+      $leaderboard.append(`<li class='position list-group-item'><img class="leaderPic rounded" src='${pic}?sz=35'>${place}. ${name}<br>$${balance}</li>`);
+    }
   });
   graph.poolId = id;
   graph.update(portName);
@@ -107,7 +121,7 @@ $('#createPool').click((e) => {
 	$('#createPool').prop('disabled', true);
 	$.post('/newPool', param, (res) => {
     let resData = JSON.parse(res);
-
+    console.log(resData);
 		// TODO Update pool sidebar
 		$('#createPoolModal').modal('hide');
 		$('#poolError').text('');

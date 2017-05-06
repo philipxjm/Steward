@@ -14,17 +14,19 @@ public class Pool {
 
   private List<Portfolio> portfolios;
   private int bal;
-  private String start;
+  private long start;
   private String id;
   private String name;
-  private String end;
+  private long end;
 
-  public Pool(String name, int balance, String startTime, Portfolio... ports) {
+  public Pool(String name, int balance, long startTime, long end,
+      Portfolio... ports) {
     Random r = new Random();
     bal = balance;
     start = startTime;
     this.name = name;
     id = "";
+    this.end = end;
     while (id.length() < 4 || DatabaseApi.getPool(id) != null) {
       id = id + Integer.toString(r.nextInt(36), 36);
     }
@@ -34,7 +36,7 @@ public class Pool {
     DatabaseApi.initializePool(this);
   }
 
-  public Pool(String id, String name, int balance, String startTime,
+  public Pool(String id, String name, int balance, long startTime,
       Portfolio... ports) {
     this.id = id;
     bal = balance;
@@ -63,7 +65,7 @@ public class Pool {
     this.bal = bal;
   }
 
-  public String getStart() {
+  public long getStart() {
     return start;
   }
 
@@ -75,7 +77,7 @@ public class Pool {
     this.name = name;
   }
 
-  public void setStart(String start) {
+  public void setStart(long start) {
     this.start = start;
   }
 
@@ -87,11 +89,11 @@ public class Pool {
     this.id = id;
   }
 
-  public String getEnd() {
+  public long getEnd() {
     return end;
   }
 
-  public void setEnd(String end) {
+  public void setEnd(long end) {
     this.end = end;
   }
 }

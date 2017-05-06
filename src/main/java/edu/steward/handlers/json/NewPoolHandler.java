@@ -9,6 +9,8 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.List;
+
 /**
  * Created by kjin on 5/2/17.
  */
@@ -22,10 +24,11 @@ public class NewPoolHandler implements Route {
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String poolName = qm.value("name");
-    String balance = qm.value("balance");
-    String start = String.valueOf(System.currentTimeMillis());
-    Pool pool = new Pool(poolName, Integer.parseInt(balance), start);
-    pool.setEnd(qm.value("end"));
+    Integer balance = Integer.parseInt(qm.value("balance"));
+    long start = (System.currentTimeMillis() / 1000L);
+    long end = Long.parseLong(qm.value("end")) / 1000L;
+    System.out.println("asdf");
+    Pool pool = new Pool(poolName, balance, start, end);
     user.addPool(pool.getId());
     if (Boolean.parseBoolean(qm.value("ai"))) {
       User ai = new User("ai");

@@ -28,7 +28,8 @@ public class GetLeaderboardHandler implements Route {
     List<Portfolio> rankedPortfolios = DatabaseApi.getPortsFromPool(poolId);
     List<Score> scores = new ArrayList<>();
     for (Portfolio p : rankedPortfolios) {
-      System.out.println("once");
+      System.out.println(p);
+      System.out.println(p.getNetWorth());
       scores.add(new Score(p, p.getNetWorth()));
     }
     Collections.sort(scores);

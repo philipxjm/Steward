@@ -398,6 +398,7 @@ public class DatabaseApi {
     }
     if (prices.size() == 0) {
       // Stock not found
+      System.out.println("init f1");
       if (initializePrices(ticker).size() == 0) {
         return null;
       } else {
@@ -445,6 +446,7 @@ public class DatabaseApi {
     // Legacy code above
     // If there are no prices than update the table with update prices.
     if (prices.size() == 0) {
+      System.out.println("init f2");
       return initializePrices(ticker);
     } else {
       return prices;
@@ -506,6 +508,7 @@ public class DatabaseApi {
   // }
 
   public static List<Price> initializePrices(String ticker) {
+    System.out.println("initialize prices called");
     // String stat = "DELETE FROM quotes WHERE stock = ?;";
     // try (Connection c = DriverManager.getConnection(quoteUrl)) {
     // Statement s = c.createStatement();
@@ -533,7 +536,8 @@ public class DatabaseApi {
         try (PreparedStatement prep = c.prepareStatement(stat)) {
           for (HistoricalQuote q : quotes) {
             Double priceVal = q.getAdjClose().doubleValue();
-            Long time = q.getDate().getTimeInMillis() / 1000;
+//            Shifts a midnight time 16 hours to the 4 pm close time
+            Long time = (q.getDate().getTimeInMillis() / 1000) + 57600;
             Price p = new Price(priceVal, time);
             ret.add(p);
             prep.setString(1, ticker);
@@ -560,8 +564,8 @@ public class DatabaseApi {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setString(5, p.getEnd());
-        prep.setString(4, p.getStart());
+        prep.setLong(5, p.getEnd());
+        prep.setLong(4, p.getStart());
         prep.setInt(3, p.getBal());
         prep.setString(2, p.getName());
         prep.setString(1, p.getId());
@@ -588,9 +592,9 @@ public class DatabaseApi {
           while (rs.next()) {
             String name = rs.getString(2);
             int bal = Integer.parseInt(rs.getString(3));
-            String start = rs.getString(4);
+            long start = rs.getLong(4);
             Pool pool = new Pool(id, name, bal, start);
-            pool.setEnd(rs.getString(5));
+            pool.setEnd(rs.getLong(5));
             return pool;
           }
         } catch (SQLException e) {
@@ -615,11 +619,13 @@ public class DatabaseApi {
       try (PreparedStatement prep = c.prepareStatement(query)) {
         prep.setString(1, pool);
         try (ResultSet rs = prep.executeQuery()) {
+          Pool p = getPool(pool);
           while (rs.next()) {
             String name = rs.getString(1);
             String id = rs.getString(2);
             String user = rs.getString(3);
             Portfolio port = new Portfolio(name, id);
+            port.setPool(p);
             port.setUser(user);
             portfolios.add(port);
           }
@@ -686,4 +692,47 @@ public class DatabaseApi {
     return ports;
   }
 
+  public static Pool getPoolFromPortfolio(String portId) {
+    Pool pool = new Pool("", 0, 0, 0);
+    String query = "SELECT PoolId FROM UserPortfolios "
+            + "WHERE UserId = ? AND PoolId IS NOT NULL;";
+    String poolId = "";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, portId);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            poolId = rs.getString(1);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      query = "SELECT Name, Balance, Start, End FROM POOLS "
+              + "WHERE PoolId = ?;";
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, poolId);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            String poolName = rs.getString(1);
+            Integer initBalance = Integer.parseInt(rs.getString(2));
+            long startTime = rs.getLong(3);
+            long endTime = rs.getLong(4);
+            pool = new Pool(poolName, initBalance, startTime, endTime);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return pool;
+  }
 }
