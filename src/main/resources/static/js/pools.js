@@ -142,6 +142,7 @@ $('#createPool').click((e) => {
     if (!graph) {
       graph = new UnrealizedGraph(ctx, resData.name);
     }
+    $('#gains').show();
     $newPool.click();
 		// TODO add click handlers
 	});
