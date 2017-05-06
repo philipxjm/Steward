@@ -587,7 +587,7 @@ public class DatabaseApi {
         try (ResultSet rs = prep.executeQuery()) {
           while (rs.next()) {
             String name = rs.getString(2);
-            String bal = rs.getString(3);
+            int bal = Integer.parseInt(rs.getString(3));
             String start = rs.getString(4);
             Pool pool = new Pool(id, name, bal, start);
             pool.setEnd(rs.getString(5));
