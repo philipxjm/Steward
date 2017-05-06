@@ -32,7 +32,7 @@ public class StockHandler implements TemplateViewRoute {
     ImmutableMap.Builder<Object, Object> variables = new ImmutableMap.Builder<>();
     String user = req.session().attribute("user");
     String id = req.session().attribute("id");
-    String pic = req.session().attribute("id");
+    String pic = req.session().attribute("pic");
     if (user != null) {
       variables.put("user", user);
       variables.put("pic", pic);
