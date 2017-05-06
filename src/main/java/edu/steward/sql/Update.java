@@ -142,5 +142,26 @@ public class Update {
 //    } catch (SchedulerException e) {
 //      e.printStackTrace();
 //    }
+
+    JobDetail jobAI = JobBuilder.newJob(ExecuteAiTransacton.class)
+            .withIdentity("jobAI", "groupAI").build();
+
+    // Trigger every hour between 10:00am-4:00pm
+    Trigger triggerAI = TriggerBuilder
+            .newTrigger()
+            .withIdentity("triggerAI1", "groupAI")
+            .withSchedule(cronSchedule("0 0 10-16 ? * MON-FRI"))
+            .forJob(jobAI)
+            .build();
+
+    // schedule it
+    try {
+      Scheduler schedulerAI = new StdSchedulerFactory().getScheduler();
+      schedulerAI.start();
+      schedulerAI.scheduleJob(jobAI, triggerAI);
+    } catch (SchedulerException e) {
+      e.printStackTrace();
+    }
+
   }
 }

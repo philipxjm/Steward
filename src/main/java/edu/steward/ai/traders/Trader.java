@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class Trader extends Portfolio {
   public Trader(String name, String portfolioId) {
     super(name, portfolioId);
+    executeEntry();
   }
 
   public static List<String> goodShit() {
@@ -43,7 +44,12 @@ public class Trader extends Portfolio {
             ));
   }
 
-  public boolean executeEntry() {
+  public void executeTransaction() {
+    executeExit();
+    executeEntry();
+  }
+
+  private boolean executeEntry() {
     int currTime = (int) (System.currentTimeMillis() / 1000L);
     List<Stock> goodStocks = goodShit()
             .stream()
@@ -59,7 +65,7 @@ public class Trader extends Portfolio {
     return true;
   }
 
-  public boolean executeExit() {
+  private boolean executeExit() {
     int currTime = (int) (System.currentTimeMillis() / 1000L);
     List<String> ownedStocks = new ArrayList<String>(getHoldings().keySet());
     for (String ticker : ownedStocks) {
