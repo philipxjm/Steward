@@ -92,14 +92,13 @@ class StewardGraph {
                                 return this.dateToString(this.labels[info[0].xLabel]);
                             },
                             label: (tooltipItems, data) => {
-                                console.log("HERE");
                                 return this.makePretty(tooltipItems.yLabel);
                             }
                         }
                     }                    
                 }
             }
-            this.graph = new Chart(ctx, graphData);
+            this.graph = new Chart(this.ctx, graphData);
             if (callback) {
                 callback();
             }

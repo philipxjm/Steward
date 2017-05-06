@@ -15,37 +15,61 @@ function makeNewPool(name) {
    return ret;
 }
 
+// Handles whenever a pool is clicked on
 function poolClickHandler(e) {
   let elm = $(e.target);
+
+  // If already active we don't need to update
+  if (elm.hasClass("active")) {
+    return;
+  }
+
   let name = elm.children('.portName')[0].innerText;
-  let id = elm.attr('poolId');
-  graph.poolId = id;
-  graph.update(name);
-  $('#info').empty();
+  let poolId = elm.attr('poolId');
+
+  // Set pool id in info section
+  $('#poolId').text(poolId);
+
+  poolGraph.update(name, poolId);
+
+  // Remove active from old
  	$('.pool').removeClass('active');
+  // Add active to new
+  elm.addClass('active');
+
+  // Remove old stocks
   $('#stocks').empty();
- 	elm.addClass('active');
+  // Get stocks for new pool portfolio
   getStocks(getCurrentPort());
-  $.post('/getPoolInfo', {name: name, poolId: id}, (res) => {
+
+  // Load in pool info (balance, etc.)
+  $.post('/getPoolInfo', {name: name, poolId: poolId}, (res) => {
     let data = JSON.parse(res);
     $('#currBalance').text('$' + data.curr);
     $('#initBalance').text('$' + data.init);
-    let p = 100*(data.curr-data.init) / data.init;
-    $('#change').text(Math.round(p*100)/100 + '%');
+
+    // TODO: Fix this
+    let percentage = 100*(data.curr-data.init) / data.init;
+    $('#change').text(Math.round(percentage*100)/100 + '%');
   });
-  console.log({poolId:id});
-  $.post('/getLeaderboard', {poolId:id}, (res) => {
+
+  // Get leaderboard for pool
+  $.post('/getLeaderboard', {poolId: poolId}, (res) => {
     let data = JSON.parse(res);
-    $('#poolId').text(id);
     $leaderboard = $('#leaderboard')
+    // Remove old leaderboard
     $('.position').remove();
+
+    // Save last balance & place for when you have a tie
     let lastBalance = -1;
     let lastPlace;
+    // Loop over each person in leaderboard
     for (var i = 0; i < data.length; i++) {
       let pic = data[i].pic;
       let name = data[i].user;
       let balance = data[i].balance;
       let place;
+      // Check for tie
       if (lastBalance == balance) {
         place = lastPlace;
       } else {
@@ -53,16 +77,20 @@ function poolClickHandler(e) {
       }
       lastPlace = place;
       lastBalance = balance;
+      // Add new person to leaderboard
       $leaderboard.append(`<li class='position list-group-item'><img class="leaderPic rounded" src='${pic}?sz=35'>${place}. ${name}<br>$${balance}</li>`);
     }
   });
 }
 
+// Add click handler to all pools
 $('.pool').click(poolClickHandler);
 
 // Add portfolio button
 $('#joinPool').click((e) => {
+    // Only add a newPool is you aren't already joining
     if($('#newPool').length == 0) {
+        // Add input for join pool
         $('#pools').append('<div class="form-group list-group-item list-group-item-action pool newPool"><label for="newPool">Pool ID:</label><input class="form-control" id="newPool" type="text"><p id="poolErr" class="text-danger"></p></div>');
         let inputDiv = $('#newPool').parent();
         $('#newPool').keydown((e) => {
@@ -148,13 +176,11 @@ $('#createPool').click((e) => {
     $newPool.attr("poolId", resData.id);
     $('#noPort').hide();
     $('#poolInfo').show();
-    console.log(ctx);
     console.log(resData.name);
     if (!graph) {
-      graph = new UnrealizedGraph(ctx, resData.name);
+      poolGraph = new BalanceGraph(poolCtx, resData.name, resData.id);
     }
     $('#gains').show();
     $newPool.click();
-		// TODO add click handlers
 	});
 });
