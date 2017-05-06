@@ -28,10 +28,10 @@ function poolClickHandler(e) {
   getStocks(getCurrentPort());
   $.post('/getPoolInfo', {name: name, poolId: id}, (res) => {
     let data = JSON.parse(res);
-    $('#currBalance').text(data.curr);
-    $('#initBalance').text(data.init);
-    let p = 100*data.curr / data.init;
-    $('#change').text(Math.round(p*100)/100);
+    $('#currBalance').text('$' + data.curr);
+    $('#initBalance').text('$' + data.init);
+    let p = 100*(data.curr-data.init) / data.init;
+    $('#change').text(Math.round(p*100)/100 + '%');
   });
   console.log({poolId:id});
   $.post('/getLeaderboard', {poolId:id}, (res) => {
