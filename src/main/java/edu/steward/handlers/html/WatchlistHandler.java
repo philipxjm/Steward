@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import edu.steward.Sentiment.Watchlist;
+import edu.steward.stock.Stock;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -23,7 +24,9 @@ public class WatchlistHandler implements TemplateViewRoute {
     Map<String, Double> trending = Watchlist.trendingSentiments();
     List<List<Object>> ret = new ArrayList<>();
     for (String key : trending.keySet()) {
-      ret.add(ImmutableList.of(key, trending.get(key)));
+      Stock s = new Stock(key);
+      System.out.println(key);
+      ret.add(ImmutableList.of(key, trending.get(key), s.getCurrPrice(), s.getDailyChange()));
     }
     ret.sort((List<Object> a, List<Object> b) -> Double
         .compare((double) b.get(1), (double) a.get(1)));

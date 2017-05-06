@@ -7,7 +7,8 @@
 <#list trending as stock>
 <div class="stock">
 <a href="/stock/${stock[0]}" class = "list-group-item
-list-group-item-action">${stock[0]} ${stock[1]}</a>
+list-group-item-action">${stock[0]} ${stock[1]}  $${stock[2]} (${stock[3]}%)
+</a>
 </div>
 </#list>
 </div>

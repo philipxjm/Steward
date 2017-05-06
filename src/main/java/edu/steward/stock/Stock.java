@@ -24,7 +24,7 @@ public class Stock {
   private List<Fundamental> stockData;
 
   public Stock(String ticker) {
-    this.ticker = ticker;
+    this.ticker = ticker.replace(".", "");
   }
 
   // TODO: Add getters for fundamentals using the StockAPI
