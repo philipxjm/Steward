@@ -30,7 +30,7 @@
         </div>
       	<div id="ports" class="list-group expand">
           <#list portfolios as port>
-  		   	 <div class="list-group-item list-group-item-action port <#if port_index == 0>active</#if>">         
+  		   	 <div class="list-group-item list-group-item-action port <#if port_index == 0>active</#if>">
                 <span class="portName">${port.name}</span>
                 <a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
                 <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>
@@ -88,7 +88,7 @@
         <#list stocks as stock>
 			    <a href="/stock/${stock.ticker}" class="stocks
 			    list-group-item list-group-item-action">${stock.ticker}
-			    ${stock.shares} shares</a>
+			    ${stock.shares} shares $</a>
         </#list>
 		  </div>
     </div>

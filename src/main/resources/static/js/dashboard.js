@@ -1,17 +1,18 @@
 // Gets stocks for portfolio
 function getStocks(name, callback) {
     let url = '/getPortfolioStocks';
+    console.log(name);
 
     $.post(url, {name: name, isPool: !activeTabIsPort}, (resJson) => {
         let data = JSON.parse(resJson);
         $('#stocks').empty();
+        console.log(data);
         // Add stocks
         for (let i = 0; i < data.length; i++) {
             let ticker = data[i]["ticker"];
             let shares = data[i]["shares"];
             let currPrice = data[i]["currPrice"].price;
             let dailyChange = data[i]["change"].dailyChange;
-            console.log(currPrice, dailyChange);
             if (shares > 0) {
                 $('#stocks').append(`<a href="/stock/${ticker}"
                 class="list-group-item list-group-item-action
@@ -35,7 +36,7 @@ function getCurrentPort() {
     }
 }
 
-// Click handler for potfolio
+// Click handler for portfolio
 const portfolioClickHandler = (e) => {
     let elm = $(e.target);
 
@@ -194,6 +195,8 @@ let ctx, graph;
 $(()=> {
     ctx = $('#gains');
     loadUpDashType(true);
+    $('.port').removeClass("active");
+    $('#ports > .port').first().click();
 });
 
 function showEmptyMessage(port) {
@@ -204,6 +207,11 @@ function showEmptyMessage(port) {
         $('#noPort').html("<h2>Make a new pool!</h2><p>TODO: Add pool description.</p>");        
     }
     $('#noPort').show();
+}
+
+
+function loadStocks() {
+    $('#ports > .port').first().click();
 }
 
 function loadUpDashType(port) { 
@@ -250,7 +258,6 @@ function loadUpDashType(port) {
     }
 }
 let activeTabIsPort = true;
-console.log(getStocks());
 // Called on tab switch
 $('.tabToggle').click((e) => {
     $('#stocks').empty();
