@@ -41,7 +41,8 @@ Create portfolios to track your stocks' gains and losses over time.
   <div id="brown" class="row">
     <h2>Made by Brown</h2>
     <p>Thanks to JJ and the CS0320 TA staff, we'll be rich one day. Created
-    on Java 8, SQL, Javascript, and HTML. With thanks to Google.</p>
+    with Java 8, SQL, Javascript, and HTML. With thanks to Google, Yahoo and
+    Stanford.</p>
   </div>
 </div>
 </#assign>

@@ -30,7 +30,7 @@ function poolClickHandler(e) {
     let data = JSON.parse(res);
     $('#currBalance').text('$' + data.curr);
     $('#initBalance').text('$' + data.init);
-    let p = 100*(data.curr-data.init) / data.init - 100;
+    let p = 100*(data.curr-data.init) / data.init;
     $('#change').text(Math.round(p*100)/100 + '%');
   });
   console.log({poolId:id});
@@ -129,8 +129,9 @@ $('#createPool').click((e) => {
 		name: name,
 		end: end,
 		balance: balance,
-    ai: ai
+        ai: ai
 	};
+
 
 	$('#createPool').prop('disabled', true);
 	$.post('/newPool', param, (res) => {

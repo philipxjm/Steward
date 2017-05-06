@@ -19,6 +19,7 @@ public class ExecuteAiTransacton implements Job {
     List<Trader> aiPortfolios = aiRetriever.getActiveAIs();
     for (Trader p : aiPortfolios) {
       p.executeTransaction();
+      System.out.println("something");
     }
   }
 }
