@@ -9,8 +9,13 @@ function getStocks(name, callback) {
         for (let i = 0; i < data.length; i++) {
             let ticker = data[i]["ticker"];
             let shares = data[i]["shares"];
+            let currPrice = data[i]["currPrice"];
+            let dailyChange = data[i]["dailyChange"];
             if (shares > 0) {
-                $('#stocks').append(`<a href="/stock/${ticker}" class="list-group-item list-group-item-action stock">${ticker} ${shares}</a>`);
+                $('#stocks').append(`<a href="/stock/${ticker}"
+                class="list-group-item list-group-item-action
+                stock">${ticker} ${shares} shares ${currPrice} ${dailyChange}
+                </a>`);
             }
         }
         if (callback) {
@@ -155,7 +160,7 @@ $('#addPort').click((e) => {
                             if( $('.disabler').prop('disabled')) {
                                 $('.disabler').prop('disabled', false);
                                 $('#noPort').hide(); 
-                                $('#gains').show();                               
+                                $('#gains').show();      
                                 // Initialize graph with new portfolio
                                 graph = new UnrealizedGraph(ctx, name);
                             }
@@ -196,6 +201,7 @@ function showEmptyMessage(port) {
         $('#poolInfo').hide();
         $('#noPort').html("<h2>Make a new pool!</h2><p>TODO: Add pool description.</p>");        
     }
+    $('#noPort').show();
 }
 
 function loadUpDashType(port) { 
@@ -228,6 +234,7 @@ function loadUpDashType(port) {
             $('#gains').hide();
             showEmptyMessage(false);
         } else {
+            // Name is not defined?
             if (!graph) {
                 graph = new UnrealizedGraph(ctx, name);
             }

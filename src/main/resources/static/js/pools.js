@@ -10,20 +10,21 @@ function makeNewPool(name) {
 
 function poolClickHandler(e) {
   let elm = $(e.target);
-  let name = elm.text();
+  let name = elm.children('.portName')[0].innerText;
   let id = elm.attr('poolId');
+  graph.poolId = id;
+  graph.update(name);
   $('#info').empty();
  	$('.pool').removeClass('active');
   $('#stocks').empty();
  	elm.addClass('active');
-  const portName = elm.children('.portName')[0].innerText;
-  console.log('"'+name+'"');
   getStocks(getCurrentPort());
-  $.post('/getPoolInfo', {name: portName}, (res) => {
+  $.post('/getPoolInfo', {name: name}, (res) => {
     let data = JSON.parse(res);
     $('#currBalance').text(res.curr);
     $('#initBalance').text(res.init);
   });
+  console.log({poolId:id});
   $.post('/getLeaderboard', {poolId:id}, (res) => {
     let data = JSON.parse(res);
     $('#poolId').text(id);
@@ -46,8 +47,6 @@ function poolClickHandler(e) {
       $leaderboard.append(`<li class='position list-group-item'><img class="leaderPic rounded" src='${pic}?sz=35'>${place}. ${name}<br>$${balance}</li>`);
     }
   });
-  graph.poolId = id;
-  graph.update(portName);
 }
 
 $('.pool').click(poolClickHandler);
@@ -127,7 +126,7 @@ $('#createPool').click((e) => {
 	$('#createPool').prop('disabled', true);
 	$.post('/newPool', param, (res) => {
     let resData = JSON.parse(res);
-    console.log(resData);
+
 		// TODO Update pool sidebar
 		$('#createPoolModal').modal('hide');
 		$('#poolError').text('');
@@ -140,7 +139,9 @@ $('#createPool').click((e) => {
     $newPool.attr("poolId", resData.id);
     $('#noPort').hide();
     $('#poolInfo').show();
-
+    if (!graph) {
+      graph = new UnrealizedGraph(ctx, resData.name);
+    }
     $newPool.click();
 		// TODO add click handlers
 	});

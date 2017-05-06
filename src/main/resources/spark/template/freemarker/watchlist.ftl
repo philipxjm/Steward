@@ -1,19 +1,13 @@
 <#assign name="watchlist">
 <#assign content>
+<div class="container">
 <div class="row">
-<div class="col">
+<h2>Stocks to Watch</h2>
 <p>
-<#list good as stock>
-${stock[0]} ${stock[1]}<br/>
-</#list>
-</p>
+<#list trending as stock>
+<div class="stock">
+<a href="/stock/${stock[0]}">${stock[0]} ${stock[1]}</a>
 </div>
-
-<div class="col">
-<p>
-<#list bad as stock>
-${stock[0]} ${stock[1]}
-	<br/>
 </#list>
 </p>
 </div>
