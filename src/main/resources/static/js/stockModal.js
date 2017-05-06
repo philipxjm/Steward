@@ -42,7 +42,7 @@ $('#addStock').click((e) => {
         return;        
     }
     let port = getCurrentPort();
-    console.log(port);
+
     let data = {
         current: !$('#pastAction').prop("checked"),
         port: port,
@@ -53,12 +53,20 @@ $('#addStock').click((e) => {
         isPool: !activeTabIsPort
     }
     $('#addStock').prop('disabled', true);
+    console.log("Sending data to /stockAction:");
+    console.log(data);
     $.post('/stockAction', data, (res) => {
         let resData = JSON.parse(res);
         if (resData["success"]) {
             $('#stockError')[0].innerText = "";
             $('#addStockModal').modal('hide');
-            getStocks(getCurrentPort(), ()=>{graph.update(port);});
+            getStocks(getCurrentPort(), ()=>{
+                if(activeTabIsPort) {
+                    portGraph.update(port);
+                } else {
+                    poolGraph.update(port);
+                }
+            });
         } else {
             $('#stockError')[0].innerText = "ERROR: " + resData["error"];
         }

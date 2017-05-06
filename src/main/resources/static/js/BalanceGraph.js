@@ -1,25 +1,29 @@
-class UnrealizedGraph extends StewardGraph {
-    constructor(ctx, port) {
-        super("Unrealized Gains");
-        this.ctx = ctx;
-        this.port = port;
+class BalanceGraph extends StewardGraph {
+	constructor(ctx, port, poolId) {
+		super("Balance");
+		this.ctx = ctx;
+		this.poolId = poolId;
+		this.port = port;
         this.timeseries = "none";
-        this.redNegative = true;
-        super.makeGraph();
+        this.redNegative = false;
+        super.makeGraph();		
+	}
+
+	static makePretty(v) {
+        return '$' + Math.round(v*100)/100;
     }
 
-    static makePretty(v) {
-        return Math.round(v*100)/100 + '%';
-    }
-
-    update(name) {
+    update(name, poolId) {
         this.port = name;
+        this.poolId = poolId;
         super.update();      
     }
 
     getData(callback) {
-        let url = '/getUnrealizedData';
-        let data = { name: this.port };
+        let url = '/getNetWorthGraph';
+        let data = { poolId: this.poolId };
+
+        console.assert(this.poolId != null);
 
         $.post(url, data, (res) => {  
             let data = JSON.parse(res);
@@ -37,9 +41,6 @@ class UnrealizedGraph extends StewardGraph {
             if (chartData.length > 0) {
                 this.min = chartData[0].x;
                 this.max = chartData[chartData.length - 1].x;
-            } else {
-                //this.min = 0-1;
-                //this.max = 1;
             }
             callback();
         });

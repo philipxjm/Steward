@@ -3,6 +3,7 @@ package edu.steward.handlers.json;
 import com.google.gson.Gson;
 
 import edu.steward.pools.Pool;
+import edu.steward.sql.DatabaseApi;
 import edu.steward.user.User;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -31,6 +32,7 @@ public class NewPoolHandler implements Route {
     Pool pool = new Pool(poolName, balance, start, end);
     user.addPool(pool.getId());
     if (Boolean.parseBoolean(qm.value("ai"))) {
+      DatabaseApi.createUser("ai", "AI", "", "img/ai.png");
       User ai = new User("ai");
       ai.addPool(pool.getId());
     }

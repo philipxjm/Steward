@@ -2,6 +2,7 @@
 <#assign name="index">
 <#assign js>
   <script src="/js/UnrealizedGraph.js"></script>
+  <script src="/js/BalanceGraph.js"></script>  
   <script src="/js/dashboard.js"></script>
   <script src="/js/pools.js"></script>
   <script src="/js/stockModal.js"></script>
@@ -57,22 +58,23 @@
     </div>
     <div id="graphContainer" class="col-6">
       <div id="noPort" class="text-muted"></div>
-	   <canvas height=200 id="gains"></canvas>
-     <div id="poolInfo" class="row">
-      <div class="col">
-        <ul id="infoList" class="list-group">
-          <li class="list-group-item active">Info</li>
-          <li class="list-group-item"><span class="col">Pool ID</span> <span class="col text-right" id="poolId"></span></li>
-          <li class="list-group-item"><span class="col">Current balance <span class="col text-right" id="currBalance"></span></li>
-          <li class="list-group-item"><span class="col">Initial balance <span class="col text-right" id="initBalance"></span></li>
-          <li class="list-group-item"><span class="col">Percent Change <span class="col text-right" id="change"></span></li>
-        </ul>      
-      </div>
-      <div class="col">
-        <ul id="leaderboard" class="list-group">
-          <li class="list-group-item active">Leaderboard</li>
-        </ul>
-      </div>
+	    <canvas height="200" id="portGraph"></canvas>
+      <canvas height="200" id="poolGraph"></canvas>
+      <div id="poolInfo" class="row">
+        <div class="col">
+          <ul id="infoList" class="list-group">
+            <li class="list-group-item active">Info</li>
+            <li class="list-group-item"><span class="col">Pool ID</span> <span class="col text-right" id="poolId"></span></li>
+            <li class="list-group-item"><span class="col">Current balance <span class="col text-right" id="currBalance"></span></li>
+            <li class="list-group-item"><span class="col">Initial balance <span class="col text-right" id="initBalance"></span></li>
+            <li class="list-group-item"><span class="col">Percent Change <span class="col text-right" id="change"></span></li>
+          </ul>      
+        </div>
+        <div class="col">
+          <ul id="leaderboard" class="list-group">
+            <li class="list-group-item active">Leaderboard</li>
+          </ul>
+        </div>
      </div>
     </div>
     <div class="col-3">
