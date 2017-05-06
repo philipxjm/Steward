@@ -17,9 +17,14 @@ h2 {
   width:100%;
 }
 
+#btnBar {
+  width: 100%;
+}
+
 /* Sets size of timespan buttons */
 .time {
   font-size: 10px;
+  width: 100%;
 }
 
 /* Colors for % change */

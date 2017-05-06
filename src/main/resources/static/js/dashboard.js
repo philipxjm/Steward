@@ -223,7 +223,6 @@ function loadUpDashType(port) {
     if (port) {
         // Show checkbox & time for past action
         $('#pastActionLabel').show();
-        $('#time').show();
         // Hide poolInfo (leaderboard, etc.)
         $('#poolInfo').hide();  
         // Hide pool & show port Graph

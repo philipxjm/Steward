@@ -19,7 +19,7 @@
               </#if>
             </h2>
           </div>
-          <div class="btn-group" data-toggle="buttons">
+          <div id="btnBar" class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary time">
               <input type="radio" name="timespan" id="ONE_DAY" autocomplete="off">One Day
             </label>
