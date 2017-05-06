@@ -99,6 +99,7 @@ class StewardGraph {
                     }                    
                 }
             }
+
             this.graph = new Chart(this.ctx, graphData);
             if (callback) {
                 callback();

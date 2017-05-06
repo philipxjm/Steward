@@ -1,6 +1,7 @@
 class StockGraph extends StewardGraph {
     constructor(ctx, ticker, timeseries) {
         super("Stock Price");
+        this.ctx = ctx;
         this.timeseries = timeseries;
         this.ticker = ticker;
         this.redNegative = false;
