@@ -17,7 +17,7 @@ public class Portfolio {
   private String name;
   private String portfolioId;
   private Map<String, Integer> holdings;
-  private Double balance = 1000.0;
+  private Double balance = 0.0;
   private Pool pool;
   private String userId;
   // TODO: Add in balance to the below methods
@@ -69,7 +69,7 @@ public class Portfolio {
   }
 
   public boolean sellStock(String ticker, int shares, int time, double price) {
-    // TODO
+    // TODO fix this shit matt
     double cost = price * shares;
     Integer currShares = holdings.get(ticker);
     if (currShares == null) {
@@ -105,6 +105,14 @@ public class Portfolio {
 
   public Double getNetWorth() {
     return GainsOverTime.getCurrentNetWorth(portfolioId);
+  }
+
+  public List<Gains> getGainsOverTime() {
+    return GainsOverTime.getGainsGameGraph(
+            portfolioId,
+            pool.getBal(),
+            Integer.parseInt(pool.getStart()),
+            );
   }
 
   public Pool getPool() {

@@ -75,6 +75,10 @@ public class Stock {
     Stock.stockAPI = stockAPI;
   }
 
+  public String getTicker() {
+    return ticker;
+  }
+
   @Override
   public boolean equals(Object o) {
 
