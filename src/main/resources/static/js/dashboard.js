@@ -160,7 +160,7 @@ $('#addPort').click((e) => {
                             if( $('.disabler').prop('disabled')) {
                                 $('.disabler').prop('disabled', false);
                                 $('#noPort').hide(); 
-                                $('#gains').show();                               
+                                $('#gains').show();      
                                 // Initialize graph with new portfolio
                                 graph = new UnrealizedGraph(ctx, name);
                             }
