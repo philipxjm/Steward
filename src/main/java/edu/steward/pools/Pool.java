@@ -1,11 +1,11 @@
 package edu.steward.pools;
 
-import edu.steward.sql.DatabaseApi;
-import edu.steward.user.Portfolio;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import edu.steward.sql.DatabaseApi;
+import edu.steward.user.Portfolio;
 
 /**
  * Created by kjin on 5/1/17.
@@ -19,8 +19,7 @@ public class Pool {
   private String name;
   private String end;
 
-  public Pool (String name, int balance, String startTime, Portfolio...
-      ports) {
+  public Pool(String name, int balance, String startTime, Portfolio... ports) {
     Random r = new Random();
     bal = balance;
     start = startTime;
@@ -29,14 +28,14 @@ public class Pool {
     while (id.length() < 4 || DatabaseApi.getPool(id) != null) {
       id = id + Integer.toString(r.nextInt(36), 36);
     }
+    id = id.toUpperCase();
     System.out.println(id);
     portfolios = Arrays.asList(ports);
     DatabaseApi.initializePool(this);
   }
 
-  public Pool (String id, String name, int balance, String startTime,
-               Portfolio...
-      ports) {
+  public Pool(String id, String name, int balance, String startTime,
+      Portfolio... ports) {
     this.id = id;
     bal = balance;
     start = startTime;
