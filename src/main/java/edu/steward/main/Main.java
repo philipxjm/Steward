@@ -17,7 +17,6 @@ import edu.steward.handlers.html.AccountHandler;
 import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.StockHandler;
 import edu.steward.handlers.html.WatchlistHandler;
-import edu.steward.login.LoginConfigFactory;
 import edu.steward.sql.Update;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -79,9 +78,7 @@ public class Main {
     Spark.port(port);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
-    final Config config = new LoginConfigFactory().build();
     FreeMarkerEngine freeMarker = createEngine();
-    final CallbackRoute callback = new CallbackRoute(config, null, true);
 
     // Spark routes
     // Pages
