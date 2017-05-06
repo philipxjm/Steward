@@ -30,6 +30,8 @@ function poolClickHandler(e) {
     let data = JSON.parse(res);
     $('#currBalance').text(res.curr);
     $('#initBalance').text(res.init);
+    let p = 100*res.curr / res.init;
+    $('#change').text(Math.round(p*100)/100);
   });
   console.log({poolId:id});
   $.post('/getLeaderboard', {poolId:id}, (res) => {

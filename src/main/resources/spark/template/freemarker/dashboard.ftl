@@ -65,7 +65,7 @@
           <li class="list-group-item"><span class="col">Pool ID</span> <span class="col text-right" id="poolId"></span></li>
           <li class="list-group-item"><span class="col">Current balance <span class="col text-right" id="currBalance"></span></li>
           <li class="list-group-item"><span class="col">Initial balance <span class="col text-right" id="initBalance"></span></li>
-          <li class="list-group-item"><span class="col">Percent gain <span class="col text-right" id="gain"></span></li>
+          <li class="list-group-item"><span class="col">Percent Change <span class="col text-right" id="change"></span></li>
         </ul>      
       </div>
       <div class="col">
