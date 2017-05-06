@@ -175,8 +175,8 @@ $('#createPool').click((e) => {
     $newPool.attr("poolId", resData.id);
     $('#noPort').hide();
     $('#poolInfo').show();
-    console.log(resData.name);
-    if (!graph) {
+
+    if (!poolGraph) {
       poolGraph = new BalanceGraph(poolCtx, resData.name, resData.id);
     }
     $('#gains').show();
