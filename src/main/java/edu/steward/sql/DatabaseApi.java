@@ -563,7 +563,7 @@ public class DatabaseApi {
 
   public static boolean initializePool(Pool p) {
     System.out.println("initialze pool calledz");
-    String stat = "INSERT INTO Pools " + "VALUES (?, ?, ?, ?, ?);";
+    String stat = "INSERT INTO Pools " + "VALUES (?, ?, ?, ?, ?, 'TRUE');";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -648,7 +648,8 @@ public class DatabaseApi {
   }
 
   public static boolean addPortToPool(String portId, String poolId) {
-    String query = "UPDATE UserPortfolios SET PoolId = ? WHERE PortfolioId = ?";
+    String query = "UPDATE UserPortfolios SET PoolId = ? WHERE PortfolioId = "
+        + "?";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -696,6 +697,25 @@ public class DatabaseApi {
       e.printStackTrace();
     }
     return ports;
+  }
+
+  public static boolean endPools() {
+    String stat = "UPDATE Pools SET Active = 'FALSE' "
+        + "WHERE Active IS TRUE AND End < ?;";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(stat)) {
+        prep.setLong(1, System.currentTimeMillis() / 1000);
+        prep.executeUpdate();
+        return true;
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    return false;
   }
 
   public static Pool getPoolFromPortfolio(String portId) {
