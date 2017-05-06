@@ -46,6 +46,9 @@ public class Watchlist {
           symbols.add(symbol);
         }
       }
+      if (symbols.size() > 20) {
+        symbols = symbols.subList(0, 20);
+      }
       return symbols;
     } catch (IOException e) {
       e.printStackTrace();
