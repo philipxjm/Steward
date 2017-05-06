@@ -80,7 +80,7 @@ $('#createPool').click((e) => {
 	let name = $('#name').val();
 	let end = + new Date($('#end').val());
 	let balance = $('#balance').val();
-  let ai = $('#ai').val() == 'on';
+  let ai = $('#ai').is(':checked');
 
 	if (!name) {
 		$('#poolError').text('ERROR: Please give the pool a name.');
