@@ -7,8 +7,9 @@
 <div id="filter"></div>
 <div id="jumbo" class="jumbotron">
   <div class="container">
-    <h1 class="display-3">Lorum ipsum!</h1>
-    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+    <h1 class="display-3">Welcome to Steward!</h1>
+    <p>We offer world-class portfolio management and algorithmic trading AI
+    that will have you making money in no time!</p>
   </div>
 </div>
 
@@ -44,7 +45,8 @@
     <div class="col">
       <h2>Stock Market Game</h2>
       <p>For prospective investors of all levels, whether you want to dip a
-      toe into market speculation or test your </p>
+      toe into market speculation or test your knowledge of the market by
+      competing against friends and AI alike.</p>
       <p><a class="btn btn-secondary" href="/about#pools" role="button">View
       details &raquo;</a></p>
     </div>  

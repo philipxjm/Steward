@@ -114,7 +114,7 @@ $('#createPool').click((e) => {
     $newPool.click(poolClickHandler);
 		$('#pools').append($newPool);
 
-    $newPool.attr("poolId", resData.name);
+    $newPool.attr("poolId", resData.id);
     $('#noPort').hide();
 
     $newPool.click();

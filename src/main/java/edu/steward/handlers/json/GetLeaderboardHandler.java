@@ -34,7 +34,7 @@ public class GetLeaderboardHandler implements Route {
     List<Object> l = new ArrayList<>();
     for (Score s : scores) {
       Map<String, String> info = s.getPortfolio().getUser();
-      l.add(ImmutableMap.of("user", info.get("name"), "balance", s.getNetWorth()
+      l.add(ImmutableMap.of("user", info.get("user"), "balance", s.getNetWorth()
           , "pic", info.get("pic")));
     }
     return gson.toJson(l);
