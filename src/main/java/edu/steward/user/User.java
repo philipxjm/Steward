@@ -47,7 +47,8 @@ public class User {
   }
 
   public Portfolio getPortfolio(String name) {
-    Portfolio port = DatabaseApi.getAllPorts(getId()).get(name);
+    System.out.println(getId() + "/" + name);
+    Portfolio port = DatabaseApi.getAllPorts(getId()).get(getId() + "/" + name);
     port.loadInfo();
     return port;
   }

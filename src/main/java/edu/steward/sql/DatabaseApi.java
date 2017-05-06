@@ -79,7 +79,8 @@ public class DatabaseApi {
           String name = rs.getString(2);
           String pic = rs.getString(3);
           String email = rs.getString(4);
-          return ImmutableMap.of("user", name, "pic", pic, "email", email);
+          return ImmutableMap.of("user", name, "pic", pic, "email", email,
+              "id", userId);
         } catch (SQLException e) {
           e.printStackTrace();
           return null;
@@ -126,7 +127,7 @@ public class DatabaseApi {
   public static Map<String, Portfolio> getAllPorts(String userId) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
         + "WHERE UserId = ?";
-    HashMap<String, Portfolio> portfolios = new HashMap();
+    HashMap<String, Portfolio> portfolios = new HashMap<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -137,7 +138,8 @@ public class DatabaseApi {
             String name = rs.getString(1);
             String id = rs.getString(2);
             Portfolio port = new Portfolio(name, id);
-            portfolios.put(name, port);
+            portfolios.put(id, port);
+            System.out.println(id);
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -604,7 +606,7 @@ public class DatabaseApi {
   }
 
   public static List<Portfolio> getPortsFromPool(String pool) {
-    String query = "SELECT Name, PortfolioId FROM UserPortfolios "
+    String query = "SELECT Name, PortfolioId, UserId FROM UserPortfolios "
         + "WHERE PoolId = ?;";
     List<Portfolio> portfolios = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {

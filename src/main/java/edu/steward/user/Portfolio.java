@@ -1,11 +1,13 @@
 package edu.steward.user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 
+import com.google.common.collect.ImmutableMap;
 import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 import edu.steward.sql.GainsOverTime;
@@ -15,7 +17,7 @@ public class Portfolio {
   private String name;
   private String portfolioId;
   private Map<String, Integer> holdings;
-  private Double balance = 1000.0;
+  private Double balance = 0.0;
   private Pool pool;
   private String userId;
   // TODO: Add in balance to the below methods
@@ -67,7 +69,7 @@ public class Portfolio {
   }
 
   public boolean sellStock(String ticker, int shares, int time, double price) {
-    // TODO
+    // TODO fix this shit matt
     double cost = price * shares;
     Integer currShares = holdings.get(ticker);
     if (currShares == null) {
@@ -130,8 +132,7 @@ public class Portfolio {
   }
 
   public Map<String, String> getUser() {
-    Map<String, String> userInfo = DatabaseApi.getUserInfo(userId);
-    userInfo.put("id", userId);
-    return userInfo;
+    return DatabaseApi
+        .getUserInfo(userId);
   }
 }
