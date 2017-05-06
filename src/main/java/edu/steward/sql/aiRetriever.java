@@ -21,14 +21,14 @@ public final class aiRetriever {
   private static String userUrl = base + "data/users.sqlite3";
 
   public static List<Trader> getActiveAIs() {
-    String query = "SELECT PortfolioId FROM UserPortfolios; "
+    String query = "SELECT * FROM UserPortfolios "
             + "WHERE (PortfolioId like ?);";
     List<Trader> portfolios = new ArrayList<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
       try (PreparedStatement prep = c.prepareStatement(query)) {
-        prep.setString(1, "ai");
+        prep.setString(1, "ai%");
         try (ResultSet rs = prep.executeQuery()) {
           while (rs.next()) {
             String name = rs.getString(1);

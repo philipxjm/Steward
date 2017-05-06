@@ -150,7 +150,7 @@ public class Update {
     Trigger triggerAI = TriggerBuilder
             .newTrigger()
             .withIdentity("triggerAI1", "groupAI")
-            .withSchedule(cronSchedule("0/10 0 * ? * MON-SAT"))
+            .withSchedule(cronSchedule("0/10 * * * * ?"))
             .forJob(jobAI)
             .build();
 
