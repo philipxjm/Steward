@@ -173,6 +173,7 @@ $('#addPort').click((e) => {
                             newPort.click(portfolioClickHandler);
                             newPort.click();
                             $('#stocks').empty();
+                            $('#portGraph').show();
                         }
                     });
                 } else {
