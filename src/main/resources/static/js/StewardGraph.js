@@ -50,8 +50,6 @@ class StewardGraph {
         this.predictStyle.borderColor = "red";
 	}
 
-    makePretty() {}
-
 	makeGraph(callback) {
         this.getData(() => {
             const graphData = {
@@ -65,7 +63,6 @@ class StewardGraph {
                     responsive: true,
                     maintainAspectRatio: false,
                     title : {
-                        fontStyle: 'none',
                         display: true,
                         text: this.title
                     },

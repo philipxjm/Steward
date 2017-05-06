@@ -11,7 +11,7 @@ class BalanceGraph extends StewardGraph {
         this.title = "Total Unrealized Value of Portfolio";
 	}
 
-	static makePretty(v) {
+	makePretty(v) {
         return '$' + Math.round(v*100)/100;
     }
 

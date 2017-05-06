@@ -10,7 +10,7 @@ class UnrealizedGraph extends StewardGraph {
         this.title = "Unrealized Gains";
     }
 
-    static makePretty(v) {
+    makePretty(v) {
         return Math.round(v*100)/100 + '%';
     }
 
