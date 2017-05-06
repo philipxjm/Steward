@@ -4,10 +4,11 @@
 
 $(document).ready(function() {
     $('.grid').masonry({
-        itemSelector: '.grid-item'
+        itemSelector: '.grid-item',
+        fitWidth: true
     });
 
-    $('.grid-item').each(function(i, obj) {
+    $('.card').each(function(i, obj) {
         let val = 100 - parseInt(parseFloat(obj.id) * 100);
         let h= Math.floor((100 - val) * 120 / 100);
         let s = Math.abs(val - 50)/50;
@@ -15,7 +16,7 @@ $(document).ready(function() {
         $(this).css('background-color', hsv2rgb(h, s, v));
     });
 
-
+    $('.card').tooltip();
 });
 
 let hsv2rgb = function(h, s, v) {

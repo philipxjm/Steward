@@ -31,8 +31,8 @@ public final class aiRetriever {
         prep.setString(1, "ai%");
         try (ResultSet rs = prep.executeQuery()) {
           while (rs.next()) {
-            String name = rs.getString(1);
-            String id = rs.getString(2);
+            String id = rs.getString(1);
+            String name = rs.getString(2);
             String user = rs.getString(3);
             Trader port = new Trader(name, id);
             port.setUser(user);
