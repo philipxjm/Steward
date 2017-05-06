@@ -201,6 +201,7 @@ function showEmptyMessage(port) {
         $('#poolInfo').hide();
         $('#noPort').html("<h2>Make a new pool!</h2><p>TODO: Add pool description.</p>");        
     }
+    $('#noPort').show();
 }
 
 function loadUpDashType(port) { 
