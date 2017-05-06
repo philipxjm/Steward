@@ -130,6 +130,11 @@ $('#joinPool').click((e) => {
     }
 });
 
+// Clicking create cancels join
+$('#create').click((e) => {
+  $('#newPool').parent().remove();
+});
+
 $('#createPool').click((e) => {
 	let name = $('#name').val();
 	let end = + new Date($('#end').val());

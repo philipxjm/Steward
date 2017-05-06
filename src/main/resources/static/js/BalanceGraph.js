@@ -6,7 +6,8 @@ class BalanceGraph extends StewardGraph {
 		this.port = port;
         this.timeseries = "none";
         this.redNegative = false;
-        super.makeGraph();		
+        super.makeGraph();
+        this.yLabel = "Total Value ($)";
 	}
 
 	static makePretty(v) {

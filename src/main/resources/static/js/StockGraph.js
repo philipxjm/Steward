@@ -6,6 +6,7 @@ class StockGraph extends StewardGraph {
         this.ticker = ticker;
         this.redNegative = false;
         super.makeGraph();
+        this.yLabel = "Share Price ($)";
     }
 
     static makePretty(v) {
