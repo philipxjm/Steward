@@ -24,7 +24,7 @@ public class NewPoolHandler implements Route {
     String poolName = qm.value("name");
     String balance = qm.value("balance");
     String start = String.valueOf(System.currentTimeMillis());
-    Pool pool = new Pool(poolName, balance, start);
+    Pool pool = new Pool(poolName, Integer.parseInt(balance), start);
     pool.setEnd(qm.value("end"));
     user.addPool(pool.getId());
     return GSON.toJson(pool);
