@@ -32,6 +32,7 @@ Chart.controllers.NegativeTransparentLine = Chart.controllers.line.extend({
 
 class StewardGraph {
 	constructor(lineLabel) {
+        console.log("Creating graph " + lineLabel);
 		this.lineLabel = lineLabel;
 		this.defaultLineStyle = {
                 yAxisID : 'y-axis-0',

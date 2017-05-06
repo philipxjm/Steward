@@ -270,10 +270,8 @@ function loadUpDashType(port) {
             if (!poolGraph) {
                 let poolId = $('#pools > .pool').first().attr("poolId");
                 poolGraph = new BalanceGraph(poolCtx, name, poolId);
-            } else {
-                // Click active to update dash center
-                $('#pools > .pool').first().click();
-            }                                       
+            }
+            $('#pools > .pool').first().click();
         }         
     }
 }
