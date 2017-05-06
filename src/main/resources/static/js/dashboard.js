@@ -201,6 +201,7 @@ function loadUpDashType(port) {
     if (port) {
         $('#poolInfo').hide();
         $('#pastActionLabel').show();
+        $('#time').show();
         if ($('.port').length == 0) {
             $('.disabler').prop('disabled', true);
             $('#gains').hide();
@@ -220,6 +221,7 @@ function loadUpDashType(port) {
     } else {
         $('#poolInfo').show();
         $('#pastActionLabel').hide();
+        $('#time').hide();
         if ($('.pool').length == 0) {
             $('.disabler').prop('disabled', true);
             $('#gains').hide();
