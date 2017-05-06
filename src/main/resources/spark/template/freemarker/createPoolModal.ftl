@@ -14,6 +14,11 @@
               <label for="name">Pool Name <input class="form-control" type="text" id="name"  autocomplete="off"></label>
             </div>
 
+            <!-- AI -->
+            <div class="row">
+              <label for="ai"><input class="form-control" type="checkbox" id="ai"> Include AI in game?</label>
+            </div>
+
             <!-- End Date -->
             <div class="row">
               <label for="end">End Date <input class="form-control" type="date" id="end"  autocomplete="off"></label>

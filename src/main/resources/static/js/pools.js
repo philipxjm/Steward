@@ -20,7 +20,6 @@ function poolClickHandler(e) {
   getStocks(getCurrentPort());
   $.post('/getLeaderboard', {poolId:id}, (res) => {
     let data = JSON.parse(res);
-    console.log("HERE");
     $('#poolInfo').html(`
       Name: ${name} <br/>
       ID: ${id} <br/>
@@ -81,6 +80,7 @@ $('#createPool').click((e) => {
 	let name = $('#name').val();
 	let end = + new Date($('#end').val());
 	let balance = $('#balance').val();
+  let ai = $('#ai').val() == 'on';
 
 	if (!name) {
 		$('#poolError').text('ERROR: Please give the pool a name.');
@@ -101,8 +101,9 @@ $('#createPool').click((e) => {
 	let param = {
 		name: name,
 		end: end,
-		balance: balance
-	}
+		balance: balance,
+    ai: ai
+	};
 
 	$('#createPool').prop('disabled', true);
 	$.post('/newPool', param, (res) => {
