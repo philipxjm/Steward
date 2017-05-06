@@ -154,7 +154,7 @@ public class DatabaseApi {
   }
 
   public static boolean createPortfolio(String userId, String portId,
-      String portName, String initialBalance) {
+      String portName, double initialBalance) {
 
     String stat = "INSERT INTO UserPortfolios VALUES (?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -174,7 +174,7 @@ public class DatabaseApi {
       stat = "INSERT INTO Balances VALUES (?, ?)";
       try (PreparedStatement prep = c.prepareStatement(stat)) {
         prep.setString(1, portId);
-        prep.setString(2, initialBalance);
+        prep.setDouble(2, initialBalance);
         prep.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
@@ -187,7 +187,7 @@ public class DatabaseApi {
 
   public static boolean createPortfolio(String userId, String portId,
       String portName) {
-    return createPortfolio(userId, portId, portName, "1000000");
+    return createPortfolio(userId, portId, portName, 1000000);
   }
 
   public static boolean renamePortfolio(String userId, String oldName,
@@ -562,7 +562,7 @@ public class DatabaseApi {
       try (PreparedStatement prep = c.prepareStatement(stat)) {
         prep.setString(5, p.getEnd());
         prep.setString(4, p.getStart());
-        prep.setString(3, p.getBal());
+        prep.setInt(3, p.getBal());
         prep.setString(2, p.getName());
         prep.setString(1, p.getId());
         prep.executeUpdate();
@@ -587,7 +587,7 @@ public class DatabaseApi {
         try (ResultSet rs = prep.executeQuery()) {
           while (rs.next()) {
             String name = rs.getString(2);
-            String bal = rs.getString(3);
+            int bal = Integer.parseInt(rs.getString(3));
             String start = rs.getString(4);
             Pool pool = new Pool(id, name, bal, start);
             pool.setEnd(rs.getString(5));

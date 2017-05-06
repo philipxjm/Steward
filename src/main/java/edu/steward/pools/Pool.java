@@ -13,13 +13,13 @@ import java.util.Random;
 public class Pool {
 
   private List<Portfolio> portfolios;
-  private String bal;
+  private int bal;
   private String start;
   private String id;
   private String name;
   private String end;
 
-  public Pool (String name, String balance, String startTime, Portfolio...
+  public Pool (String name, int balance, String startTime, Portfolio...
       ports) {
     Random r = new Random();
     bal = balance;
@@ -34,7 +34,7 @@ public class Pool {
     DatabaseApi.initializePool(this);
   }
 
-  public Pool (String id, String name, String balance, String startTime,
+  public Pool (String id, String name, int balance, String startTime,
                Portfolio...
       ports) {
     this.id = id;
@@ -56,11 +56,11 @@ public class Pool {
     this.portfolios = portfolios;
   }
 
-  public String getBal() {
+  public int getBal() {
     return bal;
   }
 
-  public void setBal(String bal) {
+  public void setBal(int bal) {
     this.bal = bal;
   }
 

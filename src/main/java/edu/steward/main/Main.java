@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import edu.steward.handlers.json.*;
 import org.pac4j.core.config.Config;
 import org.pac4j.sparkjava.CallbackRoute;
 
@@ -16,22 +17,6 @@ import edu.steward.handlers.html.AccountHandler;
 import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.StockHandler;
 import edu.steward.handlers.html.WatchlistHandler;
-import edu.steward.handlers.json.DeletePortfolioHandler;
-import edu.steward.handlers.json.GetGraphDataHandler;
-import edu.steward.handlers.json.GetLeaderboardHandler;
-import edu.steward.handlers.json.GetPortfolioHandler;
-import edu.steward.handlers.json.GetSentimentHandler;
-import edu.steward.handlers.json.GetStockPredictionHandler;
-import edu.steward.handlers.json.GetUnrealizedDataHandler;
-import edu.steward.handlers.json.JoinPoolHandler;
-import edu.steward.handlers.json.LoginHandler;
-import edu.steward.handlers.json.LogoutHandler;
-import edu.steward.handlers.json.NewPoolHandler;
-import edu.steward.handlers.json.NewPortfolioHandler;
-import edu.steward.handlers.json.RenamePortfolioHandler;
-import edu.steward.handlers.json.StockActionHandler;
-import edu.steward.handlers.json.SuggestHandler;
-import edu.steward.login.LoginConfigFactory;
 import edu.steward.sql.Update;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -93,9 +78,7 @@ public class Main {
     Spark.port(port);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
-    final Config config = new LoginConfigFactory().build();
     FreeMarkerEngine freeMarker = createEngine();
-    final CallbackRoute callback = new CallbackRoute(config, null, true);
 
     // Spark routes
     // Pages
@@ -123,6 +106,8 @@ public class Main {
     SentimentWrapper wrap = new SentimentWrapper();
     Spark.post("/getSentiment", new GetSentimentHandler(wrap));
     Spark.post("/getLeaderboard", new GetLeaderboardHandler());
+    Spark.post("/getNetWorthGraph", new GetNetWorthOverTime());
+    Spark.post("/getCurrPrice", new GetCurrPriceHandler());
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

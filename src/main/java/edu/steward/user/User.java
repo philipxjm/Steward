@@ -93,7 +93,8 @@ public class User {
       String portName = pool.getName();
       if (portfolios.get(portName) == null) {
         boolean success = DatabaseApi.createPortfolio(this.getId(), this
-            .getId() + "/pool/" + portName, portName, pool.getBal());
+            .getId() + "/pool/" + portName, portName, pool
+            .getBal());
         if (!success) {
           return null;
         }

@@ -139,7 +139,6 @@ public class GainsOverTime {
   public static Double getCurrentNetWorth(String portId) {
     Double netGains = 0.0;
     TreeMultimap<String, Holding> transHistory = getTransactionHistory(portId);
-    Map<String, Integer>  currHoldings = new HashMap<>();
     for (String ticker : transHistory.keySet()) {
       Integer quant = 0;
       for (Holding h : transHistory.get(ticker)) {
@@ -148,7 +147,9 @@ public class GainsOverTime {
       Stock stock = new Stock(ticker);
       netGains += quant * stock.getCurrPrice().getValue();
     }
-    return netGains + getBalanceFromPortfolio(portId);
+    Double netWorth = netGains + getBalanceFromPortfolio(portId);
+    System.out.println(netWorth);
+    return netWorth;
   }
 
   public static TreeMultimap<String, Holding> getTransactionHistory(String
