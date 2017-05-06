@@ -50,3 +50,11 @@ html, body {
     margin-top: 1px;
     margin-bottom: 1px;  
 }
+
+#profPic {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+  padding-left: 0px;
+  border: 1px solid black;
+}

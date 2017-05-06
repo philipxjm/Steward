@@ -23,6 +23,7 @@ public class LoginHandler implements Route {
     DatabaseApi.createUser(id, name, email, pic);
     request.session().attribute("user", qm.value("name"));
     request.session().attribute("id", qm.value("id"));
+    request.session().attribute("pic", qm.value("pic"));
     return "";
   }
 }

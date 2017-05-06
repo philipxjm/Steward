@@ -24,10 +24,10 @@ public class IndexHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {
     String name = req.session().attribute("user");
-
     boolean loggedIn = name != null;
     if (loggedIn) {
       String id = req.session().attribute("id");
+      String pic = req.session().attribute("pic");
       User user = new User(id);
       List<Portfolio> portNames = user.getPortfolios();
       List<Portfolio> pools = user.getPoolPorts();
@@ -42,9 +42,10 @@ public class IndexHandler implements TemplateViewRoute {
         }
       }
 
-      Map<String, Object> variables = ImmutableMap.of("title", "Dashboard",
-          "user", name, "pools", pools, "portfolios", portNames, "stocks",
-          stocks);
+      Map<Object, Object> variables = ImmutableMap.builder()
+          .put("title", "Dashboard").put("user", name).put("pic", pic)
+          .put("pools", pools).put("portfolios", portNames)
+          .put("stocks", stocks).build();
       return new ModelAndView(variables, "dashboard.ftl");
     } else {
       Map<String, String> variables = ImmutableMap.of("title", "Steward");

@@ -19,6 +19,7 @@ public class WatchlistHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) throws Exception {
     String user = req.session().attribute("user");
+    String pic = req.session().attribute("pic");
     Map<String, Object> variables;
     Map<String, Double> trending = Watchlist.trendingSentiments();
     List<List<Object>> good = new ArrayList<>();
@@ -37,7 +38,7 @@ public class WatchlistHandler implements TemplateViewRoute {
     }
     if (user != null) {
       variables = ImmutableMap.of("title", "Watchlist", "good", good, "bad",
-          bad, "user", user);
+          bad, "user", user, "pic", pic);
     } else {
       variables = ImmutableMap.of("title", "Watchlist", "good", good, "bad",
           bad);

@@ -18,9 +18,10 @@ public class AboutHandler implements TemplateViewRoute {
   @Override
   public ModelAndView handle(Request req, Response res) {
     String user = req.session().attribute("user");
+    String pic = req.session().attribute("pic");
     Map<String, String> variables;
     if (user != null) {
-      variables = ImmutableMap.of("title", "About", "user", user);
+      variables = ImmutableMap.of("title", "About", "user", user, "pic", pic);
     } else {
       variables = ImmutableMap.of("title", "About");
     }

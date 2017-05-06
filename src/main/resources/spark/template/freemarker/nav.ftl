@@ -21,7 +21,7 @@
             <#if user??>
             <div id="user" class="dropdown">
               <button id="username" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                ${user}
+                <img id="profPic" src="${pic}?sz=30"> ${user}
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="/account">Account</a>              
