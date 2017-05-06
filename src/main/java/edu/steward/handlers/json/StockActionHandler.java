@@ -27,21 +27,25 @@ public class StockActionHandler implements Route {
     String portfolioName = pool ? "pool/" + qm.value("port") : qm.value
         ("port");
     Integer transTime = (int) (Long.parseLong(qm.value("time")) / 1000);
+    Integer time = transTime;
     Integer shares = (int) Long.parseLong(qm.value("shares"));
-    System.out.println("time: " + transTime);
+    System.out.println("time: " + time);
     System.out.println("shares: " + shares);
     Stock stock = new Stock(ticker);
 
     // TODO: This should not be currPrice
 
     Boolean current = Boolean.parseBoolean(qm.value("current"));
-    Integer time = transTime;
+
+    System.out.println("current is: " + current);
+
     Price priceObj;
     if (current) {
       priceObj = stock.getCurrPrice();
     } else {
+      time = transTime - (transTime % 86400) + 72000;
       System.out.println("made it in diss");
-      priceObj = stock.getPrice(transTime);
+      priceObj = stock.getPrice(time);
       System.out.println("abcdefg" + priceObj);
       if (priceObj == null) {
         System.out.println("here somehting went horribly wrong oh no");

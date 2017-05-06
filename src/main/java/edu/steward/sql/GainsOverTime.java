@@ -1,6 +1,7 @@
 package edu.steward.sql;
 
 import static edu.steward.sql.DatabaseApi.getBalanceFromPortfolio;
+import static edu.steward.sql.DatabaseApi.getStocksFromPortfolio;
 import static edu.steward.sql.DatabaseApi.initializePrices;
 
 import java.sql.Connection;
@@ -88,12 +89,22 @@ public class GainsOverTime {
         assetValue += prices.get(ticker).get(c).getValue()
             * quantities.get(ticker).get(c);
       }
-
+      System.out.println("sold: " + S);
+      System.out.println("bought: " + B);
+      System.out.println("asset value: " + assetValue);
+      System.out.println("total bought: " + buySell.get(buySell.size() - 1).get(0));
       double percentage = ((S + assetValue) - B)
           / buySell.get(buySell.size() - 1).get(0);
+      System.out.println("percentage: " + percentage);
       ret.add(new Gains(percentage, time));
       c += 1;
     }
+    System.out.println(ret.get(0).getTime());
+    System.out.println(startTime);
+    if (!ret.get(0).getTime().equals(startTime)) {
+      ret.add(0, new Gains(0.0, startTime));
+    }
+
     return ret;
   }
 
@@ -103,6 +114,7 @@ public class GainsOverTime {
           Integer initBalance
   ) {
     System.out.println("getGainsGameGraph Called!");
+    long currTime = (System.currentTimeMillis() / 1000L);
     TreeMultimap<String, Holding> trans = getTransactionHistory(portId);
     if (trans.size() == 0) {
       System.out.println("nada");
@@ -111,23 +123,31 @@ public class GainsOverTime {
 
     Set<String> tickers = trans.keySet();
     Map<String, List<Price>> prices = getPrices(tickers, startTime);
-    for (String ticker : tickers) {
-      Stock s = new Stock(ticker);
-      Price p = s.getCurrPrice();
-      prices.get(ticker).add(p);
-    }
+    System.out.println("start time zz: " + startTime);
+    System.out.println("priceList sizezz: " + prices.values().size());
+//    for (String ticker : tickers) {
+//      System.out.println(ticker);
+//      Stock s = new Stock(ticker);
+//      Price p = s.getCurrPrice();
+//      System.out.println("before i add we have: " + prices.get(ticker));
+//      prices.get(ticker).add(p);
+//    }
     List<Long> times = new ArrayList<>();
     for (Price p : prices.get(tickers.iterator().next())) {
       times.add(p.getTime());
     }
     Collections.sort(times);
+//    TODO: understand this line of code!!!!!
+//    if (times.size() == 0) {
+//      times.add(currTime - (currTime % 86400) + 72000);
+//    }
     ListMultimap<String, Integer> quantities = getQuantityOverTime(trans,
             times);
     List<List<Double>> buySell = getBuySellOverTime(trans, times);
-
     List<Gains> ret = new ArrayList<>();
     int c = 0;
     for (long time : times) {
+      System.out.println(c + ": " + time);
       List<Double> temp = buySell.get(c);
       double B = temp.get(0);
       double S = temp.get(1);
@@ -136,12 +156,33 @@ public class GainsOverTime {
         assetValue += prices.get(ticker).get(c).getValue()
                 * quantities.get(ticker).get(c);
       }
-
+      System.out.println("sold: " + S);
+      System.out.println("bought: " + B);
+      System.out.println("asset value: " + assetValue);
+      System.out.println("total bought: " + buySell.get(buySell.size() - 1).get(0));
+      System.out.println("assettvalue: " + assetValue);
       double netWorth = (S + assetValue - B + initBalance);
+      System.out.println("netWorth " + netWorth);
       ret.add(new Gains(netWorth, time));
       c += 1;
     }
-    System.out.println("made it into the end of the method!");
+    if (ret.size() == 0) {
+      ret.add(0, new Gains((double) initBalance, startTime));
+    } else if (!ret.get(0).getTime().equals(startTime)) {
+      ret.add(0, new Gains((double) initBalance, startTime));
+    }
+//    TODO: add the current!
+    Double currAssetsWorth = 0.0;
+    Map<String, Integer> currQuantities = getStocksFromPortfolio(portId);
+    for (String ticker : currQuantities.keySet()) {
+      Stock stock = new Stock(ticker);
+      currAssetsWorth += currQuantities.get(ticker) * stock.getCurrPrice().getValue();
+      System.out.println("currAssetsWorth: " + currAssetsWorth);
+    }
+    ret.add(new Gains(currAssetsWorth + getBalanceFromPortfolio(portId), currTime));
+    for (Gains g : ret) {
+      System.out.println("gtime: " + g.getTime() + "gmoney: " + g.getValue());
+    }
     return ret;
   }
 
@@ -231,7 +272,7 @@ public class GainsOverTime {
               prices.add(price);
             }
             Stock stock = new Stock(ticker);
-            prices.add(stock.getCurrPrice());
+//            prices.add(stock.getCurrPrice());
 //            TODO: check to see if starttime is within 24 hours or something like that
             if (prices.size() == 0) {
               System.out.println("init f3");

@@ -94,7 +94,19 @@ public class Portfolio {
     List<Gains> gains = GainsOverTime.getGainsPortfolioGraph(portfolioId);
     List<List<Object>> ret = new ArrayList<>();
     for (Gains gain : gains) {
+      System.out.println("gainTIME: " + gain.getTime());
+      System.out.println("gainValue: " + gain.getValue() * 100);
       ret.add(ImmutableList.of(gain.getTime(), gain.getValue() * 100));
+    }
+    return ret;
+  }
+
+  public List<List<Object>> getHistoricalWorth() {
+    List<Gains> historicalWorths =
+            GainsOverTime.getGainsGameGraph(portfolioId, pool.getStart(), pool.getBal());
+    List<List<Object>> ret = new ArrayList<>();
+    for (Gains gain : historicalWorths) {
+      ret.add(ImmutableList.of(gain.getTime(), gain.getValue()));
     }
     return ret;
   }
@@ -115,9 +127,9 @@ public class Portfolio {
     System.out.println(1);
     System.out.println("init balance: " + pool.getBal());
     return GainsOverTime.getGainsGameGraph(
-        portfolioId,
-            (long) pool.getStart(),
-        pool.getBal()
+            portfolioId,
+            pool.getStart(),
+            pool.getBal()
     );
   }
 

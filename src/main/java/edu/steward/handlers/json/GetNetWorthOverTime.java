@@ -31,32 +31,14 @@ public class GetNetWorthOverTime implements Route {
     System.out.println(portfolios.get(0).getBalance());
     System.out.println(portfolios.get(0).getPortfolioId());
     System.out.println("5");
-    List<G> gains = new ArrayList<>();
-    for (Portfolio p : portfolios) {
-      gains.add(new G(p, p.getGainsOverTime()));
-    }
-    List<Object> l = new ArrayList<>();
-    for (G g : gains) {
-      Map<String, String> info = g.getPortfolio().getUser();
-      l.add(ImmutableMap.of("user", info.get("id"), "balance", g.getGains(), "pic", info.get("pic")));
-    }
-    return gson.toJson(l);
+
+//    TODO: this should add it for every user, front end not currently set up to handle it
+
+//    List<Object> l = new ArrayList<>();
+//    for (Portfolio p : portfolios) {
+//      Map<String, String> info = p.getUser();
+//      l.add(ImmutableMap.of("user", info.get("id"), "balance", p.getHistoricalWorth(), "pic", info.get("pic")));
+//    }
+    return gson.toJson(portfolios.get(0).getHistoricalWorth());
   }
-    private class G {
-      private Portfolio portfolio;
-      private List<Gains> gains;
-
-      public G(Portfolio portfolio, List<Gains> gains) {
-        this.portfolio = portfolio;
-        this.gains = gains;
-      }
-
-      public Portfolio getPortfolio() {
-        return portfolio;
-      }
-
-      public List<Gains> getGains() {
-        return gains;
-      }
-    }
-  }
+}
