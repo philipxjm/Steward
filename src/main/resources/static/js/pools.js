@@ -14,6 +14,7 @@ function poolClickHandler(e) {
   let id = elm.attr('poolId');
   $('#info').empty();
  	$('.pool').removeClass('active');
+  $('#stocks').empty();
  	elm.addClass('active');
   const portName = elm.children('.portName')[0].innerText;
   getStocks(getCurrentPort());

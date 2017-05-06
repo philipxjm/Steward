@@ -46,9 +46,10 @@ $('#addStock').click((e) => {
         shares: shares,
         isPool: !activeTabIsPort
     }
+    console.log(data.isPool);
     $('#addStock').prop('disabled', true);
+    console.log(data);
     $.post('/stockAction', data, (res) => {
-    console.log("happening");
         let resData = JSON.parse(res);
         console.log(resData);
         if (resData["success"]) {

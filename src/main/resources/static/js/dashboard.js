@@ -2,7 +2,7 @@
 function getStocks(name, callback) {
     let url = '/getPortfolioStocks';
 
-    $.post(url, {name: name}, (resJson) => {
+    $.post(url, {name: name, isPool: !activeTabIsPort}, (resJson) => {
         let data = JSON.parse(resJson);
         $('#stocks').empty();
         // Add stocks
@@ -234,6 +234,7 @@ function loadUpDashType(port) {
 let activeTabIsPort = true;
 // Called on tab switch
 $('.tabToggle').click((e) => {
+    $('#stocks').empty();
     let port = e.target.innerText == "Portfolios";
     activeTabIsPort = port;
     if (activeTabIsPort) {
