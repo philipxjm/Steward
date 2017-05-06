@@ -6,7 +6,8 @@ class UnrealizedGraph extends StewardGraph {
         this.timeseries = "none";
         this.redNegative = true;
         super.makeGraph();
-        this.yLabel = "% Gain"
+        this.yLabel = "% Gain";
+        this.title = "Unrealized Gains";
     }
 
     static makePretty(v) {

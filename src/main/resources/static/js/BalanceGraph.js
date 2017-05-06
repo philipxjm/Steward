@@ -8,6 +8,7 @@ class BalanceGraph extends StewardGraph {
         this.redNegative = false;
         super.makeGraph();
         this.yLabel = "Total Value ($)";
+        this.title = "Total Unrealized Value of Portfolio";
 	}
 
 	static makePretty(v) {

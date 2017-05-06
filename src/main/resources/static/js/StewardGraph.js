@@ -64,6 +64,11 @@ class StewardGraph {
                     legend: false,
                     responsive: true,
                     maintainAspectRatio: false,
+                    title : {
+                        fontStyle: 'none',
+                        display: true,
+                        text: this.title
+                    },
                     scales: {
                         xAxes: [{
                             type: 'linear',
