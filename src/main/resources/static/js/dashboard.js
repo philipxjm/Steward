@@ -172,7 +172,7 @@ $('#addPort').click((e) => {
                             let newPort = makeNewPort(name);
                             newPortInput.replaceWith(newPort);
                             newPort.click(portfolioClickHandler);
-                            newPort.click();                            
+                            newPort.click();
                             $('#stocks').empty();
                         }
                     });
