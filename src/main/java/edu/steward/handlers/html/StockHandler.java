@@ -31,6 +31,7 @@ public class StockHandler implements TemplateViewRoute {
     String ticker = req.params(":ticker").toUpperCase();
     ImmutableMap.Builder<Object, Object> variables = new ImmutableMap.Builder<>();
     String user = req.session().attribute("user");
+    String id = req.session().attribute("id");
     if (user != null) {
       variables.put("user", user);
     }
@@ -91,7 +92,7 @@ public class StockHandler implements TemplateViewRoute {
       color = "down";
     }
 
-    User u = new User(user);
+    User u = new User(id);
     List<String> ports = u.getPortfolios().stream()
         .map((Portfolio mp) -> mp.getName()).collect(Collectors.toList());
     List<String> pools = u.getPoolPorts().stream()

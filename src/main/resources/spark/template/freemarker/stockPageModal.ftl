@@ -26,16 +26,16 @@
             </div>
 
             <!-- Portfolio -->
-            <select class="custom-select">
+            <select id="portSelect" class="custom-select">
               <option>Buy for</option>
               <optgroup label="Portfolios">
                 <#list ports as port>
-                <option>${port}</option>
+                <option class='portOption'>${port}</option>
                 </#list>
               </optgroup>
               <optgroup label="Pools">
                 <#list pools as port>
-                <option>${port}</option>
+                <option class='portOption'>${port}</option>
                 </#list>
               </optgroup>
             </select>

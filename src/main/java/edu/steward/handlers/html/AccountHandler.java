@@ -23,7 +23,7 @@ public class AccountHandler implements TemplateViewRoute {
     }
     Map<String, String> userInfo = DatabaseApi.getUserInfo(id);
     Map<Object, Object> ret = ImmutableMap.builder().putAll(userInfo)
-        .put("id", id).put("title", "Account").build();
+        .put("title", "Account").build();
     return new ModelAndView(ret, "account.ftl");
   }
 

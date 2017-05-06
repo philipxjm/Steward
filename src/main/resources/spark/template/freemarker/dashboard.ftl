@@ -58,7 +58,7 @@
     <div id="graphContainer" class="col-6">
       <div id="noPort" class="text-muted"></div>
 	   <canvas id="gains"></canvas>
-     <div id="info"></div>
+     <div id="poolInfo"></div>
     </div>
     <div class="col-3">
       <div class="header">
