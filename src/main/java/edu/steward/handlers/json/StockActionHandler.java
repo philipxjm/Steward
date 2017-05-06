@@ -56,6 +56,7 @@ public class StockActionHandler implements Route {
     }
     double price = priceObj.getValue();
 
+    System.out.println(portfolioName);
     Portfolio port = user.getPortfolio(portfolioName);
     System.out.println("pfName: " + port);
     boolean success;

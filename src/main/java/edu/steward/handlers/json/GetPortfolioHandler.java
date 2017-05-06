@@ -21,9 +21,11 @@ public class GetPortfolioHandler implements Route {
   @Override
   public Object handle(Request req, Response res) {
     QueryParamsMap qm = req.queryMap();
-    String name = qm.value("name");
+    boolean pool = Boolean.parseBoolean(qm.value("isPool"));
+    String portfolioName = pool ? "pool/" + qm.value("name") : qm.value
+        ("name");
     User user = new User(req.session().attribute("id"));
-    Map<String, Integer> stocks = user.getPortfolio(name).getHoldings();
+    Map<String, Integer> stocks = user.getPortfolio(portfolioName).getHoldings();
     List<Map<String, Object>> ret = new ArrayList<>();
     for (String ticker : stocks.keySet()) {
       System.out.println("ticker: " + ticker + " shares: " + stocks.get(ticker));

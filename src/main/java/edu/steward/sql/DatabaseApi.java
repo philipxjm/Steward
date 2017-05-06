@@ -127,7 +127,7 @@ public class DatabaseApi {
   public static Map<String, Portfolio> getAllPorts(String userId) {
     String query = "SELECT Name, PortfolioId FROM UserPortfolios "
         + "WHERE UserId = ?";
-    HashMap<String, Portfolio> portfolios = new HashMap();
+    HashMap<String, Portfolio> portfolios = new HashMap<>();
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
@@ -138,7 +138,8 @@ public class DatabaseApi {
             String name = rs.getString(1);
             String id = rs.getString(2);
             Portfolio port = new Portfolio(name, id);
-            portfolios.put(name, port);
+            portfolios.put(id, port);
+            System.out.println(id);
           }
         } catch (SQLException e) {
           e.printStackTrace();
