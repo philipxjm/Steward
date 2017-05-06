@@ -51,7 +51,7 @@ class StewardGraph {
 
     makePretty() {}
 
-	makeGraph() {
+	makeGraph(callback) {
         this.getData(() => {
             const graphData = {
                 type: this.redNegative ? 'NegativeTransparentLine' : 'line',
@@ -99,6 +99,9 @@ class StewardGraph {
                 }
             }
             this.graph = new Chart(ctx, graphData);
+            if (callback) {
+                callback();
+            }
         });
 
         this.getPredict(() => {
@@ -138,12 +141,16 @@ class StewardGraph {
     }
     update() {
         this.getData(() => {
+            let callback = () => {
+                let dataset = this.graph.data.datasets.pop();
+                this.graph.data.datasets = this.makeDataSet();
+                this.graph.update(); 
+            };
             if(!this.graph) {
-                this.makeGraph();
-            }
-            let dataset = this.graph.data.datasets.pop();
-            this.graph.data.datasets = this.makeDataSet();
-            this.graph.update();            
+                this.makeGraph(callback);
+            } else {
+                callback();
+            }           
         });
     }
 }
