@@ -26,7 +26,7 @@ function poolClickHandler(e) {
   $('#stocks').empty();
  	elm.addClass('active');
   getStocks(getCurrentPort());
-  $.post('/getPoolInfo', {name: name}, (res) => {
+  $.post('/getPoolInfo', {name: name, poolId: id}, (res) => {
     let data = JSON.parse(res);
     $('#currBalance').text(res.curr);
     $('#initBalance').text(res.init);
