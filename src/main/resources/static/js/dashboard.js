@@ -233,6 +233,7 @@ function loadUpDashType(port) {
             $('#gains').hide();
             showEmptyMessage(false);
         } else {
+            // Name is not defined?
             if (!graph) {
                 graph = new UnrealizedGraph(ctx, name);
             }
