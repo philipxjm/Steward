@@ -19,3 +19,11 @@ $('#searchButton').click((e) => {
 let x = new Autocorrect($('#stockModalTickerDiv'));
 let inp = new Autocorrect($('#searchBox'), true);
 });
+
+
+function log(msg, data) {
+  console.log("***");
+  console.log(msg);
+  console.log(data);
+  console.log("***")
+}

@@ -9,8 +9,8 @@ $(() => {
 function makeNewPool(name) {
    let ret = $(`<div class="list-group-item list-group-item-action pool">         
               <span class="portName">${name}</span>
-              <!--<a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>
-              <a class="actionButton deletePort float-right fa fa-trash" aria-hidden="true"></a>-->
+              <!--<a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>-->
+              <a class="actionButton deletePool float-right fa fa-sign-out" aria-hidden="true"></a>
           </div>`);
    return ret;
 }
@@ -18,6 +18,22 @@ function makeNewPool(name) {
 // Handles whenever a pool is clicked on
 function poolClickHandler(e) {
   let elm = $(e.target);
+  if (elm.hasClass('deletePool')) {
+    let name = elm.first().prev().text();
+    let data = {name: name};
+    log('/leavePool', name);
+    $.post('/leavePool', data);
+    elm.parent().remove();
+    if ($('.pool').length == 0) {
+      $('#poolGraph').hide();
+      $('#poolInfo').hide();
+      showEmptyMessage(false);
+    } else {
+      $('.pool').first().click();
+    }
+    return;
+  }
+
 
   // If already active we don't need to update
   if (elm.hasClass("active")) {
@@ -40,9 +56,9 @@ function poolClickHandler(e) {
   // Get stocks for new pool portfolio
   getStocks(getCurrentPort());
 
-  let data = { poolId: poolId }
+  let data = { poolId: poolId };
   // Get leaderboard for pool
-  console.log(data);
+  log('/getLeaderboard', data);
   $.post('/getLeaderboard', data, (res) => {
     let data = JSON.parse(res);
     $leaderboard = $('#leaderboard')
@@ -81,8 +97,10 @@ function poolClickHandler(e) {
 }
 
 function getPoolInfo(name, poolId) {
+  let data = {name: name, poolId: poolId};
   // Load in pool info (balance, etc.)
-  $.post('/getPoolInfo', {name: name, poolId: poolId}, (res) => {
+  log("/getPoolInfo", data);
+  $.post('/getPoolInfo', data, (res) => {
     let data = JSON.parse(res);
     $('#currBalance').text('$' + data.curr);
     $('#initBalance').text('$' + data.init);
@@ -110,7 +128,9 @@ $('#joinPool').click((e) => {
                 e.preventDefault();
                 let poolId = $(e.target).val();
                 if (poolId) {
-                    $.post('/joinPool', {name: poolId}, (res) => {
+                    let data = {name: poolId};
+                    log('/joinPool', data);
+                    $.post('/joinPool', data, (res) => {
                         let resData = JSON.parse(res);
                         if (!resData) {
                             $('#poolErr')[0].innerText = "Bad pool ID";
@@ -180,8 +200,8 @@ $('#createPool').click((e) => {
     ai: ai
 	};
 
-  console.log(param);
 	$('#createPool').prop('disabled', true);
+  log('/newPool', param)
 	$.post('/newPool', param, (res) => {
     let resData = JSON.parse(res);
 

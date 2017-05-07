@@ -1,8 +1,8 @@
 // Gets stocks for portfolio
 function getStocks(name, callback) {
-    let url = '/getPortfolioStocks';
-
-    $.post(url, {name: name, isPool: !activeTabIsPort}, (resJson) => {
+    let data = {name: name, isPool: !activeTabIsPort};
+    log('/getPortfolioStocks', data);
+    $.post('/getPortfolioStocks', data, (resJson) => {
         let data = JSON.parse(resJson);
         // Empty out old stocks
         $('#stocks').empty();
@@ -82,6 +82,8 @@ const portfolioClickHandler = (e) => {
                 if (oldName == name || !name) { // Remove
                     finishRename($input, oldName);
                 } else {
+                    let data = {old: oldName, new: name};
+                    log('/renamePortfolio', data);
                     $.post('/renamePortfolio', {old: oldName, new: name}, (res) => {
                         let resData = JSON.parse(res);
                         if (!resData) {
@@ -127,7 +129,9 @@ function finishRename($input, name) {
 // Delete portfolio for elm
 function deletePortfolio(elm) {
     let name = elm.children('.portName')[0].innerText;
-    $.post('/deletePortfolio', {name:name}, (res) => {
+    let data = {name:name};
+    log('/deletePortfolio', data);
+    $.post('/deletePortfolio', data, (res) => {
         let success = JSON.parse(res);
         if (success) {
           elm.remove();
@@ -165,7 +169,9 @@ $('#addPort').click((e) => {
                 e.preventDefault();
                 let name = $(e.target).val();
                 if (name) {
-                    $.post('/newPortfolio', {name: name}, (res) => {
+                    let data = {name: name};
+                    log('/newPortfolio', data);
+                    $.post('/newPortfolio', data, (res) => {
                         let resData = JSON.parse(res);
                         if (!resData) {
                             $('#portErr')[0].innerText = "That portfolio already exists";
