@@ -69,7 +69,10 @@ function poolClickHandler(e) {
       // Add new person to leaderboard
       $leaderboard.append(`<li id="user${id}" class='position list-group-item'>
         <img class="leaderPic rounded" src='${pic}?sz=35'>
-          ${place}. <a href="/user/${id}">${name}</a><br><p class="balance">$${balance}</p>
+        <div>
+          <div class="fullWidth">${place}. <a href="/user/${id}">${name}</a></div>
+          <div><p class="balance">$${balance}</p><div>
+        <div>
       </li>`);
       getPoolInfo(name, poolId);
     }

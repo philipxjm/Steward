@@ -25,7 +25,7 @@ function getStocks(name, callback) {
             if (shares > 0) {
                 $('#stocks').append(`
                     <a href="/stock/${ticker}" class="list-group-item list-group-item-action stock">
-                        <span>${ticker} ${shares} ${shareText}</span><br/><span>$${currPrice} <span class="${color}">(${dailyChange}%)</span></span>
+                        <div class="fullWidth">${ticker} ${shares} ${shareText}</div><br/><div>$${currPrice} <span class="${color}">(${dailyChange}%)</span></div>
                     </a>`);
             }
         }

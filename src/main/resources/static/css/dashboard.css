@@ -45,6 +45,10 @@ canvas {
 	margin: 5px 0;
 }
 
+.fullWidth {
+	width: 100%;
+}
+
 #newPool {
 	width: 100px;
 }
