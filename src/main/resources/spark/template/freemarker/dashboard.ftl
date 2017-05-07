@@ -53,7 +53,7 @@
           </#list>
         </div>
       </div>
-      </div>
+    </div>
     </div>
     <div id="container" class="col-6">
       <div id="noPort" class="text-muted"></div>

@@ -44,6 +44,7 @@
               <label for="shares">Shares <input class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="shares"  autocomplete="off"></label>
             </div>
           </form>
+          <p id="total"></p>
           <p id="stockError" class="text-danger"></p>
       </div>
       <div class="modal-footer">
