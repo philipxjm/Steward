@@ -87,7 +87,7 @@ function getPoolInfo(name, poolId) {
     $('#initBalance').text('$' + data.init);
     let userId = $('#user').attr('userId');
 
-    let value = parseFloat($(`#user${userId}`).children('p.balance').text().substr(1));
+    let value = parseFloat($(`#user${userId}`).find('p.balance').text().substr(1));
     let percentage = 100*(value-data.init) / data.init;
     $('#change').text(Math.round(percentage*100)/100 + '%');
     $('#poolInfo').show();
