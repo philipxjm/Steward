@@ -8,6 +8,10 @@ canvas {
 	margin-right: 20px;
 }
 
+.inactive {
+	background-color: #ccc;
+}
+
 #dropdown0 {
 	margin-right: 20px;
 }
