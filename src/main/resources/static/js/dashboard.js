@@ -17,11 +17,15 @@ function getStocks(name, callback) {
             if (dailyChange > 0) {
                 color = 'up';
             }
+            let shareText = 'share';
+            if (shares > 1) {
+                shareText += 's';
+            }
             // Don't show stocks if they don't have any shares
             if (shares > 0) {
                 $('#stocks').append(`
                     <a href="/stock/${ticker}" class="list-group-item list-group-item-action stock">
-                        <span>${ticker} ${shares} shares</span><br/><span>$${currPrice} <span class="${color}">(${dailyChange}%)</span></span>
+                        <span>${ticker} ${shares} ${shareText}</span><br/><span>$${currPrice} <span class="${color}">(${dailyChange}%)</span></span>
                     </a>`);
             }
         }
