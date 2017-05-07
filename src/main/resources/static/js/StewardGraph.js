@@ -79,7 +79,9 @@ class StewardGraph {
                                     }
                                 },
                                 suggestedMin: this.min,
-                                suggestedMax: this.max
+                                suggestedMax: this.max,
+                                maxRotation: 45,
+                                minRotation: 45
                             },
                         }],
                         yAxes: [{
@@ -100,7 +102,7 @@ class StewardGraph {
                                 return this.makePretty(tooltipItems.yLabel);
                             }
                         }
-                    }                    
+                    }      
                 }
             }
 
