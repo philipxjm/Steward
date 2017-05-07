@@ -52,7 +52,7 @@ public class Main {
 //    TODO: Collect all the pool times from the db and instantiate pool Ends update function!!!!!
 
     Update.update();
-    Integer timeInTen = (int) (System.currentTimeMillis() / 1000L) + 20000;
+    Integer timeInTen = (int) (System.currentTimeMillis() / 1000L) + 3000;
     Pool.setEndTimer("LHA3", timeInTen);
     OptionParser parser = new OptionParser();
     parser.accepts("gui");

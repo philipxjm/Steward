@@ -22,10 +22,11 @@ public class InsertFinalLb {
 
   public static void insert(String poolId) {
     System.out.println("insert called");
+    System.out.println(poolId);
 //    TODO: get every portfolio from pool, get current Net worth for each, cache in leaderboard db.
 //    TODO: Add to lb data to db!!
     List<String> portfolioIds = new ArrayList<>();
-    String query = "SELECT PortfolioId FROM UserPortoflios "
+    String query = "SELECT PortfolioId FROM UserPortfolios "
             + "WHERE PoolId  = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -34,6 +35,7 @@ public class InsertFinalLb {
         prep.setString(1, poolId);
         try (ResultSet rs = prep.executeQuery()) {
           while (rs.next()) {
+            System.out.println("AAAA!");
             String portId = rs.getString(1);
             portfolioIds.add(portId);
           }

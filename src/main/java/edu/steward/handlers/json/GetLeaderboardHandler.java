@@ -8,7 +8,10 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
+import edu.steward.sql.LeaderBoard;
+import edu.steward.user.LBscore;
 import edu.steward.user.Portfolio;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -25,13 +28,25 @@ public class GetLeaderboardHandler implements Route {
   public String handle(Request req, Response res) {
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("poolId");
-    List<Portfolio> rankedPortfolios = DatabaseApi.getPortsFromPool(poolId);
+    Pool pool = DatabaseApi.getPool(poolId)
+    List<Portfolio> rankedPortfolios = pool.getPortfolios();
     List<Score> scores = new ArrayList<>();
-    for (Portfolio p : rankedPortfolios) {
-      System.out.println(p);
-      System.out.println(p.getNetWorth());
-      scores.add(new Score(p, p.getNetWorth()));
+    List<LBscore> lBscores = LeaderBoard.getLeaderBoard(poolId);
+    Long endTime = pool.getEnd();
+    Boolean dead = false;
+    if (lBscores.size() == 0) {
+      for (LBscore lb : lBscores) {
+        scores.add(new Score(lb.getPort(), lb.getScore()));
+      }
+    } else {
+      dead = true;
+      for (Portfolio p : rankedPortfolios) {
+        System.out.println(p);
+        System.out.println(p.getNetWorth());
+        scores.add(new Score(p, p.getNetWorth()));
+      }
     }
+
     Collections.sort(scores);
     List<Object> l = new ArrayList<>();
     for (Score s : scores) {
@@ -39,7 +54,8 @@ public class GetLeaderboardHandler implements Route {
       Map<String, String> info = s.getPortfolio().getUser();
       System.out.println(info);
       l.add(ImmutableMap.of("user", info.get("user"), "balance",
-          s.getNetWorth(), "pic", info.get("pic"), "userId", info.get("id")));
+          s.getNetWorth(), "pic", info.get("pic"), "userId", info.get("id"),
+              "dead", dead));
     }
     return gson.toJson(l);
   }

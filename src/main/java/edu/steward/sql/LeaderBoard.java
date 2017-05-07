@@ -1,6 +1,7 @@
 package edu.steward.sql;
 
 import edu.steward.pools.Pool;
+import edu.steward.user.LBscore;
 import edu.steward.user.Portfolio;
 
 import java.sql.*;
@@ -28,7 +29,7 @@ public class LeaderBoard {
           while (rs.next()) {
             String portId = rs.getString(1);
             Double score = rs.getDouble(2);
-            ret.add(new LBscore(portId, score));
+            ret.add(new LBscore(new Portfolio("", portId), score));
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -44,7 +45,7 @@ public class LeaderBoard {
 
   public static boolean containsPortfolio(String portId) {
     System.out.println("checked if leaderboard contains portfolio");
-    String query = "SELECT FROM Leaderboards "
+    String query = "SELECT * FROM Leaderboards "
             + "WHERE portfolio = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -66,21 +67,4 @@ public class LeaderBoard {
     return false;
   }
 
-  static class LBscore {
-    private String portId;
-    private Double score;
-
-    public LBscore(String portId, Double score) {
-      this.portId = portId;
-      this.score = score;
-    }
-
-    public String getPortId() {
-      return portId;
-    }
-
-    public Double getScore() {
-      return score;
-    }
-  }
 }
