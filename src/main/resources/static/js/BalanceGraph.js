@@ -17,9 +17,10 @@ class BalanceGraph extends StewardGraph {
     }
 
     update(name, poolId) {
-        console.assert(poolId != null);
         this.port = name;
-        this.poolId = poolId;
+        if (poolId != null) {
+            this.poolId = poolId;
+        }
         super.update();      
     }
 
