@@ -25,6 +25,7 @@ public class NewPoolHandler implements Route {
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String poolName = qm.value("name");
+    System.out.println("pool namez: " + poolName);
     Integer balance = Integer.parseInt(qm.value("balance"));
     long start = (System.currentTimeMillis() / 1000L);
     long end = Long.parseLong(qm.value("end")) / 1000L;

@@ -1,14 +1,16 @@
 package edu.steward.handlers.json;
 
 import com.google.gson.Gson;
-
 import edu.steward.user.User;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class DeletePortfolioHandler implements Route {
+/**
+ * Created by mrobins on 5/6/17.
+ */
+public class LeavePoolHandler implements Route {
   private final Gson GSON = new Gson();
 
   @Override
@@ -17,7 +19,7 @@ public class DeletePortfolioHandler implements Route {
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String portfolioName = qm.value("name");
-    return GSON.toJson(user.deletePortfolio("pool/" + portfolioName));
+    return GSON.toJson(user.deletePortfolio(portfolioName));
   }
 
 }

@@ -21,6 +21,7 @@ public class GetNetWorthOverTime implements Route {
   public String handle(Request req, Response res) {
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("poolId");
+    System.out.println(poolId);
     List<Portfolio> portfolios = DatabaseApi.getPortsFromPool(poolId);
     System.out.println("portfolio size: " + portfolios.size());
     System.out.println("pool Id " + poolId);
