@@ -1,18 +1,21 @@
 BEGIN TRANSACTION;
 CREATE TABLE "UserPortfolios" (
 	`PortfolioId`	TEXT NOT NULL UNIQUE,
-	`Name`	TEXT,
-	`UserId`	TEXT NOT NULL,
-	'PoolId' TEXT,
+	`Name` TEXT,
+	`UserId` TEXT NOT NULL,
+	`PoolId` TEXT,
 	PRIMARY KEY(`PortfolioId`),
-	FOREIGN KEY('PoolId') REFERENCES 'Pools'('PoolId') ON UPDATE CASCADE ON DELETE CASCADE
+-- 	you made this change recently, if things break try to remove this line!
+	FOREIGN KEY (`UserId`) REFERENCES `Users`(`UserId`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(`PoolId`) REFERENCES `Pools`(`PoolId`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE "Pools" (
-	'PoolId' TEXT NOT NULL UNIQUE,
-	'Name' TEXT NOT NULL,
-	'Balance' INTEGER NOT NULL,
-	'Start' INTEGER NOT NULL,
-	'End' INTEGER
+	`PoolId` TEXT NOT NULL UNIQUE,
+	`Name` TEXT NOT NULL,
+	`Balance` INTEGER NOT NULL,
+	`Start` INTEGER NOT NULL,
+	`End` INTEGER,
+	PRIMARY KEY(`PoolId`)
 );
 CREATE TABLE "History" (
 	`portfolio`	TEXT NOT NULL,
@@ -28,11 +31,19 @@ CREATE TABLE "Balances" (
 	PRIMARY KEY(`portfolio`),
 	FOREIGN KEY(`portfolio`) REFERENCES `UserPortfolios`(`PortfolioId`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE TABLE `Users` (
+CREATE TABLE "Users" (
 	`UserId`	TEXT,
 	`Name`	TEXT,
 	`Pic`	TEXT,
 	`Email`	TEXT,
 	PRIMARY KEY(`UserId`)
+);
+CREATE TABLE "Leaderboards" (
+	`pool`	TEXT NOT NULL,
+	`portfolio`	TEXT NOT NULL,
+	`score`	REAL NOT NULL,
+	FOREIGN KEY(`pool`) REFERENCES `Pools`(`PoolId`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(`portfolio`) REFERENCES `UserPortfolios`(`PortfolioID`) ON DELETE CASCADE ON UPDATE CASCADE,
+	UNIQUE (`pool`, `portfolio`)
 );
 COMMIT;

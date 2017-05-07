@@ -21,6 +21,9 @@ public class GetNetWorthOverTime implements Route {
   public String handle(Request req, Response res) {
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("poolId");
+//    TODO: get leaderboard from table, if empty the game isnt over yet
+//    TODO: pass back a boolean for isOver and the end timestamp of the pool
+//    TODO: jk this should be done in leaderboard handler and index handler
     System.out.println(poolId);
     List<Portfolio> portfolios = DatabaseApi.getPortsFromPool(poolId);
     System.out.println("portfolio size: " + portfolios.size());

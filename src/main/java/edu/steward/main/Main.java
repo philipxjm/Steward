@@ -14,7 +14,11 @@ import edu.steward.handlers.html.StockHandler;
 import edu.steward.handlers.html.UserHandler;
 import edu.steward.handlers.html.WatchlistHandler;
 import edu.steward.handlers.json.*;
+import edu.steward.pools.Pool;
+import edu.steward.sql.InsertFinalLb;
+import edu.steward.sql.LeaderBoard;
 import edu.steward.sql.Update;
+import edu.steward.user.Portfolio;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -45,8 +49,11 @@ public class Main {
     // System.setProperty("yahoofinance.baseurl.quotes",
     // "http://download.finance.yahoo.com/d/quotes.csv");
 
-    Update.update();
+//    TODO: Collect all the pool times from the db and instantiate pool Ends update function!!!!!
 
+    Update.update();
+    Integer timeInTen = (int) (System.currentTimeMillis() / 1000L) + 20000;
+    Pool.setEndTimer("LHA3", timeInTen);
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)

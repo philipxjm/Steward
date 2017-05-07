@@ -33,10 +33,28 @@ public class IndexHandler implements TemplateViewRoute {
       List<Portfolio> pools = user.getPoolPorts();
       List<Holding> stocks = new ArrayList<>();
 
+      List<Portfolio> active = new ArrayList<>();
+      List<Portfolio> inactive = new ArrayList<>();
+
+      for (Portfolio p : pools) {
+        if (p.isDead()) {
+          inactive.add(p);
+        } else {
+          active.add(p);
+        }
+      }
+
+//      TODO: this is what i had before
+//      Map<Object, Object> variables = ImmutableMap.builder()
+//          .put("title", "Dashboard").put("user", name).put("pic", pic)
+//          .put("pools", pools).put("portfolios", portNames)
+//          .put("stocks", stocks).put("id", id).build();
+
       Map<Object, Object> variables = ImmutableMap.builder()
-          .put("title", "Dashboard").put("user", name).put("pic", pic)
-          .put("pools", pools).put("portfolios", portNames)
-          .put("stocks", stocks).put("id", id).build();
+              .put("title", "Dashboard").put("user", name).put("pic", pic)
+              .put("pools", active).put("portfolios", portNames)
+              .put("inactive", inactive)
+              .put("stocks", stocks).put("id", id).build();
       return new ModelAndView(variables, "dashboard.ftl");
     } else {
       Map<String, String> variables = ImmutableMap.of("title", "Steward");

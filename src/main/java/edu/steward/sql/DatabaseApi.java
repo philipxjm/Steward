@@ -71,7 +71,6 @@ public class DatabaseApi {
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
-
       try (PreparedStatement prep = c.prepareStatement(query)) {
         prep.setString(1, userId);
         try (ResultSet rs = prep.executeQuery()) {
@@ -697,25 +696,6 @@ public class DatabaseApi {
       e.printStackTrace();
     }
     return ports;
-  }
-
-  public static boolean endPools() {
-    String stat = "UPDATE Pools SET Active = 'FALSE' "
-        + "WHERE Active IS TRUE AND End < ?;";
-    try (Connection c = DriverManager.getConnection(userUrl)) {
-      Statement s = c.createStatement();
-      s.executeUpdate("PRAGMA foreign_keys = ON;");
-      try (PreparedStatement prep = c.prepareStatement(stat)) {
-        prep.setLong(1, System.currentTimeMillis() / 1000);
-        prep.executeUpdate();
-        return true;
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return false;
   }
 
   public static Pool getPoolFromPortfolio(String portId) {

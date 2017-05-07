@@ -11,6 +11,8 @@ import com.google.common.collect.ImmutableMap;
 import edu.steward.pools.Pool;
 import edu.steward.sql.DatabaseApi;
 import edu.steward.sql.GainsOverTime;
+import edu.steward.sql.LeaderBoard;
+import edu.steward.sql.Update;
 import edu.steward.stock.Fundamentals.Gains;
 
 public class Portfolio {
@@ -160,6 +162,10 @@ public class Portfolio {
   public Map<String, String> getUser() {
     return DatabaseApi
         .getUserInfo(userId);
+  }
+
+  public boolean isDead() {
+    return LeaderBoard.containsPortfolio(this.portfolioId);
   }
 
 }
