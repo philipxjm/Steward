@@ -28,7 +28,7 @@
 
             <!-- Start Balance -->
             <div class="form-group row">
-              <label for="balance">Start Balance <input class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="balance"  autocomplete="off"></label>
+              <label for="balance">Start Balance <input class="form-control" value=10000 onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="balance"  autocomplete="off"></label>
             </div>
 
             <!-- TODO: Add date -->

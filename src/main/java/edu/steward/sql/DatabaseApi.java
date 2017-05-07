@@ -562,7 +562,7 @@ public class DatabaseApi {
 
   public static boolean initializePool(Pool p) {
     System.out.println("initialze pool calledz");
-    String stat = "INSERT INTO Pools " + "VALUES (?, ?, ?, ?, ?, 'TRUE');";
+    String stat = "INSERT INTO Pools " + "VALUES (?, ?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
       s.executeUpdate("PRAGMA foreign_keys = ON;");
