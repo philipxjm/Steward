@@ -266,7 +266,7 @@ function loadUpDashType(port) {
         $('#poolGraph').hide();
         $('#portGraph').hide(); 
         // If no pools shown empty message, hide graph, and disable buttons
-        if ($('.pool').length == 0) {
+        if (($('.pool').length - $('.newPool').length) == 0) {
             $('.disabler').prop('disabled', true);
             $('#poolGraph').hide();
             showEmptyMessage(false);
