@@ -36,7 +36,7 @@ public class IndexHandler implements TemplateViewRoute {
       Map<Object, Object> variables = ImmutableMap.builder()
           .put("title", "Dashboard").put("user", name).put("pic", pic)
           .put("pools", pools).put("portfolios", portNames)
-          .put("stocks", stocks).build();
+          .put("stocks", stocks).put("id", id).build();
       return new ModelAndView(variables, "dashboard.ftl");
     } else {
       Map<String, String> variables = ImmutableMap.of("title", "Steward");

@@ -40,15 +40,6 @@ function poolClickHandler(e) {
   // Get stocks for new pool portfolio
   getStocks(getCurrentPort());
 
-  // Load in pool info (balance, etc.)
-  $.post('/getPoolInfo', {name: name, poolId: poolId}, (res) => {
-    let data = JSON.parse(res);
-    $('#currBalance').text('$' + data.curr);
-    $('#initBalance').text('$' + data.init);
-    let percentage = 100*(data.curr-data.init) / data.init;
-    $('#change').text(Math.round(percentage*100)/100 + '%');
-    $('#poolInfo').show();
-  });
   let data = { poolId: poolId }
   // Get leaderboard for pool
   $.post('/getLeaderboard', data, (res) => {
@@ -65,6 +56,7 @@ function poolClickHandler(e) {
       let pic = data[i].pic;
       let name = data[i].user;
       let balance = data[i].balance;
+      let id = data[i].userId;
       let place;
       // Check for tie
       if (lastBalance == balance) {
@@ -75,9 +67,28 @@ function poolClickHandler(e) {
       lastPlace = place;
       lastBalance = balance;
       // Add new person to leaderboard
-      $leaderboard.append(`<li class='position list-group-item'><img class="leaderPic rounded" src='${pic}?sz=35'>${place}. ${name}<br>$${balance}</li>`);
+      $leaderboard.append(`<li id="user${id}" class='position list-group-item'>
+        <img class="leaderPic rounded" src='${pic}?sz=35'>
+          ${place}. <a href="/user/${id}">${name}</a><br><p class="balance">$${balance}</p>
+      </li>`);
+      getPoolInfo(name, poolId);
     }
   });
+}
+
+function getPoolInfo(name, poolId) {
+  // Load in pool info (balance, etc.)
+  $.post('/getPoolInfo', {name: name, poolId: poolId}, (res) => {
+    let data = JSON.parse(res);
+    $('#currBalance').text('$' + data.curr);
+    $('#initBalance').text('$' + data.init);
+    let userId = $('#user').attr('userId');
+
+    let value = parseFloat($(`#user${userId}`).children('p.balance').text().substr(1));
+    let percentage = 100*(value-data.init) / data.init;
+    $('#change').text(Math.round(percentage*100)/100 + '%');
+    $('#poolInfo').show();
+  });  
 }
 
 // Add click handler to all pools

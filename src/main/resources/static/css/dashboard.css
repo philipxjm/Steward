@@ -68,3 +68,8 @@ canvas {
 .chart-container {
 	height: calc(30vh - 2.85rem - 5px);
 }
+
+.balance {
+	margin-left: 10px;
+	margin-bottom: 0;
+}

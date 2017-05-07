@@ -36,6 +36,7 @@ public class StockHandler implements TemplateViewRoute {
     if (user != null) {
       variables.put("user", user);
       variables.put("pic", pic);
+      variables.put("id", id);
     }
     variables.put("ticker", ticker);
     Stock stock = new Stock(ticker);

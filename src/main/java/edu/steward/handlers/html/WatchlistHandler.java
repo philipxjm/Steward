@@ -20,20 +20,21 @@ public class WatchlistHandler implements TemplateViewRoute {
   public ModelAndView handle(Request req, Response res) throws Exception {
     String user = req.session().attribute("user");
     String pic = req.session().attribute("pic");
+    String id = req.session().attribute("id");
     Map<String, Object> variables;
     Map<String, Double> trending = Watchlist.trendingSentiments();
     List<List<Object>> ret = new ArrayList<>();
     for (String key : trending.keySet()) {
       Stock s = new Stock(key);
       System.out.println(key);
-      ret.add(ImmutableList.of(key, trending.get(key), s.getCurrPrice().getValue(),
-              s.getDailyChange().getValue()));
+      ret.add(ImmutableList.of(key, trending.get(key),
+          s.getCurrPrice().getValue(), s.getDailyChange().getValue()));
     }
     ret.sort((List<Object> a, List<Object> b) -> Double
         .compare((double) b.get(1), (double) a.get(1)));
     if (user != null) {
       variables = ImmutableMap.of("title", "Watchlist", "trending", ret, "user",
-          user, "pic", pic);
+          user, "pic", pic, "id", id);
     } else {
       variables = ImmutableMap.of("title", "Watchlist", "trending", ret);
     }

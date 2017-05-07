@@ -19,12 +19,12 @@
         </li>
         <li class="nav-item">
             <#if user??>
-            <div id="user" class="dropdown">
+            <div userId="${id}" id="user" class="dropdown">
               <button id="username" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img id="navProfPic" class="rounded" src="${pic}?sz=30"> ${user}
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/account">Account</a>              
+                <a class="dropdown-item" href="/user/${id}">Account</a>              
                 <a class="dropdown-item" onclick="onSignOut()" href="#">Sign Out</a>
               </div>
             </div>
