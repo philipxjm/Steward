@@ -18,6 +18,7 @@ function makeNewPool(name) {
 // Handles whenever a pool is clicked on
 function poolClickHandler(e) {
   let elm = $(e.target);
+
   if (elm.hasClass('deletePool')) {
     let name = elm.first().prev().text();
     let data = {name: name};
@@ -32,6 +33,10 @@ function poolClickHandler(e) {
       $('.pool').first().click();
     }
     return;
+  }
+
+  if (elm.hasClass('portName')) {
+    elm = elm.parent();
   }
 
 
