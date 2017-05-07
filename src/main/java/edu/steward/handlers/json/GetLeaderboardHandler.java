@@ -28,7 +28,7 @@ public class GetLeaderboardHandler implements Route {
   public String handle(Request req, Response res) {
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("poolId");
-    Pool pool = DatabaseApi.getPool(poolId)
+    Pool pool = DatabaseApi.getPool(poolId);
     List<Portfolio> rankedPortfolios = pool.getPortfolios();
     List<Score> scores = new ArrayList<>();
     List<LBscore> lBscores = LeaderBoard.getLeaderBoard(poolId);
@@ -53,9 +53,9 @@ public class GetLeaderboardHandler implements Route {
       System.out.println(poolId);
       Map<String, String> info = s.getPortfolio().getUser();
       System.out.println(info);
-      l.add(ImmutableMap.of("user", info.get("user"), "balance",
-          s.getNetWorth(), "pic", info.get("pic"), "userId", info.get("id"),
-              "dead", dead));
+      l.add(
+          ImmutableMap.of("user", info.get("user"), "balance", s.getNetWorth(),
+              "pic", info.get("pic"), "userId", info.get("id"), "dead", dead));
     }
     return gson.toJson(l);
   }
