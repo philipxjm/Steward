@@ -71,16 +71,6 @@ canvas {
 	border: 1px solid black;
 }
 
-#graphContainer {
-	display: inline-block;
-	height: 30vh;
-	width: 100%;
-}
-
-.chart-container {
-	height: calc(30vh - 2.85rem - 5px);
-}
-
 .balance {
 	margin-left: 10px;
 	margin-bottom: 0;
