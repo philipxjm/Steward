@@ -80,7 +80,7 @@ $('#addStock').click((e) => {
 
 $('#shares').on('input', setTotal);
 $('#ticker').change(setTotal);
-
+$('#total').hide();
 function setTotal() {
     let ticker = $('#ticker').val();
     let data = {ticker: ticker};
@@ -90,15 +90,18 @@ function setTotal() {
     } else {
         shares = parseInt(shares);
     }
+    $('#sharesTotal').text(shares);
     log('/getCurrPrice', data)
     $.post('/getCurrPrice', data, (res) => {
         if (res == "null") {
-            $('#total').text('');
+            $('#total').hide();
         } else {
+            $('#total').show();
             let resData = JSON.parse(res);
             let price = resData.price;
             let total = Math.round(price * shares*100)/100;
-            $('#total').text(`$${price} x ${shares} = $${total}`);
+            $('#priceTotal').text('$' + price);
+            $('#totalCost').text('$' + total);
         }
     });
 }

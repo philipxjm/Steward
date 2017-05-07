@@ -44,7 +44,21 @@
               <label for="shares">Shares <input class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="shares"  autocomplete="off"></label>
             </div>
           </form>
-          <p id="total"></p>
+          <!-- Total Table -->
+          <div id="total">
+            <div class="row">
+              <div class="zero col"></div>
+              <div id="priceTotal" class="col text-right pull-right"></div>
+            </div>
+            <div class="row">
+              <div class="col text-left">x</div>
+              <div id="sharesTotal" class="col text-right pull-right"></div>
+            </div>
+            <div class="bottom row">
+              <div class="zero col"></div>
+              <div id="totalCost" class="col text-right pull-right"></div>
+            </div>
+          </div>
           <p id="stockError" class="text-danger"></p>
       </div>
       <div class="modal-footer">
