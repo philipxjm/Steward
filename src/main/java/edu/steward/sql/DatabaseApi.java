@@ -74,12 +74,13 @@ public class DatabaseApi {
       try (PreparedStatement prep = c.prepareStatement(query)) {
         prep.setString(1, userId);
         try (ResultSet rs = prep.executeQuery()) {
-          rs.next();
-          String name = rs.getString(2);
-          String pic = rs.getString(3);
-          String email = rs.getString(4);
-          return ImmutableMap.of("user", name, "pic", pic, "email", email, "id",
-              userId);
+          while (rs.next()) {
+            String name = rs.getString(2);
+            String pic = rs.getString(3);
+            String email = rs.getString(4);
+            return ImmutableMap.of("user", name, "pic", pic, "email", email, "id",
+                    userId);
+          }
         } catch (SQLException e) {
           e.printStackTrace();
           return null;
@@ -93,6 +94,7 @@ public class DatabaseApi {
       e.printStackTrace();
       return null;
     }
+    return null;
   }
 
   public static List<Portfolio> getPortfoliosFromUser(String userId) {
@@ -742,4 +744,32 @@ public class DatabaseApi {
     }
     return null;
   }
+
+  public static Portfolio getPortfolio(String portId) {
+    String query = "SELECT * FROM UserPortfolios WHERE portfolioId = ?;";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        prep.setString(1, portId);
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            String portName = rs.getString(2);
+            String userId = rs.getString(3);
+            Portfolio portfolio = new Portfolio(portName, portId);
+            portfolio.setUser(userId);
+            return portfolio;
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
 }

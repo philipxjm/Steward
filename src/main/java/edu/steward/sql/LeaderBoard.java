@@ -29,7 +29,8 @@ public class LeaderBoard {
           while (rs.next()) {
             String portId = rs.getString(1);
             Double score = rs.getDouble(2);
-            ret.add(new LBscore(new Portfolio("", portId), score));
+//            TODO: get portfolio
+            ret.add(new LBscore(DatabaseApi.getPortfolio(portId) , score));
           }
         } catch (SQLException e) {
           e.printStackTrace();

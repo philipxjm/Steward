@@ -37,10 +37,10 @@ public class IndexHandler implements TemplateViewRoute {
       List<Portfolio> inactive = new ArrayList<>();
       for (Portfolio p : pools) {
         if (p.isDead()) {
-          System.out.println("yup it's dead");
+          System.out.println(p.getName() + " yup it's dead");
           inactive.add(p);
         } else {
-          System.out.println("not dead, alive!");
+          System.out.println(p.getName() + " not dead, alive!");
           active.add(p);
         }
       }
@@ -53,7 +53,7 @@ public class IndexHandler implements TemplateViewRoute {
 
       Map<Object, Object> variables = ImmutableMap.builder()
               .put("title", "Dashboard").put("user", name).put("pic", pic)
-              .put("pools", active).put("portfolios", portNames)
+              .put("pools", pools).put("portfolios", portNames)
               .put("inactive", inactive)
               .put("stocks", stocks).put("id", id).build();
       return new ModelAndView(variables, "dashboard.ftl");

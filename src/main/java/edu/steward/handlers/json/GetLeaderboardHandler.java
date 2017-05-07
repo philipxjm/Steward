@@ -28,18 +28,16 @@ public class GetLeaderboardHandler implements Route {
   public String handle(Request req, Response res) {
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("poolId");
-    Pool pool = DatabaseApi.getPool(poolId)
-    List<Portfolio> rankedPortfolios = pool.getPortfolios();
+    List<Portfolio> rankedPortfolios = DatabaseApi.getPortsFromPool(poolId);
     List<Score> scores = new ArrayList<>();
     List<LBscore> lBscores = LeaderBoard.getLeaderBoard(poolId);
-    Long endTime = pool.getEnd();
-    Boolean dead = false;
-    if (lBscores.size() == 0) {
+    System.out.println("pool: " + poolId + " has lb list size: " + lBscores.size());
+    if (lBscores.size() != 0) {
       for (LBscore lb : lBscores) {
+        System.out.println("lbscore: " + lb.getScore());
         scores.add(new Score(lb.getPort(), lb.getScore()));
       }
     } else {
-      dead = true;
       for (Portfolio p : rankedPortfolios) {
         System.out.println(p);
         System.out.println(p.getNetWorth());
@@ -47,15 +45,13 @@ public class GetLeaderboardHandler implements Route {
       }
     }
 
+
     Collections.sort(scores);
     List<Object> l = new ArrayList<>();
     for (Score s : scores) {
-      System.out.println(poolId);
       Map<String, String> info = s.getPortfolio().getUser();
-      System.out.println(info);
       l.add(ImmutableMap.of("user", info.get("user"), "balance",
-          s.getNetWorth(), "pic", info.get("pic"), "userId", info.get("id"),
-              "dead", dead));
+          s.getNetWorth(), "pic", info.get("pic"), "userId", info.get("id")));
     }
     return gson.toJson(l);
   }
