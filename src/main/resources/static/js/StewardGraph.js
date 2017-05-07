@@ -147,6 +147,7 @@ class StewardGraph {
 
         return ret;
     }
+
     update() {
         this.getData(() => {
             let callback = () => {
