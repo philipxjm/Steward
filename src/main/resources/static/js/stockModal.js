@@ -65,8 +65,10 @@ $('#addStock').click((e) => {
                     portGraph.update(port);
                 } else {
                     poolGraph.update(port);
+                    // TODO: Update info here
                 }
             });
+
         } else {
             $('#stockError')[0].innerText = "ERROR: " + resData["error"];
         }

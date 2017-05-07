@@ -5,10 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import edu.steward.handlers.json.*;
-import org.pac4j.core.config.Config;
-import org.pac4j.sparkjava.CallbackRoute;
-
 import com.google.common.collect.ImmutableList;
 
 import edu.steward.Sentiment.SentimentWrapper;
@@ -16,7 +12,27 @@ import edu.steward.handlers.html.AboutHandler;
 import edu.steward.handlers.html.AccountHandler;
 import edu.steward.handlers.html.IndexHandler;
 import edu.steward.handlers.html.StockHandler;
+import edu.steward.handlers.html.UserHandler;
 import edu.steward.handlers.html.WatchlistHandler;
+import edu.steward.handlers.json.DeletePortfolioHandler;
+import edu.steward.handlers.json.GetCurrPriceHandler;
+import edu.steward.handlers.json.GetGraphDataHandler;
+import edu.steward.handlers.json.GetLeaderboardHandler;
+import edu.steward.handlers.json.GetNetWorthOverTime;
+import edu.steward.handlers.json.GetPoolInfoHandler;
+import edu.steward.handlers.json.GetPortfolioHandler;
+import edu.steward.handlers.json.GetSentimentHandler;
+import edu.steward.handlers.json.GetStockPredictionHandler;
+import edu.steward.handlers.json.GetTransactionHistoryHandler;
+import edu.steward.handlers.json.GetUnrealizedDataHandler;
+import edu.steward.handlers.json.JoinPoolHandler;
+import edu.steward.handlers.json.LoginHandler;
+import edu.steward.handlers.json.LogoutHandler;
+import edu.steward.handlers.json.NewPoolHandler;
+import edu.steward.handlers.json.NewPortfolioHandler;
+import edu.steward.handlers.json.RenamePortfolioHandler;
+import edu.steward.handlers.json.StockActionHandler;
+import edu.steward.handlers.json.SuggestHandler;
 import edu.steward.sql.Update;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -85,6 +101,7 @@ public class Main {
     Spark.get("/", new IndexHandler(), freeMarker);
     Spark.get("/about", new AboutHandler(), freeMarker);
     Spark.get("/stock/:ticker", new StockHandler(), freeMarker);
+    Spark.get("/user/:id", new UserHandler(), freeMarker);
     Spark.get("/watchlist", new WatchlistHandler(), freeMarker);
     Spark.get("/account", new AccountHandler(), freeMarker);
     // Auth
