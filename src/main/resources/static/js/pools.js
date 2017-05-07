@@ -72,7 +72,7 @@ function poolClickHandler(e) {
     for (var i = 0; i < data.length; i++) {
       let pic = data[i].pic;
       let name = data[i].user;
-      let balance = data[i].balance;
+      let balance = Math.round(data[i].balance);
       let id = data[i].userId;
       let place;
       // Check for tie
@@ -102,13 +102,20 @@ function getPoolInfo(name, poolId) {
   log("/getPoolInfo", data);
   $.post('/getPoolInfo', data, (res) => {
     let data = JSON.parse(res);
-    $('#currBalance').text('$' + data.curr);
-    $('#initBalance').text('$' + data.init);
+    $('#currBalance').text('$' + Math.round(data.curr));
+    $('#initBalance').text('$' + Math.round(data.init));
     let userId = $('#user').attr('userId');
 
     let value = parseFloat($(`#user${userId}`).find('p.balance').text().substr(1));
     let percentage = 100*(value-data.init) / data.init;
+    let changeClass = '';
+    if (percentage > 0) {
+      changeClass = 'up';
+    } else if (percentage < 0) {
+      changeClass = 'down';
+    }
     $('#change').text(Math.round(percentage*100)/100 + '%');
+    $('#change').addClass(changeClass);
     $('#poolInfo').show();
   });  
 }

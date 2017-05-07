@@ -20,7 +20,13 @@ class BalanceGraph extends StewardGraph {
         let ret = [];
         for (let i = 0; i < n; i++) {
             let val = 360 * i / n;
-            ret.push(`hsl(${val}, 70%, 50%)`);
+            let color = `hsl(${val}, 70%, 50%)`;
+            ret.push(color);
+            let bg = `hsla(${val}, 70%, 50%, 0.5)`;
+            let id = this.users[i];
+            console.log($(`#user${id}`));
+            var style = $(`<style>#user${id} { background-color: ${bg}; }</style>`);
+            $('html > head').append(style);
         } 
         return ret;
     }
@@ -30,18 +36,11 @@ class BalanceGraph extends StewardGraph {
         let colors = this.getColors(this.data.length);
         for (let i = 0; i < this.data.length; i++) {
             let style = Object.assign({data: this.data[i]}, this.defaultLineStyle);
-            console.log("colors");
-            console.log(colors);
             style.borderColor = colors[i];
             ret.push(style);
         }
 
         return ret;
-    }
-
-    makeDataset() {
-        console.log("HERE");
-        let ret = []
     }
 
     update(name, poolId) {
@@ -80,7 +79,7 @@ class BalanceGraph extends StewardGraph {
                 datasets.push(chartData);
             }
             users.sort();
-            this.seed = users.join('');
+            this.users = users;
             this.data = datasets;
             this.labels = labels;
             if (this.data[0].length > 0) {
