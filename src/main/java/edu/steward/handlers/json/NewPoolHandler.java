@@ -29,7 +29,6 @@ public class NewPoolHandler implements Route {
     Integer balance = Integer.parseInt(qm.value("balance"));
     long start = (System.currentTimeMillis() / 1000L);
     long end = Long.parseLong(qm.value("end")) / 1000L;
-    System.out.println("asdf");
     Pool pool = new Pool(poolName, balance, start, end);
     user.addPool(pool.getId());
     if (Boolean.parseBoolean(qm.value("ai"))) {
