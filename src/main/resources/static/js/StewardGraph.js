@@ -78,6 +78,10 @@ class StewardGraph {
                                         return "";
                                     }
                                 },
+                                suggestedMin: this.min,
+                                suggestedMax: this.max,
+                                maxRotation: 45,
+                                minRotation: 45
                             },
                         }],
                         yAxes: [{
@@ -98,7 +102,7 @@ class StewardGraph {
                                 return this.makePretty(tooltipItems.yLabel);
                             }
                         }
-                    }                    
+                    }      
                 }
             }
 
@@ -143,11 +147,20 @@ class StewardGraph {
 
         return ret;
     }
+
     update() {
         this.getData(() => {
             let callback = () => {
                 let dataset = this.graph.data.datasets.pop();
                 this.graph.data.datasets = this.makeDataSet();
+                if (this.setBounds) {
+                    let max = this.max;
+                    if (this.timeseries == "FIVE_DAY") {
+                        max += 15;
+                    }
+                    this.graph.config.options.scales.xAxes[0].ticks.min = this.min;
+                    this.graph.options.scales.xAxes[0].ticks.max = max;
+                }
                 this.graph.update(); 
             };
             if(!this.graph) {

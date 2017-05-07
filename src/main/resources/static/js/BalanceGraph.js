@@ -16,35 +16,75 @@ class BalanceGraph extends StewardGraph {
         return '$' + Math.round(v*100)/100;
     }
 
+    getColors(n) {
+        let ret = [];
+        for (let i = 0; i < n; i++) {
+            let val = 360 * i / n;
+            let color = `hsl(${val}, 70%, 50%)`;
+            ret.push(color);
+            let bg = `hsla(${val}, 70%, 50%, 0.5)`;
+            let id = this.users[i];
+            console.log($(`#user${id}`));
+            var style = $(`<style>#user${id} { background-color: ${bg}; }</style>`);
+            $('html > head').append(style);
+        } 
+        return ret;
+    }
+
+    makeDataSet() {
+        let ret = [];
+        let colors = this.getColors(this.data.length);
+        for (let i = 0; i < this.data.length; i++) {
+            let style = Object.assign({data: this.data[i]}, this.defaultLineStyle);
+            style.borderColor = colors[i];
+            ret.push(style);
+        }
+
+        return ret;
+    }
+
     update(name, poolId) {
-        console.assert(poolId != null);
         this.port = name;
-        this.poolId = poolId;
+        if (poolId != null) {
+            this.poolId = poolId;
+        }
         super.update();      
     }
 
     getData(callback) {
         let url = '/getNetWorthGraph';
         let data = { poolId: this.poolId };
-        console.log(this.poolId);
-        console.assert(this.poolId != null);
 
-        $.post(url, data, (res) => {  
+        console.assert(this.poolId != null);
+        log(url, data);
+        $.post(url, data, (res) => {
             let data = JSON.parse(res);
+            let users = [];
+            let datasets = [];
             let labels = [];
-            let chartData = [];
-            let c = 0;
-            for (let i = 0; i < data.length; i++) {
-                let p = data[i];
-                labels.push(new Date(p[0]*1000));
-                chartData.push({x: c, y: p[1]});
-                c += 1;
+            let first = true;
+            let c;
+            for (let hist of data) {
+                users.push(hist.user);
+                c = 0;
+                let chartData = []
+                for (let p of hist.balance) {
+                    if (first) {
+                        labels.push(new Date(p[0]*1000));
+                    }
+                    chartData.push({x: c, y: p[1]});
+                    c += 1;
+                }
+                first = false;
+                datasets.push(chartData);
             }
-            this.data = chartData;
+            users.sort();
+            this.users = users;
+            this.data = datasets;
             this.labels = labels;
-            if (chartData.length > 0) {
-                this.min = chartData[0].x;
-                this.max = chartData[chartData.length - 1].x;
+            if (this.data[0].length > 0) {
+                this.min = 0;
+                this.max = c-1;
             }
             callback();
         });

@@ -4,6 +4,22 @@ canvas {
 	height: 200px;
 }
 
+#ticker {
+	margin-right: 20px;
+}
+
+#dropdown0 {
+	margin-right: 20px;
+}
+
+.checkboxDiv {
+	margin-left: auto;
+}
+
+#customCheck {
+	margin: 0;
+}
+
 #main {
 	margin-top: 40px;
 }
@@ -60,17 +76,6 @@ canvas {
 
 .leaderPic {
 	margin-right: 10px;
-	border: 1px solid black;
-}
-
-#graphContainer {
-	display: inline-block;
-	height: 30vh;
-	width: 100%;
-}
-
-.chart-container {
-	height: calc(30vh - 2.85rem - 5px);
 }
 
 .balance {

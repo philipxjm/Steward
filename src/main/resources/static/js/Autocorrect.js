@@ -9,7 +9,7 @@ class Autocorrect {
 
 		
 		if ($toInsert.attr('id') == 'stockModalTickerDiv') {
-			let $dropdown = $('<div style="position:relative;left:0;margin:0 -10px;"><ul class="dropdown-menu autoDropdown" id="dropdown' + this.myId + '"></ul></div>');
+			let $dropdown = $('<div style="position:relative;left:0;margin:0 -10px; margin-right:10px;"><ul class="dropdown-menu autoDropdown" id="dropdown' + this.myId + '"></ul></div>');
 			$toInsert.after($dropdown);
 		} else {
 			let $dropdown = $('<ul class="dropdown-menu autoDropdown" id="dropdown' + this.myId + '"></ul>');

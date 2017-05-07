@@ -35,7 +35,7 @@
 
             <!-- Ticker -->
             <div id="stockModalTickerDiv" class="row">
-              <!--<label for="ticker">-->Ticker <input class="autoInp form-control" type="text" id="ticker"  autocomplete="off"><!--</label>-->
+              <!--<label for="ticker">--><div class='fullWidth'>Ticker</div> <input class="autoInp form-control" type="text" id="ticker"  autocomplete="off"><!--</label>-->
             </div>
 
             <!-- Shares -->

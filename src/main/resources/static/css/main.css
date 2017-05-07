@@ -2,6 +2,16 @@ html, body {
     height: 95%;
 }
 
+#graphContainer {
+  display: inline-block;
+  height: 30vh;
+  width: 100%;
+}
+
+.chart-container {
+  height: calc(30vh - 2.85rem - 5px);
+}
+
 .wrapper {
     min-height: 100%;
     height: auto !important;

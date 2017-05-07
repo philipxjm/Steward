@@ -46,7 +46,7 @@
             </label>            
           </div>
           <div class="row row-second">
-            <div id="graph-wrapper">
+            <div id="graphContainer">
               <canvas height=300 id="graph"></canvas>
             </div>
           </div>

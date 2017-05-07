@@ -1,7 +1,10 @@
 package edu.steward.handlers.json;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.steward.sql.DatabaseApi;
@@ -37,12 +40,12 @@ public class GetNetWorthOverTime implements Route {
     // TODO: this should add it for every user, front end not currently set up
     // to handle it
 
-    // List<Object> l = new ArrayList<>();
-    // for (Portfolio p : portfolios) {
-    // Map<String, String> info = p.getUser();
-    // l.add(ImmutableMap.of("user", info.get("id"), "balance",
-    // p.getHistoricalWorth(), "pic", info.get("pic")));
-    // }
-    return gson.toJson(portfolios.get(0).getHistoricalWorth());
+    List<Object> l = new ArrayList<>();
+    for (Portfolio p : portfolios) {
+      Map<String, String> info = p.getUser();
+      l.add(ImmutableMap.of("user", info.get("id"), "balance",
+          p.getHistoricalWorth(), "pic", info.get("pic")));
+    }
+    return gson.toJson(l);
   }
 }
