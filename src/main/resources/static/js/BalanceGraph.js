@@ -1,6 +1,7 @@
 class BalanceGraph extends StewardGraph {
 	constructor(ctx, port, poolId) {
 		super("Balance");
+        console.assert(poolId != null);
 		this.ctx = ctx;
 		this.poolId = poolId;
 		this.port = port;
@@ -16,6 +17,7 @@ class BalanceGraph extends StewardGraph {
     }
 
     update(name, poolId) {
+        console.assert(poolId != null);
         this.port = name;
         this.poolId = poolId;
         super.update();      

@@ -74,7 +74,7 @@ function poolClickHandler(e) {
           <div><p class="balance">$${balance}</p><div>
         <div>
       </li>`);
-      getPoolInfo(name, poolId);
+      getPoolInfo(getCurrentPort(), poolId);
     }
   });
 }
