@@ -19,7 +19,7 @@ public class LeavePoolHandler implements Route {
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String portfolioName = qm.value("name");
-    return GSON.toJson(user.deletePortfolio(portfolioName));
+    return GSON.toJson(user.deletePortfolio("pool/" + portfolioName));
   }
 
 }
