@@ -65,7 +65,7 @@ $('#addStock').click((e) => {
                     portGraph.update(port);
                 } else {
                     poolGraph.update(port);
-                    // TODO: Update info here
+                    getPoolInfo(port, $('#poolId').text());
                 }
             });
 

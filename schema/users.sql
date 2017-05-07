@@ -12,8 +12,7 @@ CREATE TABLE "Pools" (
 	'Name' TEXT NOT NULL,
 	'Balance' INTEGER NOT NULL,
 	'Start' INTEGER NOT NULL,
-	'End' INTEGER,
-	'Active' BOOLEAN DEFAULT TRUE
+	'End' INTEGER
 );
 CREATE TABLE "History" (
 	`portfolio`	TEXT NOT NULL,

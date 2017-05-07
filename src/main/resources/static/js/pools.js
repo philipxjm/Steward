@@ -42,6 +42,7 @@ function poolClickHandler(e) {
 
   let data = { poolId: poolId }
   // Get leaderboard for pool
+  console.log(data);
   $.post('/getLeaderboard', data, (res) => {
     let data = JSON.parse(res);
     $leaderboard = $('#leaderboard')
@@ -176,10 +177,10 @@ $('#createPool').click((e) => {
 		name: name,
 		end: end,
 		balance: balance,
-        ai: ai
+    ai: ai
 	};
 
-
+  console.log(param);
 	$('#createPool').prop('disabled', true);
 	$.post('/newPool', param, (res) => {
     let resData = JSON.parse(res);
