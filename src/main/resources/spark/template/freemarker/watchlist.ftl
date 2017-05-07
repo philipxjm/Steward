@@ -18,7 +18,7 @@
                     <div class="card-block">
                         <h6 class="card-title"><a href="/stock/${stock[0]}">${stock[0]}</a></h6>
                         <p class="card-text">Price: $${stock[2]}</p>
-                        <p class="card-text">Change: (${stock[3]}%)</p>
+                        <p class="card-text">Change: ${stock[3]}%</p>
                     </div>
                 </div>
             </div>
