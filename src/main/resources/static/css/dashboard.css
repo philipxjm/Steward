@@ -4,6 +4,14 @@ canvas {
 	height: 200px;
 }
 
+#ticker {
+	margin-right: 20px;
+}
+
+#dropdown0 {
+	margin-right: 20px;
+}
+
 .checkboxDiv {
 	margin-left: auto;
 }
