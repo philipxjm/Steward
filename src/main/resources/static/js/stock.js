@@ -65,10 +65,10 @@ $('#addStock').click((e) => {
         $('#stockError')[0].innerText = "ERROR: Select a portfolio/pool to buy for.";
         return;      	
     }
-
-    let isPool = elm.attr('label') == 'Pool';
+    console.log(elm);
+    let isPool = elm.parent().attr('label') == 'Pools';
     let data = {
-        current: false,// !$('#pastAction').prop("checked"),
+        current: true,// !$('#pastAction').prop("checked"),
         port: port,
         time: time,
         action: action,
@@ -92,3 +92,6 @@ $('#addStock').click((e) => {
 
     return false;
 });
+
+// Hacky but makes max right initially
+$(()=>{$('#SIX_MONTH').click();});

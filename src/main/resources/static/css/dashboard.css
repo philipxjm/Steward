@@ -4,6 +4,14 @@ canvas {
 	height: 200px;
 }
 
+.checkboxDiv {
+	margin-left: auto;
+}
+
+#customCheck {
+	margin: 0;
+}
+
 #main {
 	margin-top: 40px;
 }

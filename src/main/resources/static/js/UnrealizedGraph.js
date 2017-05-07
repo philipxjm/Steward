@@ -20,10 +20,9 @@ class UnrealizedGraph extends StewardGraph {
     }
 
     getData(callback) {
-        let url = '/getUnrealizedData';
         let data = { name: this.port };
-
-        $.post(url, data, (res) => {  
+        log('/getUnrealizedData', data);
+        $.post('/getUnrealizedData', data, (res) => {  
             let data = JSON.parse(res);
             let labels = [];
             let chartData = [];

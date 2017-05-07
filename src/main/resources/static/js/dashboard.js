@@ -24,9 +24,19 @@ function getStocks(name, callback) {
             // Don't show stocks if they don't have any shares
             if (shares > 0) {
                 $('#stocks').append(`
-                    <a href="/stock/${ticker}" class="list-group-item list-group-item-action stock">
-                        <div class="fullWidth">${ticker} ${shares} ${shareText}</div><br/><div>$${currPrice} <span class="${color}">(${dailyChange}%)</span></div>
-                    </a>`);
+                <a href="/stock/${ticker}" class="list-group-item list-group-item-action stock">
+                    <div class="float-left">
+                        <div class="fullWidth">${ticker} ${shares} ${shareText}</div>
+                        <div>$${currPrice} <span class="${color}">(${dailyChange}%)</span></div>
+                    </div>
+                    <!--
+                    <div class="checkboxDiv">
+                        <label id="customCheck" class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                        </label>
+                    </div>-->
+                </a>`);
             }
         }
         if (callback) {
