@@ -47,6 +47,7 @@ function poolClickHandler(e) {
     $('#initBalance').text('$' + data.init);
     let percentage = 100*(data.curr-data.init) / data.init;
     $('#change').text(Math.round(percentage*100)/100 + '%');
+    $('#poolInfo').show();
   });
   let data = { poolId: poolId }
   // Get leaderboard for pool
