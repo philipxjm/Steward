@@ -1,6 +1,7 @@
 package edu.steward.NeuralNet;
 
 import com.google.common.collect.ImmutableList;
+import edu.steward.Sentiment.SentimentWrapper;
 import edu.steward.stock.Fundamentals.Price;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -28,7 +29,7 @@ public class MLPNetwork implements NeuralNet {
 
   private double min, max;
   private int movingWindow;
-  private int iterations = 1000;
+  private int iterations = 25000;
   private double learningConstant = 1.5;
   private double maxError = 0.00000001;
   private NeuralNetwork nn;
@@ -37,7 +38,7 @@ public class MLPNetwork implements NeuralNet {
     min = 0.0;
     max = 2000.0;
     this.movingWindow = movingWindow;
-    nn = new ElmanNetwork(movingWindow, 2 * movingWindow + 1, movingWindow - 1, 1);
+    nn = new MultiLayerPerceptron(movingWindow, 2 * movingWindow + 1, 1);
   }
 
   public MLPNetwork(int movingWindow, String pathToModel) {
@@ -135,6 +136,24 @@ public class MLPNetwork implements NeuralNet {
 
   @Override
   public Price run(List<Price> priceSeries, List<Integer> sentiments) {
+    double totalChanges = 0.0;
+    for (int i = 0; i < priceSeries.size() - 1; i++) {
+      totalChanges += (priceSeries.get(i + 1).getValue() - priceSeries.get(i)
+              .getValue()) / priceSeries.get(i).getValue();
+    }
+
+    SentimentWrapper sw = new SentimentWrapper();
+    double averageChange = totalChanges / priceSeries.size();
+    double sentiment = sw.findSentimentOf("AAPL");
+
+    System.out.println(averageChange);
+
+    if (sentiment > 0.5) {
+      averageChange = Math.abs(averageChange) * sentiment * 3.0;
+    } else {
+      averageChange = -Math.abs(averageChange) * sentiment * 3.0;
+    }
+
     if (priceSeries.size() != nn.getInputsCount()) {
       return null;
     } else {
@@ -144,7 +163,19 @@ public class MLPNetwork implements NeuralNet {
       }
       nn.setInput(inputs);
       nn.calculate();
-      return new Price(deNormalizeValue(nn.getOutput()[0]),
+
+      double nnOutput = deNormalizeValue(nn.getOutput()[0]);
+      double difference = (nnOutput - priceSeries.get(priceSeries.size() - 1)
+              .getValue());
+
+      if (Math.abs(difference) > 0.5) {
+        difference = averageChange + 0.5;
+      } else {
+        difference = averageChange + difference;
+      }
+
+      return new Price(priceSeries.get(priceSeries.size() - 1)
+              .getValue() + difference,
               System.currentTimeMillis() / 1000 + 432000);
     }
   }

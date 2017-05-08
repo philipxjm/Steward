@@ -49,12 +49,13 @@ public class Trainer {
       }
     }
 
-//    MLPNetwork mlp = new MLPNetwork(15);
-    Rnn rnn = new Rnn(1, 2);
+    MLPNetwork mlp = new MLPNetwork(15);
+    mlp.readModel("data/technology/GoodShit");
+//    Rnn rnn = new Rnn(1, 2);
 
     for (int i = 1; i < companies.length; i++) {
-      rnn.train(priceSeries.get(i - 1), 1);
-      rnn.saveModel("data/technology/GoodShit.zip");
+      mlp.train(priceSeries.get(i - 1), 1);
+      mlp.saveModel("data/technology/GoodShit");
     }
   }
 
@@ -62,33 +63,34 @@ public class Trainer {
     DateTimeFormatter formatter1 =
             DateTimeFormat.forPattern("yyyy-MM-dd");
 
-//    MLPNetwork mlp = new MLPNetwork(15);
-//    mlp.readModel("data/technology/GoodShit");
-    Rnn rnn = new Rnn(1, 2);
-    rnn.readModel("data/technology/GoodShit.zip");
+    MLPNetwork mlp = new MLPNetwork(15);
+    mlp.readModel("data/technology/AAPL");
+//    Rnn rnn = new Rnn(1, 2);
+//    rnn.readModel("data/technology/GoodShit.zip");
 
     List<Price> testSeries =
             ImmutableList.of(new Price(141.83, formatter1.parseDateTime("2017-04-03").getMillis() / 1000),
-                    new Price(149.20, formatter1.parseDateTime("2017-04-04").getMillis() / 1000),
-                    new Price(149.68, formatter1.parseDateTime("2017-04-05").getMillis() / 1000),
-                    new Price(148.44, formatter1.parseDateTime("2017-04-06").getMillis() / 1000),
-                    new Price(144.27, formatter1.parseDateTime("2017-04-07").getMillis() / 1000),
-                    new Price(145.64, formatter1.parseDateTime("2017-04-10").getMillis() / 1000),
-                    new Price(146.53, formatter1.parseDateTime("2017-04-11").getMillis() / 1000),
-                    new Price(149.68, formatter1.parseDateTime("2017-04-12").getMillis() / 1000),
-                    new Price(149.79, formatter1.parseDateTime("2017-04-13").getMillis() / 1000),
-                    new Price(149.65, formatter1.parseDateTime("2017-04-17").getMillis() / 1000),
-                    new Price(150.58, formatter1.parseDateTime("2017-04-18").getMillis() / 1000),
-                    new Price(150.51, formatter1.parseDateTime("2017-04-19").getMillis() / 1000),
-                    new Price(150.06, formatter1.parseDateTime("2017-04-20").getMillis() / 1000),
-                    new Price(150.53, formatter1.parseDateTime("2017-04-21").getMillis() / 1000),
-                    new Price(150.96, formatter1.parseDateTime("2017-04-24").getMillis() / 1000));
+                    new Price(141.20, formatter1.parseDateTime("2017-04-04").getMillis() / 1000),
+                    new Price(140.68, formatter1.parseDateTime("2017-04-05").getMillis() / 1000),
+                    new Price(142.44, formatter1.parseDateTime("2017-04-06").getMillis() / 1000),
+                    new Price(142.27, formatter1.parseDateTime("2017-04-07").getMillis() / 1000),
+                    new Price(143.64, formatter1.parseDateTime("2017-04-10").getMillis() / 1000),
+                    new Price(144.53, formatter1.parseDateTime("2017-04-11").getMillis() / 1000),
+                    new Price(143.68, formatter1.parseDateTime("2017-04-12").getMillis() / 1000),
+                    new Price(143.79, formatter1.parseDateTime("2017-04-13").getMillis() / 1000),
+                    new Price(143.65, formatter1.parseDateTime("2017-04-17").getMillis() / 1000),
+                    new Price(146.58, formatter1.parseDateTime("2017-04-18").getMillis() / 1000),
+                    new Price(147.51, formatter1.parseDateTime("2017-04-19").getMillis() / 1000),
+                    new Price(147.06, formatter1.parseDateTime("2017-04-20").getMillis() / 1000),
+                    new Price(146.53, formatter1.parseDateTime("2017-04-21").getMillis() / 1000),
+                    new Price(148.96, formatter1.parseDateTime("2017-04-24").getMillis() / 1000));
 
 
-    System.out.println(rnn.run(testSeries, null));
+    System.out.println(mlp.run(testSeries, null));
   }
 
   public static void main(String[] args) throws IOException {
+//    trainNetwork();
     testNetwork();
   }
 }

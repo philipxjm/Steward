@@ -4,6 +4,10 @@ canvas {
 	height: 200px;
 }
 
+#transActions {
+	padding-left: 0;
+}
+
 #ticker {
 	margin-right: 20px;
 }

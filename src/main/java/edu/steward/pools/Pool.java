@@ -112,7 +112,11 @@ public class Pool {
 
   public void setEndTimer() {
 
+
     long delay = 1000L * end - System.currentTimeMillis();
+    if (delay < 0) {
+      return;
+    }
 
     Timer t = new Timer();
     t.schedule(new TimerTask() {
@@ -126,14 +130,18 @@ public class Pool {
 
   public static void setEndTimer(String poolId, int endTime) {
     long delay = 1000L * endTime - System.currentTimeMillis();
+    if (delay < 0) {
+      return;
+    }
 
     Timer t = new Timer();
     t.schedule(new TimerTask() {
 
       @Override
       public void run() {
+        System.out.println(poolId + " is dead");
         InsertFinalLb.insert(poolId);
       }
-    }, delay / 1000L);
+    }, delay);
   }
 }

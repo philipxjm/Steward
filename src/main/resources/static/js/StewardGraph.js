@@ -65,6 +65,7 @@ Chart.controllers.NegativeTransparentLine = Chart.controllers.line.extend({
   }
 });
 
+let predictCalled = false;
 class StewardGraph {
 	constructor(lineLabel) {
         console.log("Creating graph " + lineLabel);
