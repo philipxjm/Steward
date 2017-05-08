@@ -51,7 +51,8 @@ $('#addStock').click((e) => {
         ticker: ticker,
         shares: shares,
         isPool: !activeTabIsPort
-    }
+    };
+
     $('#addStock').prop('disabled', true);
     console.log("Sending data to /stockAction:");
     console.log(data);
