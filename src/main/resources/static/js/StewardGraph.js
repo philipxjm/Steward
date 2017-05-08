@@ -75,7 +75,7 @@ class StewardGraph {
                 label: this.lineLabel,
                 pointBorderColor: "rgba(0,0,0,0)",
                 pointBackgroundColor: "rgba(0,0,0,0)",
-                pointRadius: 10,
+                pointRadius: 4,
                 cubicInterpolationMode: "monotone"
         };
         this.predictStyle = Object.assign({}, this.defaultLineStyle);

@@ -1,9 +1,3 @@
-$(() => {
-    if(window.location.href.endsWith("#pool")) {
-        $('#clickForPool').click();
-    }
-});
-
 // Gets stocks for portfolio
 function getStocks(name, callback) {
     let data = {name: name, isPool: !activeTabIsPort};
@@ -234,7 +228,12 @@ let poolCtx, poolGraph, portCtx, portGraph;
 $(()=> {
     portCtx = $('#portGraph');
     poolCtx = $('#poolGraph');
-    loadUpDashType(true);
+
+    if(window.location.href.endsWith("#pool")) {
+        $('#clickForPool').click();
+    } else {
+        loadUpDashType(true);
+    }
     $('.port').removeClass("active");
     $('#ports > .port').first().click();
 });
@@ -248,6 +247,7 @@ function showEmptyMessage(port) {
         "idea of which stocks to buy. </p>");
     } else {
         $('#poolInfo').hide();
+        console.log($('#noPort').html());
         $('#noPort').html("<h2>You're not in any pools!</h2><p>Want to face off against your friends? Create a new pool, or join a friend's. Start buying and see who can make the most cash.</p>");        
     }
     $('#noPort').show();
@@ -279,10 +279,9 @@ function loadUpDashType(port) {
             let name = getCurrentPort();
             if (!portGraph) {
                 portGraph = new UnrealizedGraph(portCtx, name);
-            } else {
-                // Click active to update dash center
-                $('#ports > .port').first().click();
             }
+            // Click active to update dash center
+            $('#ports > .port').first().click();
         }
         history.pushState({}, "", "#");
     } else {
@@ -298,7 +297,6 @@ function loadUpDashType(port) {
         $('#portGraph').hide(); 
         // If no pools shown empty message, hide graph, and disable buttons
         if (($('.pool').length - $('.newPool').length) == 0) {
-            console.log("EREERE");
             $('.disabler').prop('disabled', true);
             $('#poolGraph').hide();
             showEmptyMessage(false);
