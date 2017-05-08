@@ -65,8 +65,6 @@ public class Portfolio {
       holdings.replace(ticker, newShares);
       balance -= cost;
 
-      // TODO: this should add the transaction to history and change the balance
-      System.out.println(portfolioId);
       return DatabaseApi.stockTransaction(portfolioId, ticker, shares, time,
           price);
     }
@@ -97,8 +95,6 @@ public class Portfolio {
     List<Gains> gains = GainsOverTime.getGainsPortfolioGraph(portfolioId);
     List<List<Object>> ret = new ArrayList<>();
     for (Gains gain : gains) {
-      System.out.println("gainTIME: " + gain.getTime());
-      System.out.println("gainValue: " + gain.getValue() * 100);
       ret.add(ImmutableList.of(gain.getTime(), gain.getValue() * 100));
     }
     return ret;
@@ -124,11 +120,6 @@ public class Portfolio {
   }
 
   public List<Gains> getGainsOverTime() {
-    System.out.println("called getGainsOverTime");
-    System.out.println(portfolioId);
-    System.out.println(pool);
-    System.out.println(1);
-    System.out.println("init balance: " + pool.getBal());
     return GainsOverTime.getGainsGameGraph(
             portfolioId,
             pool.getStart(),

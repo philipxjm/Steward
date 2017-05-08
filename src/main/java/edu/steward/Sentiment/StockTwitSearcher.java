@@ -111,12 +111,4 @@ public class StockTwitSearcher {
     }
     return sb.toString();
   }
-
-  public static void main(String[] args) {
-    StockTwitSearcher k = new StockTwitSearcher();
-    List<String> ks = k.search("AMD");
-    for (String a : ks) {
-      System.out.println(a);
-    }
-  }
 }

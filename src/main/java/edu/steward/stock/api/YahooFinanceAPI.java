@@ -47,7 +47,6 @@ public class YahooFinanceAPI implements StockAPI {
   public List<Fundamental> getStockFundamentals(String ticker) {
     try {
       List<Fundamental> ret = new ArrayList<>();
-      System.out.println("ticker: " + ticker);
       Stock stock = YahooFinance.get(ticker);
       // If no stock exchange listed, presume it's a bad ticker and return null
       if (stock.getStockExchange() == null
@@ -210,42 +209,36 @@ public class YahooFinanceAPI implements StockAPI {
     List<Price> ret = new ArrayList<>();
     switch (t) {
     case ONE_MONTH:
-      System.out.println("1 month");
       // ~23 days of daily data
       for (int i = 0; i < Math.min(23, size); i += 1) {
         ret.add(prices.get(i));
       }
       break;
     case SIX_MONTH:
-      System.out.println("6 month");
       // ~130 days of daily data
       for (int i = 0; i < Math.min(130, size); i += 2) {
         ret.add(prices.get(i));
       }
       break;
     case ONE_YEAR:
-      System.out.println("1 year");
       // ~260 days of daily data
       for (int i = 0; i < Math.min(260, size); i += 3) {
         ret.add(prices.get(i));
       }
       break;
     case TWO_YEAR:
-      System.out.println("2 year");
       // ~520 days of daily data
       for (int i = 0; i < Math.min(520, size); i += 5) {
         ret.add(prices.get(i));
       }
       break;
     case FIVE_YEAR:
-      System.out.println("5 year");
       // ~1300 days of daily data
       for (int i = 0; i < Math.min(1300, size); i += 10) {
         ret.add(prices.get(i));
       }
       break;
     case TEN_YEAR:
-      System.out.println("10 year");
       // ~2600 days of daily data
       for (int i = 0; i < Math.min(2600, size); i += 10) {
         ret.add(prices.get(i));
@@ -261,9 +254,6 @@ public class YahooFinanceAPI implements StockAPI {
     from.setTimeInMillis(1000L * (long) time - 100000L);
     Calendar to = Calendar.getInstance();
     to.setTimeInMillis(1000L * (long) time);
-    System.out.println("toz: " + to);
-    System.out.println("time: " + time);
-    System.out.println(to.getTimeInMillis());
     try {
       Stock stock = YahooFinance.get(ticker, true);
       List<HistoricalQuote> quotes = stock.getHistory(from, to, Interval.DAILY);

@@ -33,7 +33,10 @@ public class TwitterSentimentFinder {
     for (String keyword : keywordSet) {
 //      List<Status> statuses = ts.search(keyword);
       List<String> statuses = ts.search(keyword);
-      System.out.println("Found statuses ... " + statuses.size());
+      System.out.println("Performing sentimental analysis on " + keyword +
+              ".Found " +
+              "statuses " +
+              "... " + statuses.size());
       List<Integer> sentiments = new ArrayList<Integer>();
       for (String status : statuses) {
         Integer sen = sa.findSentiment(status);
@@ -44,10 +47,5 @@ public class TwitterSentimentFinder {
       results.put(keyword, sentiments);
     }
     return results;
-  }
-
-  public static void main(String[] args) {
-    TwitterSentimentFinder tsf = new TwitterSentimentFinder();
-    System.out.println(tsf.sentiments(ImmutableList.of("AMD")));
   }
 }

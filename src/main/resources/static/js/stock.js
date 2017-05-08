@@ -21,6 +21,10 @@ $.post('/getSentiment', {ticker: ticker}, (res) => {
     }
 });
 
+$(document).ready(function() {
+    $('.tooltips').tooltip();
+});
+
 // Stock add
 $('#addStock').click((e) => {
     let action;

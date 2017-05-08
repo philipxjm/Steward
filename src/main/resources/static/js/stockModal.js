@@ -54,8 +54,7 @@ $('#addStock').click((e) => {
     };
 
     $('#addStock').prop('disabled', true);
-    console.log("Sending data to /stockAction:");
-    console.log(data);
+    log('/stockAction', data)
     $.post('/stockAction', data, (res) => {
         let resData = JSON.parse(res);
         if (resData["success"]) {
@@ -82,11 +81,20 @@ $('#addStock').click((e) => {
 $('#shares').on('input', setTotal);
 $('#ticker').change(setTotal);
 $('#buy').click(setTotal);
+$('#actionDate').change(setTotal);
 $('#sell').click(()=>setTotal(false));
 $('#total').hide();
 function setTotal(buy) {
     let ticker = $('#ticker').val();
-    let data = {ticker: ticker};
+
+    let time;
+    if ($('#pastAction').prop("checked")) {
+        time = + new Date($('#actionDate').val());
+    } else {
+        time = 0;
+    }
+
+    let data = {ticker: ticker, time:time/1000};
     let shares = $('#shares').val();
     if (!shares) {
         shares = 0;
@@ -106,7 +114,7 @@ function setTotal(buy) {
         } else {
             $('#total').show();
             let resData = JSON.parse(res);
-            let price = resData.price;
+            let price = Math.round(resData.price*100)/100;
             let total = Math.round(price * shares*100)/100;
             $('#priceTotal').text('$' + price);
             $('#totalCost').text('$' + total);

@@ -52,9 +52,20 @@
           </div>
           <div class="row row-third justify-content-start">
             <div class="col col-sm-4">
-              <h3><span id="price">$${price.value}</span> <span class=${color}>(${change.value}%)</span> </h2>
-              <h3 id="predicted"></h3>
-              <h3 id="sentiment"></h3>
+              <h3><span id="price">$${price.value}</span> <span
+                      class=${color}>(${change.value}%)</span> </h3>
+              <h3 data-toggle="tooltip"
+                  data-placement="top"
+                  data-original-title="1 day prediction based on neural network
+                   and social media sentiments"
+                  class="tooltips"
+                  id="predicted"></h3>
+              <h3 data-toggle="tooltip"
+                  data-placement="top"
+                  data-original-title="Social media sentiments. Range 0(Low
+                  Opinion) - 1(High Opinion)"
+                  class="tooltips"
+                  id="sentiment"></h3>
             </div>
             <div class="col col-sm">
               <table>
