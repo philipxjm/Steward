@@ -78,6 +78,34 @@ $('#addStock').click((e) => {
     return false;
 });
 
+$('#shares').on('input', setTotal);
+$('#ticker').change(setTotal);
+$('#total').hide();
+function setTotal() {
+    let ticker = $('#ticker').val();
+    let data = {ticker: ticker};
+    let shares = $('#shares').val();
+    if (!shares) {
+        shares = 0;
+    } else {
+        shares = parseInt(shares);
+    }
+    $('#sharesTotal').text(shares);
+    log('/getCurrPrice', data)
+    $.post('/getCurrPrice', data, (res) => {
+        if (res == "null") {
+            $('#total').hide();
+        } else {
+            $('#total').show();
+            let resData = JSON.parse(res);
+            let price = resData.price;
+            let total = Math.round(price * shares*100)/100;
+            $('#priceTotal').text('$' + price);
+            $('#totalCost').text('$' + total);
+        }
+    });
+}
+
 $(function () {
   $('#pastAction').change(function () {                
      $('#time').toggle(this.checked);

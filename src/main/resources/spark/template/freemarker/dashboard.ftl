@@ -48,13 +48,21 @@
           <#list pools as pool>
            <div poolId="${pool.pool.id}" class="list-group-item list-group-item-action pool <#if pool_index == 0>active</#if>">         
                 <span class="portName">${pool.name}</span>
-                <!--<a class="actionButton editPort float-right fa fa-pencil" aria-hidden="true"></a>-->
+                <a class="actionButton deletePool float-right fa fa-sign-out" aria-hidden="true"></a>
+            </div>
+          </#list>
+          <#if inactive?size != 0>
+            <p id="past">Past Pools</p>
+          </#if>
+          <#list inactive as pool>
+           <div end="${pool.pool.end}" poolId="${pool.pool.id}" class="list-group-item list-group-item-action inactive pool">         
+                <span class="portName">${pool.name}</span>
                 <a class="actionButton deletePool float-right fa fa-sign-out" aria-hidden="true"></a>
             </div>
           </#list>
         </div>
       </div>
-      </div>
+    </div>
     </div>
     <div id="container" class="col-6">
       <div id="noPort" class="text-muted"></div>
@@ -89,11 +97,6 @@
       </div>
       <hr/>
     	<div id="stocks" class="list-group expand">
-        <#list stocks as stock>
-			    <a href="/stock/${stock.ticker}" class="stocks
-			    list-group-item list-group-item-action">${stock.ticker}
-			    ${stock.shares} shares $</a>
-        </#list>
 		  </div>
     </div>
 

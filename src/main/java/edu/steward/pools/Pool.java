@@ -1,10 +1,10 @@
 package edu.steward.pools;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import edu.steward.sql.DatabaseApi;
+import edu.steward.sql.InsertFinalLb;
+import edu.steward.sql.Update;
 import edu.steward.user.Portfolio;
 
 /**
@@ -25,7 +25,7 @@ public class Pool {
     bal = balance;
     start = startTime;
     this.name = name;
-    this.end = end;
+    this.end = end + 72000;
     generateRandom();
     id = id.toUpperCase();
     while (DatabaseApi.getPool(id) != null) {
@@ -34,6 +34,8 @@ public class Pool {
     System.out.println(id);
     portfolios = Arrays.asList(ports);
     DatabaseApi.initializePool(this);
+//    TODO: uncomment this
+    setEndTimer();
   }
 
   private void generateRandom() {
@@ -105,5 +107,37 @@ public class Pool {
 
   public void setEnd(long end) {
     this.end = end;
+  }
+
+  public void setEndTimer() {
+
+    long delay = 1000L * end - System.currentTimeMillis();
+
+    Timer t = new Timer();
+    t.schedule(new TimerTask() {
+
+      @Override
+      public void run() {
+        InsertFinalLb.insert(id);
+      }
+    }, delay);
+  }
+
+  public static void setEndTimer(String poolId, int endTime) {
+//    TODO: uncomment this
+    System.out.println("endTime: " + endTime * 1000L);
+    System.out.println("now: " + System.currentTimeMillis());
+    long delay = 1000L * endTime - System.currentTimeMillis();
+    System.out.println("delay: " + delay);
+
+    Timer t = new Timer();
+    t.schedule(new TimerTask() {
+
+      @Override
+      public void run() {
+        System.out.println("run called");
+        InsertFinalLb.insert(poolId);
+      }
+    },delay / 1000L);
   }
 }

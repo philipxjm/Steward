@@ -1,11 +1,19 @@
 package edu.steward.sql;
 
+import com.google.common.collect.ImmutableMap;
+import edu.steward.pools.Pool;
+import edu.steward.user.Portfolio;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import static org.quartz.CronScheduleBuilder.*;
+import static org.quartz.SimpleScheduleBuilder.*;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,7 +21,35 @@ import java.util.Set;
  */
 public class Update {
 
+  private static String base = "jdbc:sqlite:";
+  private static String userUrl = base + "data/users.sqlite3";
+
+  private Update() {
+  }
+
   public static void update() {
+
+    String query = "SELECT PoolId, End FROM Pools;";
+    try (Connection c = DriverManager.getConnection(userUrl)) {
+      Statement s = c.createStatement();
+      s.executeUpdate("PRAGMA foreign_keys = ON;");
+      try (PreparedStatement prep = c.prepareStatement(query)) {
+        try (ResultSet rs = prep.executeQuery()) {
+          while (rs.next()) {
+            String poolId = rs.getString(1);
+            int end = rs.getInt(2);
+            System.out.println("hmm: " + end);
+            Pool.setEndTimer(poolId, end);
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
     JobDetail jobFiveMin = JobBuilder.newJob(FiveMinJob.class)
             .withIdentity("jobFive", "groupFive").build();
@@ -162,6 +198,5 @@ public class Update {
     } catch (SchedulerException e) {
       e.printStackTrace();
     }
-
   }
 }

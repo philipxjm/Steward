@@ -197,7 +197,7 @@ public class GainsOverTime {
       netGains += quant * stock.getCurrPrice().getValue();
     }
     Double netWorth = netGains + getBalanceFromPortfolio(portId);
-    System.out.println(netWorth);
+//    System.out.println(netWorth);
     return netWorth;
   }
 

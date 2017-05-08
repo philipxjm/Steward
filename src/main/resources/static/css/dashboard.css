@@ -4,6 +4,30 @@ canvas {
 	height: 200px;
 }
 
+#ticker {
+	margin-right: 20px;
+}
+
+.inactive {
+	background-color: #ccc;
+}
+
+.inactive:hover {
+	background-color: #aaa;
+}
+
+#dropdown0 {
+	margin-right: 20px;
+}
+
+.checkboxDiv {
+	margin-left: auto;
+}
+
+#customCheck {
+	margin: 0;
+}
+
 #main {
 	margin-top: 40px;
 }
@@ -60,20 +84,33 @@ canvas {
 
 .leaderPic {
 	margin-right: 10px;
-	border: 1px solid black;
-}
-
-#graphContainer {
-	display: inline-block;
-	height: 30vh;
-	width: 100%;
-}
-
-.chart-container {
-	height: calc(30vh - 2.85rem - 5px);
 }
 
 .balance {
 	margin-left: 10px;
 	margin-bottom: 0;
+}
+
+#total {
+	display: table;
+}
+
+.border {
+  text-align: right;
+}
+
+.zero {
+	width:0;
+	padding:0;
+	margin: 0;
+}
+
+.bottom {
+  border-top: 1px solid black;
+  margin-left: 0;
+}
+
+#past {
+	text-align: center;
+	margin: 10px;
 }

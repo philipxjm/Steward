@@ -8,6 +8,7 @@ class StockGraph extends StewardGraph {
         super.makeGraph();
         this.yLabel = "Share Price ($)";
         this.title = "";
+        this.setBounds = true;
     }
 
     makePretty(v) {
@@ -20,6 +21,7 @@ class StockGraph extends StewardGraph {
             "timeseries" : this.timeseries
         }
 
+        log('/getGraphData', params);
         $.post('/getGraphData', params, (res) => {
             const resData = JSON.parse(res);
 
@@ -55,6 +57,7 @@ class StockGraph extends StewardGraph {
         let params = {
             "ticker": this.ticker
         }
+        log('/getStockPrediction', params);
         $.post('/getStockPrediction', params, (res) => {
             let data = JSON.parse(res);
             if (data) {

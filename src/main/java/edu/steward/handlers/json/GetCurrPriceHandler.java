@@ -1,6 +1,7 @@
 package edu.steward.handlers.json;
 
 import com.google.gson.Gson;
+
 import edu.steward.stock.Stock;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -18,6 +19,10 @@ public class GetCurrPriceHandler implements Route {
     QueryParamsMap qm = req.queryMap();
     String ticker = qm.value("ticker");
     Stock stock = new Stock(ticker);
-    return gson.toJson(stock.getCurrPrice());
+    try {
+      return gson.toJson(stock.getCurrPrice());
+    } catch (StringIndexOutOfBoundsException e) {
+      return "";
+    }
   }
 }
