@@ -91,7 +91,7 @@
       <div class="header">
         Stocks
         <div class="btn-group float-right">
-        <button id="historyButton" type="button" class="disabler btn float-right btn-secondary btn-sm"><i class="fa fa-history" aria-hidden="true"></i></button>
+        <button data-toggle="button" id="historyButton" type="button" class="disabler btn float-right btn-secondary btn-sm"><i class="fa fa-history" aria-hidden="true"></i></button>
         <button id="addButton" type="button" data-toggle="modal" data-target="#addStockModal" class="disabler btn float-right btn-secondary btn-sm">+</button>
         </div>
       </div>

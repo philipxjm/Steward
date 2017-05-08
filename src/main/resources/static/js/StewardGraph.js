@@ -1,3 +1,38 @@
+/* HOT PATCH GetElementsAtEvent */
+Chart.Controller.prototype.getElementsAtEvent = function(e) {
+  var helpers = Chart.helpers;
+  var eventPosition = helpers.getRelativePosition(e, this.chart);
+  var elementsArray = [];
+
+  var found = (function() {
+    if (this.data.datasets) {
+      for (var i = 0; i < this.data.datasets.length; i++) {
+        var meta = this.getDatasetMeta(i);
+        if (this.isDatasetVisible(i)) {
+          for (var j = 0; j < meta.data.length; j++) {
+            if (meta.data[j].inLabelRange(eventPosition.x, eventPosition.y)) {
+              return meta.data[j];
+            }
+          }
+        }
+      }
+    }
+  }).call(this);
+
+  if (!found) {
+    return elementsArray;
+  }
+
+  helpers.each(this.data.datasets, function(dataset, dsIndex) {
+    if (this.isDatasetVisible(dsIndex)) {
+      var meta = this.getDatasetMeta(dsIndex);
+      elementsArray.push(meta.data[found._index]);
+    }
+  }, this);
+
+  return elementsArray;
+};
+
 Chart.defaults.NegativeTransparentLine = Chart.helpers.clone(Chart.defaults.line);
 Chart.controllers.NegativeTransparentLine = Chart.controllers.line.extend({
   update: function() {
@@ -57,7 +92,7 @@ class StewardGraph {
                 data: {
                     datasets: this.makeDataSet()
                 },
-                options: {
+                options: {                  
                     animation : false,
                     legend: false,
                     responsive: true,
@@ -93,7 +128,7 @@ class StewardGraph {
                     },
                     tooltips: {
                         enabled: true,
-                        mode: 'single',
+                        mode: 'label',
                         callbacks: {
                             title: (info) => { 
                                 return this.dateToString(this.labels[info[0].xLabel]);
