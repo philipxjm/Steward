@@ -228,11 +228,14 @@ $('#createPool').click((e) => {
 	$('#createPool').prop('disabled', true);
   log('/newPool', param)
 	$.post('/newPool', param, (res) => {
+    if (!res) {
+      $('#poolError').text("ERROR: Can't create two pools with the same name.");
+      return;
+    }    
     let resData = JSON.parse(res);
-
 		// TODO Update pool sidebar
 		$('#createPoolModal').modal('hide');
-		$('#poolError').text('');
+    $('#poolError').text('');
 		$('#createPool').prop('disabled', false);
     $('#addButton').prop('disabled', false);
 		$newPool = makeNewPool(name);

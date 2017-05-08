@@ -21,7 +21,6 @@ $(document).ready(function() {
     $('.stock').each(function(i, obj) {
         $.post('/getCurrPrice', {ticker: $(obj).find(".symbol")[0].innerHTML}, (res) => {
             let resData = JSON.parse(res);
-            console.log(resData);
             $(obj).find(".price").text(resData.price);
             $(obj).find(".change").text(resData.change);
         });

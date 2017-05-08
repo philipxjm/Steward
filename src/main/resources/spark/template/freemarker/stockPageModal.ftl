@@ -65,7 +65,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <!-- TODO: Actually make this buy -->
-        <button id="addStock" type="button" class="btn btn-primary">Add</button>
+        <button id="addStock" type="button" class="modal-submit btn btn-primary">Add</button>
       </div>
     </div>
   </div>
