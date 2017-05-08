@@ -1,3 +1,9 @@
+$(() => {
+    if(window.location.href.endsWith("#pool")) {
+        $('#clickForPool').click();
+    }
+});
+
 // Gets stocks for portfolio
 function getStocks(name, callback) {
     let data = {name: name, isPool: !activeTabIsPort};
@@ -278,6 +284,7 @@ function loadUpDashType(port) {
                 $('#ports > .port').first().click();
             }
         }
+        history.pushState({}, "", "#");
     } else {
         $('#modalCB').show();
         $('#modalB').show();
@@ -291,6 +298,7 @@ function loadUpDashType(port) {
         $('#portGraph').hide(); 
         // If no pools shown empty message, hide graph, and disable buttons
         if (($('.pool').length - $('.newPool').length) == 0) {
+            console.log("EREERE");
             $('.disabler').prop('disabled', true);
             $('#poolGraph').hide();
             showEmptyMessage(false);
@@ -308,6 +316,7 @@ function loadUpDashType(port) {
             }
             $('#pools > .pool').first().click();
         }         
+        history.pushState({}, "", "#pool");
     }
 }
 
@@ -315,6 +324,7 @@ let activeTabIsPort = true;
 // Called on tab switch
 $('.tabToggle').click((e) => {
     let port = (e.target.innerText == "Portfolios");
+    console.log("ATP: " + activeTabIsPort);
     if (port == activeTabIsPort) {
         return;
     }
@@ -346,6 +356,6 @@ $('#historyButton').click((e) => {
             l.push(resData[key]);
         }
         l.sort((a,b) => a.time > b.time);
-        
+
     });
 });

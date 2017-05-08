@@ -21,7 +21,7 @@
           <a class="tabToggle nav-link active" data-toggle="tab" href="#portTab" role="tab">Portfolios</a>
         </li>
         <li class="nav-item">
-          <a class="tabToggle nav-link" data-toggle="tab" href="#poolTab" role="tab">Pools</a>
+          <a id="clickForPool" class="tabToggle nav-link" data-toggle="tab" href="#poolTab" role="tab">Pools</a>
         </li>
       </ul>
       <div class="tab-content">
