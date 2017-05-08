@@ -117,6 +117,10 @@ const portfolioClickHandler = (e) => {
         return false;
     }
 
+    if(portGraph.graph) {
+        portGraph.graph.clear();
+    }
+
     // Switch active
     $('.port').removeClass("active");
     elm.addClass("active");
