@@ -56,8 +56,11 @@ class BalanceGraph extends StewardGraph {
         let data = { poolId: this.poolId };
 
         console.assert(this.poolId != null);
+        if (this.lastRequest) {
+            this.lastRequest.abort();
+        }
         log(url, data);
-        $.post(url, data, (res) => {
+        this.lastRequest = $.post(url, data, (res) => {
             let data = JSON.parse(res);
             let users = [];
             let datasets = [];
