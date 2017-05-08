@@ -21,8 +21,11 @@ class StockGraph extends StewardGraph {
             "timeseries" : this.timeseries
         }
 
+        if (this.lastRequest) {
+            this.lastRequest.abort();
+        }
         log('/getGraphData', params);
-        $.post('/getGraphData', params, (res) => {
+        this.lastRequest = $.post('/getGraphData', params, (res) => {
             const resData = JSON.parse(res);
 
             let pastData = [];
