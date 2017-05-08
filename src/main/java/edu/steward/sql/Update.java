@@ -38,7 +38,6 @@ public class Update {
           while (rs.next()) {
             String poolId = rs.getString(1);
             int end = rs.getInt(2);
-            System.out.println("hmm: " + end);
             Pool.setEndTimer(poolId, end);
           }
         } catch (SQLException e) {
