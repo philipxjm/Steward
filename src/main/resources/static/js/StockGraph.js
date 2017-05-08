@@ -84,6 +84,13 @@ class StockGraph extends StewardGraph {
                 }
                 callback();
             }
+            let sentiment = Math.round(parseFloat(parseFloat(data[2]))*100)/100;
+            $('#sentiment').append(`Sentiment: <span id='sentimentValue'>${sentiment}</span>`);
+            if (sentiment < 0.5) {
+                $('#sentimentValue').addClass("down");
+            } else if(sentiment > 0.5) {
+                $('#sentimentValue').addClass("up");
+            }
         });
     }
 

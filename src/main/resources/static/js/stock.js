@@ -11,15 +11,15 @@ $('.time').click((e) => {
     stockGraph.update(timeseries);
 });
 
-$.post('/getSentiment', {ticker: ticker}, (res) => {
-	let sentiment = Math.round(parseFloat(res)*100)/100;
-	$('#sentiment').append(`Sentiment: <span id='sentimentValue'>${sentiment}</span>`);
-    if (sentiment < 0.5) {
-       $('#sentimentValue').addClass("down");
-    } else if(sentiment > 0.5) {
-        $('#sentimentValue').addClass("up");
-    }
-});
+// $.post('/getSentiment', {ticker: ticker}, (res) => {
+// 	let sentiment = Math.round(parseFloat(res)*100)/100;
+// 	$('#sentiment').append(`Sentiment: <span id='sentimentValue'>${sentiment}</span>`);
+//     if (sentiment < 0.5) {
+//        $('#sentimentValue').addClass("down");
+//     } else if(sentiment > 0.5) {
+//         $('#sentimentValue').addClass("up");
+//     }
+// });
 
 $(document).ready(function() {
     $('.tooltips').tooltip();

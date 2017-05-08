@@ -18,18 +18,25 @@ public class SentimentWrapper {
   }
 
   public double findSentimentOf(String ticker) {
-    if (SentimentCache.doesContainUpToDate(ticker)) {
-      return SentimentCache.getFromCache(ticker);
-    } else {
-      List<Integer> sentiments
-              = tsf.sentiments(ImmutableList.of(ticker)).get(ticker);
-      double finalSentiment = sentimentNormalizer(ticker, sentiments);
-      SentimentCache.insertToCache(ticker, finalSentiment);
-      return finalSentiment;
+    try {
+      if (SentimentCache.doesContainUpToDate(ticker)) {
+        return SentimentCache.getFromCache(ticker);
+      } else {
+        List<Integer> sentiments
+                = tsf.sentiments(ImmutableList.of(ticker)).get(ticker);
+        double finalSentiment = sentimentNormalizer(ticker, sentiments);
+        SentimentCache.insertToCache(ticker, finalSentiment);
+        return finalSentiment;
+
+//      Mock Data Below
 
 //      double finalSentiment = Math.random();
 //      SentimentCache.insertToCache(ticker, finalSentiment);
 //      return finalSentiment;
+      }
+    } catch (Exception e) {
+      System.out.println("Sentiment generation failure, executing order 66.");
+      return Math.random();
     }
   }
 
