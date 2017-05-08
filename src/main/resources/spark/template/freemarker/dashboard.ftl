@@ -51,6 +51,15 @@
                 <a class="actionButton deletePool float-right fa fa-sign-out" aria-hidden="true"></a>
             </div>
           </#list>
+          <#if inactive?size != 0>
+            <p id="past">Past Pools</p>
+          </#if>
+          <#list inactive as pool>
+           <div end="${pool.pool.end}" poolId="${pool.pool.id}" class="list-group-item list-group-item-action inactive pool">         
+                <span class="portName">${pool.name}</span>
+                <a class="actionButton deletePool float-right fa fa-sign-out" aria-hidden="true"></a>
+            </div>
+          </#list>
         </div>
       </div>
     </div>

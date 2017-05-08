@@ -12,6 +12,10 @@ canvas {
 	background-color: #ccc;
 }
 
+.inactive:hover {
+	background-color: #aaa;
+}
+
 #dropdown0 {
 	margin-right: 20px;
 }
@@ -104,4 +108,9 @@ canvas {
 .bottom {
   border-top: 1px solid black;
   margin-left: 0;
+}
+
+#past {
+	text-align: center;
+	margin: 10px;
 }
