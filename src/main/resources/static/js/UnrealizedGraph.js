@@ -1,5 +1,6 @@
 class UnrealizedGraph extends StewardGraph {
     constructor(ctx, port) {
+        console.log("MAKING NEW UNREALIZED GRAPH");
         super("Unrealized Gains");
         this.ctx = ctx;
         this.port = port;
