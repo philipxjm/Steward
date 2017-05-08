@@ -349,13 +349,18 @@ $('#historyButton').click((e) => {
     $('#transActions').empty();
     $.post('/getTransactionHistory', data, (res) => {
         let resData = JSON.parse(res);
+        console.log("res");
+        console.log(resData);
         let l = [];
         for (let key of Object.keys(resData)) {
-            l.push(resData[key]);
+            for (let trans of resData[key]) {
+                l.push(trans);
+            }
         }
         l.sort((a,b) => a.time > b.time);
-        for(let obj of l) {
-            obj = obj[0];
+
+        for(let i = 0; i < l.length; i++) {
+            obj = l[i];
             let date = new Date(obj.time*1000).toLocaleString('en-US')
             let toAdd = $(`<li class='list-group-item'>Price: $${obj.price}<br/>Shares: ${obj.shares}<br/>Ticker: ${obj.ticker}<br/>Time: ${date}</li>`);
             console.log(toAdd);
