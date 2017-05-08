@@ -69,6 +69,13 @@ let predictCalled = false;
 class StewardGraph {
 	constructor(lineLabel) {
         console.log("Creating graph " + lineLabel);
+        let pr;
+        console.log(this.zeroRadius);
+        if (lineLabel == 'Balance') {
+            pr = 0;
+        } else {
+            pr = 5;
+        }
 		this.lineLabel = lineLabel;
 		this.defaultLineStyle = {
                 yAxisID : 'y-axis-0',
@@ -76,7 +83,7 @@ class StewardGraph {
                 label: this.lineLabel,
                 pointBorderColor: "rgba(0,0,0,0)",
                 pointBackgroundColor: "rgba(0,0,0,0)",
-                pointRadius: 4,
+                pointRadius: pr,//this.pointRadius ? 0 : 4,
                 cubicInterpolationMode: "monotone"
         };
         this.predictStyle = Object.assign({}, this.defaultLineStyle);
@@ -176,6 +183,7 @@ class StewardGraph {
         if (this.predict && (this.timeseries == "FIVE_DAY")) {
             let last = this.data[this.data.length - 1];
             ret.push(Object.assign({data: [last, {x: last.x + 15, y: this.predict[1]}]}, this.predictStyle));
+            console.log(new Date(this.predict[0]*1000));
             for (let i = 0; i < 15;i++) {
                 this.labels.push(new Date(this.predict[0]*1000));
             }

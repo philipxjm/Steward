@@ -39,6 +39,7 @@ class BalanceGraph extends StewardGraph {
             console.log(colors);
             let style = Object.assign({data: this.data[i]}, this.defaultLineStyle);
             style.borderColor = colors[i];
+            style.pointBackgroundColor = colors[i];
             ret.push(style);
         }
 
