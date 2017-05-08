@@ -193,7 +193,9 @@ $('#addPort').click((e) => {
                                 $('#noPort').hide(); 
                                 $('#gains').show();      
                                 // Initialize graph with new portfolio
-                                portGraph = new UnrealizedGraph(portCtx, name);
+                                if (!portGraph) {
+                                    portGraph = new UnrealizedGraph(portCtx, name);
+                                }
                             }
                             $('.port').removeClass('active');
                             let newPortInput = $('.newPort');
