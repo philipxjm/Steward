@@ -21,14 +21,15 @@ public class SentimentWrapper {
     if (SentimentCache.doesContainUpToDate(ticker)) {
       return SentimentCache.getFromCache(ticker);
     } else {
-//      List<Integer> sentiments
-//              = tsf.sentiments(ImmutableList.of(ticker)).get(ticker);
-//      double finalSentiment = sentimentNormalizer(ticker, sentiments);
-//      SentimentCache.insertToCache(ticker, finalSentiment);
-//      return finalSentiment;
-      double finalSentiment = Math.random();
+      List<Integer> sentiments
+              = tsf.sentiments(ImmutableList.of(ticker)).get(ticker);
+      double finalSentiment = sentimentNormalizer(ticker, sentiments);
       SentimentCache.insertToCache(ticker, finalSentiment);
       return finalSentiment;
+
+//      double finalSentiment = Math.random();
+//      SentimentCache.insertToCache(ticker, finalSentiment);
+//      return finalSentiment;
     }
   }
 
