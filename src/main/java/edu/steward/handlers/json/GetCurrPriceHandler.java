@@ -19,7 +19,14 @@ public class GetCurrPriceHandler implements Route {
   public String handle(Request req, Response res) throws Exception {
     QueryParamsMap qm = req.queryMap();
     String ticker = qm.value("ticker");
-    Integer time = Integer.parseInt(qm.value("time"));
+    String timeString = qm.value("time");
+    Integer time = 0;
+    try {
+      time = Integer.parseInt(timeString);
+    } catch (Exception e) {
+//      ignore
+    }
+
     Stock stock = new Stock(ticker);
     try {
       if (time == 0) {
@@ -33,6 +40,7 @@ public class GetCurrPriceHandler implements Route {
                 .getDailyChange().getValue());
         return gson.toJson(jsonElement);
       }
+
 
 //      return gson.toJson(stock.getCurrPrice());
     } catch (StringIndexOutOfBoundsException e) {
