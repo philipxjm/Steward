@@ -28,8 +28,9 @@ public class WatchlistHandler implements TemplateViewRoute {
       Stock s = new Stock(key);
       System.out.println(key);
       try {
-        ret.add(ImmutableList.of(key, trending.get(key),
-                s.getCurrPrice().getValue(), s.getDailyChange().getValue()));
+        ret.add(ImmutableList.of(key, trending.get(key)));
+//        ret.add(ImmutableList.of(key, trending.get(key),
+//                s.getCurrPrice().getValue(), s.getDailyChange().getValue()));
       } catch (Exception e) {
 //        skip
       }

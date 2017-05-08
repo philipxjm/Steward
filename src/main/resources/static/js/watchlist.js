@@ -17,6 +17,14 @@ $(document).ready(function() {
     });
 
     $('.card').tooltip();
+
+    $('.stock').each(function(i, obj) {
+        $.post('/getCurrPrice', {ticker: $(obj).find(".symbol")[0].innerHTML}, (res) => {
+            let resData = JSON.parse(res);
+            $(obj).find(".price").text(resData.price);
+            $(obj).find(".change").text(resData.change);
+        });
+    });
 });
 
 let hsv2rgb = function(h, s, v) {
