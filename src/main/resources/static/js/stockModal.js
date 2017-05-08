@@ -113,6 +113,9 @@ function setTotal(buy) {
             $('#total').hide();
         } else {
             $('#total').show();
+            if(!res) {
+                return;
+            }
             let resData = JSON.parse(res);
             let price = Math.round(resData.price*100)/100;
             let total = Math.round(price * shares*100)/100;
