@@ -1,9 +1,11 @@
 package edu.steward.handlers.json;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.TreeMultimap;
 import com.google.gson.Gson;
 import edu.steward.sql.DatabaseApi;
 import edu.steward.sql.GainsOverTime;
+import edu.steward.user.Holding;
 import edu.steward.user.Portfolio;
 import edu.steward.user.User;
 import spark.QueryParamsMap;
@@ -30,7 +32,11 @@ public class GetTransactionHistoryHandler implements Route{
     boolean isPool = Boolean.parseBoolean(qm.value("isPool"));
     String portfolioName = isPool ? "pool/" + qm.value("port") : qm.value
         ("port");
-    return gson.toJson(GainsOverTime.getTransactionHistory(userId + "/" +
-        portfolioName));
+    System.out.println("getting transaction history for " + portfolioName);
+    TreeMultimap<String, Holding> history = GainsOverTime.getTransactionHistory
+        (userId + "/" +
+        portfolioName);
+    System.out.println(history);
+    return gson.toJson(history.asMap());
   }
 }
