@@ -8,6 +8,7 @@ import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.core.learning.SupervisedLearning;
+import org.neuroph.nnet.ElmanNetwork;
 import org.neuroph.nnet.MultiLayerPerceptron;
 
 import java.io.BufferedReader;
@@ -27,8 +28,8 @@ public class MLPNetwork implements NeuralNet {
 
   private double min, max;
   private int movingWindow;
-  private int iterations = 10000;
-  private double learningConstant = 0.5;
+  private int iterations = 1000;
+  private double learningConstant = 1.5;
   private double maxError = 0.00000001;
   private NeuralNetwork nn;
 
@@ -36,12 +37,12 @@ public class MLPNetwork implements NeuralNet {
     min = 0.0;
     max = 2000.0;
     this.movingWindow = movingWindow;
-    nn = new MultiLayerPerceptron(movingWindow, 2 * movingWindow + 1, 1);
+    nn = new ElmanNetwork(movingWindow, 2 * movingWindow + 1, movingWindow - 1, 1);
   }
 
   public MLPNetwork(int movingWindow, String pathToModel) {
     min = 0.0;
-    max = 2000.0;
+    max = 5000.0;
     this.movingWindow = movingWindow;
     nn = NeuralNetwork.createFromFile(pathToModel);
   }
@@ -74,11 +75,26 @@ public class MLPNetwork implements NeuralNet {
     return min + (input - 0.1) * (max - min) / 0.8;
   }
 
+  private double normalizeChange(double input) {
+    return (input + 1.0) * 0.5;
+  }
+
+  private double deNormalizeChange(double input) {
+    return (input / 0.5) - 1.0;
+  }
+
   private List<Double> normalizeValues(List<Double> prices) {
 //    max = Collections.max(prices);
 //    min = Collections.min(prices);
     return prices
             .stream().map(this::normalizeValue).collect(Collectors.toList());
+  }
+
+  private List<Double> normalizeChanges(List<Double> prices) {
+//    max = Collections.max(prices);
+//    min = Collections.min(prices);
+    return prices
+            .stream().map(this::normalizeChange).collect(Collectors.toList());
   }
 
   private DataSet loadTrainingData(List<Double> prices) {
@@ -95,7 +111,7 @@ public class MLPNetwork implements NeuralNet {
   }
 
   @Override
-  public void train(List<Price> priceSeries) {
+  public void train(List<Price> priceSeries, int epochs) {
     SupervisedLearning learningRule = (SupervisedLearning) nn.getLearningRule();
     learningRule.setMaxError(maxError);
     learningRule.setLearningRate(learningConstant);
@@ -108,8 +124,10 @@ public class MLPNetwork implements NeuralNet {
               + rule.getTotalNetworkError());
     });
 
-    List<Double> prices = priceSeries
-            .stream().map(Price::getValue).collect(Collectors.toList());
+    List<Double> prices = priceSeries.stream().map(Price::getValue).collect(Collectors.toList());
+//    List<Double> changes = Trainer.priceSeriesToChangeSeries(priceSeries);
+//    System.out.println(changes);
+//    System.exit(1);
     DataSet trainingSet = loadTrainingData(prices);
 
     nn.learn(trainingSet);
@@ -129,60 +147,5 @@ public class MLPNetwork implements NeuralNet {
       return new Price(deNormalizeValue(nn.getOutput()[0]),
               System.currentTimeMillis() / 1000 + 432000);
     }
-  }
-
-  public static void main(String[] args) throws IOException {
-    DateTimeFormatter formatter1 =
-            DateTimeFormat.forPattern("yyyy-MM-dd");
-//    List<List<Price>> priceSeries = new ArrayList<>();
-//
-//    BufferedReader reader = new BufferedReader(new FileReader(
-//            "C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\aapl-1.csv"));
-//
-//    String line = reader.readLine();
-//    String[] companies = line.split(",");
-//
-//    for (int i = 0; i < companies.length - 1; i++) {
-//      priceSeries.add(new ArrayList<>());
-//    }
-//
-//    while ((line = reader.readLine()) != null) {
-//      String[] attributes = line.split(",");
-//      for (int i = 1; i < attributes.length; i++) {
-//        if (!attributes[i].equals("NaN")) {
-//          priceSeries.get(i - 1).add(new Price(Double.parseDouble(attributes[i]),
-//                  formatter1.parseDateTime(attributes[0]).getMillis() / 1000));
-//        }
-//      }
-//    }
-//
-//    for (int i = 1; i < companies.length; i++) {
-//      MLPNetwork mlp = new MLPNetwork(15);
-//      mlp.train(priceSeries.get(i - 1));
-//      mlp.saveModel("C:\\Users\\Philip\\IdeaProjects\\Steward\\data\\technology\\" + companies[i]);
-//    }
-
-    MLPNetwork mlp = new MLPNetwork(15);
-    mlp.readModel("data/technology/AAPL");
-
-    List<Price> testSeries =
-            ImmutableList.of(new Price(143.699997, formatter1.parseDateTime("2017-04-03").getMillis() / 1000),
-                    new Price(144.770004, formatter1.parseDateTime("2017-04-04").getMillis() / 1000),
-                    new Price(144.020004, formatter1.parseDateTime("2017-04-05").getMillis() / 1000),
-                    new Price(143.660004, formatter1.parseDateTime("2017-04-06").getMillis() / 1000),
-                    new Price(143.339996, formatter1.parseDateTime("2017-04-07").getMillis() / 1000),
-                    new Price(143.169998, formatter1.parseDateTime("2017-04-10").getMillis() / 1000),
-                    new Price(141.630005, formatter1.parseDateTime("2017-04-11").getMillis() / 1000),
-                    new Price(141.800003, formatter1.parseDateTime("2017-04-12").getMillis() / 1000),
-                    new Price(141.050003, formatter1.parseDateTime("2017-04-13").getMillis() / 1000),
-                    new Price(141.830002, formatter1.parseDateTime("2017-04-17").getMillis() / 1000),
-                    new Price(141.199997, formatter1.parseDateTime("2017-04-18").getMillis() / 1000),
-                    new Price(140.679993, formatter1.parseDateTime("2017-04-19").getMillis() / 1000),
-                    new Price(142.440002, formatter1.parseDateTime("2017-04-20").getMillis() / 1000),
-                    new Price(142.270004, formatter1.parseDateTime("2017-04-21").getMillis() / 1000),
-                    new Price(143.639999, formatter1.parseDateTime("2017-04-24").getMillis() / 1000));
-
-
-    System.out.println(mlp.run(testSeries, null));
   }
 }

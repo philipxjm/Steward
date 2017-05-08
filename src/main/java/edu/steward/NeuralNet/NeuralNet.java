@@ -11,6 +11,6 @@ public interface NeuralNet {
 
 //  TODO: Connect to neural network API
 //  TODO: Create method for training
-    void train(List<Price> companyPriceSeries);
+    void train(List<Price> companyPriceSeries, int epochs);
     Price run(List<Price> priceSeries, List<Integer> sentiments);
 }
