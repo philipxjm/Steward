@@ -45,6 +45,10 @@ function poolClickHandler(e) {
     return;
   }
 
+  if(poolGraph.graph) {
+      poolGraph.graph.clear();
+  }
+
   let name = elm.children('.portName')[0].innerText;
   let poolId = elm.attr('poolId');
 
