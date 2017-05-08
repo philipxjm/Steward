@@ -228,7 +228,12 @@ let poolCtx, poolGraph, portCtx, portGraph;
 $(()=> {
     portCtx = $('#portGraph');
     poolCtx = $('#poolGraph');
-    loadUpDashType(true);
+
+    if(window.location.href.endsWith("#pool")) {
+        $('#clickForPool').click();
+    } else {
+        loadUpDashType(true);
+    }
     $('.port').removeClass("active");
     $('#ports > .port').first().click();
 });
@@ -242,6 +247,7 @@ function showEmptyMessage(port) {
         "idea of which stocks to buy. </p>");
     } else {
         $('#poolInfo').hide();
+        console.log($('#noPort').html());
         $('#noPort').html("<h2>You're not in any pools!</h2><p>Want to face off against your friends? Create a new pool, or join a friend's. Start buying and see who can make the most cash.</p>");        
     }
     $('#noPort').show();
@@ -273,11 +279,11 @@ function loadUpDashType(port) {
             let name = getCurrentPort();
             if (!portGraph) {
                 portGraph = new UnrealizedGraph(portCtx, name);
-            } else {
-                // Click active to update dash center
-                $('#ports > .port').first().click();
             }
+            // Click active to update dash center
+            $('#ports > .port').first().click();
         }
+        history.pushState({}, "", "#");
     } else {
         $('#modalCB').show();
         $('#modalB').show();
@@ -308,6 +314,7 @@ function loadUpDashType(port) {
             }
             $('#pools > .pool').first().click();
         }         
+        history.pushState({}, "", "#pool");
     }
 }
 
@@ -315,6 +322,7 @@ let activeTabIsPort = true;
 // Called on tab switch
 $('.tabToggle').click((e) => {
     let port = (e.target.innerText == "Portfolios");
+    console.log("ATP: " + activeTabIsPort);
     if (port == activeTabIsPort) {
         return;
     }
@@ -346,6 +354,6 @@ $('#historyButton').click((e) => {
             l.push(resData[key]);
         }
         l.sort((a,b) => a.time > b.time);
-        
+
     });
 });

@@ -1,10 +1,13 @@
 package edu.steward.pools;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import edu.steward.sql.DatabaseApi;
 import edu.steward.sql.InsertFinalLb;
-import edu.steward.sql.Update;
 import edu.steward.user.Portfolio;
 
 /**
@@ -34,7 +37,7 @@ public class Pool {
     System.out.println(id);
     portfolios = Arrays.asList(ports);
     DatabaseApi.initializePool(this);
-//    TODO: uncomment this
+    // TODO: uncomment this
     setEndTimer();
   }
 
@@ -124,7 +127,7 @@ public class Pool {
   }
 
   public static void setEndTimer(String poolId, int endTime) {
-//    TODO: uncomment this
+    // TODO: uncomment this
     System.out.println("endTime: " + endTime * 1000L);
     System.out.println("now: " + System.currentTimeMillis());
     long delay = 1000L * endTime - System.currentTimeMillis();
@@ -138,6 +141,6 @@ public class Pool {
         System.out.println("run called");
         InsertFinalLb.insert(poolId);
       }
-    },delay / 1000L);
+    }, delay / 1000L);
   }
 }

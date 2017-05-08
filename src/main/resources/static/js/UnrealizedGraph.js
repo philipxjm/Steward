@@ -8,7 +8,7 @@ class UnrealizedGraph extends StewardGraph {
         super.makeGraph();
         this.yLabel = "% Gain";
         this.title = "Unrealized Gains";
-        //this.setBounds = true;
+        this.setBounds = true;
     }
 
     makePretty(v) {
