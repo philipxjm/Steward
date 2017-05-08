@@ -118,8 +118,7 @@ const portfolioClickHandler = (e) => {
     }
 
     if(portGraph.graph) {
-        $('#portGraph').replaceWith('<canvas id="portGraph"></canvas>');
-        new UnrealizedGraph($('#portGraph'), $('.port > .portName').text());
+        portGraph.graph.clear();
     }
 
     // Switch active
