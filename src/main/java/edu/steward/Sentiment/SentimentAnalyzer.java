@@ -8,6 +8,8 @@ import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.CoreMap;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Properties;
 
 /**
@@ -22,6 +24,12 @@ public class SentimentAnalyzer {
   }
 
   public int findSentiment(String line) {
+    PrintStream err = System.err;
+
+    System.setErr(new PrintStream(new OutputStream() {
+      public void write(int b) {
+      }
+    }));
     int mainSentiment = 0;
     if (line != null && line.length() > 0) {
       int longest = 0;
@@ -39,6 +47,7 @@ public class SentimentAnalyzer {
     if (mainSentiment > 3 || mainSentiment < 1) {
       return -1;
     }
+    System.setErr(err);
     return mainSentiment;
   }
 }

@@ -34,7 +34,7 @@ public class TwitterSentimentFinder {
 //      List<Status> statuses = ts.search(keyword);
       List<String> statuses = ts.search(keyword);
       System.out.println("Performing sentimental analysis on " + keyword +
-              ".Found " +
+              ". Found " +
               "statuses " +
               "... " + statuses.size());
       List<Integer> sentiments = new ArrayList<Integer>();

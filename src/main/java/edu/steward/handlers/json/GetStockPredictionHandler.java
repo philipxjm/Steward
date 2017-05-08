@@ -23,6 +23,7 @@ public class GetStockPredictionHandler implements Route {
   @Override
   public String handle(Request req, Response res) throws Exception {
     QueryParamsMap qm = req.queryMap();
+    SentimentWrapper sw = new SentimentWrapper();
     String ticker = qm.value("ticker");
     String path = "data/technology/" + ticker;
     File f = new File(path);
@@ -45,9 +46,9 @@ public class GetStockPredictionHandler implements Route {
               null);
 
       return GSON.toJson(ImmutableList.of(p.getTime(),
-          Math.round(p.getValue() * 100.0) / 100.0));
+              Math.round(p.getValue() * 100.0) / 100.0,
+              sw.findSentimentOf(ticker)));
     } else {
-      SentimentWrapper sw = new SentimentWrapper();
       double sentiment = sw.findSentimentOf(ticker);
       Stock stock = new Stock(ticker);
       List<Price> predictPrices = stock.getStockPrices(TIMESERIES.ONE_MONTH);
@@ -60,7 +61,8 @@ public class GetStockPredictionHandler implements Route {
                 System.currentTimeMillis() / 1000 + 432000);
 
         return GSON.toJson(ImmutableList.of(p.getTime(),
-                Math.round(p.getValue() * 100.0) / 100.0));
+                Math.round(p.getValue() * 100.0) / 100.0,
+                sentiment));
       } else {
         double currPrice = predictPrices.get(0).getValue();
         double prevPrice = predictPrices
@@ -72,7 +74,8 @@ public class GetStockPredictionHandler implements Route {
                 System.currentTimeMillis() / 1000 + 432000);
 
         return GSON.toJson(ImmutableList.of(p.getTime(),
-                Math.round(p.getValue() * 100.0) / 100.0));
+                Math.round(p.getValue() * 100.0) / 100.0,
+                sentiment));
       }
     }
   }
