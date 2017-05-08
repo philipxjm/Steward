@@ -121,7 +121,7 @@ function setTotal(buy) {
             let total = Math.round(price * shares*100)/100;
             $('#priceTotal').text('$' + price);
             $('#totalCost').text('$' + total);
-            $('#afterTotal').text('$' + (currBalance - total));
+            $('#afterTotal').text('$' + Math.round((currBalance - total)*100));
         }
     });
 }
