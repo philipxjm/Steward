@@ -1,6 +1,7 @@
 package edu.steward.handlers.json;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -36,8 +37,9 @@ public class GetStockPredictionHandler implements Route {
       // TODO: Change to adjusted close?
       Stock stock = new Stock(ticker);
       List<Price> predictPrices = stock.getStockPrices(TIMESERIES.ONE_MONTH);
+      System.out.println(predictPrices.subList(0, n));
       Price p = mlp.run(
-          predictPrices.subList(predictPrices.size() - n, predictPrices.size()),
+          reverseList(predictPrices.subList(0, n)),
           null);
 
       return GSON.toJson(ImmutableList.of(p.getTime(),
@@ -47,4 +49,11 @@ public class GetStockPredictionHandler implements Route {
     }
   }
 
+  private static List reverseList(List myList) {
+    List invertedList = new ArrayList();
+    for (int i = myList.size() - 1; i >= 0; i--) {
+      invertedList.add(myList.get(i));
+    }
+    return invertedList;
+  }
 }
