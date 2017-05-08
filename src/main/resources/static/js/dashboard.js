@@ -117,10 +117,6 @@ const portfolioClickHandler = (e) => {
         return false;
     }
 
-    if(portGraph.graph) {
-        portGraph.graph.clear();
-    }
-
     // Switch active
     $('.port').removeClass("active");
     elm.addClass("active");
@@ -154,11 +150,13 @@ function deletePortfolio(elm) {
         if (!next) {
             showEmptyMessage(true);
             $('#noPort').show();
-            $('#gains').hide();
+            $('#portGraph').hide();
             $('#stocks').empty();
             $('.disabler').prop('disabled', true);            
         } else {
             $($('.port')[0]).click();
+             $('#portGraph').show();
+            portGraph.update(getCurrentPort())
         }
     });
 }
@@ -195,7 +193,9 @@ $('#addPort').click((e) => {
                                 $('#noPort').hide(); 
                                 $('#gains').show();      
                                 // Initialize graph with new portfolio
-                                portGraph = new UnrealizedGraph(portCtx, name);
+                                if (!portGraph) {
+                                    portGraph = new UnrealizedGraph(portCtx, name);
+                                }
                             }
                             $('.port').removeClass('active');
                             let newPortInput = $('.newPort');
