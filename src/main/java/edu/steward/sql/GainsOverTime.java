@@ -84,8 +84,12 @@ public class GainsOverTime {
       double S = temp.get(1);
       double assetValue = 0;
       for (String ticker : tickers) {
-        assetValue += prices.get(ticker).get(c).getValue()
-            * quantities.get(ticker).get(c);
+        try {
+          assetValue += prices.get(ticker).get(c).getValue()
+                  * quantities.get(ticker).get(c);
+        } catch (IndexOutOfBoundsException e) {
+          // fuck matt
+        }
       }
       System.out.println("sold: " + S);
       System.out.println("bought: " + B);
