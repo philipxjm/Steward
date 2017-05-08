@@ -15,10 +15,7 @@ import edu.steward.handlers.html.UserHandler;
 import edu.steward.handlers.html.WatchlistHandler;
 import edu.steward.handlers.json.*;
 import edu.steward.pools.Pool;
-import edu.steward.sql.InsertFinalLb;
-import edu.steward.sql.LeaderBoard;
 import edu.steward.sql.Update;
-import edu.steward.user.Portfolio;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -27,6 +24,8 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
+
+import static edu.steward.Sentiment.Watchlist.trendingSentiments;
 
 public class Main {
   private static final int DEFAULT_PORT = 4567;
@@ -63,6 +62,19 @@ public class Main {
     if (options.has("gui")) {
       runSparkServer((Integer) options.valueOf("port"));
     }
+
+    initiateSentimentsCache();
+
+    System.out.println("!!!BEEP BOOP SERVER READY TO ROLL!!!");
+  }
+
+  public static void initiateSentimentsCache() {
+    SentimentWrapper sw = new SentimentWrapper();
+    trendingSentiments();
+    sw.findSentimentOf("AAPL");
+    sw.findSentimentOf("SNAP");
+    sw.findSentimentOf("KO");
+    sw.findSentimentOf("FB");
   }
 
   public static FreeMarkerEngine createEngine() {

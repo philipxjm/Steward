@@ -174,7 +174,7 @@ public class MLPNetwork implements NeuralNet {
 
       return new Price(priceSeries.get(priceSeries.size() - 1)
               .getValue() + difference,
-              System.currentTimeMillis() / 1000 + 432000);
+              System.currentTimeMillis() / 1000 + 86400);
     }
   }
 }
