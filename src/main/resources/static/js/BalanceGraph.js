@@ -25,7 +25,7 @@ class BalanceGraph extends StewardGraph {
             ret.push(color);
             let bg = `hsla(${val}, 70%, 50%, 0.5)`;
             let id = this.users[i];
-            console.log($(`#user${id}`));
+            console.log(`#user${id} ` + `${color}`);
             var style = $(`<style>#user${id} { background-color: ${bg}; }</style>`);
             $('html > head').append(style);
         } 
@@ -36,6 +36,7 @@ class BalanceGraph extends StewardGraph {
         let ret = [];
         let colors = this.getColors(this.data.length);
         for (let i = 0; i < this.data.length; i++) {
+            console.log(colors);
             let style = Object.assign({data: this.data[i]}, this.defaultLineStyle);
             style.borderColor = colors[i];
             ret.push(style);
@@ -82,7 +83,6 @@ class BalanceGraph extends StewardGraph {
                 first = false;
                 datasets.push(chartData);
             }
-            users.sort();
             this.users = users;
             this.data = datasets;
             this.labels = labels;

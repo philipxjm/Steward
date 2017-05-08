@@ -113,12 +113,15 @@ function setTotal(buy) {
             $('#total').hide();
         } else {
             $('#total').show();
+            if(!res) {
+                return;
+            }
             let resData = JSON.parse(res);
             let price = Math.round(resData.price*100)/100;
             let total = Math.round(price * shares*100)/100;
             $('#priceTotal').text('$' + price);
             $('#totalCost').text('$' + total);
-            $('#afterTotal').text('$' + (currBalance - total));
+            $('#afterTotal').text('$' + Math.round((currBalance - total)*100));
         }
     });
 }

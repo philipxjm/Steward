@@ -240,7 +240,12 @@ $('#createPool').click((e) => {
     $('#addButton').prop('disabled', false);
 		$newPool = makeNewPool(name);
     $newPool.click(poolClickHandler);
-		$('#pools').append($newPool);
+       if($('.pool:not(.inactive)').length != 0) {
+         $($newPool).insertAfter($('.pool:not(.inactive)').last());
+       } else {
+         $('#pools').append($newPool);
+       }
+
 
     $newPool.attr("poolId", resData.id);
     $('#noPort').hide();

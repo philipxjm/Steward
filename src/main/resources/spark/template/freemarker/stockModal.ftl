@@ -45,7 +45,7 @@
             </div>
           </form>
           <!-- Total Table -->
-          <div>Current Price: <span id="priceTotal"></span></div>
+          <div>Price: <span id="priceTotal"></span></div>
           <div>Total Price: <span id="totalCost"></span></div>
           <div id="modalCB">Current Balance: <span id="currBalanceTotal"></span></div>
           <div id="modalB">Balance After: <span id="afterTotal"></span></div>
