@@ -59,7 +59,7 @@ $('#addStock').click((e) => {
         $('#stockError')[0].innerText = "ERROR: Enter an amount for the action.";
         return;        
     }
-    let elm = $('.portOption:selected');
+    let elm = $(':selected');
     let port = elm.val(); 
     if (port == "Buy for") {
         $('#stockError')[0].innerText = "ERROR: Select a portfolio/pool to buy for.";

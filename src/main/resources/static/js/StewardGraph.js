@@ -151,7 +151,6 @@ class StewardGraph {
     update() {
         this.getData(() => {
             let callback = () => {
-                let dataset = this.graph.data.datasets.pop();
                 this.graph.data.datasets = this.makeDataSet();
                 if (this.setBounds) {
                     let max = this.max;

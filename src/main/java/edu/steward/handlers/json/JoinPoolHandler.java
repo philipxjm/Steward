@@ -1,6 +1,8 @@
 package edu.steward.handlers.json;
 
 import com.google.gson.Gson;
+import edu.steward.sql.DatabaseApi;
+import edu.steward.sql.LeaderBoard;
 import edu.steward.user.Portfolio;
 import edu.steward.user.User;
 import spark.QueryParamsMap;
@@ -21,11 +23,16 @@ public class JoinPoolHandler implements Route {
     User user = new User(userId);
     QueryParamsMap qm = req.queryMap();
     String poolId = qm.value("name");
-    Portfolio p = user.addPool(poolId);
-    if (p == null) {
+
+    if (LeaderBoard.getLeaderBoard(poolId).size() > 0) {
       return GSON.toJson(null);
     } else {
-      return GSON.toJson(p);
+      Portfolio p = user.addPool(poolId);
+      if (p == null) {
+        return GSON.toJson(null);
+      } else {
+        return GSON.toJson(p);
+      }
     }
   }
 }
