@@ -249,6 +249,8 @@ function showEmptyMessage(port) {
 
 function loadUpDashType(port) { 
     if (port) {
+        $('#modalCB').hide();
+        $('#modalB').hide();
         // Show checkbox & time for past action
         $('#pastActionLabel').show();
         // Hide poolInfo (leaderboard, etc.)
@@ -277,6 +279,8 @@ function loadUpDashType(port) {
             }
         }
     } else {
+        $('#modalCB').show();
+        $('#modalB').show();
         // Hide checkbox & time for past action
         $('#pastActionLabel').hide();
         $('#time').hide();
@@ -326,3 +330,7 @@ $('.tabToggle').click((e) => {
 
 // Hide leaderboard initially
 $('#poolInfo').hide();
+
+// Hide extra modal info
+$('#modalCB').hide();
+$('#modalB').hide();

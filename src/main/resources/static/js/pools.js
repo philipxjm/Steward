@@ -112,6 +112,10 @@ function getPoolInfo(name, poolId) {
   $.post('/getPoolInfo', data, (res) => {
     let data = JSON.parse(res);
     $('#currBalance').text('$' + Math.round(data.curr));
+    // Setting up stock modal
+    $('#buy').click();
+    setTotal();
+    
     $('#initBalance').text('$' + Math.round(data.init));
     let userId = $('#user').attr('userId');
 

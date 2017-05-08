@@ -81,8 +81,10 @@ $('#addStock').click((e) => {
 
 $('#shares').on('input', setTotal);
 $('#ticker').change(setTotal);
+$('#buy').click(setTotal);
+$('#sell').click(()=>setTotal(false));
 $('#total').hide();
-function setTotal() {
+function setTotal(buy) {
     let ticker = $('#ticker').val();
     let data = {ticker: ticker};
     let shares = $('#shares').val();
@@ -91,8 +93,13 @@ function setTotal() {
     } else {
         shares = parseInt(shares);
     }
-    $('#sharesTotal').text(shares);
-    log('/getCurrPrice', data)
+    if (!buy) {
+        shares *= -1;
+    }
+    let currBalance = $('#currBalance').text().substr(1);
+    $('#currBalanceTotal').text('$' + currBalance);
+    //$('#sharesTotal').text(shares);
+    log('/getCurrPrice', data);
     $.post('/getCurrPrice', data, (res) => {
         if (res == "null") {
             $('#total').hide();
@@ -103,6 +110,7 @@ function setTotal() {
             let total = Math.round(price * shares*100)/100;
             $('#priceTotal').text('$' + price);
             $('#totalCost').text('$' + total);
+            $('#afterTotal').text('$' + (currBalance - total));
         }
     });
 }
