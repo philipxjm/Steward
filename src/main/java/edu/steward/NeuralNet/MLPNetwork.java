@@ -146,8 +146,6 @@ public class MLPNetwork implements NeuralNet {
     double averageChange = totalChanges / priceSeries.size();
     double sentiment = sw.findSentimentOf("AAPL");
 
-    System.out.println(averageChange);
-
     if (sentiment > 0.5) {
       averageChange = Math.abs(averageChange) * (sentiment - 0.5) * 10.0;
     } else {

@@ -132,7 +132,8 @@ public class AlphaVantageAPI implements StockAPI {
       List<Price> prices = parseTimeSeriesMap(timeSeriesData);
       return priceIntervalClean(prices, timeSeries);
     } else {
-      System.out.println("something went wrong in get stock prices.");
+      System.out.println("Uh-oh, spagettio, something went wrong in get stock" +
+              " prices.");
       return null;
     }
   }

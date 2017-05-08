@@ -46,7 +46,6 @@ public class User {
   }
 
   public Portfolio getPortfolio(String name) {
-    System.out.println(getId() + "/" + name);
     Portfolio port = DatabaseApi.getAllPorts(getId()).get(getId() + "/" + name);
     port.loadInfo();
     return port;
@@ -71,7 +70,6 @@ public class User {
   }
 
   public boolean addPortfolio(String portName) {
-    System.out.println("Name: " + portName);
     if (portfolios.get(portName) == null) {
       boolean success = DatabaseApi.createPortfolio(getId(),
           getId() + "/" + portName, portName);

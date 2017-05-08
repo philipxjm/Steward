@@ -51,7 +51,6 @@ public class Trader extends Portfolio {
   }
 
   private boolean executeEntry() {
-    System.out.println("bought shit");
     int currTime = (int) (System.currentTimeMillis() / 1000L);
     List<Stock> goodStocks = goodShit()
         .stream()
@@ -60,7 +59,6 @@ public class Trader extends Portfolio {
     double singleStockCash = getBalance() / 5.0;
     for (Stock shit : goodStocks) {
       double p = shit.getCurrPrice().getValue();
-      System.out.println("buying " + shit.getTicker() + " -- " + p);
       int shares = (int) Math.floor(singleStockCash / p);
       if (shares > 0) {
         buyStock(shit.getTicker(),
@@ -73,11 +71,9 @@ public class Trader extends Portfolio {
   }
 
   private boolean executeExit() {
-    System.out.println("sold shit");
     int currTime = (int) (System.currentTimeMillis() / 1000L);
     List<String> ownedStocks = new ArrayList<String>(getHoldings().keySet());
     for (String ticker : ownedStocks) {
-      System.out.println("selling all " + ticker);
       int shares = getHoldings().get(ticker);
       if (shares > 0) {
         sellStock(ticker,
