@@ -15,10 +15,13 @@
                 <div data-toggle="tooltip" data-placement="top"
                      class="card"
                      id=${stock[1]} data-original-title="Sentiment: ${stock[1]}">
-                    <div class="card-block">
-                        <h6 class="card-title"><a href="/stock/${stock[0]}">${stock[0]}</a></h6>
-                        <p class="card-text">Price: $${stock[2]}</p>
-                        <p class="card-text">Change: ${stock[3]}%</p>
+                    <div class="card-block stock">
+                        <h6 class="card-title"><a class="symbol"
+                                href="/stock/${stock[0]}">${stock[0]}</a></h6>
+                        <p class="card-text">Price: $
+                            <span class="price"></span></p>
+                        <p class="card-text">Change: <span class="change">
+                        </span>%</p>
                     </div>
                 </div>
             </div>

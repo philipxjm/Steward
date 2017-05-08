@@ -2,6 +2,7 @@ package edu.steward.handlers.json;
 
 import com.google.gson.Gson;
 
+import com.google.gson.JsonElement;
 import edu.steward.stock.Stock;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -18,9 +19,14 @@ public class GetCurrPriceHandler implements Route {
   public String handle(Request req, Response res) throws Exception {
     QueryParamsMap qm = req.queryMap();
     String ticker = qm.value("ticker");
+    System.out.println(ticker);
     Stock stock = new Stock(ticker);
     try {
-      return gson.toJson(stock.getCurrPrice());
+      JsonElement jsonElement = gson.toJsonTree(stock.getCurrPrice());
+      jsonElement.getAsJsonObject().addProperty("change", stock
+              .getDailyChange().getValue());
+      return gson.toJson(jsonElement);
+//      return gson.toJson(stock.getCurrPrice());
     } catch (StringIndexOutOfBoundsException e) {
       return "";
     }
