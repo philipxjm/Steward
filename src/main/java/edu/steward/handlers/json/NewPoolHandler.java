@@ -28,7 +28,9 @@ public class NewPoolHandler implements Route {
     long start = (System.currentTimeMillis() / 1000L);
     long end = Long.parseLong(qm.value("end")) / 1000L;
     Pool pool = new Pool(poolName, balance, start, end);
-    user.addPool(pool.getId());
+    if (user.addPool(pool.getId()) == null) {
+      return "";
+    }
     if (Boolean.parseBoolean(qm.value("ai"))) {
       DatabaseApi.createUser("ai", "AI", "", "img/ai.png");
       User ai = new User("ai");
