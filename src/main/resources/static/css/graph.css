@@ -7,6 +7,9 @@ html, body, main {
   margin-left: 10px;
 }
 
+.wrapper {
+  min-height: 90%!important;
+}
 
 #graph {
   height: 100%;

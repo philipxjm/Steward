@@ -65,12 +65,12 @@ class StockGraph extends StewardGraph {
         let params = {
             "ticker": this.ticker
         }
-        log('/getStockPrediction', params);
 
         if (this.predictRequest) {
             return;
         }
 
+        log('/getStockPrediction', params);
         this.predictRequest = $.post('/getStockPrediction', params, (res) => {
             let data = JSON.parse(res);
             if (data) {
