@@ -45,7 +45,6 @@ public class LeaderBoard {
   }
 
   public static boolean containsPortfolio(String portId) {
-    System.out.println("checked if leaderboard contains portfolio");
     String query = "SELECT * FROM Leaderboards "
             + "WHERE portfolio = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {

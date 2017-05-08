@@ -55,11 +55,9 @@ public class GainsOverTime {
       }
     }
 
-    System.out.println("new start time = " + startTime);
 
     Set<String> tickers = trans.keySet();
     for (String ticker : tickers) {
-      System.out.println("tickerz : " + ticker);
     }
     Map<String, List<Price>> prices = getPrices(tickers, startTime);
     for (String ticker : tickers) {
@@ -87,19 +85,13 @@ public class GainsOverTime {
         assetValue += prices.get(ticker).get(c).getValue()
             * quantities.get(ticker).get(c);
       }
-      System.out.println("sold: " + S);
-      System.out.println("bought: " + B);
-      System.out.println("asset value: " + assetValue);
       System.out
           .println("total bought: " + buySell.get(buySell.size() - 1).get(0));
       double percentage = ((S + assetValue) - B)
           / buySell.get(buySell.size() - 1).get(0);
-      System.out.println("percentage: " + percentage);
       ret.add(new Gains(percentage, time));
       c += 1;
     }
-    System.out.println(ret.get(0).getTime());
-    System.out.println(startTime);
     if (!ret.get(0).getTime().equals(startTime)) {
       ret.add(0, new Gains(0.0, startTime));
     }
@@ -109,18 +101,14 @@ public class GainsOverTime {
 
   public static List<Gains> getGainsGameGraph(String portId, Long startTime,
       Integer initBalance) {
-    System.out.println("getGainsGameGraph Called!");
     long currTime = (System.currentTimeMillis() / 1000L);
     TreeMultimap<String, Holding> trans = getTransactionHistory(portId);
     if (trans.size() == 0) {
-      System.out.println("nada");
       return new ArrayList<>();
     }
 
     Set<String> tickers = trans.keySet();
     Map<String, List<Price>> prices = getPrices(tickers, startTime);
-    System.out.println("start time zz: " + startTime);
-    System.out.println("priceList sizezz: " + prices.values().size());
     // for (String ticker : tickers) {
     // System.out.println(ticker);
     // Stock s = new Stock(ticker);
@@ -143,7 +131,6 @@ public class GainsOverTime {
     List<Gains> ret = new ArrayList<>();
     int c = 0;
     for (long time : times) {
-      System.out.println(c + ": " + time);
       List<Double> temp = buySell.get(c);
       double B = temp.get(0);
       double S = temp.get(1);
@@ -152,14 +139,9 @@ public class GainsOverTime {
         assetValue += prices.get(ticker).get(c).getValue()
             * quantities.get(ticker).get(c);
       }
-      System.out.println("sold: " + S);
-      System.out.println("bought: " + B);
-      System.out.println("asset value: " + assetValue);
       System.out
           .println("total bought: " + buySell.get(buySell.size() - 1).get(0));
-      System.out.println("assettvalue: " + assetValue);
       double netWorth = (S + assetValue - B + initBalance);
-      System.out.println("netWorth " + netWorth);
       ret.add(new Gains(netWorth, time));
       c += 1;
     }
@@ -175,12 +157,10 @@ public class GainsOverTime {
       Stock stock = new Stock(ticker);
       currAssetsWorth += currQuantities.get(ticker)
           * stock.getCurrPrice().getValue();
-      System.out.println("currAssetsWorth: " + currAssetsWorth);
     }
     ret.add(
         new Gains(currAssetsWorth + getBalanceFromPortfolio(portId), currTime));
     for (Gains g : ret) {
-      System.out.println("gtime: " + g.getTime() + "gmoney: " + g.getValue());
     }
     return ret;
   }
@@ -215,7 +195,6 @@ public class GainsOverTime {
             return Long.compare(o1.getTime(), o2.getTime());
           }
         });
-    System.out.println("HEY: " + portId);
     String query = "SELECT stock, time, trans, price FROM History "
         + "WHERE portfolio = ? ORDER BY time ASC;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -242,15 +221,11 @@ public class GainsOverTime {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    System.out.println(transactionHistory);
     return transactionHistory;
   }
 
   private static Map<String, List<Price>> getPrices(Set<String> tickers,
       long startTime) {
-    System.out.println("getPrices called in GainsOverTime");
-    System.out.println(tickers);
-    System.out.println(startTime);
     // TODO: Have this method get the historical prices for a set of stocks
     // after a given start time
     Map<String, List<Price>> ret = new HashMap<>();
@@ -276,7 +251,6 @@ public class GainsOverTime {
             // TODO: check to see if starttime is within 24 hours or something
             // like that
             if (prices.size() == 0) {
-              System.out.println("init f3");
               List<Price> temp = initializePrices(ticker);
               temp = Lists.reverse(temp);
               // TODO: Could this be more efficient?

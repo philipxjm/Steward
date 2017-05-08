@@ -19,7 +19,6 @@ public class GetCurrPriceHandler implements Route {
   public String handle(Request req, Response res) throws Exception {
     QueryParamsMap qm = req.queryMap();
     String ticker = qm.value("ticker");
-    System.out.println(ticker);
     Stock stock = new Stock(ticker);
     try {
       JsonElement jsonElement = gson.toJsonTree(stock.getCurrPrice());

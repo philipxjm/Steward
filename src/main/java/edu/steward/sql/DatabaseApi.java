@@ -55,7 +55,7 @@ public class DatabaseApi {
 
       } catch (SQLException e) {
         // User already exists
-        e.printStackTrace();
+        System.out.println("Returning User");
         return false;
       }
     } catch (SQLException e) {
@@ -140,7 +140,6 @@ public class DatabaseApi {
             String id = rs.getString(2);
             Portfolio port = new Portfolio(name, id);
             portfolios.put(id, port);
-            System.out.println(id);
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -333,7 +332,6 @@ public class DatabaseApi {
   }
 
   public static Double getBalanceFromPortfolio(String portId) {
-    System.out.println("port id " + portId);
     Double balance = 0.0;
     String query = "SELECT balance FROM Balances " + "WHERE portfolio = ?;";
     try (Connection c = DriverManager.getConnection(userUrl)) {
@@ -364,8 +362,6 @@ public class DatabaseApi {
 
   private static Price getPriceHelp(String ticker, int time, int calls) {
     if (calls == 0 || calls == 1) {
-      System.out.println("get price called in DatabaseAPI");
-      System.out.println("ticker: " + ticker + ", time: " + time);
       List<Price> prices = new ArrayList<>();
       String query = "SELECT time, price FROM quotes " + "WHERE stock = ? "
           + "AND time <= ? " + "AND time >= ?;";
@@ -378,7 +374,6 @@ public class DatabaseApi {
           prep.setInt(3, time - 604800);
           try (ResultSet rs = prep.executeQuery()) {
             while (rs.next()) {
-              System.out.println("flag");
               Integer timestamp = Integer.parseInt(rs.getString(1));
               Double priceValue = Double.parseDouble(rs.getString(2));
               Price price = new Price(priceValue, (long) timestamp);
@@ -399,7 +394,6 @@ public class DatabaseApi {
       }
       if (prices.size() == 0) {
         // Stock not found
-        System.out.println("init f1");
         if (initializePrices(ticker).size() == 0) {
           return null;
         } else {
@@ -450,7 +444,6 @@ public class DatabaseApi {
     // Legacy code above
     // If there are no prices than update the table with update prices.
     if (prices.size() == 0) {
-      System.out.println("init f2");
       return initializePrices(ticker);
     } else {
       return prices;
@@ -512,7 +505,6 @@ public class DatabaseApi {
   // }
 
   public static List<Price> initializePrices(String ticker) {
-    System.out.println("initialize prices called");
     // String stat = "DELETE FROM quotes WHERE stock = ?;";
     // try (Connection c = DriverManager.getConnection(quoteUrl)) {
     // Statement s = c.createStatement();
@@ -563,7 +555,6 @@ public class DatabaseApi {
   }
 
   public static boolean initializePool(Pool p) {
-    System.out.println("initialze pool calledz");
     String stat = "INSERT INTO Pools " + "VALUES (?, ?, ?, ?, ?);";
     try (Connection c = DriverManager.getConnection(userUrl)) {
       Statement s = c.createStatement();
@@ -595,7 +586,6 @@ public class DatabaseApi {
         prep.setString(1, poolId);
         try (ResultSet rs = prep.executeQuery()) {
           if (rs.next()) {
-            System.out.println("klip klop");
             String name = rs.getString(2);
             int bal = Integer.parseInt(rs.getString(3));
             long start = rs.getLong(4);
@@ -644,7 +634,6 @@ public class DatabaseApi {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    System.out.println(portfolios);
     return portfolios;
   }
 

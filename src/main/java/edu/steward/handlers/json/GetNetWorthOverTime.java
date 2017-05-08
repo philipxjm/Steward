@@ -27,15 +27,7 @@ public class GetNetWorthOverTime implements Route {
 //    TODO: get leaderboard from table, if empty the game isnt over yet
 //    TODO: pass back a boolean for isOver and the end timestamp of the pool
 //    TODO: jk this should be done in leaderboard handler and index handler
-    System.out.println(poolId);
     List<Portfolio> portfolios = DatabaseApi.getPortsFromPool(poolId);
-    System.out.println("portfolio size: " + portfolios.size());
-    System.out.println("pool Id " + poolId);
-    System.out.println("I GOT HERE");
-    System.out.println(portfolios.get(0));
-    System.out.println("I DIDNT HERE");
-    System.out.println(portfolios.get(0).getPortfolioId());
-    System.out.println("5");
 
     // TODO: this should add it for every user, front end not currently set up
     // to handle it

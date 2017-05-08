@@ -21,7 +21,6 @@ public class Pool {
 
   public Pool(String name, int balance, long startTime, long end,
       Portfolio... ports) {
-    System.out.println("pool constructor called");
     bal = balance;
     start = startTime;
     this.name = name;
@@ -31,7 +30,6 @@ public class Pool {
     while (DatabaseApi.getPool(id) != null) {
       generateRandom();
     }
-    System.out.println(id);
     portfolios = Arrays.asList(ports);
     DatabaseApi.initializePool(this);
 //    TODO: uncomment this
@@ -125,17 +123,13 @@ public class Pool {
 
   public static void setEndTimer(String poolId, int endTime) {
 //    TODO: uncomment this
-    System.out.println("endTime: " + endTime * 1000L);
-    System.out.println("now: " + System.currentTimeMillis());
     long delay = 1000L * endTime - System.currentTimeMillis();
-    System.out.println("delay: " + delay);
 
     Timer t = new Timer();
     t.schedule(new TimerTask() {
 
       @Override
       public void run() {
-        System.out.println("run called");
         InsertFinalLb.insert(poolId);
       }
     },delay / 1000L);

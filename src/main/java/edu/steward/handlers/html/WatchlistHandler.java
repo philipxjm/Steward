@@ -26,7 +26,6 @@ public class WatchlistHandler implements TemplateViewRoute {
     List<List<Object>> ret = new ArrayList<>();
     for (String key : trending.keySet()) {
       Stock s = new Stock(key);
-      System.out.println(key);
       try {
         ret.add(ImmutableList.of(key, trending.get(key)));
 //        ret.add(ImmutableList.of(key, trending.get(key),

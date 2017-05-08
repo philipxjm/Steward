@@ -17,7 +17,6 @@ public class ExecuteAiTransacton implements Job {
   @Override
   public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
     List<Trader> aiPortfolios = aiRetriever.getActiveAIs();
-    System.out.println("ais: " + aiPortfolios);
     for (Trader p : aiPortfolios) {
       p.executeTransaction();
     }

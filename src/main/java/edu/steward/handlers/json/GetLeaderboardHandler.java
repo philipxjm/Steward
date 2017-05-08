@@ -34,13 +34,10 @@ public class GetLeaderboardHandler implements Route {
     System.out.println("pool: " + poolId + " has lb list size: " + lBscores.size());
     if (lBscores.size() != 0) {
       for (LBscore lb : lBscores) {
-        System.out.println("lbscore: " + lb.getScore());
         scores.add(new Score(lb.getPort(), lb.getScore()));
       }
     } else {
       for (Portfolio p : rankedPortfolios) {
-        System.out.println(p);
-        System.out.println(p.getNetWorth());
         scores.add(new Score(p, p.getNetWorth()));
       }
     }

@@ -15,14 +15,6 @@ public class GetPoolInfoHandler implements Route {
 
   @Override
   public String handle(Request req, Response res) throws Exception {
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    System.out.println();
     QueryParamsMap qm = req.queryMap();
     String name = qm.value("name");
     String poolId = qm.value("poolId");

@@ -139,7 +139,6 @@ public class AlphaVantageAPI implements StockAPI {
 
   public String getFromAlphaVantage(String ticker, Enum... args) {
     String url = constructURL(ticker, args);
-    System.out.println("url is: " + url);
     return JSONRetriever.getJSON(url, 5000);
   }
 
@@ -329,8 +328,6 @@ public class AlphaVantageAPI implements StockAPI {
     switch (t) {
     case ONE_DAY:
       cutoffTime = prices.get(0).getTime() - (prices.get(0).getTime() % 86400 - 48600);
-      System.out.println("last time: " + prices.get(0).getTime());
-      System.out.println("cutoff time: " + cutoffTime);
       for (Price p : prices) {
         if (p.getTime() >= cutoffTime) {
           ret.add(p);

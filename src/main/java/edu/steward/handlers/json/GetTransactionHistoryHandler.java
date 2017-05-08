@@ -32,11 +32,9 @@ public class GetTransactionHistoryHandler implements Route{
     boolean isPool = Boolean.parseBoolean(qm.value("isPool"));
     String portfolioName = isPool ? "pool/" + qm.value("port") : qm.value
         ("port");
-    System.out.println("getting transaction history for " + portfolioName);
     TreeMultimap<String, Holding> history = GainsOverTime.getTransactionHistory
         (userId + "/" +
         portfolioName);
-    System.out.println(history);
     return gson.toJson(history.asMap());
   }
 }

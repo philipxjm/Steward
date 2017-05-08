@@ -37,10 +37,8 @@ public class IndexHandler implements TemplateViewRoute {
       List<Portfolio> inactive = new ArrayList<>();
       for (Portfolio p : pools) {
         if (p.isDead()) {
-          System.out.println(p.getName() + " yup it's dead");
           inactive.add(p);
         } else {
-          System.out.println(p.getName() + " not dead, alive!");
           active.add(p);
         }
       }
