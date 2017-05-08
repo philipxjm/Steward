@@ -354,6 +354,12 @@ $('#historyButton').click((e) => {
             l.push(resData[key]);
         }
         l.sort((a,b) => a.time > b.time);
-
+        for(let obj of l) {
+            obj = obj[0];
+            let date = new Date(obj.time*1000).toLocaleString('en-US')
+            let toAdd = $(`<li class='list-group-item'>Price: $${obj.price}<br/>Shares: $${obj.shares}<br/>Time: ${obj.ticker}<br/>Date: ${date}</li>`);
+            console.log(toAdd);
+            $('#transActions').append(toAdd);
+        }
     });
 });
