@@ -57,8 +57,6 @@ public class GainsOverTime {
 
 
     Set<String> tickers = trans.keySet();
-    for (String ticker : tickers) {
-    }
     Map<String, List<Price>> prices = getPrices(tickers, startTime);
     for (String ticker : tickers) {
       Stock s = new Stock(ticker);

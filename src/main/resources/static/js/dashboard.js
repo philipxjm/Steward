@@ -346,7 +346,7 @@ $('#modalB').hide();
 // Transaction hist
 $('#historyButton').click((e) => {
     let data = { port : getCurrentPort(), isPool : !activeTabIsPort };
-
+    $('#transActions').empty();
     $.post('/getTransactionHistory', data, (res) => {
         let resData = JSON.parse(res);
         let l = [];
@@ -357,7 +357,7 @@ $('#historyButton').click((e) => {
         for(let obj of l) {
             obj = obj[0];
             let date = new Date(obj.time*1000).toLocaleString('en-US')
-            let toAdd = $(`<li class='list-group-item'>Price: $${obj.price}<br/>Shares: $${obj.shares}<br/>Time: ${obj.ticker}<br/>Date: ${date}</li>`);
+            let toAdd = $(`<li class='list-group-item'>Price: $${obj.price}<br/>Shares: ${obj.shares}<br/>Ticker: ${obj.ticker}<br/>Time: ${date}</li>`);
             console.log(toAdd);
             $('#transActions').append(toAdd);
         }
