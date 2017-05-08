@@ -45,39 +45,25 @@
             </div>
           </form>
           <!-- Total Table -->
-          <div class="row">
-              <div id="total" class="col-sm-6 col-md-6">
-                  <div class="row">
-                      <div class="zero col"></div>
-                      <div id="priceTotal" class="col text-right pull-right"></div>
-                  </div>
-                  <div class="row">
-                      <div class="col text-left">x</div>
-                      <div id="sharesTotal" class="col text-right pull-right"></div>
-                  </div>
-                  <div class="bottom row">
-                      <div class="zero col"></div>
-                      <div id="totalCost" class="col text-right pull-right"></div>
-                  </div>
+          <div>Current Price: <span id="priceTotal"></span></div>
+          <div>Total Price: <span id="totalCost"></span></div>
+          <div id="modalCB">Current Balance: <span id="currBalanceTotal"></span></div>
+          <div id="modalB">Balance After: <span id="afterTotal"></span></div>
+          <!--
+          <div id="total">
+              <div class="row">
+                  <div class="zero col"></div>
+                  <div id="priceTotal" class="col text-right pull-right"></div>
               </div>
-              <div id="total" class="col-sm-6 col-md-6">
-                  <div class="row">
-                      <div class="zero col"></div>
-                      <div id="balanceTotal" class="col text-right
-                      pull-right"></div>
-                  </div>
-                  <div class="row">
-                      <div class="col text-left">x</div>
-                      <div id="costTotal" class="col text-right
-                      pull-right"></div>
-                  </div>
-                  <div class="bottom row">
-                      <div class="zero col"></div>
-                      <div id="balanceRemaining" class="col text-right
-                      pull-right"></div>
-                  </div>
+              <div class="row">
+                  <div class="col text-left">x</div>
+                  <div id="sharesTotal" class="col text-right pull-right"></div>
               </div>
-          </div>
+              <div class="bottom row">
+                  <div class="zero col"></div>
+                  <div id="totalCost" class="col text-right pull-right"></div>
+              </div>
+          </div>-->
           <p id="stockError" class="text-danger"></p>
       </div>
       <div class="modal-footer">

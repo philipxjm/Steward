@@ -242,7 +242,7 @@ public class GainsOverTime {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    System.out.println("made it to the end of transaction History");
+    System.out.println(transactionHistory);
     return transactionHistory;
   }
 

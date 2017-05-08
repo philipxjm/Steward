@@ -14,7 +14,7 @@
 	User ID
 	</div>
 	<div class="col">
-	${user} <br/>
+	${userName} <br/>
 	${email} <br/>
 	${id}
 	</div>	
