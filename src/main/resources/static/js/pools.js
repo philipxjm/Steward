@@ -115,7 +115,7 @@ function getPoolInfo(name, poolId) {
     // Setting up stock modal
     $('#buy').click();
     setTotal();
-    
+
     $('#initBalance').text('$' + Math.round(data.init));
     let userId = $('#user').attr('userId');
 
@@ -141,7 +141,12 @@ $('#joinPool').click((e) => {
     // Only add a newPool is you aren't already joining
     if($('#newPool').length == 0) {
         // Add input for join pool
-        $('<div class="form-group list-group-item list-group-item-action pool newPool"><label for="newPool">Pool ID:</label><input class="form-control" id="newPool" type="text"><p id="poolErr" class="text-danger"></p></div>').insertAfter($('.pool:not(.inactive)').last());
+        $newInput = $('<div class="form-group list-group-item list-group-item-action pool newPool"><label for="newPool">Pool ID:</label><input class="form-control" id="newPool" type="text"><p id="poolErr" class="text-danger"></p></div>');
+        if($('.pool:not(.inactive)').length != 0) {
+          $($newInput).insertAfter($('.pool:not(.inactive)').last());
+        } else {
+          $('#pools').append($newInput);
+        }
         let inputDiv = $('#newPool').parent();
         $('#newPool').keydown((e) => {
             if (e.keyCode == 13) { // Enter

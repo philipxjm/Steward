@@ -79,23 +79,6 @@ $('#addStock').click((e) => {
     return false;
 });
 
-$('#historyButton').click((e) => {
-    let data = {
-    port : getCurrentPort(),
-    isPool : !activeTabIsPort};
-    console.log("sending data to /getTransactionHistory");
-    console.log(data);
-    $.post('/getTransactionHistory', data, (res) => {
-        let resData = JSON.parse(res);
-        let list;
-        console.log(resData);
-        resData.entries.forEach(function(value, key) {
-            list.concat(value);
-        });
-        console.log(list);
-    });
-});
-
 $('#shares').on('input', setTotal);
 $('#ticker').change(setTotal);
 $('#buy').click(setTotal);

@@ -334,3 +334,18 @@ $('#poolInfo').hide();
 // Hide extra modal info
 $('#modalCB').hide();
 $('#modalB').hide();
+
+// Transaction hist
+$('#historyButton').click((e) => {
+    let data = { port : getCurrentPort(), isPool : !activeTabIsPort };
+
+    $.post('/getTransactionHistory', data, (res) => {
+        let resData = JSON.parse(res);
+        let l = [];
+        for (let key of Object.keys(resData)) {
+            l.push(resData[key]);
+        }
+        l.sort((a,b) => a.time > b.time);
+        
+    });
+});
