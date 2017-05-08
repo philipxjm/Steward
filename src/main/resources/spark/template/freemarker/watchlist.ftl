@@ -8,7 +8,14 @@
 </#assign>
 <#assign content>
 <div class="container" id="stocks">
-    <h2>Stocks to Watch</h2>
+    <div style="height: 44px;">
+        <h2 style="float: left">Stocks to Watch</h2>
+        <h2 style="float: right; color: darkgrey; font-size: 0.8rem">
+            (Sentiments are
+            displayed as
+            colors.)
+        </h2>
+    </div>
     <div class="grid">
         <#list trending as stock>
             <div class="grid-item">
