@@ -105,9 +105,3 @@ We will not require any files to be provided from the client.
 
 ###### Graph page
 ![Graph page](README_src/graph_mock.png)
-
-## Project Design Presentation
-_A link to your design presentation/document will go here!_
-
-## How to Build and Run
-_A necessary part of any README!_
